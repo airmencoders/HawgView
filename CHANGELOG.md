@@ -1,3 +1,7 @@
+## 2.0.1-alpha
+### Bug Fixes
+* Fixed bug where navigating away from the map would result in an error if any overlays did not have children
+
 ## 2.0.0-alpha
 ### Changes
 * Initial Commit

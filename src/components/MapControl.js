@@ -64,7 +64,7 @@ export default ({ friendlyMarkers, handleMarkerDrag, mapZoom }) => {
         <TileLayer
           url='http://fly.maptiles.arcgis.com/arcgis/rest/services/World_Imagery_Firefly/MapServer/tile/{z}/{y}/{x}'
           attribution={`Esri, DigitalGlobe, GeoEye, Earthstar Geographics, CNES/Airbus DS, USDA, USGS, AeroGRID, IGN, and the GIS User Community`}
-          
+
         />
       </BaseLayer>
       <BaseLayer name='ESRI Imagery Clarity'>
@@ -161,58 +161,80 @@ export default ({ friendlyMarkers, handleMarkerDrag, mapZoom }) => {
         />
       </Overlay>
       <Overlay checked name='Friendly Markers'>
-        {friendlyMarkers.map((marker, index) => (
-          <Marker
-            autoPan={marker.autoPan}
-            draggable={marker.draggable}
-            id={marker.id}
-            icon={L.icon({
-              type: marker.iconType,
-              iconUrl: marker.iconUrl,
-              iconSize: [3 * mapZoom, 3 * mapZoom]
-            })}
-            key={`${index}-${marker.title}`}
-            onDragend={event => handleMarkerDrag(marker, event.target.getLatLng())}
-            position={marker.latlng}
-            riseOnHover={marker.riseOnHover}
-          >
-            <Popup>
-              {marker.title}
-              <br/>
-              {LatLon.parse(marker.latlng.lat, marker.latlng.lng).toUtm().toMgrs().toString()}
-            </Popup>
-          </Marker>
-        ))}
+        <LayerGroup>
+          {friendlyMarkers.map((marker, index) => (
+            <Marker
+              autoPan={marker.autoPan}
+              draggable={marker.draggable}
+              id={marker.id}
+              icon={L.icon({
+                type: marker.iconType,
+                iconUrl: marker.iconUrl,
+                iconSize: [3 * mapZoom, 3 * mapZoom]
+              })}
+              key={`${index}-${marker.title}`}
+              onDragend={event => handleMarkerDrag(marker, event.target.getLatLng())}
+              position={marker.latlng}
+              riseOnHover={marker.riseOnHover}
+            >
+              <Popup>
+                {marker.title}
+                <br />
+                {LatLon.parse(marker.latlng.lat, marker.latlng.lng).toUtm().toMgrs().toString()}
+              </Popup>
+            </Marker>
+          ))}
+        </LayerGroup>
       </Overlay>
       <Overlay checked name='Hostile Markers'>
+        <LayerGroup>
 
+        </LayerGroup>
       </Overlay>
       <Overlay checked name='Threat Markers'>
+        <LayerGroup>
 
+        </LayerGroup>
       </Overlay>
       <Overlay checked name='Survivors'>
+        <LayerGroup>
 
+        </LayerGroup>
       </Overlay>
       <Overlay checked name='IPs'>
+        <LayerGroup>
 
+        </LayerGroup>
       </Overlay>
       <Overlay checked name='Building Labels'>
+        <LayerGroup>
 
+        </LayerGroup>
       </Overlay>
       <Overlay checked name='CAPs'>
+        <LayerGroup>
 
+        </LayerGroup>
       </Overlay>
       <Overlay checked name='Lines'>
+        <LayerGroup>
 
+        </LayerGroup>
       </Overlay>
       <Overlay checked name='Polygons'>
+        <LayerGroup>
 
+        </LayerGroup>
       </Overlay>
       <Overlay checked name='Engagement Areas'>
+        <LayerGroup>
 
+        </LayerGroup>
       </Overlay>
       <Overlay checked name='ROZs'>
-        
+        <LayerGroup>
+
+        </LayerGroup>
       </Overlay>
     </LayersControl>
   )
