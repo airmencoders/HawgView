@@ -1,0 +1,132 @@
+/**
+ * ${SUMMARY}
+ * 
+ * ${DESCRIPTION}
+ * 
+ * @author  chris-m92
+ * 
+ * MIT License
+ * 
+ * Copyright (c) 2020 Airmen Coders
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+//----------------------------------------------------------------//
+// Top Level Modules
+//----------------------------------------------------------------//
+import React from 'react'
+
+//----------------------------------------------------------------//
+// Material-UI Core Components
+//----------------------------------------------------------------//
+import IconButton from '@material-ui/core/IconButton'
+import Tooltip from '@material-ui/core/Tooltip'
+
+//----------------------------------------------------------------//
+// Material-UI Icons
+//----------------------------------------------------------------//
+import AddPhotoAlternateIcon from '@material-ui/icons/AddPhotoAlternate'
+import ClearIcon from '@material-ui/icons/Clear'
+import ColorLensIcon from '@material-ui/icons/ColorLens'
+import GetAppIcon from '@material-ui/icons/GetApp'
+import ListAltIcon from '@material-ui/icons/ListAlt'
+import MessageIcon from '@material-ui/icons/Message'
+import RedoIcon from '@material-ui/icons/Redo'
+import SaveIcon from '@material-ui/icons/Save'
+import UndoIcon from '@material-ui/icons/Undo'
+import ViewListIcon from '@material-ui/icons/ViewList'
+
+//----------------------------------------------------------------//
+// CAS Tools Component
+//----------------------------------------------------------------//
+export default ({ handleMarkerDrawerToggle, handleColorToggle, handleRedo, handleUndo, redoDisabled, undoDisabled }) => {
+
+  return (
+    <React.Fragment>
+      <Tooltip title='Add Marker'>
+        <IconButton
+          color='inherit'
+          onClick={handleMarkerDrawerToggle}
+        >
+          <AddPhotoAlternateIcon />
+        </IconButton>
+      </Tooltip>
+      <Tooltip title='Undo'>
+        <span>
+          <IconButton
+            color='inherit'
+            disabled={undoDisabled}
+            onClick={handleUndo}
+          >
+            <UndoIcon />
+          </IconButton>
+        </span>
+      </Tooltip>
+      <Tooltip title='Redo'>
+        <span>
+          <IconButton
+            color='inherit'
+            disabled={redoDisabled}
+            onClick={handleRedo}
+          >
+            <RedoIcon />
+          </IconButton>
+        </span>
+      </Tooltip>
+      <Tooltip title='Clear All Markers'>
+        <IconButton color='inherit' >
+          <ClearIcon />
+        </IconButton>
+      </Tooltip>
+      <Tooltip title='Toggle Color'>
+        <IconButton
+          color='inherit'
+          onClick={handleColorToggle}
+        >
+          <ColorLensIcon />
+        </IconButton>
+      </Tooltip>
+      <Tooltip title='COF Tools'>
+        <IconButton color='inherit' >
+          <ListAltIcon />
+        </IconButton>
+      </Tooltip>
+      <Tooltip title='View Marker List'>
+        <IconButton color='inherit' >
+          <ViewListIcon />
+        </IconButton>
+      </Tooltip>
+      <Tooltip title='Toggle Marker Labels'>
+        <IconButton color='inherit' >
+          <MessageIcon />
+        </IconButton>
+      </Tooltip>
+      <Tooltip title='Save Scenario'>
+        <IconButton color='inherit' >
+          <SaveIcon />
+        </IconButton>
+      </Tooltip>
+      <Tooltip title='Download Products'>
+        <IconButton color='inherit' >
+          <GetAppIcon />
+        </IconButton>
+      </Tooltip>
+    </React.Fragment>
+  )
+}
