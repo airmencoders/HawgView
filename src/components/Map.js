@@ -71,12 +71,17 @@ const useStyles = makeStyles(theme => ({
 //----------------------------------------------------------------//
 // Map Component
 //----------------------------------------------------------------//
-export default ({ history, setHistory, setStep, setTargetLatLng, step, targetLatLng }) => {
+export default ({ history, markerSize, setHistory, setStep, setTargetLatLng, step, targetLatLng }) => {
   const classes = useStyles()
   const [mapZoom, setMapZoom] = React.useState(5)
 
   const [mapPopup, setMapPopup] = React.useState(null)
 
+  /**
+   * Display a Popup on the Map with the Coordinate information of the clicked location
+   * 
+   * @param {Object} latlng Lat/Lng coordinates of the clicked location
+   */
   const handleMapClick = latlng => {
     const lat = Dms.parse(latlng.lat)
     const lng = Dms.parse(latlng.lng)
@@ -105,40 +110,100 @@ export default ({ history, setHistory, setStep, setTargetLatLng, step, targetLat
     setTargetLatLng(latlng)
   }
 
+  /**
+   * Helper function to do multiple things when closing the map Popup
+   */
   const handleMapPopupClose = () => {
     setTargetLatLng(null)
     setMapPopup(null)
   }
 
+  /**
+   * 
+   * @param {Object} marker Object representing the marker being drug around the map
+   * @param {Object} newLatLng New Lat/Lng coordinates of the marker
+   */
   const handleMarkerDrag = (marker, newLatLng) => {
-    const filteredFriendlyMarkers = history[step].friendlyMarkers.filter(currentMarker => currentMarker.id !== marker.id)
-
-    const newMarker = {
-      ...marker,
-      latlng: newLatLng
-    }
-
-    const friendlyMarkers = [...filteredFriendlyMarkers, newMarker]
+    let targetHistory, filteredMarkers, newStep, newMarker
+    let invalidMarker = false
 
     if (step === history.length - 1) {
-      const newStep = {
-        ...history[step],
-        friendlyMarkers: friendlyMarkers
-      }
-
-      setHistory([...history, newStep])
+      targetHistory = history.slice()
     } else {
-      const newHistory = history.slice(0, step + 1)
-
-      const newStep = {
-        ...newHistory[step],
-        friendlyMarkers
-      }
-
-      setHistory([...newHistory, newStep])
+      targetHistory = history.slice(0, step + 1)
     }
 
-    setStep(step + 1)
+    switch(marker.sovereignty) {
+      case 'friendly':
+        filteredMarkers = targetHistory[step].friendlyMarkers.filter(currentMarker => currentMarker.id !== marker.id)
+        newMarker = {
+          ...marker,
+          latlng: newLatLng
+        }
+        filteredMarkers = [...filteredMarkers, newMarker]
+        newStep = {
+          ...targetHistory[step],
+          friendlyMarkers: filteredMarkers
+        }
+        break
+      case 'hostile':
+        filteredMarkers = targetHistory[step].hostileMarkers.filter(currentMarker => currentMarker.id !== marker.id)
+        newMarker = {
+          ...marker,
+          latlng: newLatLng
+        }
+        filteredMarkers = [...filteredMarkers, newMarker]
+        newStep = {
+          ...targetHistory[step],
+          hostileMarkers: filteredMarkers
+        }
+        break
+      case 'ip':
+        filteredMarkers = targetHistory[step].initialPoints.filter(currentMarker => currentMarker.id !== marker.id)
+        newMarker = {
+          ...marker,
+          latlng: newLatLng
+        }
+        filteredMarkers = [...filteredMarkers, newMarker]
+        newStep = {
+          ...targetHistory[step],
+          initialPoints: filteredMarkers
+        }
+        break
+      case 'survivor':
+        filteredMarkers = targetHistory[step].survivors.filter(currentMarker => currentMarker.id !== marker.id)
+        newMarker = {
+          ...marker,
+          latlng: newLatLng
+        }
+        filteredMarkers = [...filteredMarkers, newMarker]
+        newStep = {
+          ...targetHistory[step],
+          survivors: filteredMarkers
+        }
+        break
+      case 'threat':
+        filteredMarkers = targetHistory[step].threatMarkers.filter(currentMarker => currentMarker.id !== marker.id)
+        newMarker = {
+          ...marker,
+          latlng: newLatLng
+        }
+        filteredMarkers = [...filteredMarkers, newMarker]
+        newStep = {
+          ...targetHistory[step],
+          threatMarkers: filteredMarkers
+        }
+        break
+      default:
+        invalidMarker = true
+        console.error(`Invalid Sovereignty, ${marker.sovereignty}, passed to function. Unable to add new marker`, marker)
+        break
+    }
+
+    if(!invalidMarker) {
+      setHistory([...targetHistory, newStep])
+      setStep(step + 1)
+    }
   }
 
   return (
@@ -154,7 +219,12 @@ export default ({ history, setHistory, setStep, setTargetLatLng, step, targetLat
       <MapControl
         friendlyMarkers={history[step].friendlyMarkers}
         handleMarkerDrag={handleMarkerDrag}
+        hostileMarkers={history[step].hostileMarkers}
+        initialPoints={history[step].initialPoints}
         mapZoom={mapZoom}
+        markerSize={markerSize}
+        survivors={history[step].survivors}
+        threatMarkers={history[step].threatMarkers}
       />
       <ZoomControl position='topright' />
       <ScaleControl />

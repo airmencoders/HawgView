@@ -36,7 +36,6 @@ import React from 'react'
 // Material-UI Core Components
 //----------------------------------------------------------------//
 import Button from '@material-ui/core/Button'
-import IconButton from '@material-ui/core/IconButton'
 import { makeStyles } from '@material-ui/core/styles'
 import Tooltip from '@material-ui/core/Tooltip'
 
@@ -55,7 +54,11 @@ import threat from '../markers/persistent/threat-ring.svg'
 // Custom Class Styling
 //----------------------------------------------------------------//
 const useStyles = makeStyles(theme => ({
+  button: {
+    margin: theme.spacing(1),
+  },
   image: {
+    margin: theme.spacing(1),
     width: '30px',
   },
 }))
@@ -63,81 +66,77 @@ const useStyles = makeStyles(theme => ({
 //----------------------------------------------------------------//
 // Persistent Markers Component
 //----------------------------------------------------------------//
-export default () => {
+export default ({ handleAddMarker, handleMarkerDrawerToggle }) => {
   const classes = useStyles()
+
+  const handleMarkerClick = (src, sovereignty) => {
+    handleMarkerDrawerToggle()
+    handleAddMarker(src, sovereignty)
+  }
 
   return (
     <React.Fragment>
-      <Tooltip title='ADA'>
-        <IconButton>
+      <div>
+        <Tooltip title='ADA'>
           <img
             alt='ADA'
             className={classes.image}
-            data-sovereignty='threat'
+            onClick={event => handleMarkerClick(event.target.src, 'threat')}
             src={ada}
           />
-        </IconButton>
-      </Tooltip>
-      <Tooltip title='Missile'>
-        <IconButton>
+        </Tooltip>
+        <Tooltip title='Missile'>
           <img
             alt='Missile'
             className={classes.image}
-            data-sovereignty='threat'
+            onClick={event => handleMarkerClick(event.target.src, 'threat')}
             src={missile}
           />
-        </IconButton>
-      </Tooltip>
-      <Tooltip title='Target'>
-        <IconButton>
+        </Tooltip>
+        <Tooltip title='Target'>
           <img
             alt='Target'
             className={classes.image}
-            data-sovereignty='hostile'
+            onClick={event => handleMarkerClick(event.target.src, 'hostile')}
             src={target}
           />
-        </IconButton>
-      </Tooltip>
-      <Tooltip title='IP'>
-        <IconButton>
+        </Tooltip>
+        <Tooltip title='IP'>
           <img
             alt='IP'
             className={classes.image}
-            data-sovereignty='friendly'
+            onClick={event => handleMarkerClick(event.target.src, 'ip')}
             src={ip}
           />
-        </IconButton>
-      </Tooltip>
-      <Tooltip title='Threat Ring'>
-        <IconButton>
+        </Tooltip>
+        <Tooltip title='Threat Ring'>
           <img
             alt='Threat Ring'
             className={classes.image}
             src={threat}
           />
-        </IconButton>
-      </Tooltip>
-      <Tooltip title='CAP'>
-        <IconButton>
+        </Tooltip>
+        <Tooltip title='CAP'>
           <img
             alt='CAP'
             className={classes.image}
             src={cap}
           />
-        </IconButton>
-      </Tooltip>
-      <Tooltip title='Survivor'>
-        <IconButton>
+        </Tooltip>
+        <Tooltip title='Survivor'>
           <img
             alt='Survivor'
             className={classes.image}
-            data-sovereignty='friendly'
+            onClick={event => handleMarkerClick(event.target.src, 'survivor')}
             src={survivor}
           />
-        </IconButton>
-      </Tooltip>
+        </Tooltip>
+      </div>
       <Tooltip title='Building Label'>
-        <Button color='primary'>
+        <Button
+          className={classes.button}
+          color='primary'
+        >
           BLDG LABEL
         </Button>
       </Tooltip>

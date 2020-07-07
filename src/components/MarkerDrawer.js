@@ -121,18 +121,18 @@ export default ({ markerDrawerOpen, handleAddMarker, handleMarkerDrawerToggle, w
           />
           <Divider />
           <PersistentMarkers
-            handleAddMarker={src => handleAddMarker(src)}
+            handleAddMarker={(src, sovereignty) => handleAddMarker(src, sovereignty)}
             handleMarkerDrawerToggle={handleMarkerDrawerToggle}
           />
           <Divider />
           {(hostile) ?
             <HostileMarkers
-              handleAddMarker={src => handleAddMarker(src)}
+              handleAddMarker={(src, sovereignty) => handleAddMarker(src, sovereignty)}
               handleMarkerDrawerToggle={handleMarkerDrawerToggle}
             />
             :
             <FriendlyMarkers
-              handleAddMarker={src => handleAddMarker(src)}
+              handleAddMarker={(src, sovereignty) => handleAddMarker(src, sovereignty)}
               handleMarkerDrawerToggle={handleMarkerDrawerToggle}
             />
           }

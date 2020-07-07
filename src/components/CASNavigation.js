@@ -69,19 +69,19 @@ const useStyles = makeStyles(theme => ({
   },
   sectionDesktop: {
     display: 'none',
-    [theme.breakpoints.up('md')]: {
+    [theme.breakpoints.up('lg')]: {
       display: 'flex',
     },
   },
   sectionMobile: {
     display: 'flex',
-    [theme.breakpoints.up('md')]: {
+    [theme.breakpoints.up('lg')]: {
       display: 'none',
     },
   },
   title: {
     display: 'none',
-    [theme.breakpoints.up('md')]: {
+    [theme.breakpoints.up('sm')]: {
       display: 'block',
     },
   },
@@ -90,7 +90,7 @@ const useStyles = makeStyles(theme => ({
 //----------------------------------------------------------------//
 // CAS Navigation Component
 //----------------------------------------------------------------//
-export default ({ handleMarkerDrawerToggle, handleColorToggle, handleRedo, handleUndo, redoDisabled, state, undoDisabled }) => {
+export default ({ handleMarkerDrawerToggle, handleMarkerSizeDecrease, handleMarkerSizeIncrease, handleClearMarkers, handleColorToggle, handleRedo, handleUndo, redoDisabled, state, undoDisabled }) => {
   const classes = useStyles()
 
   const [menuAnchorElement, setMenuAnchorElement] = React.useState(null)
@@ -141,6 +141,9 @@ export default ({ handleMarkerDrawerToggle, handleColorToggle, handleRedo, handl
           <div className={classes.sectionDesktop}>
             <CASTools
               handleMarkerDrawerToggle={handleMarkerDrawerToggle}
+              handleMarkerSizeDecrease={handleMarkerSizeDecrease}
+              handleMarkerSizeIncrease={handleMarkerSizeIncrease}
+              handleClearMarkers={handleClearMarkers}
               handleColorToggle={handleColorToggle}
               handleRedo={handleRedo}
               handleUndo={handleUndo}
@@ -171,10 +174,15 @@ export default ({ handleMarkerDrawerToggle, handleColorToggle, handleRedo, handl
         </Toolbar>
       </AppBar>
       {
-        <MinimizedMenu 
-        handleMarkerDrawerToggle={handleMarkerDrawerToggle}
+        <MinimizedMenu
+          handleMarkerDrawerToggle={handleMarkerDrawerToggle}
+          handleMarkerSizeDecrease={handleMarkerSizeDecrease}
+          handleMarkerSizeIncrease={handleMarkerSizeIncrease}
+          handleClearMarkers={handleClearMarkers}
           handleColorToggle={handleColorToggle}
           handleMinMenuClose={handleMinMenuClose}
+          handleRedo={handleRedo}
+          handleUndo={handleUndo}
           minimizedMenuOpen={minimizedMenuOpen}
           minMenuAnchorElement={minMenuAnchorElement}
           redoDisabled={redoDisabled}

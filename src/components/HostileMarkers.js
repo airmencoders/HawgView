@@ -35,7 +35,6 @@ import React from 'react'
 //----------------------------------------------------------------//
 // Material-UI Core Components
 //----------------------------------------------------------------//
-import IconButton from '@material-ui/core/IconButton'
 import { makeStyles } from '@material-ui/core/styles'
 import Tooltip from '@material-ui/core/Tooltip'
 
@@ -66,10 +65,8 @@ import unit from '../markers/hostile/unit.svg'
 // Custom Class Styling
 //----------------------------------------------------------------//
 const useStyles = makeStyles(theme => ({
-  imageRoot: {
-    width: '100%',
-  },
   image: {
+    margin: theme.spacing(1),
     width: '30px',
   },
 }))
@@ -77,200 +74,167 @@ const useStyles = makeStyles(theme => ({
 //----------------------------------------------------------------//
 // Hostile Markers Component
 //----------------------------------------------------------------//
-export default () => {
+export default ({ handleAddMarker, handleMarkerDrawerToggle }) => {
   const classes = useStyles()
+
+  const handleMarkerClick = event => {
+    handleMarkerDrawerToggle()
+    handleAddMarker(event.target.src, 'hostile')
+  }
 
   return (
     <React.Fragment>
       <Tooltip title='Airborne'>
-        <IconButton>
-          <img
-            alt='Hostile Airborne'
-            className={classes.image}
-            data-sovereignty='hostile'
-            src={airborne}
-          />
-        </IconButton>
+        <img
+          alt='Hostile Airborne'
+          className={classes.image}
+          onClick={handleMarkerClick}
+          src={airborne}
+        />
       </Tooltip>
       <Tooltip title='Airborne Infantry'>
-        <IconButton>
-          <img
-            alt='Hostile Airborne Infantry'
-            className={classes.image}
-            data-sovereignty='hostile'
-            src={airborneInfantry}
-          />
-        </IconButton>
+        <img
+          alt='Hostile Airborne Infantry'
+          className={classes.image}
+          onClick={handleMarkerClick}
+          src={airborneInfantry}
+        />
       </Tooltip>
       <Tooltip title='Air Defense'>
-        <IconButton>
-          <img
-            alt='Hostile Air Defense'
-            className={classes.image}
-            data-sovereignty='hostile'
-            src={airDefense}
-          />
-        </IconButton>
+        <img
+          alt='Hostile Air Defense'
+          className={classes.image}
+          onClick={handleMarkerClick}
+          src={airDefense}
+        />
       </Tooltip>
       <Tooltip title='Anti Armor'>
-        <IconButton>
-          <img
-            alt='Hostile Anti Armor'
-            className={classes.image}
-            data-sovereignty='hostile'
-            src={antiArmor}
-          />
-        </IconButton>
+        <img
+          alt='Hostile Anti Armor'
+          className={classes.image}
+          onClick={handleMarkerClick}
+          src={antiArmor}
+        />
       </Tooltip>
       <Tooltip title='Armor'>
-        <IconButton>
-          <img
-            alt='Hostile Armor'
-            className={classes.image}
-            data-sovereignty='hostile'
-            src={armor}
-          />
-        </IconButton>
+        <img
+          alt='Hostile Armor'
+          className={classes.image}
+          onClick={handleMarkerClick}
+          src={armor}
+        />
       </Tooltip>
       <Tooltip title='Artillery'>
-        <IconButton>
-          <img
-            alt='Hostile Artillery'
-            className={classes.image}
-            data-sovereignty='hostile'
-            src={artillery}
-          />
-        </IconButton>
+        <img
+          alt='Hostile Artillery'
+          className={classes.image}
+          onClick={handleMarkerClick}
+          src={artillery}
+        />
       </Tooltip>
       <Tooltip title='Aviation'>
-        <IconButton>
-          <img
-            alt='Hostile Aviation'
-            className={classes.image}
-            data-sovereignty='hostile'
-            src={aviation}
-          />
-        </IconButton>
+        <img
+          alt='Hostile Aviation'
+          className={classes.image}
+          onClick={handleMarkerClick}
+          src={aviation}
+        />
       </Tooltip>
       <Tooltip title='CBRNE'>
-        <IconButton>
-          <img
-            alt='Hostile CBRNE'
-            className={classes.image}
-            data-sovereignty='hostile'
-            src={cbrne}
-          />
-        </IconButton>
+        <img
+          alt='Hostile CBRNE'
+          className={classes.image}
+          onClick={handleMarkerClick}
+          src={cbrne}
+        />
       </Tooltip>
       <Tooltip title='Engineer'>
-        <IconButton>
-          <img
-            alt='Hostile Engineer'
-            className={classes.image}
-            data-sovereignty='hostile'
-            src={engineer}
-          />
-        </IconButton>
+        <img
+          alt='Hostile Engineer'
+          className={classes.image}
+          onClick={handleMarkerClick}
+          src={engineer}
+        />
       </Tooltip>
       <Tooltip title='Infantry'>
-        <IconButton>
-          <img
-            alt='Hostile Infantry'
-            className={classes.image}
-            data-sovereignty='hostile'
-            src={infantry}
-          />
-        </IconButton>
+        <img
+          alt='Hostile Infantry'
+          className={classes.image}
+          onClick={handleMarkerClick}
+          src={infantry}
+        />
       </Tooltip>
       <Tooltip title='Maintenance'>
-        <IconButton>
-          <img
-            alt='Hostile Maintenance'
-            className={classes.image}
-            data-sovereignty='hostile'
-            src={maintenance}
-          />
-        </IconButton>
+        <img
+          alt='Hostile Maintenance'
+          className={classes.image}
+          onClick={handleMarkerClick}
+          src={maintenance}
+        />
       </Tooltip>
       <Tooltip title='Mech Infantry'>
-        <IconButton>
-          <img
-            alt='Hostile Mech Infantry'
-            className={classes.image}
-            data-sovereignty='hostile'
-            src={mechInfantry}
-          />
-        </IconButton>
+        <img
+          alt='Hostile Mech Infantry'
+          className={classes.image}
+          onClick={handleMarkerClick}
+          src={mechInfantry}
+        />
       </Tooltip>
       <Tooltip title='Medical'>
-        <IconButton>
-          <img
-            alt='Hostile Medical'
-            className={classes.image}
-            data-sovereignty='hostile'
-            src={medical}
-          />
-        </IconButton>
+        <img
+          alt='Hostile Medical'
+          className={classes.image}
+          onClick={handleMarkerClick}
+          src={medical}
+        />
       </Tooltip>
       <Tooltip title='Missile'>
-        <IconButton>
-          <img
-            alt='Hostile Missile'
-            className={classes.image}
-            data-sovereignty='hostile'
-            src={missile}
-          />
-        </IconButton>
+        <img
+          alt='Hostile Missile'
+          className={classes.image}
+          onClick={handleMarkerClick}
+          src={missile}
+        />
       </Tooltip>
       <Tooltip title='Recce'>
-        <IconButton>
-          <img
-            alt='Hostile Recce'
-            className={classes.image}
-            data-sovereignty='hostile'
-            src={recce}
-          />
-        </IconButton>
+        <img
+          alt='Hostile Recce'
+          className={classes.image}
+          onClick={handleMarkerClick}
+          src={recce}
+        />
       </Tooltip>
       <Tooltip title='Self-Propelled Artillery'>
-        <IconButton>
-          <img
-            alt='Hostile Self-Propelled Artillery'
-            className={classes.image}
-            data-sovereignty='hostile'
-            src={sparty}
-          />
-        </IconButton>
+        <img
+          alt='Hostile Self-Propelled Artillery'
+          className={classes.image}
+          onClick={handleMarkerClick}
+          src={sparty}
+        />
       </Tooltip>
       <Tooltip title='Signals'>
-        <IconButton>
-          <img
-            alt='Hostile Signals'
-            className={classes.image}
-            data-sovereignty='hostile'
-            src={signals}
-          />
-        </IconButton>
+        <img
+          alt='Hostile Signals'
+          className={classes.image}
+          onClick={handleMarkerClick}
+          src={signals}
+        />
       </Tooltip>
       <Tooltip title='Supply'>
-        <IconButton>
-          <img
-            alt='Hostile Supply'
-            className={classes.image}
-            data-sovereignty='hostile'
-            src={supply}
-          />
-        </IconButton>
+        <img
+          alt='Hostile Supply'
+          className={classes.image}
+          onClick={handleMarkerClick}
+          src={supply}
+        />
       </Tooltip>
       <Tooltip title='Unit'>
-        <IconButton>
-          <img
-            alt='Hostile Unit'
-            className={classes.image}
-            data-sovereignty='hostile'
-            src={unit}
-          />
-        </IconButton>
+        <img
+          alt='Hostile Unit'
+          className={classes.image}
+          onClick={handleMarkerClick}
+          src={unit}
+        />
       </Tooltip>
     </React.Fragment>
   )

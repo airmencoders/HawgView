@@ -1,3 +1,9 @@
+## 2.1.0-alpha
+* Completed the logic for handling the addition and dragging of all sovereignty of chits
+* Added `clearAllMarkers` functionality
+* Added functionality to increase or decrease the baseline size of chits / labels
+* Added margins to all `markers` in the `markerDrawer`
+
 ## 2.0.1-alpha
 ### Bug Fixes
 * Fixed bug where navigating away from the map would result in an error if any overlays did not have children
@@ -21,9 +27,9 @@
 * Removed `Old BMGR` and `New BMGR` Airspace and included only the new boundaries in `Restricted Areas`
 * Changed name to Hawg View **(Multiple Requests)**
 
-### Tasks to be Completed
-- [ ] Add `handleAddMarker` functionality to all remaining `markers`
-- [ ] Add `clearAllMarkers` functionality to map
+## Tasks to be Completed
+- [x] Add `handleAddMarker` functionality to all remaining `markers` - (`2.1.0-alpha`)
+- [x] Add `clearAllMarkers` functionality to map - (`2.1.0-alpha`)
 - [ ] Add `Marker Label` functionality to `markerDrawer`
 - [ ] Add `Threat` Dialog
 - [ ] Add `Combat Air Patrol (CAP)` Dialog
@@ -32,7 +38,7 @@
 - [ ] Add `15-Line` functionality to `survivor markers`
 - [ ] Add `MGRS` or `Lat/Lon` input to map
 
-### Farther off Tasks
+## Farther off Tasks
 - [ ] Add `MGRS Gridlines` to map
 - [ ] Add `Drawing` capabilities to map
 - [ ] Add `Ruler` control to map

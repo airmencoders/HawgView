@@ -56,7 +56,7 @@ const { BaseLayer, Overlay } = LayersControl
 //----------------------------------------------------------------//
 // Map Control Component
 //----------------------------------------------------------------//
-export default ({ friendlyMarkers, handleMarkerDrag, mapZoom }) => {
+export default ({ friendlyMarkers, handleMarkerDrag, hostileMarkers, initialPoints, mapZoom, markerSize, survivors, threatMarkers }) => {
 
   return (
     <LayersControl position='topright'>
@@ -162,17 +162,17 @@ export default ({ friendlyMarkers, handleMarkerDrag, mapZoom }) => {
       </Overlay>
       <Overlay checked name='Friendly Markers'>
         <LayerGroup>
-          {friendlyMarkers.map((marker, index) => (
+          {friendlyMarkers.map(marker => (
             <Marker
               autoPan={marker.autoPan}
               draggable={marker.draggable}
-              id={marker.id}
               icon={L.icon({
                 type: marker.iconType,
                 iconUrl: marker.iconUrl,
-                iconSize: [3 * mapZoom, 3 * mapZoom]
+                iconSize: [markerSize * mapZoom, markerSize * mapZoom]
               })}
-              key={`${index}-${marker.title}`}
+              id={marker.id}
+              key={`friendly-${marker.id}-${marker.title}`}
               onDragend={event => handleMarkerDrag(marker, event.target.getLatLng())}
               position={marker.latlng}
               riseOnHover={marker.riseOnHover}
@@ -188,22 +188,106 @@ export default ({ friendlyMarkers, handleMarkerDrag, mapZoom }) => {
       </Overlay>
       <Overlay checked name='Hostile Markers'>
         <LayerGroup>
-
+          {hostileMarkers.map(marker => (
+            <Marker
+              autoPan={marker.autoPan}
+              draggable={marker.draggable}
+              icon={L.icon({
+                type: marker.iconType,
+                iconUrl: marker.iconUrl,
+                iconSize: [markerSize * mapZoom, markerSize * mapZoom]
+              })}
+              id={marker.id}
+              key={`hostile-${marker.id}-${marker.title}`}
+              onDragend={event => handleMarkerDrag(marker, event.target.getLatLng())}
+              position={marker.latlng}
+              riseOnHover={marker.riseOnHover}
+            >
+              <Popup>
+                {marker.title}
+                <br />
+                {LatLon.parse(marker.latlng.lat, marker.latlng.lng).toUtm().toMgrs().toString()}
+              </Popup>
+            </Marker>
+          ))}
         </LayerGroup>
       </Overlay>
       <Overlay checked name='Threat Markers'>
         <LayerGroup>
-
+          {threatMarkers.map(marker => (
+            <Marker
+              autoPan={marker.autoPan}
+              draggable={marker.draggable}
+              icon={L.icon({
+                type: marker.iconType,
+                iconUrl: marker.iconUrl,
+                iconSize: [markerSize * mapZoom, markerSize * mapZoom]
+              })}
+              id={marker.id}
+              key={`threat-${marker.id}-${marker.title}`}
+              onDragend={event => handleMarkerDrag(marker, event.target.getLatLng())}
+              position={marker.latlng}
+              riseOnHover={marker.riseOnHover}
+            >
+              <Popup>
+                {marker.title}
+                <br />
+                {LatLon.parse(marker.latlng.lat, marker.latlng.lng).toUtm().toMgrs().toString()}
+              </Popup>
+            </Marker>
+          ))}
         </LayerGroup>
       </Overlay>
       <Overlay checked name='Survivors'>
         <LayerGroup>
-
+          {survivors.map(marker => (
+            <Marker
+              autoPan={marker.autoPan}
+              draggable={marker.draggable}
+              icon={L.icon({
+                type: marker.iconType,
+                iconUrl: marker.iconUrl,
+                iconSize: [markerSize * mapZoom, markerSize * mapZoom]
+              })}
+              id={marker.id}
+              key={`survivor-${marker.id}-${marker.title}`}
+              onDragend={event => handleMarkerDrag(marker, event.target.getLatLng())}
+              position={marker.latlng}
+              riseOnHover={marker.riseOnHover}
+            >
+              <Popup>
+                {marker.title}
+                <br />
+                {LatLon.parse(marker.latlng.lat, marker.latlng.lng).toUtm().toMgrs().toString()}
+              </Popup>
+            </Marker>
+          ))}
         </LayerGroup>
       </Overlay>
       <Overlay checked name='IPs'>
         <LayerGroup>
-
+          {initialPoints.map(marker => (
+            <Marker
+              autoPan={marker.autoPan}
+              draggable={marker.draggable}
+              icon={L.icon({
+                type: marker.iconType,
+                iconUrl: marker.iconUrl,
+                iconSize: [markerSize * mapZoom, markerSize * mapZoom]
+              })}
+              id={marker.id}
+              key={`ip-${marker.id}-${marker.title}`}
+              onDragend={event => handleMarkerDrag(marker, event.target.getLatLng())}
+              position={marker.latlng}
+              riseOnHover={marker.riseOnHover}
+            >
+              <Popup>
+                {marker.title}
+                <br />
+                {LatLon.parse(marker.latlng.lat, marker.latlng.lng).toUtm().toMgrs().toString()}
+              </Popup>
+            </Marker>
+          ))}
         </LayerGroup>
       </Overlay>
       <Overlay checked name='Building Labels'>

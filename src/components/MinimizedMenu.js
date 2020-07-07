@@ -49,6 +49,8 @@ import ColorLensIcon from '@material-ui/icons/ColorLens'
 import GetAppIcon from '@material-ui/icons/GetApp'
 import ListAltIcon from '@material-ui/icons/ListAlt'
 import MessageIcon from '@material-ui/icons/Message'
+import PhotoSizeSelectActualIcon from '@material-ui/icons/PhotoSizeSelectActual'
+import PhotoSizeSelectLargeIcon from '@material-ui/icons/PhotoSizeSelectLarge'
 import RedoIcon from '@material-ui/icons/Redo'
 import SaveIcon from '@material-ui/icons/Save'
 import UndoIcon from '@material-ui/icons/Undo'
@@ -57,16 +59,41 @@ import ViewListIcon from '@material-ui/icons/ViewList'
 //----------------------------------------------------------------//
 // Minimized Menu Component
 //----------------------------------------------------------------//
-export default ({ handleMarkerDrawerToggle, handleColorToggle, handleMinMenuClose, minimizedMenuOpen, minMenuAnchorElement, redoDisabled, undoDisabled }) => {
+export default ({ handleMarkerDrawerToggle, handleMarkerSizeDecrease, handleMarkerSizeIncrease, handleClearMarkers, handleColorToggle, handleMinMenuClose, handleRedo, handleUndo, minimizedMenuOpen, minMenuAnchorElement, redoDisabled, undoDisabled }) => {
 
   const handleAddMarkerClick = () => {
     handleMinMenuClose()
     handleMarkerDrawerToggle()
   }
 
+  const handleClearMarkersClick = () => {
+    handleMinMenuClose()
+    handleClearMarkers()
+  }
+
   const handleColorToggleClick = () => {
     handleMinMenuClose()
     handleColorToggle()
+  }
+
+  const handleMarkerSizeDecreaseClick = () => {
+    handleMinMenuClose()
+    handleMarkerSizeDecrease()
+  }
+
+  const handleMarkerSizeIncreaseClick = () => {
+    handleMinMenuClose()
+    handleMarkerSizeIncrease()
+  }
+
+  const handleRedoClick = () => {
+    handleMinMenuClose()
+    handleRedo()
+  }
+
+  const handleUndoClick = () => {
+    handleMinMenuClose()
+    handleUndo()
   }
 
   return (
@@ -86,7 +113,7 @@ export default ({ handleMarkerDrawerToggle, handleColorToggle, handleMinMenuClos
           </Typography>
         </IconButton>
       </MenuItem>
-      <MenuItem onClick={!undoDisabled ? handleMinMenuClose : undefined}>
+      <MenuItem onClick={!undoDisabled ? handleUndoClick : undefined}>
         <IconButton
           color='inherit'
           disabled={undoDisabled}
@@ -97,7 +124,7 @@ export default ({ handleMarkerDrawerToggle, handleColorToggle, handleMinMenuClos
           </Typography>
         </IconButton>
       </MenuItem>
-      <MenuItem onClick={!redoDisabled ? handleMinMenuClose : undefined}>
+      <MenuItem onClick={!redoDisabled ? handleRedoClick : undefined}>
         <IconButton
           color='inherit'
           disabled={redoDisabled}
@@ -108,11 +135,27 @@ export default ({ handleMarkerDrawerToggle, handleColorToggle, handleMinMenuClos
           </Typography>
         </IconButton>
       </MenuItem>
-      <MenuItem onClick={handleMinMenuClose}>
+      <MenuItem onClick={handleClearMarkersClick}>
         <IconButton color='inherit'>
           <ClearIcon />
           <Typography variant='body1'>
             Clear All Markers
+          </Typography>
+        </IconButton>
+      </MenuItem>
+      <MenuItem onClick={handleMarkerSizeIncreaseClick}>
+        <IconButton color='inherit'>
+          <PhotoSizeSelectActualIcon />
+          <Typography variant='body1'>
+            Increase Marker Size
+          </Typography>
+        </IconButton>
+      </MenuItem>
+      <MenuItem onClick={handleMarkerSizeDecreaseClick}>
+        <IconButton color='inherit'>
+          <PhotoSizeSelectLargeIcon />
+          <Typography variant='body1'>
+            Decrease Marker Size
           </Typography>
         </IconButton>
       </MenuItem>

@@ -47,6 +47,8 @@ import ColorLensIcon from '@material-ui/icons/ColorLens'
 import GetAppIcon from '@material-ui/icons/GetApp'
 import ListAltIcon from '@material-ui/icons/ListAlt'
 import MessageIcon from '@material-ui/icons/Message'
+import PhotoSizeSelectActualIcon from '@material-ui/icons/PhotoSizeSelectActual'
+import PhotoSizeSelectLargeIcon from '@material-ui/icons/PhotoSizeSelectLarge'
 import RedoIcon from '@material-ui/icons/Redo'
 import SaveIcon from '@material-ui/icons/Save'
 import UndoIcon from '@material-ui/icons/Undo'
@@ -55,7 +57,7 @@ import ViewListIcon from '@material-ui/icons/ViewList'
 //----------------------------------------------------------------//
 // CAS Tools Component
 //----------------------------------------------------------------//
-export default ({ handleMarkerDrawerToggle, handleColorToggle, handleRedo, handleUndo, redoDisabled, undoDisabled }) => {
+export default ({ handleMarkerDrawerToggle, handleMarkerSizeDecrease, handleMarkerSizeIncrease, handleClearMarkers, handleColorToggle, handleRedo, handleUndo, redoDisabled, undoDisabled }) => {
 
   return (
     <React.Fragment>
@@ -90,8 +92,27 @@ export default ({ handleMarkerDrawerToggle, handleColorToggle, handleRedo, handl
         </span>
       </Tooltip>
       <Tooltip title='Clear All Markers'>
-        <IconButton color='inherit' >
+        <IconButton 
+          color='inherit'
+          onClick={handleClearMarkers}
+        >
           <ClearIcon />
+        </IconButton>
+      </Tooltip>
+      <Tooltip title='Increase Marker Size'>
+        <IconButton
+          color='inherit'
+          onClick={handleMarkerSizeIncrease}
+        >
+          <PhotoSizeSelectActualIcon />
+        </IconButton>
+      </Tooltip>
+      <Tooltip title='Decrease Marker Size'>
+        <IconButton
+          color='inherit'
+          onClick={handleMarkerSizeDecrease}
+        >
+          <PhotoSizeSelectLargeIcon />
         </IconButton>
       </Tooltip>
       <Tooltip title='Toggle Color'>
