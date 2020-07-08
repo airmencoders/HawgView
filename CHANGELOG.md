@@ -1,4 +1,11 @@
+## 2.2.0-alpha
+### Changes
+* Added `Birmingham 1` MOA to airspace (created `alabama.js` in `/src/constants/airspace/moas`)
+* Modified `/src/constants/airspace/moas.js` to utilize new `alabama.js` file
+* Renamed custom component `MapControl.js` to `LayerControl.js`
+
 ## 2.1.0-alpha
+### Changes
 * Completed the logic for handling the addition and dragging of all sovereignty of chits
 * Added `clearAllMarkers` functionality
 * Added functionality to increase or decrease the baseline size of chits / labels

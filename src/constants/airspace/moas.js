@@ -1,3 +1,4 @@
+import { alabama } from './moas/alabama'
 import { alaska } from './moas/alaska'
 import { arizona } from './moas/arizona'
 import { arkansas } from './moas/arkansas'
@@ -25,6 +26,7 @@ import { westVirginia } from './moas/westVirginia'
 import { wisconsin } from './moas/wisconsin'
 
 export const moas = alaska.concat(
+  alabama,
   arizona,
   arkansas,
   california,

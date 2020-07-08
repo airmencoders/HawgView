@@ -48,6 +48,7 @@ import CssBaseline from '@material-ui/core/CssBaseline'
 //----------------------------------------------------------------//
 import CASPlanner from './pages/CASPlanner'
 import Login from './pages/Login'
+import MagneticDeclination from './pages/MagneticDeclination'
 
 const MyScenarios = () => {
   return (
@@ -93,6 +94,9 @@ class App extends React.Component {
                 :
                 <Redirect to='/login?error=0x000001' />
               }
+            </Route>
+            <Route path='/mag'>
+              <MagneticDeclination />
             </Route>
           </Switch>
         </Router>

@@ -30,13 +30,17 @@
 //----------------------------------------------------------------//
 // Top Level Modules
 //----------------------------------------------------------------//
+import Control from 'react-leaflet-control'
+import { Helmet } from 'react-helmet'
 import React from 'react'
-import { 
+import {
   Map,
   Popup,
   ScaleControl,
-  ZoomControl } from 'react-leaflet'
+  ZoomControl
+} from 'react-leaflet'
 import Dms from 'geodesy/dms'
+import L from 'leaflet'
 import { LatLon } from 'geodesy/mgrs'
 
 //----------------------------------------------------------------//
@@ -47,7 +51,7 @@ import { makeStyles } from '@material-ui/core/styles'
 //----------------------------------------------------------------//
 // Custom Components
 //----------------------------------------------------------------//
-import MapControl from '../components/MapControl'
+import LayerControl from '../components/LayerControl'
 
 //----------------------------------------------------------------//
 // Custom Class Styling
@@ -133,7 +137,7 @@ export default ({ history, markerSize, setHistory, setStep, setTargetLatLng, ste
       targetHistory = history.slice(0, step + 1)
     }
 
-    switch(marker.sovereignty) {
+    switch (marker.sovereignty) {
       case 'friendly':
         filteredMarkers = targetHistory[step].friendlyMarkers.filter(currentMarker => currentMarker.id !== marker.id)
         newMarker = {
@@ -200,7 +204,7 @@ export default ({ history, markerSize, setHistory, setStep, setTargetLatLng, ste
         break
     }
 
-    if(!invalidMarker) {
+    if (!invalidMarker) {
       setHistory([...targetHistory, newStep])
       setStep(step + 1)
     }
@@ -216,7 +220,11 @@ export default ({ history, markerSize, setHistory, setStep, setTargetLatLng, ste
       onZoomend={event => setMapZoom(event.target.getZoom())}
       onClick={event => handleMapClick(event.latlng)}
     >
-      <MapControl
+      <Helmet>
+        <link rel="stylesheet" type="text/css" href="https://cdn.rawgit.com/gokertanrisever/leaflet-ruler/master/src/leaflet-ruler.css" />
+        <script src="https://cdn.rawgit.com/gokertanrisever/leaflet-ruler/master/src/leaflet-ruler.js"></script>
+      </Helmet>
+      <LayerControl
         friendlyMarkers={history[step].friendlyMarkers}
         handleMarkerDrag={handleMarkerDrag}
         hostileMarkers={history[step].hostileMarkers}
@@ -227,6 +235,9 @@ export default ({ history, markerSize, setHistory, setStep, setTargetLatLng, ste
         threatMarkers={history[step].threatMarkers}
       />
       <ZoomControl position='topright' />
+      <Control position='topright'>
+        {L.control.ruler()}
+      </Control>
       <ScaleControl />
       {(targetLatLng !== null) ?
         <Popup

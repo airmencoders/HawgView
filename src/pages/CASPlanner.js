@@ -175,13 +175,13 @@ export default ({ state }) => {
   }
 
   const handleMarkerSizeDecrease = () => {
-    if(markerSize > 1) {
+    if (markerSize > 1) {
       setMarkerSize(markerSize - 1)
     }
   }
 
   const handleMarkerSizeIncrease = () => {
-    if(markerSize < 10) {
+    if (markerSize < 10) {
       setMarkerSize(markerSize + 1)
     }
   }
