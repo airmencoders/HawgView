@@ -30,17 +30,15 @@
 //----------------------------------------------------------------//
 // Top Level Modules
 //----------------------------------------------------------------//
-import Control from 'react-leaflet-control'
-import { Helmet } from 'react-helmet'
 import React from 'react'
 import {
+
   Map,
   Popup,
   ScaleControl,
   ZoomControl
 } from 'react-leaflet'
 import Dms from 'geodesy/dms'
-import L from 'leaflet'
 import { LatLon } from 'geodesy/mgrs'
 
 //----------------------------------------------------------------//
@@ -51,6 +49,7 @@ import { makeStyles } from '@material-ui/core/styles'
 //----------------------------------------------------------------//
 // Custom Components
 //----------------------------------------------------------------//
+import AnalysisTool from '../components/AnalysisTool'
 import LayerControl from '../components/LayerControl'
 
 //----------------------------------------------------------------//
@@ -75,11 +74,24 @@ const useStyles = makeStyles(theme => ({
 //----------------------------------------------------------------//
 // Map Component
 //----------------------------------------------------------------//
-export default ({ history, markerSize, setHistory, setStep, setTargetLatLng, step, targetLatLng }) => {
+export default ({ clickedLatLng, history, markerSize, setClickedLatLng, setHistory, setStep, step }) => {
   const classes = useStyles()
   const [mapZoom, setMapZoom] = React.useState(5)
-
   const [mapPopup, setMapPopup] = React.useState(null)
+  const [analysisToolActive, setAnalysisToolActive] = React.useState(false)
+  const [analysisToolLineClosed, setAnalysisToolLineClosed] = React.useState(true)
+  const [analysisToolMouse, setAnalysisToolMouse] = React.useState(null)
+
+  /**
+   * Handler function for the mouse movement across the map
+   * 
+   * @param {Object} latlng LatLng coordinates of the mouse cursor
+   */
+  const handleMouseMove = latlng => {
+    if (analysisToolActive && !analysisToolLineClosed) {
+      setAnalysisToolMouse(latlng)
+    }
+  }
 
   /**
    * Display a Popup on the Map with the Coordinate information of the clicked location
@@ -104,25 +116,30 @@ export default ({ history, markerSize, setHistory, setStep, setTargetLatLng, ste
     // Parse MGRS
     const mgrs = latlngD.toUtm().toMgrs().toString()
 
-    setMapPopup({
-      latlng: latlngD.toString(),
-      dm: `${latDM}, ${lngDM}`,
-      dms: `${latDMS}, ${lngDMS}`,
-      mgrs
-    })
+    setClickedLatLng(latlng)
 
-    setTargetLatLng(latlng)
+    if (!analysisToolActive) {
+      setMapPopup({
+        latlng: latlngD.toString(),
+        dm: `${latDM}, ${lngDM}`,
+        dms: `${latDMS}, ${lngDMS}`,
+        mgrs
+      })
+    } else if (analysisToolActive && analysisToolLineClosed) {
+      setAnalysisToolLineClosed(false)
+    }
   }
 
   /**
    * Helper function to do multiple things when closing the map Popup
    */
   const handleMapPopupClose = () => {
-    setTargetLatLng(null)
+    setClickedLatLng(null)
     setMapPopup(null)
   }
 
   /**
+   * If the user drags the marker, once done reset the lat/lon and title for the popup
    * 
    * @param {Object} marker Object representing the marker being drug around the map
    * @param {Object} newLatLng New Lat/Lng coordinates of the marker
@@ -207,6 +224,7 @@ export default ({ history, markerSize, setHistory, setStep, setTargetLatLng, ste
     if (!invalidMarker) {
       setHistory([...targetHistory, newStep])
       setStep(step + 1)
+      handleMapPopupClose()
     }
   }
 
@@ -214,16 +232,15 @@ export default ({ history, markerSize, setHistory, setStep, setTargetLatLng, ste
     <Map
       center={[35.77, -93.34]}
       className={classes.leafletMap}
+      doubleClickZoom={(analysisToolActive) ? false : true}
+      onZoomend={event => setMapZoom(event.target.getZoom())}
+      onClick={event => handleMapClick(event.latlng)}
+      onMouseMove={event => handleMouseMove(event.latlng)}
+      style={(analysisToolActive) ? { cursor: 'crosshair' } : undefined}
       worldCopyJump={true}
       zoom={5}
       zoomControl={false}
-      onZoomend={event => setMapZoom(event.target.getZoom())}
-      onClick={event => handleMapClick(event.latlng)}
     >
-      <Helmet>
-        <link rel="stylesheet" type="text/css" href="https://cdn.rawgit.com/gokertanrisever/leaflet-ruler/master/src/leaflet-ruler.css" />
-        <script src="https://cdn.rawgit.com/gokertanrisever/leaflet-ruler/master/src/leaflet-ruler.js"></script>
-      </Helmet>
       <LayerControl
         friendlyMarkers={history[step].friendlyMarkers}
         handleMarkerDrag={handleMarkerDrag}
@@ -235,14 +252,22 @@ export default ({ history, markerSize, setHistory, setStep, setTargetLatLng, ste
         threatMarkers={history[step].threatMarkers}
       />
       <ZoomControl position='topright' />
-      <Control position='topright'>
-        {L.control.ruler()}
-      </Control>
+      <AnalysisTool
+        analysisToolActive={analysisToolActive}
+        analysisToolLineClosed={analysisToolLineClosed}
+        analysisToolMouse={analysisToolMouse}
+        setAnalysisToolMouse={setAnalysisToolMouse}
+        setClickedLatLng={setClickedLatLng}
+        setAnalysisToolActive={setAnalysisToolActive}
+        setMapPopup={setMapPopup}
+        setAnalysisToolLineClosed={setAnalysisToolLineClosed}
+        clickedLatLng={clickedLatLng}
+      />
       <ScaleControl />
-      {(targetLatLng !== null) ?
+      {(clickedLatLng !== null && mapPopup !== null && analysisToolActive === false) ?
         <Popup
           maxWidth={500}
-          position={targetLatLng}
+          position={clickedLatLng}
           onClose={() => handleMapPopupClose()}
         >
           <table className={classes.popupTable}>

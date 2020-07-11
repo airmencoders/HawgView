@@ -17,9 +17,9 @@ Clone the Repository
 git clone https://github.com/airmencoders/hawgview.git
 ```
 
-Run the build script
+Run the install script
 ```bash
-npm build
+npm run install
 ```
 
 `package.json` specifies the `PORT` as `3100`
@@ -33,9 +33,11 @@ Navigate to `http://${SERVER_IP}:3100`
 ## Dependencies
 |Package|Min. Version|Usage|
 |:--|:--|:--|
-|`@material-ui/core`|`4.10.1`|Material UI Stylized Components|
+|`@iconify/icons-mdi`|`1.0.115`|Iconify Icons|
+|`@iconify/react`|`1.1.3`|Iconify React Engine|
+|`@material-ui/core`|`4.11.0`|Material UI Stylized Components|
 |`@material-ui/icons`|`4.9.1`|Material UI Icons|
-|`@material-ui/lab`|`4.0.0-alpha.55`|Material UI Components (Under Development)|
+|`@material-ui/lab`|`4.0.0-alpha.56`|Material UI Components (Under Development)|
 |`@testing-library/jest-dom`|`4.2.4`|Testing Library (Create React App)|
 |`@testing-library/react`|`9.5.0`|Testing Library (Create React App)|
 |`@testing-library/user-event`|`7.2.1`|Testing Library (Create React App)|
@@ -45,6 +47,7 @@ Navigate to `http://${SERVER_IP}:3100`
 |`react`|`16.13.1`|Core Site Engine|
 |`react-dom`|`16.13.1`|Core Site Engine|
 |`react-leaflet`|`2.7.0`|Core Map Controls|
+|`react-leaflet-control`|`2.1.2`|Custom control component for `react-leaflet`|
 |`react-router-dom`|`5.2.0`|Site Navigation|
 |`react-scripts`|`3.4.1`|Core Site Engine|
 

@@ -1,3 +1,14 @@
+## 2.3.0-alpha
+### Changes
+* Created multiple components to handle the map ruler
+* Ruler now includes Magnetic variation
+* Installed the `@iconify/react` and `@iconify/icons-mdi` packages
+* Updated `README.md` for new dependencies
+
+### Fixes
+* Fixed `README.md` installation instructions
+* Fixed `NPM` vulnerabilities with `npm audit fix`
+
 ## 2.2.0-alpha
 ### Changes
 * Added `Birmingham 1` MOA to airspace (created `alabama.js` in `/src/constants/airspace/moas`)
@@ -48,7 +59,7 @@
 ## Farther off Tasks
 - [ ] Add `MGRS Gridlines` to map
 - [ ] Add `Drawing` capabilities to map
-- [ ] Add `Ruler` control to map
+- [x] Add `Ruler` control to map - (`2.2.0-alpha`)
 - [ ] Add `Concept of Operations (CONOP)` functionality to site
 - [ ] Add `IP Runcard` functionality to site
 - [ ] Add `Download Products` functionality to site

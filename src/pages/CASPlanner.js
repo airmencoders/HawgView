@@ -29,7 +29,7 @@ export default ({ state }) => {
     threatMarkers: [],
   }])
   const [step, setStep] = React.useState(0)
-  const [targetLatLng, setTargetLatLng] = React.useState(null)
+  const [clickedLatLng, setClickedLatLng] = React.useState(null)
   const [markerId, setMarkerId] = React.useState(0)
   const [markerSize, setMarkerSize] = React.useState(3)
 
@@ -99,7 +99,7 @@ export default ({ state }) => {
    * @param {String} sovereignty Sovereignty of the Marker being placed
    */
   const handleAddMarker = (src, sovereignty) => {
-    if (targetLatLng !== null) {
+    if (clickedLatLng !== null) {
       const marker = {
         autoPan: true,
         data: null,
@@ -108,7 +108,7 @@ export default ({ state }) => {
         iconType: 'img',
         iconUrl: src,
         id: markerId,
-        latlng: targetLatLng,
+        latlng: clickedLatLng,
         riseOnHover: true,
         sovereignty,
         title: 'test',
@@ -169,17 +169,23 @@ export default ({ state }) => {
         setHistory([...targetHistory, newStep])
         setStep(step + 1)
         setMarkerId(markerId + 1)
-        setTargetLatLng(null)
+        setClickedLatLng(null)
       }
     }
   }
 
+  /**
+   * 
+   */
   const handleMarkerSizeDecrease = () => {
     if (markerSize > 1) {
       setMarkerSize(markerSize - 1)
     }
   }
 
+  /**
+   * 
+   */
   const handleMarkerSizeIncrease = () => {
     if (markerSize < 10) {
       setMarkerSize(markerSize + 1)
@@ -232,9 +238,9 @@ export default ({ state }) => {
             markerSize={markerSize}
             setHistory={setHistory}
             setStep={setStep}
-            setTargetLatLng={setTargetLatLng}
+            setClickedLatLng={setClickedLatLng}
             step={step}
-            targetLatLng={targetLatLng}
+            clickedLatLng={clickedLatLng}
           />
         </Box>
       </Box>
