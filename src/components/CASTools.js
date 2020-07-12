@@ -57,14 +57,14 @@ import ViewListIcon from '@material-ui/icons/ViewList'
 //----------------------------------------------------------------//
 // CAS Tools Component
 //----------------------------------------------------------------//
-export default ({ handleMarkerDrawerToggle, handleMarkerSizeDecrease, handleMarkerSizeIncrease, handleClearMarkers, handleColorToggle, handleRedo, handleUndo, redoDisabled, undoDisabled }) => {
+export default (props) => {
 
   return (
     <React.Fragment>
       <Tooltip title='Add Marker'>
         <IconButton
           color='inherit'
-          onClick={handleMarkerDrawerToggle}
+          onClick={props.handleMarkerDrawerToggle}
         >
           <AddPhotoAlternateIcon />
         </IconButton>
@@ -73,8 +73,8 @@ export default ({ handleMarkerDrawerToggle, handleMarkerSizeDecrease, handleMark
         <span>
           <IconButton
             color='inherit'
-            disabled={undoDisabled}
-            onClick={handleUndo}
+            disabled={props.undoDisabled}
+            onClick={props.handleUndo}
           >
             <UndoIcon />
           </IconButton>
@@ -84,8 +84,8 @@ export default ({ handleMarkerDrawerToggle, handleMarkerSizeDecrease, handleMark
         <span>
           <IconButton
             color='inherit'
-            disabled={redoDisabled}
-            onClick={handleRedo}
+            disabled={props.redoDisabled}
+            onClick={props.handleRedo}
           >
             <RedoIcon />
           </IconButton>
@@ -94,7 +94,7 @@ export default ({ handleMarkerDrawerToggle, handleMarkerSizeDecrease, handleMark
       <Tooltip title='Clear All Markers'>
         <IconButton 
           color='inherit'
-          onClick={handleClearMarkers}
+          onClick={props.handleClearMarkers}
         >
           <ClearIcon />
         </IconButton>
@@ -102,7 +102,7 @@ export default ({ handleMarkerDrawerToggle, handleMarkerSizeDecrease, handleMark
       <Tooltip title='Increase Marker Size'>
         <IconButton
           color='inherit'
-          onClick={handleMarkerSizeIncrease}
+          onClick={props.handleMarkerSizeIncrease}
         >
           <PhotoSizeSelectActualIcon />
         </IconButton>
@@ -110,7 +110,7 @@ export default ({ handleMarkerDrawerToggle, handleMarkerSizeDecrease, handleMark
       <Tooltip title='Decrease Marker Size'>
         <IconButton
           color='inherit'
-          onClick={handleMarkerSizeDecrease}
+          onClick={props.handleMarkerSizeDecrease}
         >
           <PhotoSizeSelectLargeIcon />
         </IconButton>
@@ -118,7 +118,7 @@ export default ({ handleMarkerDrawerToggle, handleMarkerSizeDecrease, handleMark
       <Tooltip title='Toggle Color'>
         <IconButton
           color='inherit'
-          onClick={handleColorToggle}
+          onClick={props.handleColorToggle}
         >
           <ColorLensIcon />
         </IconButton>

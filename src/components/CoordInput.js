@@ -31,8 +31,6 @@
 // Top Level Modules
 //----------------------------------------------------------------//
 import React from 'react'
-import Dms from 'geodesy/dms'
-import Mgrs, { LatLon } from 'geodesy/mgrs'
 
 //----------------------------------------------------------------//
 // Material-UI Core Components
@@ -44,6 +42,11 @@ import { fade, makeStyles } from '@material-ui/core/styles'
 // Material-UI Icons
 //----------------------------------------------------------------//
 import RoomIcon from '@material-ui/icons/Room'
+
+//----------------------------------------------------------------//
+// Functions
+//----------------------------------------------------------------//
+import { submitCoordInput } from '../functions/submitCoordInput'
 
 //----------------------------------------------------------------//
 // Custom Class Styling
@@ -90,90 +93,22 @@ const useStyles = makeStyles(theme => ({
 //----------------------------------------------------------------//
 // MGRS Input Component
 //----------------------------------------------------------------//
-export default ({ map, setClickedLatLng }) => {
+export default (props) => {
   const classes = useStyles()
 
   let inputRef = React.useRef('')
   const [inputValue, setInputValue] = React.useState('')
 
-  /**
-   * 
-   */
   const handleSubmit = () => {
-    // As long as the input is not blank
-    if (inputValue !== '') {
-      inputRef.blur()
+    inputRef.blur()
+    const latlng = submitCoordInput(inputValue)
 
-      // RemoveSpaces
-      let target = inputValue
-      let validInput = true
-
-      let letterCount = 0
-      for (let i = 0; i < target.length; i++) {
-        if (target.charAt(i) !== ' ' && target.charAt(i) !== '.' && !Number.isInteger(parseInt(target.charAt(i)))) {
-          letterCount++
-        }
-      }
-
-      // Determine if use input MGRS or Lat Lon and then fly to the location
-      if (letterCount < 2) {
-        console.error('Error: Invalid Lat/Lon, N/S and E/W are required.')
-        validInput = false
-      } else if (letterCount < 3) {
-
-        // Find the end of the latitude
-        let index = target.indexOf('N')
-        if (index === -1) {
-          index = target.indexOf('S')
-        }
-
-        // Try to parse lat and lng
-        if (index !== -1) {
-          target = LatLon.parse(target.substr(0, index + 1).trim(), target.substr(index + 1).trim())
-        } else {
-          validInput = false
-        }        
-      } else {
-        // Remove spaces
-        target = target.replace(/ /g, '')
-
-        // Add leading zero
-        if (!Number.isInteger(parseInt(target.charAt(1)))) {
-          target = '0' + target
-        }
-
-        // Split out the sections
-        const grid = target.substr(0, 5)
-        const digits = target.substr(5)
-        let easting = digits.substr(0, digits.length / 2)
-        let northing = digits.substr(digits.length / 2)
-
-        // Pad easting/northing
-        while (easting.length < 5) {
-          easting = easting + '0'
-        }
-
-        while (northing.length < 5) {
-          northing = northing + '0'
-        }
-
-        // Recombine gridzone, easting, and northing
-        target = grid + easting + northing
-        try {
-          target = Mgrs.parse(target)
-          target = target.toUtm().toLatLon()
-        } catch (error) {
-          console.error(error)
-          validInput = false
-        }
-      }
-
-      if (validInput) {
-        map.flyTo([target.lat, target.lon], 10)
-        setClickedLatLng({ lat: target.lat, lng: target.lon })
-      } else {
-        console.error(`Error: Invalid coordinates {${target}}`)
-      }
+    if (latlng === false) {
+      console.error(`Error: Invalid coordinates {${inputValue}}`)
+    } else {
+      props.map.flyTo([latlng.lat, latlng.lon], 10)
+      props.submit({ lat: latlng.lat, lng: latlng.lon })
+      setInputValue('')
     }
   }
 

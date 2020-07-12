@@ -30,55 +30,13 @@
 //----------------------------------------------------------------//
 // Top Level Modules
 //----------------------------------------------------------------//
-import React from 'react'
-import {
-  Map,
-} from 'react-leaflet'
+import { createContext } from 'react'
 
 //----------------------------------------------------------------//
-// Material-UI Core Components
+// Context Object
 //----------------------------------------------------------------//
-import { makeStyles } from '@material-ui/core/styles'
-
-//----------------------------------------------------------------//
-// Custom Class Styling
-//----------------------------------------------------------------//
-const useStyles = makeStyles(() => ({
-  leafletMap: {
-    height: '100%',
-    width: '100%',
-  },
-}))
-
-//----------------------------------------------------------------//
-// Map Component
-//----------------------------------------------------------------//
-export default (props) => {
-  const classes = useStyles()
-
-  let mapRef = React.useRef()
-
-  React.useEffect(() => {
-    if (mapRef !== null) {
-      props.setMap(mapRef)
-    }
-  }, [mapRef])
-
-  return (
-    <Map
-      center={[35.77, -93.34]}
-      className={classes.leafletMap}
-      doubleClickZoom={(props.analysisToolActive) ? false : true}
-      onZoomend={event => props.setMapZoom(event.target.getZoom())}
-      onClick={event => props.setClickedLatLng(event.latlng)}
-      onMouseMove={event => props.handleMouseMove(event.latlng)}
-      ref={map => (map !== null) ? mapRef = map.leafletElement : undefined}
-      style={(props.analysisToolActive) ? { cursor: 'crosshair' } : undefined}
-      worldCopyJump={true}
-      zoom={5}
-      zoomControl={false}
-    >
-      {props.children}
-    </Map>
-  )
+const markerDrawerState = {
+  open: false
 }
+
+export const ComponentContext = createContext(markerDrawerState)

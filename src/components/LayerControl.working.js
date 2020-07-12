@@ -191,7 +191,7 @@ export default ({ friendlyMarkers, handleMarkerDrag, hostileMarkers, initialPoin
                 {LatLon.parse(marker.latlng.lat, marker.latlng.lng).toUtm().toMgrs().toString()}
                 <Divider />
                 <Button color='primary' onClick={toggleEditFriendlyMarkerDialog}>Edit</Button>
-                <Button color='secondary' onClick={() => handleDeleteMarker(marker)}>Delete</Button>
+                <Button color='secondary' onClick={() => handleDeleteMarker(marker.id, 'friendly')}>Delete</Button>
               </Popup>
             </Marker>
           ))}
@@ -220,7 +220,7 @@ export default ({ friendlyMarkers, handleMarkerDrag, hostileMarkers, initialPoin
                 {LatLon.parse(marker.latlng.lat, marker.latlng.lng).toUtm().toMgrs().toString()}
                 <Divider />
                 <Button color='primary' onClick={toggleEditHostileMarkerDialog}>Edit</Button>
-                <Button color='secondary' onClick={() => handleDeleteMarker(marker)}>Delete</Button>
+                <Button color='secondary' onClick={() => handleDeleteMarker(marker.id, 'hostile')}>Delete</Button>
               </Popup>
             </Marker>
           ))}
@@ -249,7 +249,7 @@ export default ({ friendlyMarkers, handleMarkerDrag, hostileMarkers, initialPoin
                 {LatLon.parse(marker.latlng.lat, marker.latlng.lng).toUtm().toMgrs().toString()}
                 <Divider />
                 <Button color='primary' onClick={toggleEditThreatDialog}>Edit</Button>
-                <Button color='secondary' onClick={() => handleDeleteMarker(marker)}>Delete</Button>
+                <Button color='secondary' onClick={() => handleDeleteMarker(marker.id, 'threat')}>Delete</Button>
               </Popup>
             </Marker>
           ))}
@@ -278,7 +278,7 @@ export default ({ friendlyMarkers, handleMarkerDrag, hostileMarkers, initialPoin
                 {LatLon.parse(marker.latlng.lat, marker.latlng.lng).toUtm().toMgrs().toString()}
                 <Divider />
                 <Button color='primary' onClick={toggleEditSurvivorDialog}>Edit</Button>
-                <Button color='secondary' onClick={() => handleDeleteMarker(marker)}>Delete</Button>
+                <Button color='secondary' onClick={() => handleDeleteMarker(marker.id, 'survivor')}>Delete</Button>
               </Popup>
             </Marker>
           ))}
@@ -307,7 +307,7 @@ export default ({ friendlyMarkers, handleMarkerDrag, hostileMarkers, initialPoin
                 {LatLon.parse(marker.latlng.lat, marker.latlng.lng).toUtm().toMgrs().toString()}
                 <Divider />
                 <Button color='primary' onClick={toggleEditFriendlyMarkerDialog}>Edit</Button>
-                <Button color='secondary' onClick={() => handleDeleteMarker(marker)}>Delete</Button>
+                <Button color='secondary' onClick={() => handleDeleteMarker(marker.id, 'ip')}>Delete</Button>
               </Popup>
             </Marker>
           ))}

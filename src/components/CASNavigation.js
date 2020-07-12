@@ -37,25 +37,14 @@ import { NavLink } from 'react-router-dom'
 // Material-UI Core Components
 //----------------------------------------------------------------//
 import AppBar from '@material-ui/core/AppBar'
-import IconButton from '@material-ui/core/IconButton'
 import { makeStyles } from '@material-ui/core/styles'
 import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
 
 //----------------------------------------------------------------//
-// Material-UI Icons
-//----------------------------------------------------------------//
-import MoreVertIcon from '@material-ui/icons/MoreVert'
-
-//----------------------------------------------------------------//
 // Custom Components
 //----------------------------------------------------------------//
-import AuthenticatedUserMenu from './AuthenticatedUserMenu'
-import CASTools from './CASTools'
 import ClassificationBanner from './ClassificationBanner'
-import MGRSInput from './MGRSInput'
-import MinimizedMenu from './MinimizedMenu'
-import UnauthenticatedUserMenu from './UnauthenticatedUserMenu'
 
 //----------------------------------------------------------------//
 // Custom Class Styling
@@ -66,18 +55,6 @@ const useStyles = makeStyles(theme => ({
   },
   grow: {
     flexGrow: 1,
-  },
-  sectionDesktop: {
-    display: 'none',
-    [theme.breakpoints.up('lg')]: {
-      display: 'flex',
-    },
-  },
-  sectionMobile: {
-    display: 'flex',
-    [theme.breakpoints.up('lg')]: {
-      display: 'none',
-    },
   },
   title: {
     display: 'none',
@@ -90,30 +67,8 @@ const useStyles = makeStyles(theme => ({
 //----------------------------------------------------------------//
 // CAS Navigation Component
 //----------------------------------------------------------------//
-export default ({ handleMarkerDrawerToggle, handleMarkerSizeDecrease, handleMarkerSizeIncrease, handleClearMarkers, handleColorToggle, handleRedo, handleUndo, map, redoDisabled, setClickedLatLng, state, undoDisabled }) => {
+export default (props) => {
   const classes = useStyles()
-
-  const [menuAnchorElement, setMenuAnchorElement] = React.useState(null)
-  const [minMenuAnchorElement, setMinMenuAnchorElement] = React.useState(null)
-
-  const menuOpen = Boolean(menuAnchorElement)
-  const minimizedMenuOpen = Boolean(minMenuAnchorElement)
-
-  const handleMenuOpen = event => {
-    setMenuAnchorElement(event.currentTarget)
-  }
-
-  const handleMenuClose = () => {
-    setMenuAnchorElement(null)
-  }
-
-  const handleMinMenuOpen = event => {
-    setMinMenuAnchorElement(event.currentTarget)
-  }
-
-  const handleMinMenuClose = () => {
-    setMinMenuAnchorElement(null)
-  }
 
   return (
     <div className={classes.grow}>
@@ -122,7 +77,7 @@ export default ({ handleMarkerDrawerToggle, handleMarkerSizeDecrease, handleMark
         position='static'
       >
         <ClassificationBanner
-          classification={state.classification}
+          classification={props.state.classification}
         />
         <Toolbar>
           <NavLink
@@ -137,58 +92,9 @@ export default ({ handleMarkerDrawerToggle, handleMarkerSizeDecrease, handleMark
               Hawg View
             </Typography>
           </NavLink>
-          <MGRSInput map={map} setClickedLatLng={setClickedLatLng} />
-          <div className={classes.sectionDesktop}>
-            <CASTools
-              handleMarkerDrawerToggle={handleMarkerDrawerToggle}
-              handleMarkerSizeDecrease={handleMarkerSizeDecrease}
-              handleMarkerSizeIncrease={handleMarkerSizeIncrease}
-              handleClearMarkers={handleClearMarkers}
-              handleColorToggle={handleColorToggle}
-              handleRedo={handleRedo}
-              handleUndo={handleUndo}
-              redoDisabled={redoDisabled}
-              undoDisabled={undoDisabled}
-            />
-          </div>
-          <div className={classes.sectionMobile}>
-            <IconButton
-              color='inherit'
-              onClick={handleMinMenuOpen}
-            >
-              <MoreVertIcon />
-            </IconButton>
-          </div>
-          <div className={classes.grow} />
-          {state.isAuthenticated && (
-            <AuthenticatedUserMenu
-              handleMenuClose={handleMenuClose}
-              handleMenuOpen={handleMenuOpen}
-              menuAnchorElement={menuAnchorElement}
-              menuOpen={menuOpen}
-            />
-          )}
-          {!state.isAuthenticated && (
-            <UnauthenticatedUserMenu />
-          )}
+          {props.children}
         </Toolbar>
       </AppBar>
-      {
-        <MinimizedMenu
-          handleMarkerDrawerToggle={handleMarkerDrawerToggle}
-          handleMarkerSizeDecrease={handleMarkerSizeDecrease}
-          handleMarkerSizeIncrease={handleMarkerSizeIncrease}
-          handleClearMarkers={handleClearMarkers}
-          handleColorToggle={handleColorToggle}
-          handleMinMenuClose={handleMinMenuClose}
-          handleRedo={handleRedo}
-          handleUndo={handleUndo}
-          minimizedMenuOpen={minimizedMenuOpen}
-          minMenuAnchorElement={minMenuAnchorElement}
-          redoDisabled={redoDisabled}
-          undoDisabled={undoDisabled}
-        />
-      }
     </div>
   )
 }

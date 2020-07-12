@@ -1,3 +1,7 @@
+## 2.6.0-alpha
+### Changes
+* Pulled components out into More modularized Composed Components
+* Pulled functions for add/delete/drag/clear markers into own function file
 
 ## 2.5.0-alpha
 ### Changes

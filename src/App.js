@@ -31,7 +31,12 @@
 // Top Level Modules
 //----------------------------------------------------------------//
 import React from 'react';
-import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom'
+import { 
+  BrowserRouter as Router, 
+  Route,
+  Switch,
+  Redirect
+} from 'react-router-dom'
 
 //----------------------------------------------------------------//
 // Material-UI Core Components
