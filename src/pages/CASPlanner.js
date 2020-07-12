@@ -5,6 +5,9 @@ import Box from '@material-ui/core/Box'
 import CASNavigation from '../components/CASNavigation'
 import MarkerDrawer from '../components/MarkerDrawer'
 import Map from '../components/Map'
+import EditFriendlyMarkerDialog from '../components/EditFriendlyMarkerDialog'
+import EditThreatDialog from '../components/EditThreatDialog'
+import EditHostileMarkerDialog from '../components/EditHostileMarkerDialog'
 
 import 'leaflet/dist/leaflet.css'
 
@@ -34,6 +37,13 @@ export default ({ state }) => {
   const [markerSize, setMarkerSize] = React.useState(3)
   const [map, setMap] = React.useState(null)
   const [markerLabel, setMarkerLabel] = React.useState('')
+  const [editCapDialogOpen, setEditCapDialogOpen] = React.useState(false)
+  const [editFriendlyMarkerDialogOpen, setEditFriendlyMarkerDialogOpen] = React.useState(false)
+  const [editHostileMarkerDialogOpen, setEditHostileMarkerDialogOpen] = React.useState(false)
+  const [editThreatDialogOpen, setEditThreatDialogOpen] = React.useState(false)
+  const [edit9LineDialogOpen, setEdit9LineDialogOpen] = React.useState(false)
+  const [edit15LineDialogOpen, setEdit15LineDialogOpen] = React.useState(false)
+  const [editSurvivorDialogOpen, setEditSurvivorDialogOpen] = React.useState(false)
 
   /**
    * Clears all the markers from the map. But only does so if there is anything to clear.
@@ -90,6 +100,56 @@ export default ({ state }) => {
     }
 
     setMapColor(!mapColor)
+  }
+
+  const handleDeleteMarker = (id, sovereignty) => {
+    let newStep
+    let invalidSovereignty = false
+    switch (sovereignty) {
+      case 'friendly':
+        const newFriendlies = history[step].friendlyMarkers.filter(marker => marker.id !== id)
+        newStep = {
+          ...history[step],
+          friendlyMarkers: newFriendlies
+        }
+        break
+      case 'hostile':
+        const newHostiles = history[step].hostileMarkers.filter(marker => marker.id !== id)
+        newStep = {
+          ...history[step],
+          hostileMarkers: newHostiles
+        }
+        break
+      case 'threat':
+        const newThreats = history[step].threatMarkers.filter(marker => marker.id !== id)
+        newStep = {
+          ...history[step],
+          threatMarkers: newThreats
+        }
+        break
+      case 'ip':
+        const newIps = history[step].initialPoints.filter(marker => marker.id !== id)
+        newStep = {
+          ...history[step],
+          initialPoints: newIps
+        }
+        break
+      case 'survivor':
+        const newSurvivors = history[step].survivors.filter(marker => marker.id !== id)
+        newStep = {
+          ...history[step],
+          survivors: newSurvivors
+        }
+        break
+      default:
+        invalidSovereignty = true
+        console.error(`Invalid Sovereignty, ${sovereignty}, passed to function. Unable to delete marker`)
+    }
+
+    if (!invalidSovereignty) {
+      setHistory([...history, newStep])
+      setStep(step + 1)
+    }
   }
 
   /**
@@ -242,11 +302,16 @@ export default ({ state }) => {
             clickedLatLng={clickedLatLng}
             history={history}
             markerSize={markerSize}
+            toggleEditFriendlyMarkerDialog={() => setEditFriendlyMarkerDialogOpen(!editFriendlyMarkerDialogOpen)}
+            toggleEditHostileMarkerDialog={() => setEditHostileMarkerDialogOpen(!editHostileMarkerDialogOpen)}
+            toggleEditThreatDialog={() => setEditThreatDialogOpen(!editThreatDialogOpen)}
+            toggleEditSurvivorDialog={() => setEditSurvivorDialogOpen(!editSurvivorDialogOpen)}
             setHistory={setHistory}
             setMap={setMap}
             setStep={setStep}
             setClickedLatLng={setClickedLatLng}
             step={step}
+            handleDeleteMarker={(id, sovereignty) => handleDeleteMarker(id, sovereignty)}
           />
         </Box>
       </Box>
@@ -256,6 +321,19 @@ export default ({ state }) => {
         handleAddMarker={(src, title, sovereignty) => handleAddMarker(src, title, sovereignty)}
         handleMarkerDrawerToggle={() => setMarkerDrawerOpen(!markerDrawerOpen)}
         setMarkerLabel={setMarkerLabel}
+        toggleEditThreatDialog={() => setEditThreatDialogOpen(!editThreatDialogOpen)}
+      />
+      <EditFriendlyMarkerDialog
+        editFriendlyMarkerDialogOpen={editFriendlyMarkerDialogOpen}
+        toggleEditFriendlyMarkerDialog={() => setEditFriendlyMarkerDialogOpen(!editFriendlyMarkerDialogOpen)}
+      />
+      <EditThreatDialog
+        editThreatDialogOpen={editThreatDialogOpen}
+        toggleEditThreatDialog={() => setEditThreatDialogOpen(!editThreatDialogOpen)}
+      />
+      <EditHostileMarkerDialog
+        editHostileMarkerDialogOpen={editHostileMarkerDialogOpen}
+        toggleEditHostileMarkerDialog={() => setEditHostileMarkerDialogOpen(!editHostileMarkerDialogOpen)}
       />
     </React.Fragment>
   )

@@ -1,3 +1,10 @@
+
+## 2.5.0-alpha
+### Changes
+* Added basic edit dialogs for friendly markers, hostile markers, and threats.
+* Added delete marker functionality
+* Added tasks to the to-do list
+
 ## 2.4.0-alpha
 ### Changes
 * Added MGRS/LatLon search functionality to navbar
@@ -64,7 +71,7 @@
 - [ ] Add `15-Line` functionality to `survivor markers`
 - [x] Add `MGRS` or `Lat/Lon` input to map - (`2.4.0-alpha`)
 - [ ] Add Edit marker functionality
-- [ ] Add Delete marker functionality
+- [x] Add Delete marker functionality - (`2.5.0-alpha`)
 
 ## Farther off Tasks
 - [ ] Add `MGRS Gridlines` to map
@@ -82,3 +89,4 @@
 - [ ] Add `NGA Maps` to site
 - [ ] Add `TAK Maps` to site
 - [ ] Fix ruler touch events
+- [ ] Research into using React's `context` API for passing props to children

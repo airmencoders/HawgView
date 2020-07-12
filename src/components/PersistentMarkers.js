@@ -66,12 +66,17 @@ const useStyles = makeStyles(theme => ({
 //----------------------------------------------------------------//
 // Persistent Markers Component
 //----------------------------------------------------------------//
-export default ({ handleAddMarker, handleMarkerDrawerToggle }) => {
+export default ({ handleAddMarker, handleMarkerDrawerToggle, toggleEditThreatDialog }) => {
   const classes = useStyles()
 
   const handleMarkerClick = (src, title, sovereignty) => {
     handleMarkerDrawerToggle()
     handleAddMarker(src, title, sovereignty)
+  }
+
+  const toggleEditThreatDialogClick = () => {
+    handleMarkerDrawerToggle()
+    toggleEditThreatDialog()
   }
 
   return (
@@ -113,6 +118,7 @@ export default ({ handleAddMarker, handleMarkerDrawerToggle }) => {
           <img
             alt='Threat Ring'
             className={classes.image}
+            onClick={toggleEditThreatDialogClick}
             src={threat}
           />
         </Tooltip>

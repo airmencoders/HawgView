@@ -74,7 +74,7 @@ const useStyles = makeStyles(theme => ({
 //----------------------------------------------------------------//
 // Marker Drawer Component
 //----------------------------------------------------------------//
-export default ({ markerDrawerOpen, handleAddMarker, handleMarkerDrawerToggle, markerLabel, setMarkerLabel, window }) => {
+export default ({ toggleEditThreatDialog, markerDrawerOpen, handleAddMarker, handleMarkerDrawerToggle, markerLabel, setMarkerLabel, window }) => {
   const classes = useStyles()
 
   const [hostile, setHostile] = React.useState(false)
@@ -125,6 +125,7 @@ export default ({ markerDrawerOpen, handleAddMarker, handleMarkerDrawerToggle, m
           <PersistentMarkers
             handleAddMarker={(src, title, sovereignty) => handleAddMarker(src, title, sovereignty)}
             handleMarkerDrawerToggle={handleMarkerDrawerToggle}
+            toggleEditThreatDialog={toggleEditThreatDialog}
           />
           <Divider />
           {(hostile) ?

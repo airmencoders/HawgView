@@ -74,7 +74,7 @@ const useStyles = makeStyles(theme => ({
 //----------------------------------------------------------------//
 // Map Component
 //----------------------------------------------------------------//
-export default ({ clickedLatLng, history, markerSize, setClickedLatLng, setHistory, setMap, setStep, step }) => {
+export default ({ clickedLatLng, history, markerSize, setClickedLatLng, toggleEditFriendlyMarkerDialog, toggleEditHostileMarkerDialog, toggleEditSurvivorDialog, toggleEditThreatDialog, setHistory, setMap, setStep, step, handleDeleteMarker }) => {
   const classes = useStyles()
   const [mapZoom, setMapZoom] = React.useState(5)
   const [mapPopup, setMapPopup] = React.useState(null)
@@ -258,6 +258,11 @@ export default ({ clickedLatLng, history, markerSize, setClickedLatLng, setHisto
         markerSize={markerSize}
         survivors={history[step].survivors}
         threatMarkers={history[step].threatMarkers}
+        toggleEditFriendlyMarkerDialog={toggleEditFriendlyMarkerDialog}
+        toggleEditHostileMarkerDialog={toggleEditHostileMarkerDialog}
+        toggleEditSurvivorDialog={toggleEditSurvivorDialog}
+        toggleEditThreatDialog={toggleEditThreatDialog}
+        handleDeleteMarker={(id, sovereignty) => handleDeleteMarker(id, sovereignty)}
       />
       <ZoomControl position='topright' />
       <AnalysisTool
