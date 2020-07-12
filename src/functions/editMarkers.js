@@ -27,7 +27,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-export const editMarkers = (action, history, step, src, title, sovereignty, id, latlng, marker) => {
+export const editMarkers = (action, history, step, src, title, sovereignty, id, latlng, marker, data) => {
 
   switch (action) {
     case 'clear':
@@ -39,7 +39,7 @@ export const editMarkers = (action, history, step, src, title, sovereignty, id, 
     case 'drag':
       return dragMarker(history, step, latlng, marker)
     case 'edit':
-      break
+      return editMarker(history, step, title, marker, data)
     default:
       console.error(`Error: Invalid action ${action}`)
       return false
@@ -65,6 +65,7 @@ const clearMarkers = (history, step) => {
     history[step].threatMarkers.length > 0) {
 
     return {
+      action: 'Clear Markers',
       buildingLabels: [],
       combatAirPatrols: [],
       engagementAreas: [],
@@ -117,26 +118,31 @@ const createMarker = (history, step, src, title, sovereignty, id, latlng) => {
       case 'friendly':
         return {
           ...targetHistory[step],
+          action: `Create ${title}`,
           friendlyMarkers: [...targetHistory[step].friendlyMarkers, marker]
         }
       case 'hostile':
         return {
           ...targetHistory[step],
+          action: `Create ${title}`,
           hostileMarkers: [...targetHistory[step].hostileMarkers, marker]
         }
       case 'ip':
         return {
           ...targetHistory[step],
+          action: `Create ${title}`,
           initialPoints: [...targetHistory[step].initialPoints, marker]
         }
       case 'survivor':
         return {
           ...targetHistory[step],
+          action: `Create ${title}`,
           survivors: [...targetHistory[step].survivors, marker]
         }
       case 'threat':
         return {
           ...targetHistory[step],
+          action: `Create ${title}`,
           threatMarkers: [...targetHistory[step].threatMarkers, marker]
         }
       default:
@@ -153,26 +159,31 @@ const deleteMarker = (history, step, marker) => {
     case 'friendly':
       return {
         ...history[step],
+        action: `Delete ${marker.title}`,
         friendlyMarkers: history[step].friendlyMarkers.filter(fMarker => fMarker.id !== marker.id)
       }
     case 'hostile':
       return {
         ...history[step],
+        action: `Delete ${marker.title}`,
         hostileMarkers: history[step].hostileMarkers.filter(hMarker => hMarker.id !== marker.id)
       }
     case 'threat':
       return {
         ...history[step],
+        action: `Delete ${marker.title}`,
         threatMarkers: history[step].threatMarkers.filter(tMarker => tMarker.id !== marker.id)
       }
     case 'ip':
       return {
         ...history[step],
+        action: `Delete ${marker.title}`,
         initialPoints: history[step].initialPoints.filter(iMarker => iMarker.id !== marker.id)
       }
     case 'survivor':
       return {
         ...history[step],
+        action: `Delete ${marker.title}`,
         survivors: history[step].survivors.filter(sMarker => sMarker.id !== marker.id)
       }
     default:
@@ -201,55 +212,145 @@ const dragMarker = (history, step, latlng, marker) => {
       filteredMarkers = targetHistory[step].friendlyMarkers.filter(currentMarker => currentMarker.id !== marker.id)
       newMarker = {
         ...marker,
-        latlng: latlng
-      }
-      
-      return {
-        ...targetHistory[step],
-        friendlyMarkers: [...filteredMarkers, newMarker]
-      }      
-    case 'hostile':
-      filteredMarkers = targetHistory[step].hostileMarkers.filter(currentMarker => currentMarker.id !== marker.id)
-      newMarker = {
-        ...marker,
-        latlng: latlng
-      }
-       
-      return {
-        ...targetHistory[step],
-        hostileMarkers: [...filteredMarkers, newMarker]
-      }      
-    case 'ip':
-      filteredMarkers = targetHistory[step].initialPoints.filter(currentMarker => currentMarker.id !== marker.id)
-      newMarker = {
-        ...marker,
-        latlng: latlng
+        latlng
       }
 
       return {
         ...targetHistory[step],
+        action: `Move ${marker.title}`,
+        friendlyMarkers: [...filteredMarkers, newMarker]
+      }
+    case 'hostile':
+      filteredMarkers = targetHistory[step].hostileMarkers.filter(currentMarker => currentMarker.id !== marker.id)
+      newMarker = {
+        ...marker,
+        latlng
+      }
+
+      return {
+        ...targetHistory[step],
+        action: `Move ${marker.title}`,
+        hostileMarkers: [...filteredMarkers, newMarker]
+      }
+    case 'ip':
+      filteredMarkers = targetHistory[step].initialPoints.filter(currentMarker => currentMarker.id !== marker.id)
+      newMarker = {
+        ...marker,
+        latlng
+      }
+
+      return {
+        ...targetHistory[step],
+        action: `Move ${marker.title}`,
         initialPoints: [...filteredMarkers, newMarker]
       }
     case 'survivor':
       filteredMarkers = targetHistory[step].survivors.filter(currentMarker => currentMarker.id !== marker.id)
       newMarker = {
         ...marker,
-        latlng: latlng
+        latlng
       }
 
       return {
         ...targetHistory[step],
+        action: `Move ${marker.title}`,
         survivors: [...filteredMarkers, newMarker]
       }
     case 'threat':
       filteredMarkers = targetHistory[step].threatMarkers.filter(currentMarker => currentMarker.id !== marker.id)
       newMarker = {
         ...marker,
-        latlng: latlng
+        latlng
       }
-      
+
       return {
         ...targetHistory[step],
+        action: `Move ${marker.title}`,
+        threatMarkers: [...filteredMarkers, newMarker]
+      }
+    default:
+      console.error(`Error: Could not drag marker (${marker}). Invalid sovereignty (${marker.sovereignty})`)
+      return false
+  }
+}
+
+const editMarker = (history, step, title, marker, data) => {
+  let targetHistory, filteredMarkers, newMarker
+
+  if (data === undefined) {
+    data = null
+  }
+
+  if (step === history.length - 1) {
+    targetHistory = history.slice()
+  } else {
+    targetHistory = history.slice(0, step + 1)
+  }
+
+  switch (marker.sovereignty) {
+    case 'friendly':
+      filteredMarkers = targetHistory[step].friendlyMarkers.filter(currentMarker => currentMarker.id !== marker.id)
+      newMarker = {
+        ...marker,
+        data,
+        title
+      }
+
+      return {
+        ...targetHistory[step],
+        action: `Edit ${marker.title}`,
+        friendlyMarkers: [...filteredMarkers, newMarker]
+      }
+    case 'hostile':
+      filteredMarkers = targetHistory[step].hostileMarkers.filter(currentMarker => currentMarker.id !== marker.id)
+      newMarker = {
+        ...marker,
+        data,
+        title
+      }
+
+      return {
+        ...targetHistory[step],
+        action: `Edit ${marker.title}`,
+        hostileMarkers: [...filteredMarkers, newMarker]
+      }
+    case 'ip':
+      filteredMarkers = targetHistory[step].initialPoints.filter(currentMarker => currentMarker.id !== marker.id)
+      newMarker = {
+        ...marker,
+        data,
+        title
+      }
+
+      return {
+        ...targetHistory[step],
+        action: `Edit ${marker.title}`,
+        initialPoints: [...filteredMarkers, newMarker]
+      }
+    case 'survivor':
+      filteredMarkers = targetHistory[step].survivors.filter(currentMarker => currentMarker.id !== marker.id)
+      newMarker = {
+        ...marker,
+        data,
+        title
+      }
+
+      return {
+        ...targetHistory[step],
+        action: `Edit ${marker.title}`,
+        survivors: [...filteredMarkers, newMarker]
+      }
+    case 'threat':
+      filteredMarkers = targetHistory[step].threatMarkers.filter(currentMarker => currentMarker.id !== marker.id)
+      newMarker = {
+        ...marker,
+        data,
+        title
+      }
+
+      return {
+        ...targetHistory[step],
+        action: `Edit ${marker.title}`,
         threatMarkers: [...filteredMarkers, newMarker]
       }
     default:

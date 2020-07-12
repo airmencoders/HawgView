@@ -63,7 +63,19 @@ const { BaseLayer, Overlay } = LayersControl
 //----------------------------------------------------------------//
 // Map Control Component
 //----------------------------------------------------------------//
-export default ({ friendlyMarkers, handleMarkerDrag, hostileMarkers, initialPoints, mapZoom, markerSize, survivors, threatMarkers, toggleEditFriendlyMarkerDialog, toggleEditHostileMarkerDialog, toggleEditSurvivorDialog, toggleEditThreatDialog, handleDeleteMarker }) => {
+export default (props) => {
+
+  const handleEditMarker = marker => {
+    props.setFocusedMarker(marker)
+    props.toggleEditMarkerDialog()
+    /*switch(marker.sovereignty) {
+      case 'friendly':
+        props.toggleEditMarkerDialog()
+        break
+      default:
+        console.error(`Error: Could not edit marker (${marker.title}). Unhandled sovereignty (${marker.sovereignty})`)
+    }*/
+  }
 
   return (
     <LayersControl position='topright'>
@@ -170,18 +182,18 @@ export default ({ friendlyMarkers, handleMarkerDrag, hostileMarkers, initialPoin
       </Overlay>
       <Overlay checked name='Friendly Markers'>
         <LayerGroup>
-          {friendlyMarkers.map(marker => (
+          {props.friendlyMarkers.map(marker => (
             <Marker
               autoPan={marker.autoPan}
               draggable={marker.draggable}
               icon={L.icon({
                 type: marker.iconType,
                 iconUrl: marker.iconUrl,
-                iconSize: [markerSize * mapZoom, markerSize * mapZoom]
+                iconSize: [props.markerSize * props.mapZoom, props.markerSize * props.mapZoom]
               })}
               id={marker.id}
               key={`friendly-${marker.id}-${marker.title}`}
-              onDragend={event => handleMarkerDrag(marker, event.target.getLatLng())}
+              onDragend={event => props.handleMarkerDrag(marker, event.target.getLatLng())}
               position={marker.latlng}
               riseOnHover={marker.riseOnHover}
             >
@@ -189,9 +201,9 @@ export default ({ friendlyMarkers, handleMarkerDrag, hostileMarkers, initialPoin
                 {marker.title}
                 <br />
                 {LatLon.parse(marker.latlng.lat, marker.latlng.lng).toUtm().toMgrs().toString()}
-                <Divider />
-                <Button color='primary' onClick={toggleEditFriendlyMarkerDialog}>Edit</Button>
-                <Button color='secondary' onClick={() => handleDeleteMarker(marker)}>Delete</Button>
+                <br />
+                <Button color='primary' onClick={() => handleEditMarker(marker)}>Edit</Button>
+                <Button color='secondary' onClick={() => props.handleDeleteMarker(marker)}>Delete</Button>
               </Popup>
             </Marker>
           ))}
@@ -199,18 +211,18 @@ export default ({ friendlyMarkers, handleMarkerDrag, hostileMarkers, initialPoin
       </Overlay>
       <Overlay checked name='Hostile Markers'>
         <LayerGroup>
-          {hostileMarkers.map(marker => (
+          {props.hostileMarkers.map(marker => (
             <Marker
               autoPan={marker.autoPan}
               draggable={marker.draggable}
               icon={L.icon({
                 type: marker.iconType,
                 iconUrl: marker.iconUrl,
-                iconSize: [markerSize * mapZoom, markerSize * mapZoom]
+                iconSize: [props.markerSize * props.mapZoom, props.markerSize * props.mapZoom]
               })}
               id={marker.id}
               key={`hostile-${marker.id}-${marker.title}`}
-              onDragend={event => handleMarkerDrag(marker, event.target.getLatLng())}
+              onDragend={event => props.handleMarkerDrag(marker, event.target.getLatLng())}
               position={marker.latlng}
               riseOnHover={marker.riseOnHover}
             >
@@ -218,9 +230,57 @@ export default ({ friendlyMarkers, handleMarkerDrag, hostileMarkers, initialPoin
                 {marker.title}
                 <br />
                 {LatLon.parse(marker.latlng.lat, marker.latlng.lng).toUtm().toMgrs().toString()}
-                <Divider />
-                <Button color='primary' onClick={toggleEditHostileMarkerDialog}>Edit</Button>
-                <Button color='secondary' onClick={() => handleDeleteMarker(marker)}>Delete</Button>
+                <br />
+                {
+                  (marker.data !== null) ?
+                  <table>
+                    <tbody>
+                      <tr>
+                        <td>Label</td>
+                        <td>{marker.data.label}</td>
+                      </tr>
+                      <tr>
+                        <td>Type/Method</td>
+                        <td>{marker.data.typeMethod}</td>
+                      </tr>
+                      <tr>
+                        <td>IP / Hdg / Distance</td>
+                        <td>{marker.data.ipHdgDistance}</td>
+                      </tr>
+                      <tr>
+                        <td>Elevation</td>
+                        <td>{marker.data.elevation}</td>
+                      </tr>
+                      <tr>
+                        <td>Description</td>
+                        <td>{marker.data.description}</td>
+                      </tr>
+                      <tr>
+                        <td>Location</td>
+                        <td>{marker.data.location}</td>
+                      </tr>
+                      <tr>
+                        <td>Mark</td>
+                        <td>{marker.data.mark}</td>
+                      </tr>
+                      <tr>
+                        <td>Friendlies</td>
+                        <td>{marker.data.friendlies}</td>
+                      </tr>
+                      <tr>
+                        <td>Egress</td>
+                        <td>{marker.data.egress}</td>
+                      </tr>
+                      <tr>
+                        <td>Remarks/Restrictions</td>
+                        <td>{marker.data.remarks}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  : null
+                }
+                <Button color='primary' onClick={() => handleEditMarker(marker)}>Edit</Button>
+                <Button color='secondary' onClick={() => props.handleDeleteMarker(marker)}>Delete</Button>
               </Popup>
             </Marker>
           ))}
@@ -228,18 +288,18 @@ export default ({ friendlyMarkers, handleMarkerDrag, hostileMarkers, initialPoin
       </Overlay>
       <Overlay checked name='Threat Markers'>
         <LayerGroup>
-          {threatMarkers.map(marker => (
+          {props.threatMarkers.map(marker => (
             <Marker
               autoPan={marker.autoPan}
               draggable={marker.draggable}
               icon={L.icon({
                 type: marker.iconType,
                 iconUrl: marker.iconUrl,
-                iconSize: [markerSize * mapZoom, markerSize * mapZoom]
+                iconSize: [props.markerSize * props.mapZoom, props.markerSize * props.mapZoom]
               })}
               id={marker.id}
               key={`threat-${marker.id}-${marker.title}`}
-              onDragend={event => handleMarkerDrag(marker, event.target.getLatLng())}
+              onDragend={event => props.handleMarkerDrag(marker, event.target.getLatLng())}
               position={marker.latlng}
               riseOnHover={marker.riseOnHover}
             >
@@ -247,9 +307,9 @@ export default ({ friendlyMarkers, handleMarkerDrag, hostileMarkers, initialPoin
                 {marker.title}
                 <br />
                 {LatLon.parse(marker.latlng.lat, marker.latlng.lng).toUtm().toMgrs().toString()}
-                <Divider />
-                <Button color='primary' onClick={toggleEditThreatDialog}>Edit</Button>
-                <Button color='secondary' onClick={() => handleDeleteMarker(marker)}>Delete</Button>
+                <br />
+                <Button color='primary' onClick={() => handleEditMarker(marker)}>Edit</Button>
+                <Button color='secondary' onClick={() => props.handleDeleteMarker(marker)}>Delete</Button>
               </Popup>
             </Marker>
           ))}
@@ -257,18 +317,18 @@ export default ({ friendlyMarkers, handleMarkerDrag, hostileMarkers, initialPoin
       </Overlay>
       <Overlay checked name='Survivors'>
         <LayerGroup>
-          {survivors.map(marker => (
+          {props.survivors.map(marker => (
             <Marker
               autoPan={marker.autoPan}
               draggable={marker.draggable}
               icon={L.icon({
                 type: marker.iconType,
                 iconUrl: marker.iconUrl,
-                iconSize: [markerSize * mapZoom, markerSize * mapZoom]
+                iconSize: [props.markerSize * props.mapZoom, props.markerSize * props.mapZoom]
               })}
               id={marker.id}
               key={`survivor-${marker.id}-${marker.title}`}
-              onDragend={event => handleMarkerDrag(marker, event.target.getLatLng())}
+              onDragend={event => props.handleMarkerDrag(marker, event.target.getLatLng())}
               position={marker.latlng}
               riseOnHover={marker.riseOnHover}
             >
@@ -276,9 +336,9 @@ export default ({ friendlyMarkers, handleMarkerDrag, hostileMarkers, initialPoin
                 {marker.title}
                 <br />
                 {LatLon.parse(marker.latlng.lat, marker.latlng.lng).toUtm().toMgrs().toString()}
-                <Divider />
-                <Button color='primary' onClick={toggleEditSurvivorDialog}>Edit</Button>
-                <Button color='secondary' onClick={() => handleDeleteMarker(marker)}>Delete</Button>
+                <br />
+                <Button color='primary' onClick={() => handleEditMarker(marker)}>Edit</Button>
+                <Button color='secondary' onClick={() => props.handleDeleteMarker(marker)}>Delete</Button>
               </Popup>
             </Marker>
           ))}
@@ -286,18 +346,18 @@ export default ({ friendlyMarkers, handleMarkerDrag, hostileMarkers, initialPoin
       </Overlay>
       <Overlay checked name='IPs'>
         <LayerGroup>
-          {initialPoints.map(marker => (
+          {props.initialPoints.map(marker => (
             <Marker
               autoPan={marker.autoPan}
               draggable={marker.draggable}
               icon={L.icon({
                 type: marker.iconType,
                 iconUrl: marker.iconUrl,
-                iconSize: [markerSize * mapZoom, markerSize * mapZoom]
+                iconSize: [props.markerSize * props.mapZoom, props.markerSize * props.mapZoom]
               })}
               id={marker.id}
               key={`ip-${marker.id}-${marker.title}`}
-              onDragend={event => handleMarkerDrag(marker, event.target.getLatLng())}
+              onDragend={event => props.handleMarkerDrag(marker, event.target.getLatLng())}
               position={marker.latlng}
               riseOnHover={marker.riseOnHover}
             >
@@ -305,9 +365,9 @@ export default ({ friendlyMarkers, handleMarkerDrag, hostileMarkers, initialPoin
                 {marker.title}
                 <br />
                 {LatLon.parse(marker.latlng.lat, marker.latlng.lng).toUtm().toMgrs().toString()}
-                <Divider />
-                <Button color='primary' onClick={toggleEditFriendlyMarkerDialog}>Edit</Button>
-                <Button color='secondary' onClick={() => handleDeleteMarker(marker)}>Delete</Button>
+                <br />
+                <Button color='primary' onClick={() => handleEditMarker(marker)}>Edit</Button>
+                <Button color='secondary' onClick={() => props.handleDeleteMarker(marker)}>Delete</Button>
               </Popup>
             </Marker>
           ))}

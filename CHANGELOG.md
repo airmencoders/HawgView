@@ -1,3 +1,9 @@
+## 2.7.0-alpha
+### Changes
+* Added the 9-line Dialog
+* Modified marker dialog to be reusable between all markers (Friendly, IP, Hostile, Threat, Survivor)
+* Added the ability to save, edit, and delete a 9-line
+
 ## 2.6.0-alpha
 ### Changes
 * Pulled components out into More modularized Composed Components

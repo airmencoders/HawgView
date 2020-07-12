@@ -69,7 +69,7 @@ export default (props) => {
           <AddPhotoAlternateIcon />
         </IconButton>
       </Tooltip>
-      <Tooltip title='Undo'>
+      <Tooltip title={`Undo ${props.undoAction}`}>
         <span>
           <IconButton
             color='inherit'
@@ -80,7 +80,7 @@ export default (props) => {
           </IconButton>
         </span>
       </Tooltip>
-      <Tooltip title='Redo'>
+      <Tooltip title={`Redo ${props.redoAction}`}>
         <span>
           <IconButton
             color='inherit'
