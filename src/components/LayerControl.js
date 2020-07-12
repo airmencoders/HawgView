@@ -43,6 +43,13 @@ import {
 import L from 'leaflet'
 import { LatLon } from 'geodesy/mgrs'
 
+import Divider from '@material-ui/core/Divider'
+
+//----------------------------------------------------------------//
+// Material-UI Components
+//----------------------------------------------------------------//
+import Button from '@material-ui/core/Button'
+
 //----------------------------------------------------------------//
 // Custom Components
 //----------------------------------------------------------------//
@@ -62,25 +69,26 @@ export default ({ friendlyMarkers, handleMarkerDrag, hostileMarkers, initialPoin
     <LayersControl position='topright'>
       <BaseLayer checked name='ESRI Imagery Firefly'>
         <TileLayer
-          url='http://fly.maptiles.arcgis.com/arcgis/rest/services/World_Imagery_Firefly/MapServer/tile/{z}/{y}/{x}'
+          url='https://fly.maptiles.arcgis.com/arcgis/rest/services/World_Imagery_Firefly/MapServer/tile/{z}/{y}/{x}'
           attribution={`Esri, DigitalGlobe, GeoEye, Earthstar Geographics, CNES/Airbus DS, USDA, USGS, AeroGRID, IGN, and the GIS User Community`}
-
+          keepMounted
         />
       </BaseLayer>
       <BaseLayer name='ESRI Imagery Clarity'>
         <TileLayer
-          url='http://clarity.maptiles.arcgis.com/arcgis/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'
+          url='https://clarity.maptiles.arcgis.com/arcgis/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'
           attribution={`Esri, DigitalGlobe, GeoEye, Earthstar Geographics, CNES/Airbus DS, USDA, USGS, AeroGRID, IGN, and the GIS User Community`}
+          keepMounted
         />
       </BaseLayer>
       <Overlay checked name='Map Labels'>
         <TileLayer
-          url='http://services.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}'
+          url='https://services.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}'
         />
       </Overlay>
       <Overlay name='Road Labels'>
         <TileLayer
-          url='http://services.arcgisonline.com/ArcGIS/rest/services/Reference/World_Transportation/MapServer/tile/{z}/{y}/{x}'
+          url='https://services.arcgisonline.com/ArcGIS/rest/services/Reference/World_Transportation/MapServer/tile/{z}/{y}/{x}'
         />
       </Overlay>
       <Overlay checked name='Airspace'>
@@ -181,6 +189,9 @@ export default ({ friendlyMarkers, handleMarkerDrag, hostileMarkers, initialPoin
                 {marker.title}
                 <br />
                 {LatLon.parse(marker.latlng.lat, marker.latlng.lng).toUtm().toMgrs().toString()}
+                <Divider />
+                <Button color='primary'>Edit</Button>
+                <Button color='secondary'>Delete</Button>
               </Popup>
             </Marker>
           ))}
@@ -207,6 +218,9 @@ export default ({ friendlyMarkers, handleMarkerDrag, hostileMarkers, initialPoin
                 {marker.title}
                 <br />
                 {LatLon.parse(marker.latlng.lat, marker.latlng.lng).toUtm().toMgrs().toString()}
+                <Divider />
+                <Button color='primary'>Edit</Button>
+                <Button color='secondary'>Delete</Button>
               </Popup>
             </Marker>
           ))}
@@ -233,6 +247,9 @@ export default ({ friendlyMarkers, handleMarkerDrag, hostileMarkers, initialPoin
                 {marker.title}
                 <br />
                 {LatLon.parse(marker.latlng.lat, marker.latlng.lng).toUtm().toMgrs().toString()}
+                <Divider />
+                <Button color='primary'>Edit</Button>
+                <Button color='secondary'>Delete</Button>
               </Popup>
             </Marker>
           ))}
@@ -259,6 +276,9 @@ export default ({ friendlyMarkers, handleMarkerDrag, hostileMarkers, initialPoin
                 {marker.title}
                 <br />
                 {LatLon.parse(marker.latlng.lat, marker.latlng.lng).toUtm().toMgrs().toString()}
+                <Divider />
+                <Button color='primary'>Edit</Button>
+                <Button color='secondary'>Delete</Button>
               </Popup>
             </Marker>
           ))}
@@ -285,6 +305,9 @@ export default ({ friendlyMarkers, handleMarkerDrag, hostileMarkers, initialPoin
                 {marker.title}
                 <br />
                 {LatLon.parse(marker.latlng.lat, marker.latlng.lng).toUtm().toMgrs().toString()}
+                <Divider />
+                <Button color='primary'>Edit</Button>
+                <Button color='secondary'>Delete</Button>
               </Popup>
             </Marker>
           ))}

@@ -1,3 +1,11 @@
+## 2.4.0-alpha
+### Changes
+* Added MGRS/LatLon search functionality to navbar
+* Added Fly-to functionality when searching for MGRS/LatLon
+* Added marker label functionality to `MarkerDrawer` input
+* Added default titles to all markers
+* Added tasks to the to-do list
+
 ## 2.3.0-alpha
 ### Changes
 * Created multiple components to handle the map ruler
@@ -48,20 +56,22 @@
 ## Tasks to be Completed
 - [x] Add `handleAddMarker` functionality to all remaining `markers` - (`2.1.0-alpha`)
 - [x] Add `clearAllMarkers` functionality to map - (`2.1.0-alpha`)
-- [ ] Add `Marker Label` functionality to `markerDrawer`
+- [x] Add `Marker Label` functionality to `markerDrawer` - (`2.4.0-alpha`)
 - [ ] Add `Threat` Dialog
 - [ ] Add `Combat Air Patrol (CAP)` Dialog
 - [ ] Add `Building Label` functionality to `markerDrawer`
 - [ ] Add `9-Line` functionality to `hostile markers`
 - [ ] Add `15-Line` functionality to `survivor markers`
-- [ ] Add `MGRS` or `Lat/Lon` input to map
+- [x] Add `MGRS` or `Lat/Lon` input to map - (`2.4.0-alpha`)
+- [ ] Add Edit marker functionality
+- [ ] Add Delete marker functionality
 
 ## Farther off Tasks
 - [ ] Add `MGRS Gridlines` to map
 - [ ] Add `Drawing` capabilities to map
 - [x] Add `Ruler` control to map - (`2.2.0-alpha`)
 - [ ] Add `Concept of Operations (CONOP)` functionality to site
-- [ ] Add `IP Runcard` functionality to site
+- [ ] Add `IP Run card` functionality to site
 - [ ] Add `Download Products` functionality to site
 - [ ] Add `Save Scenario` functionality to site
 - [ ] Add `Load Scenario` functionality to site
@@ -71,3 +81,4 @@
 - [ ] Incorporate Platform One SSO Login to site
 - [ ] Add `NGA Maps` to site
 - [ ] Add `TAK Maps` to site
+- [ ] Fix ruler touch events

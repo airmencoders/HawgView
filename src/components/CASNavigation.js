@@ -90,7 +90,7 @@ const useStyles = makeStyles(theme => ({
 //----------------------------------------------------------------//
 // CAS Navigation Component
 //----------------------------------------------------------------//
-export default ({ handleMarkerDrawerToggle, handleMarkerSizeDecrease, handleMarkerSizeIncrease, handleClearMarkers, handleColorToggle, handleRedo, handleUndo, redoDisabled, state, undoDisabled }) => {
+export default ({ handleMarkerDrawerToggle, handleMarkerSizeDecrease, handleMarkerSizeIncrease, handleClearMarkers, handleColorToggle, handleRedo, handleUndo, map, redoDisabled, setClickedLatLng, state, undoDisabled }) => {
   const classes = useStyles()
 
   const [menuAnchorElement, setMenuAnchorElement] = React.useState(null)
@@ -137,7 +137,7 @@ export default ({ handleMarkerDrawerToggle, handleMarkerSizeDecrease, handleMark
               Hawg View
             </Typography>
           </NavLink>
-          <MGRSInput />
+          <MGRSInput map={map} setClickedLatLng={setClickedLatLng} />
           <div className={classes.sectionDesktop}>
             <CASTools
               handleMarkerDrawerToggle={handleMarkerDrawerToggle}

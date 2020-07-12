@@ -69,9 +69,9 @@ const useStyles = makeStyles(theme => ({
 export default ({ handleAddMarker, handleMarkerDrawerToggle }) => {
   const classes = useStyles()
 
-  const handleMarkerClick = (src, sovereignty) => {
+  const handleMarkerClick = (src, title, sovereignty) => {
     handleMarkerDrawerToggle()
-    handleAddMarker(src, sovereignty)
+    handleAddMarker(src, title, sovereignty)
   }
 
   return (
@@ -81,7 +81,7 @@ export default ({ handleAddMarker, handleMarkerDrawerToggle }) => {
           <img
             alt='ADA'
             className={classes.image}
-            onClick={event => handleMarkerClick(event.target.src, 'threat')}
+            onClick={event => handleMarkerClick(event.target.src, 'ADA', 'threat')}
             src={ada}
           />
         </Tooltip>
@@ -89,7 +89,7 @@ export default ({ handleAddMarker, handleMarkerDrawerToggle }) => {
           <img
             alt='Missile'
             className={classes.image}
-            onClick={event => handleMarkerClick(event.target.src, 'threat')}
+            onClick={event => handleMarkerClick(event.target.src, 'Missile', 'threat')}
             src={missile}
           />
         </Tooltip>
@@ -97,7 +97,7 @@ export default ({ handleAddMarker, handleMarkerDrawerToggle }) => {
           <img
             alt='Target'
             className={classes.image}
-            onClick={event => handleMarkerClick(event.target.src, 'hostile')}
+            onClick={event => handleMarkerClick(event.target.src, 'Target', 'hostile')}
             src={target}
           />
         </Tooltip>
@@ -105,7 +105,7 @@ export default ({ handleAddMarker, handleMarkerDrawerToggle }) => {
           <img
             alt='IP'
             className={classes.image}
-            onClick={event => handleMarkerClick(event.target.src, 'ip')}
+            onClick={event => handleMarkerClick(event.target.src, 'IP', 'ip')}
             src={ip}
           />
         </Tooltip>
@@ -127,7 +127,7 @@ export default ({ handleAddMarker, handleMarkerDrawerToggle }) => {
           <img
             alt='Survivor'
             className={classes.image}
-            onClick={event => handleMarkerClick(event.target.src, 'survivor')}
+            onClick={event => handleMarkerClick(event.target.src, 'Survivor', 'survivor')}
             src={survivor}
           />
         </Tooltip>

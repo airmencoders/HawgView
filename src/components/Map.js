@@ -74,13 +74,21 @@ const useStyles = makeStyles(theme => ({
 //----------------------------------------------------------------//
 // Map Component
 //----------------------------------------------------------------//
-export default ({ clickedLatLng, history, markerSize, setClickedLatLng, setHistory, setStep, step }) => {
+export default ({ clickedLatLng, history, markerSize, setClickedLatLng, setHistory, setMap, setStep, step }) => {
   const classes = useStyles()
   const [mapZoom, setMapZoom] = React.useState(5)
   const [mapPopup, setMapPopup] = React.useState(null)
   const [analysisToolActive, setAnalysisToolActive] = React.useState(false)
   const [analysisToolLineClosed, setAnalysisToolLineClosed] = React.useState(true)
   const [analysisToolMouse, setAnalysisToolMouse] = React.useState(null)
+
+  let mapRef = React.useRef()
+
+  React.useEffect(() => {
+    if (mapRef !== null) {
+      setMap(mapRef)
+    }
+  }, [mapRef])
 
   /**
    * Handler function for the mouse movement across the map
@@ -94,41 +102,40 @@ export default ({ clickedLatLng, history, markerSize, setClickedLatLng, setHisto
   }
 
   /**
-   * Display a Popup on the Map with the Coordinate information of the clicked location
-   * 
-   * @param {Object} latlng Lat/Lng coordinates of the clicked location
+   * React hook that sets the popup whenever the clicked Lat/Lng changes
+   * Using a hook instead of a function here allows us to use the search bar
    */
-  const handleMapClick = latlng => {
-    const lat = Dms.parse(latlng.lat)
-    const lng = Dms.parse(latlng.lng)
+  React.useEffect(() => {
+    if (clickedLatLng !== null) {
+      const lat = Dms.parse(clickedLatLng.lat)
+      const lng = Dms.parse(clickedLatLng.lng)
 
-    // Transform to DD.DDDD
-    const latlngD = LatLon.parse(lat, lng)
+      // Transform to DD.DDDD
+      const latlngD = LatLon.parse(lat, lng)
 
-    // Transform to DD MM.MMMM
-    const latDM = Dms.toLat(lat, 'dm', 4)
-    const lngDM = Dms.toLon(lng, 'dm', 4)
+      // Transform to DD MM.MMMM
+      const latDM = Dms.toLat(lat, 'dm', 4)
+      const lngDM = Dms.toLon(lng, 'dm', 4)
 
-    // Transform to DMS
-    const latDMS = Dms.toLat(lat, 'dms', 4)
-    const lngDMS = Dms.toLon(lng, 'dms', 4)
+      // Transform to DMS
+      const latDMS = Dms.toLat(lat, 'dms', 4)
+      const lngDMS = Dms.toLon(lng, 'dms', 4)
 
-    // Parse MGRS
-    const mgrs = latlngD.toUtm().toMgrs().toString()
+      // Parse MGRS
+      const mgrs = latlngD.toUtm().toMgrs().toString()
 
-    setClickedLatLng(latlng)
-
-    if (!analysisToolActive) {
-      setMapPopup({
-        latlng: latlngD.toString(),
-        dm: `${latDM}, ${lngDM}`,
-        dms: `${latDMS}, ${lngDMS}`,
-        mgrs
-      })
-    } else if (analysisToolActive && analysisToolLineClosed) {
-      setAnalysisToolLineClosed(false)
+      if (!analysisToolActive) {
+        setMapPopup({
+          latlng: latlngD.toString(),
+          dm: `${latDM}, ${lngDM}`,
+          dms: `${latDMS}, ${lngDMS}`,
+          mgrs
+        })
+      } else if (analysisToolActive && analysisToolLineClosed) {
+        setAnalysisToolLineClosed(false)
+      }
     }
-  }
+  }, [clickedLatLng])
 
   /**
    * Helper function to do multiple things when closing the map Popup
@@ -234,8 +241,9 @@ export default ({ clickedLatLng, history, markerSize, setClickedLatLng, setHisto
       className={classes.leafletMap}
       doubleClickZoom={(analysisToolActive) ? false : true}
       onZoomend={event => setMapZoom(event.target.getZoom())}
-      onClick={event => handleMapClick(event.latlng)}
+      onClick={event => setClickedLatLng(event.latlng)}
       onMouseMove={event => handleMouseMove(event.latlng)}
+      ref={map => (map !== null) ? mapRef = map.leafletElement : undefined}
       style={(analysisToolActive) ? { cursor: 'crosshair' } : undefined}
       worldCopyJump={true}
       zoom={5}

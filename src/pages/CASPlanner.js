@@ -32,6 +32,8 @@ export default ({ state }) => {
   const [clickedLatLng, setClickedLatLng] = React.useState(null)
   const [markerId, setMarkerId] = React.useState(0)
   const [markerSize, setMarkerSize] = React.useState(3)
+  const [map, setMap] = React.useState(null)
+  const [markerLabel, setMarkerLabel] = React.useState('')
 
   /**
    * Clears all the markers from the map. But only does so if there is anything to clear.
@@ -98,7 +100,7 @@ export default ({ state }) => {
    * @param {String} src Static URL of the Marker being placed
    * @param {String} sovereignty Sovereignty of the Marker being placed
    */
-  const handleAddMarker = (src, sovereignty) => {
+  const handleAddMarker = (src, title, sovereignty) => {
     if (clickedLatLng !== null) {
       const marker = {
         autoPan: true,
@@ -111,7 +113,7 @@ export default ({ state }) => {
         latlng: clickedLatLng,
         riseOnHover: true,
         sovereignty,
-        title: 'test',
+        title: (markerLabel === '') ? title : markerLabel,
       }
 
       let targetHistory, newMarkers, newStep
@@ -170,6 +172,7 @@ export default ({ state }) => {
         setStep(step + 1)
         setMarkerId(markerId + 1)
         setClickedLatLng(null)
+        setMarkerLabel('')
       }
     }
   }
@@ -227,27 +230,32 @@ export default ({ state }) => {
             handleColorToggle={handleColorToggle}
             handleRedo={handleRedo}
             handleUndo={handleUndo}
+            map={map}
             redoDisabled={(step === history.length - 1)}
+            setClickedLatLng={setClickedLatLng}
             state={state}
             undoDisabled={(step === 0)}
           />
         </Box>
         <Box flex={1}>
           <Map
+            clickedLatLng={clickedLatLng}
             history={history}
             markerSize={markerSize}
             setHistory={setHistory}
+            setMap={setMap}
             setStep={setStep}
             setClickedLatLng={setClickedLatLng}
             step={step}
-            clickedLatLng={clickedLatLng}
           />
         </Box>
       </Box>
       <MarkerDrawer
         markerDrawerOpen={markerDrawerOpen}
-        handleAddMarker={(src, sovereignty) => handleAddMarker(src, sovereignty)}
+        markerLabel={markerLabel}
+        handleAddMarker={(src, title, sovereignty) => handleAddMarker(src, title, sovereignty)}
         handleMarkerDrawerToggle={() => setMarkerDrawerOpen(!markerDrawerOpen)}
+        setMarkerLabel={setMarkerLabel}
       />
     </React.Fragment>
   )

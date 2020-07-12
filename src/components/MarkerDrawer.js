@@ -74,7 +74,7 @@ const useStyles = makeStyles(theme => ({
 //----------------------------------------------------------------//
 // Marker Drawer Component
 //----------------------------------------------------------------//
-export default ({ markerDrawerOpen, handleAddMarker, handleMarkerDrawerToggle, window }) => {
+export default ({ markerDrawerOpen, handleAddMarker, handleMarkerDrawerToggle, markerLabel, setMarkerLabel, window }) => {
   const classes = useStyles()
 
   const [hostile, setHostile] = React.useState(false)
@@ -117,22 +117,24 @@ export default ({ markerDrawerOpen, handleAddMarker, handleMarkerDrawerToggle, w
           <TextField
             className={classes.descriptionField}
             label='Marker Label'
+            onChange={event => setMarkerLabel(event.target.value)}
             variant='outlined'
+            value={markerLabel}
           />
           <Divider />
           <PersistentMarkers
-            handleAddMarker={(src, sovereignty) => handleAddMarker(src, sovereignty)}
+            handleAddMarker={(src, title, sovereignty) => handleAddMarker(src, title, sovereignty)}
             handleMarkerDrawerToggle={handleMarkerDrawerToggle}
           />
           <Divider />
           {(hostile) ?
             <HostileMarkers
-              handleAddMarker={(src, sovereignty) => handleAddMarker(src, sovereignty)}
+              handleAddMarker={(src, title, sovereignty) => handleAddMarker(src, title, sovereignty)}
               handleMarkerDrawerToggle={handleMarkerDrawerToggle}
             />
             :
             <FriendlyMarkers
-              handleAddMarker={(src, sovereignty) => handleAddMarker(src, sovereignty)}
+              handleAddMarker={(src, title, sovereignty) => handleAddMarker(src, title, sovereignty)}
               handleMarkerDrawerToggle={handleMarkerDrawerToggle}
             />
           }

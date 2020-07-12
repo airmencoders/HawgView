@@ -77,9 +77,9 @@ const useStyles = makeStyles(theme => ({
 export default ({ handleAddMarker, handleMarkerDrawerToggle }) => {
   const classes = useStyles()
 
-  const handleMarkerClick = event => {
+  const handleMarkerClick = (src, title) => {
     handleMarkerDrawerToggle()
-    handleAddMarker(event.target.src, 'hostile')
+    handleAddMarker(src, title, 'hostile')
   }
 
   return (
@@ -88,7 +88,7 @@ export default ({ handleAddMarker, handleMarkerDrawerToggle }) => {
         <img
           alt='Hostile Airborne'
           className={classes.image}
-          onClick={handleMarkerClick}
+          onClick={event => handleMarkerClick(event.target.src, 'Airborne')}
           src={airborne}
         />
       </Tooltip>
@@ -96,7 +96,7 @@ export default ({ handleAddMarker, handleMarkerDrawerToggle }) => {
         <img
           alt='Hostile Airborne Infantry'
           className={classes.image}
-          onClick={handleMarkerClick}
+          onClick={event => handleMarkerClick(event.target.src, 'Airborne Infantry')}
           src={airborneInfantry}
         />
       </Tooltip>
@@ -104,7 +104,7 @@ export default ({ handleAddMarker, handleMarkerDrawerToggle }) => {
         <img
           alt='Hostile Air Defense'
           className={classes.image}
-          onClick={handleMarkerClick}
+          onClick={event => handleMarkerClick(event.target.src, 'Air Defense')}
           src={airDefense}
         />
       </Tooltip>
@@ -112,7 +112,7 @@ export default ({ handleAddMarker, handleMarkerDrawerToggle }) => {
         <img
           alt='Hostile Anti Armor'
           className={classes.image}
-          onClick={handleMarkerClick}
+          onClick={event => handleMarkerClick(event.target.src, 'Anti Armor')}
           src={antiArmor}
         />
       </Tooltip>
@@ -120,7 +120,7 @@ export default ({ handleAddMarker, handleMarkerDrawerToggle }) => {
         <img
           alt='Hostile Armor'
           className={classes.image}
-          onClick={handleMarkerClick}
+          onClick={event => handleMarkerClick(event.target.src, 'Armor')}
           src={armor}
         />
       </Tooltip>
@@ -128,7 +128,7 @@ export default ({ handleAddMarker, handleMarkerDrawerToggle }) => {
         <img
           alt='Hostile Artillery'
           className={classes.image}
-          onClick={handleMarkerClick}
+          onClick={event => handleMarkerClick(event.target.src, 'Artillery')}
           src={artillery}
         />
       </Tooltip>
@@ -136,7 +136,7 @@ export default ({ handleAddMarker, handleMarkerDrawerToggle }) => {
         <img
           alt='Hostile Aviation'
           className={classes.image}
-          onClick={handleMarkerClick}
+          onClick={event => handleMarkerClick(event.target.src, 'Aviation')}
           src={aviation}
         />
       </Tooltip>
@@ -144,7 +144,7 @@ export default ({ handleAddMarker, handleMarkerDrawerToggle }) => {
         <img
           alt='Hostile CBRNE'
           className={classes.image}
-          onClick={handleMarkerClick}
+          onClick={event => handleMarkerClick(event.target.src, 'CBRNE')}
           src={cbrne}
         />
       </Tooltip>
@@ -152,7 +152,7 @@ export default ({ handleAddMarker, handleMarkerDrawerToggle }) => {
         <img
           alt='Hostile Engineer'
           className={classes.image}
-          onClick={handleMarkerClick}
+          onClick={event => handleMarkerClick(event.target.src, 'Engineer')}
           src={engineer}
         />
       </Tooltip>
@@ -160,7 +160,7 @@ export default ({ handleAddMarker, handleMarkerDrawerToggle }) => {
         <img
           alt='Hostile Infantry'
           className={classes.image}
-          onClick={handleMarkerClick}
+          onClick={event => handleMarkerClick(event.target.src, 'Infantry')}
           src={infantry}
         />
       </Tooltip>
@@ -168,7 +168,7 @@ export default ({ handleAddMarker, handleMarkerDrawerToggle }) => {
         <img
           alt='Hostile Maintenance'
           className={classes.image}
-          onClick={handleMarkerClick}
+          onClick={event => handleMarkerClick(event.target.src, 'Maintenance')}
           src={maintenance}
         />
       </Tooltip>
@@ -176,7 +176,7 @@ export default ({ handleAddMarker, handleMarkerDrawerToggle }) => {
         <img
           alt='Hostile Mech Infantry'
           className={classes.image}
-          onClick={handleMarkerClick}
+          onClick={event => handleMarkerClick(event.target.src, 'Mech Infantry')}
           src={mechInfantry}
         />
       </Tooltip>
@@ -184,7 +184,7 @@ export default ({ handleAddMarker, handleMarkerDrawerToggle }) => {
         <img
           alt='Hostile Medical'
           className={classes.image}
-          onClick={handleMarkerClick}
+          onClick={event => handleMarkerClick(event.target.src, 'Medical')}
           src={medical}
         />
       </Tooltip>
@@ -192,7 +192,7 @@ export default ({ handleAddMarker, handleMarkerDrawerToggle }) => {
         <img
           alt='Hostile Missile'
           className={classes.image}
-          onClick={handleMarkerClick}
+          onClick={event => handleMarkerClick(event.target.src, 'Missile')}
           src={missile}
         />
       </Tooltip>
@@ -200,7 +200,7 @@ export default ({ handleAddMarker, handleMarkerDrawerToggle }) => {
         <img
           alt='Hostile Recce'
           className={classes.image}
-          onClick={handleMarkerClick}
+          onClick={event => handleMarkerClick(event.target.src, 'Recce')}
           src={recce}
         />
       </Tooltip>
@@ -208,7 +208,7 @@ export default ({ handleAddMarker, handleMarkerDrawerToggle }) => {
         <img
           alt='Hostile Self-Propelled Artillery'
           className={classes.image}
-          onClick={handleMarkerClick}
+          onClick={event => handleMarkerClick(event.target.src, 'Self-Propelled Artillery')}
           src={sparty}
         />
       </Tooltip>
@@ -216,7 +216,7 @@ export default ({ handleAddMarker, handleMarkerDrawerToggle }) => {
         <img
           alt='Hostile Signals'
           className={classes.image}
-          onClick={handleMarkerClick}
+          onClick={event => handleMarkerClick(event.target.src, 'Signals')}
           src={signals}
         />
       </Tooltip>
@@ -224,7 +224,7 @@ export default ({ handleAddMarker, handleMarkerDrawerToggle }) => {
         <img
           alt='Hostile Supply'
           className={classes.image}
-          onClick={handleMarkerClick}
+          onClick={event => handleMarkerClick(event.target.src, 'Supply')}
           src={supply}
         />
       </Tooltip>
@@ -232,7 +232,7 @@ export default ({ handleAddMarker, handleMarkerDrawerToggle }) => {
         <img
           alt='Hostile Unit'
           className={classes.image}
-          onClick={handleMarkerClick}
+          onClick={event => handleMarkerClick(event.target.src, 'Unit')}
           src={unit}
         />
       </Tooltip>
