@@ -239,9 +239,9 @@ export default ({ state }) => {
    */
   const handleColorToggle = () => {
     if (mapColor) {
-      document.getElementsByClassName('leaflet-tile-container')[0].style.filter = 'grayscale(100%)'
+      document.getElementsByClassName('leaflet-layer-imagery')[0].style.filter = 'grayscale(100%)'
     } else {
-      document.getElementsByClassName('leaflet-tile-container')[0].style.filter = 'none'
+      document.getElementsByClassName('leaflet-layer-imagery')[0].style.filter = 'none'
     }
 
     setMapColor(!mapColor)

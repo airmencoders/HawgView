@@ -81,6 +81,7 @@ export default (props) => {
     <LayersControl position='topright'>
       <BaseLayer checked name='ESRI Imagery Firefly'>
         <TileLayer
+          className='leaflet-layer-imagery'
           url='https://fly.maptiles.arcgis.com/arcgis/rest/services/World_Imagery_Firefly/MapServer/tile/{z}/{y}/{x}'
           attribution={`Esri, DigitalGlobe, GeoEye, Earthstar Geographics, CNES/Airbus DS, USDA, USGS, AeroGRID, IGN, and the GIS User Community`}
           keepMounted
@@ -88,6 +89,7 @@ export default (props) => {
       </BaseLayer>
       <BaseLayer name='ESRI Imagery Clarity'>
         <TileLayer
+          className='leaflet-layer-imagery'
           url='https://clarity.maptiles.arcgis.com/arcgis/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'
           attribution={`Esri, DigitalGlobe, GeoEye, Earthstar Geographics, CNES/Airbus DS, USDA, USGS, AeroGRID, IGN, and the GIS User Community`}
           keepMounted

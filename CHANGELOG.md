@@ -1,3 +1,7 @@
+## 2.7.1-alpha
+### Fixes
+* Toggle color works consistently (Changing map baselayers changed the order of things)
+
 ## 2.7.0-alpha
 ### Changes
 * Added the 9-line Dialog
