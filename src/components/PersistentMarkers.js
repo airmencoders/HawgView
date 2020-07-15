@@ -66,12 +66,23 @@ const useStyles = makeStyles(theme => ({
 //----------------------------------------------------------------//
 // Persistent Markers Component
 //----------------------------------------------------------------//
+// TODO Props here?
 export default ({ handleAddMarker, handleMarkerDrawerToggle, toggleEditThreatDialog }) => {
   const classes = useStyles()
 
-  const handleMarkerClick = (src, title, sovereignty) => {
+  const handleMarkerClick = (iconUrl, iconType, title, layer) => {
+    const payload = {
+      color: '#ff0000',    // Defaults to red, user can change afterwards when editing
+      data: null,
+      elevation: 0,   // TODO: Pull the elevation of the latlng from API
+      iconType,
+      iconUrl,
+      layer,
+      sovereignty: null,
+      title,
+    }
     handleMarkerDrawerToggle()
-    handleAddMarker(src, title, sovereignty)
+    handleAddMarker(payload)
   }
 
   const toggleEditThreatDialogClick = () => {
@@ -86,7 +97,7 @@ export default ({ handleAddMarker, handleMarkerDrawerToggle, toggleEditThreatDia
           <img
             alt='ADA'
             className={classes.image}
-            onClick={event => handleMarkerClick(event.target.src, 'ADA', 'threat')}
+            onClick={event => handleMarkerClick(event.target.src, 'img', 'ADA', 'hostile')}
             src={ada}
           />
         </Tooltip>
@@ -94,7 +105,7 @@ export default ({ handleAddMarker, handleMarkerDrawerToggle, toggleEditThreatDia
           <img
             alt='Missile'
             className={classes.image}
-            onClick={event => handleMarkerClick(event.target.src, 'Missile', 'threat')}
+            onClick={event => handleMarkerClick(event.target.src, 'img', 'Missile', 'hostile')}
             src={missile}
           />
         </Tooltip>
@@ -102,7 +113,7 @@ export default ({ handleAddMarker, handleMarkerDrawerToggle, toggleEditThreatDia
           <img
             alt='Target'
             className={classes.image}
-            onClick={event => handleMarkerClick(event.target.src, 'Target', 'hostile')}
+            onClick={event => handleMarkerClick(event.target.src, 'img', 'Target', 'hostile')}
             src={target}
           />
         </Tooltip>
@@ -110,7 +121,7 @@ export default ({ handleAddMarker, handleMarkerDrawerToggle, toggleEditThreatDia
           <img
             alt='IP'
             className={classes.image}
-            onClick={event => handleMarkerClick(event.target.src, 'IP', 'ip')}
+            onClick={event => handleMarkerClick(event.target.src, 'img', 'IP', 'ip')}
             src={ip}
           />
         </Tooltip>
@@ -133,7 +144,7 @@ export default ({ handleAddMarker, handleMarkerDrawerToggle, toggleEditThreatDia
           <img
             alt='Survivor'
             className={classes.image}
-            onClick={event => handleMarkerClick(event.target.src, 'Survivor', 'survivor')}
+            onClick={event => handleMarkerClick(event.target.src, 'img', 'Survivor', 'survivor')}
             src={survivor}
           />
         </Tooltip>
@@ -142,6 +153,7 @@ export default ({ handleAddMarker, handleMarkerDrawerToggle, toggleEditThreatDia
         <Button
           className={classes.button}
           color='primary'
+          onClick={() => handleMarkerClick(null, 'div', 'Building', 'building')}
         >
           BLDG LABEL
         </Button>

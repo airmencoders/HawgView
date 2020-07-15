@@ -58,14 +58,16 @@ import AuthenticatedUserMenu from '../components/AuthenticatedUserMenu'
 import CASNavigation from '../components/CASNavigation'
 import CASTools from '../components/CASTools'
 import CoordInput from '../components/CoordInput'
-import EditMarkerDialog from '../components/EditMarkerDialog'
 import Edit9LineDialog from '../components/Edit9LineDialog'
+import EditThreatDialog from '../components/EditThreatDialog'
+import EditMarkerDialog from '../components/EditMarkerDialog'
 import { editMarkers } from '../functions/editMarkers'
 import LayerControl from '../components/LayerControl'
 import MarkerDrawer from '../components/MarkerDrawer'
 import Map from '../components/Map'
 import MinimizedMenu from '../components/MinimizedMenu'
 import UnauthenticatedUserMenu from '../components/UnauthenticatedUserMenu'
+import SaveScenarioDialog from '../components/SaveScenarioDialog'
 
 //----------------------------------------------------------------//
 // Custom Class Styling
@@ -157,6 +159,7 @@ export default ({ state }) => {
   const [markerSize, setMarkerSize] = React.useState(3)
   const [menuAnchorElement, setMenuAnchorElement] = React.useState(null)
   const [minMenuAnchorElement, setMinMenuAnchorElement] = React.useState(null)
+  const [saveScenarioDialogOpen, setSaveScenarioDialogOpen] = React.useState(false)
   const [step, setStep] = React.useState(0)
 
   const menuOpen = Boolean(menuAnchorElement)
@@ -272,50 +275,52 @@ export default ({ state }) => {
    * @param {String} src Source of the marker image (create)
    * @param {String} title Title of the marker (create)
    * @param {String} sovereignty Sovereignty of the marker (create | edit)
+   * @param {String} threatSovereignty The sovereignty of the threat (create | edit)
    * @param {Object} latlng The lat/lng of the marker (edit | drag)
    * @param {Object} marker The marker object (edit | delete)
    */
-  const handleMarkerEdit = (action, src, title, sovereignty, latlng, marker, data) => {
-    let newStep = false
-    switch (action) {
-      case 'clear':
-        newStep = editMarkers('clear', history, step)
-        break
-      case 'create':
-        newStep = editMarkers('create', history, step, src, (markerLabel === '') ? title : markerLabel, sovereignty, markerId, latlng)
-        break
-      case 'delete':
-        newStep = editMarkers('delete', history, step, null, null, null, null, null, marker)
-        break
-      case 'drag':
-        newStep = editMarkers('drag', history, step, null, null, null, null, latlng, marker)
-        break
-      case 'edit':
-        newStep = editMarkers('edit', history, step, null, title, null, null, null, marker, data)
-        break
-      default:
-        console.log(`Error: Invalid action (${action})`)
-    }
+  const handleMarkerEdit = (action, payload) => {
+    const supportedActions = ['clear', 'create', 'delete', 'drag', 'edit']
 
-    if (newStep !== false) {
-      let targetHistory
-      if (step === history.length - 1) {
-        targetHistory = history.slice()
-      } else {
-        targetHistory = history.slice(0, step + 1)
-      }
+    if (supportedActions.includes(action)) {
 
-      setHistory([...targetHistory, newStep])
-      setStep(step + 1)
-      setClickedLatLng(null)
+      let updatedPayload = {...payload}
 
       if (action === 'create') {
-        setMarkerId(markerId + 1)
-        setMarkerLabel('')
+        updatedPayload = {
+          ...updatedPayload,
+          id: markerId,
+          latlng: clickedLatLng,
+          title: markerLabel === '' ? payload.title : markerLabel,
+        }
       }
-      setFocusedMarker(null)
-      setEditMarkerDialogOpen(false)
-      setEdit9LineDialogOpen(false)
+
+      // Take the payload and add in the marker id (for when creating marker)
+      // todo: finish with the payload bullshit from the rest of the 'editMarkers' callbacks lol
+      const newStep = editMarkers(action, history, step, updatedPayload)
+
+      if (newStep !== false) {
+        let targetHistory
+        if (step === history.length - 1) {
+          targetHistory = history.slice()
+        } else {
+          targetHistory = history.slice(0, step + 1)
+        }
+
+        setHistory([...targetHistory, newStep])
+        setStep(step + 1)
+        setClickedLatLng(null)
+
+        if (action === 'create') {
+          setMarkerId(markerId + 1)
+          setMarkerLabel('')
+        }
+        setFocusedMarker(null)
+        setEditMarkerDialogOpen(false)
+        setEdit9LineDialogOpen(false)
+      }
+    } else {
+      console.error(`Unsupported action ${action}. Could not modify Markers`)
     }
   }
 
@@ -339,12 +344,13 @@ export default ({ state }) => {
               handleMarkerDrawerToggle={() => setMarkerDrawerOpen(!markerDrawerOpen)}
               handleMarkerSizeDecrease={(markerSize > minMarkerSize) ? () => setMarkerSize(markerSize - 1) : undefined}
               handleMarkerSizeIncrease={(markerSize < maxMarkerSize) ? () => setMarkerSize(markerSize + 1) : undefined}
-              handleClearMarkers={() => handleMarkerEdit('clear')}
+              handleClearMarkers={() => handleMarkerEdit('clear', {})}
               handleColorToggle={handleColorToggle}
               handleRedo={handleRedo}
               handleUndo={handleUndo}
               redoAction={(step === history.length - 1) ? '' : history[step + 1].action}
               redoDisabled={(step === history.length - 1)}
+              toggleSaveScenarioDialog={() => setSaveScenarioDialogOpen(!saveScenarioDialogOpen)}
               undoAction={(step === 0) ? '' : history[step].action}
               undoDisabled={(step === 0)}
             />
@@ -380,7 +386,10 @@ export default ({ state }) => {
             handleUndo={handleUndo}
             minimizedMenuOpen={minimizedMenuOpen}
             minMenuAnchorElement={minMenuAnchorElement}
+            redoAction={(step === history.length - 1) ? '' : history[step + 1].action}
             redoDisabled={(step === history.length - 1)}
+            toggleSaveScenarioDialog={() => setSaveScenarioDialogOpen(!saveScenarioDialogOpen)}
+            undoAction={(step === 0) ? '' : history[step].action}
             undoDisabled={(step === 0)}
           />
         </CASNavigation>
@@ -395,7 +404,7 @@ export default ({ state }) => {
         >
           <LayerControl
             friendlyMarkers={history[step].friendlyMarkers}
-            handleMarkerDrag={(marker, latlng) => handleMarkerEdit('drag', null, null, null, latlng, marker)}
+            handleMarkerDrag={(marker, latlng) => handleMarkerEdit('drag', {marker: marker, latlng: latlng})}
             hostileMarkers={history[step].hostileMarkers}
             initialPoints={history[step].initialPoints}
             mapZoom={mapZoom}
@@ -404,7 +413,7 @@ export default ({ state }) => {
             survivors={history[step].survivors}
             threatMarkers={history[step].threatMarkers}
             toggleEditMarkerDialog={() => setEditMarkerDialogOpen(!editMarkerDialogOpen)}
-            handleDeleteMarker={marker => handleMarkerEdit('delete', null, null, null, null, marker)}
+            handleDeleteMarker={marker => handleMarkerEdit('delete', {marker: marker})}
           />
           <ZoomControl position='topright' />
           <AnalysisTool
@@ -453,7 +462,7 @@ export default ({ state }) => {
       <MarkerDrawer
         markerDrawerOpen={markerDrawerOpen}
         markerLabel={markerLabel}
-        handleAddMarker={(src, title, sovereignty) => handleMarkerEdit('create', src, title, sovereignty, clickedLatLng)}
+        handleAddMarker={payload => handleMarkerEdit('create', payload)}
         handleMarkerDrawerToggle={() => setMarkerDrawerOpen(!markerDrawerOpen)}
         setMarkerLabel={setMarkerLabel}
         toggleEditThreatDialog={() => setEditThreatDialogOpen(!editThreatDialogOpen)}
@@ -461,10 +470,10 @@ export default ({ state }) => {
       {
         (editMarkerDialogOpen) ?
           <EditMarkerDialog
-            deleteData={(marker) => handleMarkerEdit('edit', null, null, null, null, marker, null)}
+            //deleteData={marker => handleMarkerEdit('edit', {marker: marker, data: null})}
             open={editMarkerDialogOpen}
             marker={focusedMarker}
-            submit={(marker, title) => handleMarkerEdit('edit', null, title, null, null, marker)}
+            submit={payload => handleMarkerEdit('edit', payload)}
             toggle={() => setEditMarkerDialogOpen(!editMarkerDialogOpen)}
             toggle9LineDialog={() => setEdit9LineDialogOpen(!edit9LineDialogOpen)}
           />
@@ -475,10 +484,29 @@ export default ({ state }) => {
           <Edit9LineDialog
             open={edit9LineDialogOpen}
             marker={focusedMarker}
-            submit={(marker, data) => handleMarkerEdit('edit', null, marker.title, null, null, marker, data)}
+            submit={payload => handleMarkerEdit('edit', payload)}
             toggle={() => setEdit9LineDialogOpen(!edit9LineDialogOpen)}
           />
           : undefined
+      }
+      {
+        (editThreatDialogOpen) ?
+          <EditThreatDialog
+            open={editThreatDialogOpen}
+            marker={focusedMarker}
+            submit={undefined}
+            toggle={() => setEditThreatDialogOpen(!editThreatDialogOpen)}
+          />
+          : undefined
+      }
+      {
+        (saveScenarioDialogOpen) ?
+        <SaveScenarioDialog
+          data={history[step]}
+          open={saveScenarioDialogOpen}
+          toggle={() => setSaveScenarioDialogOpen(!saveScenarioDialogOpen)}
+        />
+        : undefined
       }
     </Box>
   )

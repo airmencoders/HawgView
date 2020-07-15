@@ -74,12 +74,23 @@ const useStyles = makeStyles(theme => ({
 //----------------------------------------------------------------//
 // Hostile Markers Component
 //----------------------------------------------------------------//
+// TODO Props here?
 export default ({ handleAddMarker, handleMarkerDrawerToggle }) => {
   const classes = useStyles()
 
-  const handleMarkerClick = (src, title) => {
+  const handleMarkerClick = (iconUrl, title) => {
+    const payload = {
+      color: null,
+      data: null,
+      elevation: 0,   // TODO: Pull the elevation of the latlng from API
+      iconType: 'img',
+      iconUrl,
+      layer: 'hostile',
+      sovereignty: null,
+      title,
+    }
     handleMarkerDrawerToggle()
-    handleAddMarker(src, title, 'hostile')
+    handleAddMarker(payload)
   }
 
   return (

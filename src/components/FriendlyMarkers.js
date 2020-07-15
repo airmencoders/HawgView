@@ -74,12 +74,23 @@ const useStyles = makeStyles(theme => ({
 //----------------------------------------------------------------//
 // Friendly Markers Component
 //----------------------------------------------------------------//
+// TODO Props here?
 export default ({ handleAddMarker, handleMarkerDrawerToggle }) => {
   const classes = useStyles()
 
-  const handleMarkerClick = (src, title) => {
+  const handleMarkerClick = (iconUrl, title) => {
+    const payload = {
+      color: null,
+      data: null,
+      elevation: 0,   // TODO: Pull the elevation of the latlng from API
+      iconType: 'img',
+      iconUrl,
+      layer: 'friendly',
+      sovereignty: null,
+      title,
+    }
     handleMarkerDrawerToggle()
-    handleAddMarker(src, title, 'friendly')
+    handleAddMarker(payload)
   }
 
   return (
@@ -88,7 +99,7 @@ export default ({ handleAddMarker, handleMarkerDrawerToggle }) => {
         <img
           alt='Friendly Airborne'
           className={classes.image}
-          onClick={handleMarkerClick}
+          onClick={event => handleMarkerClick(event.target.src, 'Airborne')}
           src={airborne}
         />
       </Tooltip>

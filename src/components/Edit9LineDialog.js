@@ -46,7 +46,13 @@ export default (props) => {
       remarks: remarks
     }
 
-    props.submit(props.marker, data)
+    props.submit({
+      marker: props.marker,
+      color: props.marker.color,
+      data: data,
+      sovereignty: props.marker.sovereignty,
+      title: props.marker.title,
+    })
   }
 
   return (
@@ -64,6 +70,7 @@ export default (props) => {
           onChange={event => setLabel(event.target.value)}
           fullWidth
           value={label}
+          variant='outlined'
         />
         <TextField
           margin='dense'
@@ -71,14 +78,15 @@ export default (props) => {
           onChange={event => setTypeMethod(event.target.value)}
           fullWidth
           value={typeMethod}
+          variant='outlined'
         />
-
         <TextField
           margin='dense'
           label='IP / HDG / Distance'
           onChange={event => setIpHdgDistance(event.target.value)}
           fullWidth
           value={ipHdgDistance}
+          variant='outlined'
         />
         <TextField
           margin='dense'
@@ -86,6 +94,7 @@ export default (props) => {
           onChange={event => setElevation(event.target.value)}
           fullWidth
           value={elevation}
+          variant='outlined'
         />
         <TextField
           margin='dense'
@@ -93,6 +102,7 @@ export default (props) => {
           onChange={event => setDescription(event.target.value)}
           fullWidth
           value={description}
+          variant='outlined'
         />
         <TextField
           margin='dense'
@@ -100,6 +110,7 @@ export default (props) => {
           onChange={event => setLocation(event.target.value)}
           fullWidth
           value={location}
+          variant='outlined'
         />
         <TextField
           margin='dense'
@@ -107,6 +118,7 @@ export default (props) => {
           onChange={event => setMark(event.target.value)}
           fullWidth
           value={mark}
+          variant='outlined'
         />
         <TextField
           margin='dense'
@@ -114,6 +126,7 @@ export default (props) => {
           onChange={event => setFriendlies(event.target.value)}
           fullWidth
           value={friendlies}
+          variant='outlined'
         />
         <TextField
           margin='dense'  
@@ -121,6 +134,7 @@ export default (props) => {
           onChange={event => setEgress(event.target.value)}
           fullWidth
           value={egress}
+          variant='outlined'
         />
         <TextField
           margin='dense'
@@ -128,6 +142,7 @@ export default (props) => {
           onChange={event => setRemarks(event.target.value)}
           fullWidth
           value={remarks}
+          variant='outlined'
         />
       </DialogContent>
       <DialogActions>

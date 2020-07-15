@@ -74,12 +74,12 @@ const useStyles = makeStyles(theme => ({
 //----------------------------------------------------------------//
 // Marker Drawer Component
 //----------------------------------------------------------------//
-export default ({ toggleEditThreatDialog, markerDrawerOpen, handleAddMarker, handleMarkerDrawerToggle, markerLabel, setMarkerLabel, window }) => {
+export default (props) => {
   const classes = useStyles()
 
   const [hostile, setHostile] = React.useState(false)
 
-  const container = window !== undefined ? () => window().document.body : undefined
+  const container = props.window !== undefined ? () => window().document.body : undefined
 
   return (
     <nav
@@ -89,8 +89,8 @@ export default ({ toggleEditThreatDialog, markerDrawerOpen, handleAddMarker, han
         container={container}
         variant='temporary'
         anchor='left'
-        open={markerDrawerOpen}
-        onClose={handleMarkerDrawerToggle}
+        open={props.markerDrawerOpen}
+        onClose={props.handleMarkerDrawerToggle}
         classes={{ paper: classes.drawerPaper, }}
         ModalProps={{ keepMounted: true, }}
       >
@@ -117,26 +117,26 @@ export default ({ toggleEditThreatDialog, markerDrawerOpen, handleAddMarker, han
           <TextField
             className={classes.descriptionField}
             label='Marker Label'
-            onChange={event => setMarkerLabel(event.target.value)}
+            onChange={event => props.setMarkerLabel(event.target.value)}
             variant='outlined'
-            value={markerLabel}
+            value={props.markerLabel}
           />
           <Divider />
           <PersistentMarkers
-            handleAddMarker={(src, title, sovereignty) => handleAddMarker(src, title, sovereignty)}
-            handleMarkerDrawerToggle={handleMarkerDrawerToggle}
-            toggleEditThreatDialog={toggleEditThreatDialog}
+            handleAddMarker={payload => props.handleAddMarker(payload)}
+            handleMarkerDrawerToggle={props.handleMarkerDrawerToggle}
+            toggleEditThreatDialog={props.toggleEditThreatDialog}
           />
           <Divider />
           {(hostile) ?
             <HostileMarkers
-              handleAddMarker={(src, title, sovereignty) => handleAddMarker(src, title, sovereignty)}
-              handleMarkerDrawerToggle={handleMarkerDrawerToggle}
+              handleAddMarker={payload => props.handleAddMarker(payload)}
+              handleMarkerDrawerToggle={props.handleMarkerDrawerToggle}
             />
             :
             <FriendlyMarkers
-              handleAddMarker={(src, title, sovereignty) => handleAddMarker(src, title, sovereignty)}
-              handleMarkerDrawerToggle={handleMarkerDrawerToggle}
+              handleAddMarker={payload => props.handleAddMarker(payload)}
+              handleMarkerDrawerToggle={props.handleMarkerDrawerToggle}
             />
           }
         </div>

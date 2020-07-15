@@ -92,7 +92,7 @@ export default (props) => {
         </span>
       </Tooltip>
       <Tooltip title='Clear All Markers'>
-        <IconButton 
+        <IconButton
           color='inherit'
           onClick={props.handleClearMarkers}
         >
@@ -124,29 +124,40 @@ export default (props) => {
         </IconButton>
       </Tooltip>
       <Tooltip title='COF Tools'>
-        <IconButton color='inherit' >
-          <ListAltIcon />
-        </IconButton>
+        <span>
+          <IconButton color='inherit' disabled>
+            <ListAltIcon />
+          </IconButton>
+        </span>
       </Tooltip>
       <Tooltip title='View Marker List'>
-        <IconButton color='inherit' >
-          <ViewListIcon />
-        </IconButton>
+        <span>
+          <IconButton color='inherit' disabled>
+            <ViewListIcon />
+          </IconButton>
+        </span>
       </Tooltip>
       <Tooltip title='Toggle Marker Labels'>
-        <IconButton color='inherit' >
-          <MessageIcon />
-        </IconButton>
+        <span>
+          <IconButton color='inherit' disabled>
+            <MessageIcon />
+          </IconButton>
+        </span>
       </Tooltip>
       <Tooltip title='Save Scenario'>
-        <IconButton color='inherit' >
+        <IconButton
+          color='inherit'
+          onClick={props.toggleSaveScenarioDialog}
+        >
           <SaveIcon />
         </IconButton>
       </Tooltip>
       <Tooltip title='Download Products'>
-        <IconButton color='inherit' >
-          <GetAppIcon />
-        </IconButton>
+        <span>
+          <IconButton color='inherit' disabled>
+            <GetAppIcon />
+          </IconButton>
+        </span>
       </Tooltip>
     </React.Fragment>
   )

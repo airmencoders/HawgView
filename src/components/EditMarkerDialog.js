@@ -21,6 +21,16 @@ export default (props) => {
 
   const [title, setTitle] = React.useState(props.marker.title)
 
+  const handleSave = () => {
+    props.submit({
+      marker: props.marker,
+      title: title,
+      color: props.marker.color,
+      data: props.marker.data,
+      sovereignty: props.marker.sovereignty,
+    })
+  }
+
   return (
     <Dialog
       className={classes.dialog}
@@ -36,9 +46,10 @@ export default (props) => {
           margin='dense'
           onChange={event => setTitle(event.target.value)}
           value={title}
+          variant='outlined'
         />
         {
-          (props.marker.sovereignty === 'hostile' || props.marker.sovereignty === 'threat') ?
+          (props.marker.layer === 'hostile' || props.marker.layer === 'threat') ?
             <DialogContent>
               <Button
                 color='primary'
@@ -48,7 +59,7 @@ export default (props) => {
               </Button>
               <Button
                 color='secondary'
-                onClick={() => props.submit(props.marker, title)}
+                onClick={() => props.submit({marker: props.marker, title: title, data: null})}
               >
                 Delete 9-line
               </Button>
@@ -56,10 +67,10 @@ export default (props) => {
             : null
         }
       </DialogContent>
-            <DialogActions>
-              <Button onClick={() => props.submit(props.marker, title)} color='primary'>Save Changes</Button>
-              <Button onClick={props.toggle}>Cancel</Button>
-            </DialogActions>
+      <DialogActions>
+        <Button onClick={handleSave} color='primary'>Save Changes</Button>
+        <Button onClick={props.toggle}>Cancel</Button>
+      </DialogActions>
     </Dialog>
   )
 }

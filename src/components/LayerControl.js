@@ -186,8 +186,8 @@ export default (props) => {
         <LayerGroup>
           {props.friendlyMarkers.map(marker => (
             <Marker
-              autoPan={marker.autoPan}
-              draggable={marker.draggable}
+              autoPan={true}
+              draggable={true}
               icon={L.icon({
                 type: marker.iconType,
                 iconUrl: marker.iconUrl,
@@ -197,7 +197,7 @@ export default (props) => {
               key={`friendly-${marker.id}-${marker.title}`}
               onDragend={event => props.handleMarkerDrag(marker, event.target.getLatLng())}
               position={marker.latlng}
-              riseOnHover={marker.riseOnHover}
+              riseOnHover={true}
             >
               <Popup>
                 {marker.title}
@@ -215,8 +215,8 @@ export default (props) => {
         <LayerGroup>
           {props.hostileMarkers.map(marker => (
             <Marker
-              autoPan={marker.autoPan}
-              draggable={marker.draggable}
+              autoPan={true}
+              draggable={true}
               icon={L.icon({
                 type: marker.iconType,
                 iconUrl: marker.iconUrl,
@@ -226,7 +226,7 @@ export default (props) => {
               key={`hostile-${marker.id}-${marker.title}`}
               onDragend={event => props.handleMarkerDrag(marker, event.target.getLatLng())}
               position={marker.latlng}
-              riseOnHover={marker.riseOnHover}
+              riseOnHover={true}
             >
               <Popup>
                 {marker.title}
@@ -292,8 +292,8 @@ export default (props) => {
         <LayerGroup>
           {props.threatMarkers.map(marker => (
             <Marker
-              autoPan={marker.autoPan}
-              draggable={marker.draggable}
+              autoPan={true}
+              draggable={true}
               icon={L.icon({
                 type: marker.iconType,
                 iconUrl: marker.iconUrl,
@@ -303,7 +303,7 @@ export default (props) => {
               key={`threat-${marker.id}-${marker.title}`}
               onDragend={event => props.handleMarkerDrag(marker, event.target.getLatLng())}
               position={marker.latlng}
-              riseOnHover={marker.riseOnHover}
+              riseOnHover={true}
             >
               <Popup>
                 {marker.title}
@@ -321,8 +321,8 @@ export default (props) => {
         <LayerGroup>
           {props.survivors.map(marker => (
             <Marker
-              autoPan={marker.autoPan}
-              draggable={marker.draggable}
+              autoPan={true}
+              draggable={true}
               icon={L.icon({
                 type: marker.iconType,
                 iconUrl: marker.iconUrl,
@@ -332,7 +332,7 @@ export default (props) => {
               key={`survivor-${marker.id}-${marker.title}`}
               onDragend={event => props.handleMarkerDrag(marker, event.target.getLatLng())}
               position={marker.latlng}
-              riseOnHover={marker.riseOnHover}
+              riseOnHover={true}
             >
               <Popup>
                 {marker.title}
@@ -350,8 +350,8 @@ export default (props) => {
         <LayerGroup>
           {props.initialPoints.map(marker => (
             <Marker
-              autoPan={marker.autoPan}
-              draggable={marker.draggable}
+              autoPan={true}
+              draggable={true}
               icon={L.icon({
                 type: marker.iconType,
                 iconUrl: marker.iconUrl,
@@ -361,7 +361,7 @@ export default (props) => {
               key={`ip-${marker.id}-${marker.title}`}
               onDragend={event => props.handleMarkerDrag(marker, event.target.getLatLng())}
               position={marker.latlng}
-              riseOnHover={marker.riseOnHover}
+              riseOnHover={true}
             >
               <Popup>
                 {marker.title}

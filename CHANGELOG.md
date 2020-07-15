@@ -1,3 +1,10 @@
+## 2.8.0-alpha
+* Finished updating the editMarkers functions to use an Object Payload versus multiple parameters for simplicity
+* Continued updating components to use props versus deconstructing props
+* Disabled toolbar options that are currently not supported
+* Added the Save functionality
+* Need to update save functionality (save to account - default? Overwrite?)
+
 ## 2.7.1-alpha
 ### Fixes
 * Toggle color works consistently (Changing map baselayers changed the order of things)
@@ -78,10 +85,10 @@
 - [x] Add `handleAddMarker` functionality to all remaining `markers` - (`2.1.0-alpha`)
 - [x] Add `clearAllMarkers` functionality to map - (`2.1.0-alpha`)
 - [x] Add `Marker Label` functionality to `markerDrawer` - (`2.4.0-alpha`)
-- [ ] Add `Threat` Dialog
+- [-] Add `Threat` Dialog - (Started `2.8.0-alpha`)
 - [ ] Add `Combat Air Patrol (CAP)` Dialog
 - [ ] Add `Building Label` functionality to `markerDrawer`
-- [ ] Add `9-Line` functionality to `hostile markers`
+- [x] Add `9-Line` functionality to `hostile markers` - (`2.7.0-alpha`)
 - [ ] Add `15-Line` functionality to `survivor markers`
 - [x] Add `MGRS` or `Lat/Lon` input to map - (`2.4.0-alpha`)
 - [ ] Add Edit marker functionality
@@ -94,7 +101,7 @@
 - [ ] Add `Concept of Operations (CONOP)` functionality to site
 - [ ] Add `IP Run card` functionality to site
 - [ ] Add `Download Products` functionality to site
-- [ ] Add `Save Scenario` functionality to site
+- [x] Add `Save Scenario` functionality to site - (`2.8.0-alpha`)
 - [ ] Add `Load Scenario` functionality to site
 - [ ] Add `Overwrite Scenario` functionality to site
 - [ ] Testing

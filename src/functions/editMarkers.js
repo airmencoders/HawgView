@@ -27,19 +27,26 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-export const editMarkers = (action, history, step, src, title, sovereignty, id, latlng, marker, data) => {
+//export const editMarkers = (action, history, step, iconType, color, src, title, sovereignty, threatSovereignty, id, latlng, marker, data) => {
+export const editMarkers = (action, history, step, payload) => {
+
+  console.log('---- EDIT MARKERS FUNCTION ----')
+  console.log('Action:', action)
+  console.log('History:', history)
+  console.log('Step:', step)
+  console.log('Payload:', payload)
 
   switch (action) {
     case 'clear':
       return clearMarkers(history, step)
     case 'create':
-      return createMarker(history, step, src, title, sovereignty, id, latlng)
+      return createMarker(history, step, payload)
     case 'delete':
-      return deleteMarker(history, step, marker)
+      return deleteMarker(history, step, payload)
     case 'drag':
-      return dragMarker(history, step, latlng, marker)
+      return dragMarker(history, step, payload)
     case 'edit':
-      return editMarker(history, step, title, marker, data)
+      return editMarker(history, step, payload)
     default:
       console.error(`Error: Invalid action ${action}`)
       return false
@@ -88,23 +95,23 @@ const clearMarkers = (history, step) => {
  * Alternatively, if the user is adding a new marker and they are not at the next step, then 
  * remove all the 'alternate reality' future steps and then add the step object.
  * 
- * @param {String} src Static URL of the Marker being placed
- * @param {String} sovereignty Sovereignty of the Marker being placed
+ * @param {Object} history 
+ * @param {Integer} step 
+ * @param {Object} payload
  */
-const createMarker = (history, step, src, title, sovereignty, id, latlng) => {
-  if (latlng !== null) {
+const createMarker = (history, step, payload) => {
+  if (payload.latlng !== null) {
     const marker = {
-      autoPan: true,
-      data: null,
-      draggable: true,
-      elevation: 0,
-      iconType: 'img',
-      iconUrl: src,
-      id: id,
-      latlng,
-      riseOnHover: true,
-      sovereignty,
-      title,
+      color: payload.color,
+      data: payload.data,
+      elevation: payload.elevation,
+      iconType: payload.iconType,
+      iconUrl: payload.iconUrl,
+      id: payload.id,
+      latlng: payload.latlng,
+      layer: payload.layer,
+      sovereignty: payload.sovereignty,
+      title: payload.title,
     }
 
     let targetHistory
@@ -114,39 +121,39 @@ const createMarker = (history, step, src, title, sovereignty, id, latlng) => {
       targetHistory = history.slice(0, step + 1)
     }
 
-    switch (sovereignty) {
+    switch (payload.layer) {
       case 'friendly':
         return {
           ...targetHistory[step],
-          action: `Create ${title}`,
+          action: `Create ${payload.title}`,
           friendlyMarkers: [...targetHistory[step].friendlyMarkers, marker]
         }
       case 'hostile':
         return {
           ...targetHistory[step],
-          action: `Create ${title}`,
+          action: `Create ${payload.title}`,
           hostileMarkers: [...targetHistory[step].hostileMarkers, marker]
         }
       case 'ip':
         return {
           ...targetHistory[step],
-          action: `Create ${title}`,
+          action: `Create ${payload.title}`,
           initialPoints: [...targetHistory[step].initialPoints, marker]
         }
       case 'survivor':
         return {
           ...targetHistory[step],
-          action: `Create ${title}`,
+          action: `Create ${payload.title}`,
           survivors: [...targetHistory[step].survivors, marker]
         }
       case 'threat':
         return {
           ...targetHistory[step],
-          action: `Create ${title}`,
+          action: `Create ${payload.title}`,
           threatMarkers: [...targetHistory[step].threatMarkers, marker]
         }
       default:
-        console.error(`Error: Could not create marker. Invalid sovereignty (${sovereignty})`)
+        console.error(`Error: Could not create marker. Invalid layer (${payload.layer})`)
         return false
     }
   } else {
@@ -154,8 +161,10 @@ const createMarker = (history, step, src, title, sovereignty, id, latlng) => {
   }
 }
 
-const deleteMarker = (history, step, marker) => {
-  switch (marker.sovereignty) {
+const deleteMarker = (history, step, payload) => {
+  const marker = {...payload.marker}
+
+  switch (marker.layer) {
     case 'friendly':
       return {
         ...history[step],
@@ -187,19 +196,21 @@ const deleteMarker = (history, step, marker) => {
         survivors: history[step].survivors.filter(sMarker => sMarker.id !== marker.id)
       }
     default:
-      console.error(`Error: Could not delete marker (${marker}). Invalid sovereignty (${marker.sovereignty})`)
+      console.error(`Error: Could not delete marker (${marker}). Invalid layer (${marker.layer})`)
       return false
   }
 }
 
 /**
-   * If the user drags the marker, once done reset the lat/lon and title for the popup
-   * 
-   * @param {Object} marker Object representing the marker being drug around the map
-   * @param {Object} newLatLng New Lat/Lng coordinates of the marker
-   */
-const dragMarker = (history, step, latlng, marker) => {
+ * If the user drags the marker, once done reset the lat/lon and title for the popup
+ * 
+ * @param {Object} marker Object representing the marker being drug around the map
+ * @param {Object} newLatLng New Lat/Lng coordinates of the marker
+ */
+const dragMarker = (history, step, payload) => {
   let targetHistory, filteredMarkers, newMarker
+
+  const marker = payload.marker
 
   if (step === history.length - 1) {
     targetHistory = history.slice()
@@ -207,12 +218,12 @@ const dragMarker = (history, step, latlng, marker) => {
     targetHistory = history.slice(0, step + 1)
   }
 
-  switch (marker.sovereignty) {
+  switch (marker.layer) {
     case 'friendly':
       filteredMarkers = targetHistory[step].friendlyMarkers.filter(currentMarker => currentMarker.id !== marker.id)
       newMarker = {
         ...marker,
-        latlng
+        latlng: payload.latlng
       }
 
       return {
@@ -224,7 +235,7 @@ const dragMarker = (history, step, latlng, marker) => {
       filteredMarkers = targetHistory[step].hostileMarkers.filter(currentMarker => currentMarker.id !== marker.id)
       newMarker = {
         ...marker,
-        latlng
+        latlng: payload.latlng
       }
 
       return {
@@ -236,7 +247,7 @@ const dragMarker = (history, step, latlng, marker) => {
       filteredMarkers = targetHistory[step].initialPoints.filter(currentMarker => currentMarker.id !== marker.id)
       newMarker = {
         ...marker,
-        latlng
+        latlng: payload.latlng
       }
 
       return {
@@ -248,7 +259,7 @@ const dragMarker = (history, step, latlng, marker) => {
       filteredMarkers = targetHistory[step].survivors.filter(currentMarker => currentMarker.id !== marker.id)
       newMarker = {
         ...marker,
-        latlng
+        latlng: payload.latlng
       }
 
       return {
@@ -260,7 +271,7 @@ const dragMarker = (history, step, latlng, marker) => {
       filteredMarkers = targetHistory[step].threatMarkers.filter(currentMarker => currentMarker.id !== marker.id)
       newMarker = {
         ...marker,
-        latlng
+        latlng: payload.latlng
       }
 
       return {
@@ -274,12 +285,10 @@ const dragMarker = (history, step, latlng, marker) => {
   }
 }
 
-const editMarker = (history, step, title, marker, data) => {
+const editMarker = (history, step, payload) => {
   let targetHistory, filteredMarkers, newMarker
 
-  if (data === undefined) {
-    data = null
-  }
+  const marker = payload.marker
 
   if (step === history.length - 1) {
     targetHistory = history.slice()
@@ -287,13 +296,15 @@ const editMarker = (history, step, title, marker, data) => {
     targetHistory = history.slice(0, step + 1)
   }
 
-  switch (marker.sovereignty) {
+  switch (marker.layer) {
     case 'friendly':
       filteredMarkers = targetHistory[step].friendlyMarkers.filter(currentMarker => currentMarker.id !== marker.id)
       newMarker = {
         ...marker,
-        data,
-        title
+        color: payload.color,
+        data: payload.data,
+        sovereignty: payload.sovereignty,
+        title: payload.title,
       }
 
       return {
@@ -305,8 +316,10 @@ const editMarker = (history, step, title, marker, data) => {
       filteredMarkers = targetHistory[step].hostileMarkers.filter(currentMarker => currentMarker.id !== marker.id)
       newMarker = {
         ...marker,
-        data,
-        title
+        color: payload.color,
+        data: payload.data,
+        sovereignty: payload.sovereignty,
+        title: payload.title,
       }
 
       return {
@@ -318,8 +331,10 @@ const editMarker = (history, step, title, marker, data) => {
       filteredMarkers = targetHistory[step].initialPoints.filter(currentMarker => currentMarker.id !== marker.id)
       newMarker = {
         ...marker,
-        data,
-        title
+        color: payload.color,
+        data: payload.data,
+        sovereignty: payload.sovereignty,
+        title: payload.title,
       }
 
       return {
@@ -331,8 +346,10 @@ const editMarker = (history, step, title, marker, data) => {
       filteredMarkers = targetHistory[step].survivors.filter(currentMarker => currentMarker.id !== marker.id)
       newMarker = {
         ...marker,
-        data,
-        title
+        color: payload.color,
+        data: payload.data,
+        sovereignty: payload.sovereignty,
+        title: payload.title,
       }
 
       return {
@@ -344,8 +361,10 @@ const editMarker = (history, step, title, marker, data) => {
       filteredMarkers = targetHistory[step].threatMarkers.filter(currentMarker => currentMarker.id !== marker.id)
       newMarker = {
         ...marker,
-        data,
-        title
+        color: payload.color,
+        data: payload.data,
+        sovereignty: payload.sovereignty,
+        title: payload.title,
       }
 
       return {
@@ -354,7 +373,7 @@ const editMarker = (history, step, title, marker, data) => {
         threatMarkers: [...filteredMarkers, newMarker]
       }
     default:
-      console.error(`Error: Could not drag marker (${marker}). Invalid sovereignty (${marker.sovereignty})`)
+      console.error(`Error: Could not drag marker (${marker}). Invalid layer (${marker.layer})`)
       return false
   }
 }

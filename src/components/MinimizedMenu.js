@@ -59,50 +59,55 @@ import ViewListIcon from '@material-ui/icons/ViewList'
 //----------------------------------------------------------------//
 // Minimized Menu Component
 //----------------------------------------------------------------//
-export default ({ handleMarkerDrawerToggle, handleMarkerSizeDecrease, handleMarkerSizeIncrease, handleClearMarkers, handleColorToggle, handleMinMenuClose, handleRedo, handleUndo, minimizedMenuOpen, minMenuAnchorElement, redoDisabled, undoDisabled }) => {
+export default (props) => {
 
   const handleAddMarkerClick = () => {
-    handleMinMenuClose()
-    handleMarkerDrawerToggle()
+    props.handleMinMenuClose()
+    props.handleMarkerDrawerToggle()
   }
 
   const handleClearMarkersClick = () => {
-    handleMinMenuClose()
-    handleClearMarkers()
+    props.handleMinMenuClose()
+    props.handleClearMarkers()
   }
 
   const handleColorToggleClick = () => {
-    handleMinMenuClose()
-    handleColorToggle()
+    props.handleMinMenuClose()
+    props.handleColorToggle()
   }
 
   const handleMarkerSizeDecreaseClick = () => {
-    handleMinMenuClose()
-    handleMarkerSizeDecrease()
+    props.handleMinMenuClose()
+    props.handleMarkerSizeDecrease()
   }
 
   const handleMarkerSizeIncreaseClick = () => {
-    handleMinMenuClose()
-    handleMarkerSizeIncrease()
+    props.handleMinMenuClose()
+    props.handleMarkerSizeIncrease()
   }
 
   const handleRedoClick = () => {
-    handleMinMenuClose()
-    handleRedo()
+    props.handleMinMenuClose()
+    props.handleRedo()
   }
 
   const handleUndoClick = () => {
-    handleMinMenuClose()
-    handleUndo()
+    props.handleMinMenuClose()
+    props.handleUndo()
+  }
+
+  const handleSaveScenarioClick = () => {
+    props.handleMinMenuClose()
+    props.toggleSaveScenarioDialog()
   }
 
   return (
     <Menu
-      anchorEl={minMenuAnchorElement}
+      anchorEl={props.minMenuAnchorElement}
       anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
       keepMounted
-      onClose={handleMinMenuClose}
-      open={minimizedMenuOpen}
+      onClose={props.handleMinMenuClose}
+      open={props.minimizedMenuOpen}
       transformOrigin={{ vertical: 'top', horizontal: 'right' }}
     >
       <MenuItem onClick={handleAddMarkerClick}>
@@ -113,25 +118,25 @@ export default ({ handleMarkerDrawerToggle, handleMarkerSizeDecrease, handleMark
           </Typography>
         </IconButton>
       </MenuItem>
-      <MenuItem onClick={!undoDisabled ? handleUndoClick : undefined}>
+      <MenuItem onClick={!props.undoDisabled ? handleUndoClick : undefined}>
         <IconButton
           color='inherit'
-          disabled={undoDisabled}
+          disabled={props.undoDisabled}
         >
           <UndoIcon />
           <Typography variant='body1'>
-            Undo
+            Undo {props.undoAction}
           </Typography>
         </IconButton>
       </MenuItem>
-      <MenuItem onClick={!redoDisabled ? handleRedoClick : undefined}>
+      <MenuItem onClick={!props.redoDisabled ? handleRedoClick : undefined}>
         <IconButton
           color='inherit'
-          disabled={redoDisabled}
+          disabled={props.redoDisabled}
         >
           <RedoIcon />
           <Typography variant='body1'>
-            Redo
+            Redo {props.redoACtion}
           </Typography>
         </IconButton>
       </MenuItem>
@@ -167,31 +172,31 @@ export default ({ handleMarkerDrawerToggle, handleMarkerSizeDecrease, handleMark
           </Typography>
         </IconButton>
       </MenuItem>
-      <MenuItem onClick={handleMinMenuClose}>
-        <IconButton color='inherit'>
+      <MenuItem onClick={props.handleMinMenuClose}>
+        <IconButton color='inherit' disabled>
           <ListAltIcon />
           <Typography variant='body1'>
             COF Tools
           </Typography>
         </IconButton>
       </MenuItem>
-      <MenuItem onClick={handleMinMenuClose}>
-        <IconButton color='inherit'>
+      <MenuItem onClick={props.handleMinMenuClose}>
+        <IconButton color='inherit' disabled>
           <ViewListIcon />
           <Typography variant='body1'>
             View Marker List
           </Typography>
         </IconButton>
       </MenuItem>
-      <MenuItem onClick={handleMinMenuClose}>
-        <IconButton color='inherit'>
+      <MenuItem onClick={props.handleMinMenuClose}>
+        <IconButton color='inherit' disabled>
           <MessageIcon />
           <Typography variant='body1'>
             Toggle Marker Labels
           </Typography>
         </IconButton>
       </MenuItem>
-      <MenuItem onClick={handleMinMenuClose}>
+      <MenuItem onClick={props.handleMinMenuClose}>
         <IconButton color='inherit'>
           <SaveIcon />
           <Typography variant='body1'>
@@ -199,8 +204,8 @@ export default ({ handleMarkerDrawerToggle, handleMarkerSizeDecrease, handleMark
           </Typography>
         </IconButton>
       </MenuItem>
-      <MenuItem onClick={handleMinMenuClose}>
-        <IconButton color='inherit'>
+      <MenuItem onClick={props.handleMinMenuClose}>
+        <IconButton color='inherit' disabled>
           <GetAppIcon />
           <Typography variant='body1'>
             Download Products
