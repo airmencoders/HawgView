@@ -44,10 +44,12 @@ import {
 import Box from '@material-ui/core/Box'
 import IconButton from '@material-ui/core/IconButton'
 import { makeStyles } from '@material-ui/core/styles'
+import Snackbar from '@material-ui/core/Snackbar'
 
 //----------------------------------------------------------------//
 // Material-UI Icons
 //----------------------------------------------------------------//
+import CloseIcon from '@material-ui/icons/Close'
 import MoreVertIcon from '@material-ui/icons/MoreVert'
 
 //----------------------------------------------------------------//
@@ -68,6 +70,8 @@ import Map from '../components/Map'
 import MinimizedMenu from '../components/MinimizedMenu'
 import UnauthenticatedUserMenu from '../components/UnauthenticatedUserMenu'
 import SaveScenarioDialog from '../components/SaveScenarioDialog'
+import LoadScenarioDialog from '../components/LoadScenarioDialog'
+import Alert from '../components/Alert'
 
 //----------------------------------------------------------------//
 // Custom Class Styling
@@ -149,6 +153,8 @@ export default ({ state }) => {
     survivors: [],
     threatMarkers: [],
   }])
+  const [loadedScenario, setLoadedScenario] = React.useState({})
+  const [loadScenarioDialogOpen, setLoadScenarioDialogOpen] = React.useState(false)
   const [map, setMap] = React.useState(null)
   const [mapColor, setMapColor] = React.useState(true)
   const [mapPopup, setMapPopup] = React.useState(null)
@@ -160,7 +166,11 @@ export default ({ state }) => {
   const [menuAnchorElement, setMenuAnchorElement] = React.useState(null)
   const [minMenuAnchorElement, setMinMenuAnchorElement] = React.useState(null)
   const [saveScenarioDialogOpen, setSaveScenarioDialogOpen] = React.useState(false)
+  const [snackbarMessage, setSnackbarMessage] = React.useState(undefined)
+  const [snackbarOpen, setSnackbarOpen] = React.useState(false)
+  const [snackPack, setSnackPack] = React.useState([])
   const [step, setStep] = React.useState(0)
+  const [tooltipsActive, setTooltipsActive] = React.useState(false)
 
   const menuOpen = Boolean(menuAnchorElement)
   const minimizedMenuOpen = Boolean(minMenuAnchorElement)
@@ -268,6 +278,21 @@ export default ({ state }) => {
     }
   }
 
+  const toast = (message, severity) => {
+    setSnackPack(prev => [...prev, {message, key: new Date().getTime(), severity }])
+  }
+
+  React.useEffect(() => {
+    if(snackPack.length && !snackbarMessage) {
+      setSnackbarMessage({...snackPack[0]})
+      setSnackPack(prev => prev.slice(1))
+      setSnackbarOpen(true)
+    } else if(snackPack.length && snackbarMessage && snackbarOpen) {
+      setSnackbarOpen(false)
+    }
+
+  }, [snackPack, snackbarMessage, snackbarOpen])
+
   /**
    * Todo: change this to ('action', 'payload') somewhat like reducers
    * 
@@ -284,7 +309,7 @@ export default ({ state }) => {
 
     if (supportedActions.includes(action)) {
 
-      let updatedPayload = {...payload}
+      let updatedPayload = { ...payload }
 
       if (action === 'create') {
         updatedPayload = {
@@ -324,6 +349,52 @@ export default ({ state }) => {
     }
   }
 
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return
+    }
+
+    setSnackbarOpen(false)
+  }
+
+  const handleLoadScenario = data => {
+    setLoadScenarioDialogOpen(!loadScenarioDialogOpen)
+    let json
+    try {
+      let object = JSON.parse(data)
+
+      if (object && typeof object === 'object') {
+        json = object
+      }
+    } catch (error) {
+      console.error(error)
+      toast('There was an error loading the scenario', 'error')
+    }
+
+    if (json !== undefined) {
+      const newStep = {
+        action: 'load scenario',
+        buildingLabels: json.data.buildingLabels,
+        combatAirPatrols: json.data.combatAirPatrols,
+        engagementAreas: json.data.engagementAreas,
+        friendlyMarkers: json.data.friendlyMarkers,
+        hostileMarkers: json.data.hostileMarkers,
+        initialPoints: json.data.initialPoints,
+        lines: json.data.lines,
+        polygons: json.data.polygons,
+        restrictedOperatingZones: json.data.restrictedOperatingZones,
+        survivors: json.data.survivors,
+        threatMarkers: json.data.threatMarkers
+      }
+
+      setHistory([...history, newStep])
+      setStep(step + 1)
+      toast('Scenario loaded to map', 'success')
+    } else {
+      toast('There was an error loading the scenario', 'error')
+    }
+  }
+
   return (
     <Box
       display='flex'
@@ -350,7 +421,9 @@ export default ({ state }) => {
               handleUndo={handleUndo}
               redoAction={(step === history.length - 1) ? '' : history[step + 1].action}
               redoDisabled={(step === history.length - 1)}
+              toggleLoadScenarioDialog={() => setLoadScenarioDialogOpen(!loadScenarioDialogOpen)}
               toggleSaveScenarioDialog={() => setSaveScenarioDialogOpen(!saveScenarioDialogOpen)}
+              toggleTooltips={() => setTooltipsActive(!tooltipsActive)}
               undoAction={(step === 0) ? '' : history[step].action}
               undoDisabled={(step === 0)}
             />
@@ -364,22 +437,22 @@ export default ({ state }) => {
             </IconButton>
           </div>
           <div className={classes.grow} />
-          {state.isAuthenticated && (
+          {/*state.isAuthenticated && (
             <AuthenticatedUserMenu
               handleMenuClose={handleMenuClose}
               handleMenuOpen={handleMenuOpen}
               menuAnchorElement={menuAnchorElement}
               menuOpen={menuOpen}
             />
-          )}
-          {!state.isAuthenticated && (
+          )*/}
+          {/*!state.isAuthenticated && (
             <UnauthenticatedUserMenu />
-          )}
+          )*/}
           <MinimizedMenu
             handleMarkerDrawerToggle={() => setMarkerDrawerOpen(!markerDrawerOpen)}
             handleMarkerSizeDecrease={(markerSize > minMarkerSize) ? () => setMarkerSize(markerSize - 1) : undefined}
             handleMarkerSizeIncrease={(markerSize < maxMarkerSize) ? () => setMarkerSize(markerSize + 1) : undefined}
-            handleClearMarkers={() => editMarkers('clear')}
+            handleClearMarkers={() => handleMarkerEdit('clear', {})}
             handleColorToggle={handleColorToggle}
             handleMinMenuClose={handleMinMenuClose}
             handleRedo={handleRedo}
@@ -388,7 +461,9 @@ export default ({ state }) => {
             minMenuAnchorElement={minMenuAnchorElement}
             redoAction={(step === history.length - 1) ? '' : history[step + 1].action}
             redoDisabled={(step === history.length - 1)}
+            toggleLoadScenarioDialog={() => setLoadScenarioDialogOpen(!loadScenarioDialogOpen)}
             toggleSaveScenarioDialog={() => setSaveScenarioDialogOpen(!saveScenarioDialogOpen)}
+            toggleTooltips={() => setTooltipsActive(!tooltipsActive)}
             undoAction={(step === 0) ? '' : history[step].action}
             undoDisabled={(step === 0)}
           />
@@ -404,7 +479,7 @@ export default ({ state }) => {
         >
           <LayerControl
             friendlyMarkers={history[step].friendlyMarkers}
-            handleMarkerDrag={(marker, latlng) => handleMarkerEdit('drag', {marker: marker, latlng: latlng})}
+            handleMarkerDrag={(marker, latlng) => handleMarkerEdit('drag', { marker: marker, latlng: latlng })}
             hostileMarkers={history[step].hostileMarkers}
             initialPoints={history[step].initialPoints}
             mapZoom={mapZoom}
@@ -413,7 +488,8 @@ export default ({ state }) => {
             survivors={history[step].survivors}
             threatMarkers={history[step].threatMarkers}
             toggleEditMarkerDialog={() => setEditMarkerDialogOpen(!editMarkerDialogOpen)}
-            handleDeleteMarker={marker => handleMarkerEdit('delete', {marker: marker})}
+            handleDeleteMarker={marker => handleMarkerEdit('delete', { marker: marker })}
+            tooltipsActive={tooltipsActive}
           />
           <ZoomControl position='topright' />
           <AnalysisTool
@@ -467,6 +543,26 @@ export default ({ state }) => {
         setMarkerLabel={setMarkerLabel}
         toggleEditThreatDialog={() => setEditThreatDialogOpen(!editThreatDialogOpen)}
       />
+      <Snackbar
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'left',
+        }}
+        key={snackbarMessage ? snackbarMessage.key : undefined}
+        open={snackbarOpen}
+        autoHideDuration={5000}
+        onClose={handleSnackbarClose}
+        onExited={() => setSnackbarMessage(undefined)}
+        action={
+          <IconButton size='small' aria-label='close' color='inherit' onClick={handleSnackbarClose}>
+            <CloseIcon fontSize='small' />
+          </IconButton>
+        }
+      >
+        <Alert severity={snackbarMessage ? snackbarMessage.severity : undefined} onClose={handleSnackbarClose}>
+          {snackbarMessage ? snackbarMessage.message : undefined}
+        </Alert>
+      </Snackbar>
       {
         (editMarkerDialogOpen) ?
           <EditMarkerDialog
@@ -501,12 +597,22 @@ export default ({ state }) => {
       }
       {
         (saveScenarioDialogOpen) ?
-        <SaveScenarioDialog
-          data={history[step]}
-          open={saveScenarioDialogOpen}
-          toggle={() => setSaveScenarioDialogOpen(!saveScenarioDialogOpen)}
-        />
-        : undefined
+          <SaveScenarioDialog
+            data={history[step]}
+            open={saveScenarioDialogOpen}
+            toast={(message, severity) => toast(message, severity)}
+            toggle={() => setSaveScenarioDialogOpen(!saveScenarioDialogOpen)}
+          />
+          : undefined
+      }
+      {
+        (loadScenarioDialogOpen) ?
+          <LoadScenarioDialog
+            open={loadScenarioDialogOpen}
+            submit={data => handleLoadScenario(data)}
+            toggle={() => setLoadScenarioDialogOpen(!loadScenarioDialogOpen)}
+          />
+          : undefined
       }
     </Box>
   )

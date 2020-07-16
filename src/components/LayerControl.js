@@ -38,7 +38,8 @@ import {
   Polygon,
   Polyline,
   Popup,
-  TileLayer
+  TileLayer,
+  Tooltip,
 } from 'react-leaflet'
 import L from 'leaflet'
 import { LatLon } from 'geodesy/mgrs'
@@ -191,13 +192,14 @@ export default (props) => {
               icon={L.icon({
                 type: marker.iconType,
                 iconUrl: marker.iconUrl,
-                iconSize: [props.markerSize * props.mapZoom, props.markerSize * props.mapZoom]
+                iconSize: [props.markerSize * props.mapZoom, props.markerSize * props.mapZoom],
               })}
               id={marker.id}
               key={`friendly-${marker.id}-${marker.title}`}
               onDragend={event => props.handleMarkerDrag(marker, event.target.getLatLng())}
               position={marker.latlng}
               riseOnHover={true}
+              title={marker.title}
             >
               <Popup>
                 {marker.title}
@@ -207,6 +209,17 @@ export default (props) => {
                 <Button color='primary' onClick={() => handleEditMarker(marker)}>Edit</Button>
                 <Button color='secondary' onClick={() => props.handleDeleteMarker(marker)}>Delete</Button>
               </Popup>
+              {(props.tooltipsActive) ?
+                <Tooltip
+                  direction='top'
+                  offset={L.point(0, -1 * props.markerSize * props.mapZoom)}
+                  opacity='1'
+                  permanent
+                >
+                  {marker.title}
+                </Tooltip>
+                : undefined
+              }
             </Marker>
           ))}
         </LayerGroup>
@@ -227,6 +240,7 @@ export default (props) => {
               onDragend={event => props.handleMarkerDrag(marker, event.target.getLatLng())}
               position={marker.latlng}
               riseOnHover={true}
+              title={marker.title}
             >
               <Popup>
                 {marker.title}
@@ -235,55 +249,66 @@ export default (props) => {
                 <br />
                 {
                   (marker.data !== null) ?
-                  <table>
-                    <tbody>
-                      <tr>
-                        <td>Label</td>
-                        <td>{marker.data.label}</td>
-                      </tr>
-                      <tr>
-                        <td>Type/Method</td>
-                        <td>{marker.data.typeMethod}</td>
-                      </tr>
-                      <tr>
-                        <td>IP / Hdg / Distance</td>
-                        <td>{marker.data.ipHdgDistance}</td>
-                      </tr>
-                      <tr>
-                        <td>Elevation</td>
-                        <td>{marker.data.elevation}</td>
-                      </tr>
-                      <tr>
-                        <td>Description</td>
-                        <td>{marker.data.description}</td>
-                      </tr>
-                      <tr>
-                        <td>Location</td>
-                        <td>{marker.data.location}</td>
-                      </tr>
-                      <tr>
-                        <td>Mark</td>
-                        <td>{marker.data.mark}</td>
-                      </tr>
-                      <tr>
-                        <td>Friendlies</td>
-                        <td>{marker.data.friendlies}</td>
-                      </tr>
-                      <tr>
-                        <td>Egress</td>
-                        <td>{marker.data.egress}</td>
-                      </tr>
-                      <tr>
-                        <td>Remarks/Restrictions</td>
-                        <td>{marker.data.remarks}</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                  : null
+                    <table>
+                      <tbody>
+                        <tr>
+                          <td>Label</td>
+                          <td>{marker.data.label}</td>
+                        </tr>
+                        <tr>
+                          <td>Type/Method</td>
+                          <td>{marker.data.typeMethod}</td>
+                        </tr>
+                        <tr>
+                          <td>IP / Hdg / Distance</td>
+                          <td>{marker.data.ipHdgDistance}</td>
+                        </tr>
+                        <tr>
+                          <td>Elevation</td>
+                          <td>{marker.data.elevation}</td>
+                        </tr>
+                        <tr>
+                          <td>Description</td>
+                          <td>{marker.data.description}</td>
+                        </tr>
+                        <tr>
+                          <td>Location</td>
+                          <td>{marker.data.location}</td>
+                        </tr>
+                        <tr>
+                          <td>Mark</td>
+                          <td>{marker.data.mark}</td>
+                        </tr>
+                        <tr>
+                          <td>Friendlies</td>
+                          <td>{marker.data.friendlies}</td>
+                        </tr>
+                        <tr>
+                          <td>Egress</td>
+                          <td>{marker.data.egress}</td>
+                        </tr>
+                        <tr>
+                          <td>Remarks/Restrictions</td>
+                          <td>{marker.data.remarks}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    : null
                 }
                 <Button color='primary' onClick={() => handleEditMarker(marker)}>Edit</Button>
                 <Button color='secondary' onClick={() => props.handleDeleteMarker(marker)}>Delete</Button>
               </Popup>
+              {(props.tooltipsActive) ?
+                <Tooltip
+                  direction='top'
+                  offset={L.point(0, -1 * props.markerSize * props.mapZoom)}
+                  opacity='1'
+                  permanent
+                >
+                  {marker.title}
+                </Tooltip>
+                : undefined
+              }
             </Marker>
           ))}
         </LayerGroup>
@@ -304,6 +329,7 @@ export default (props) => {
               onDragend={event => props.handleMarkerDrag(marker, event.target.getLatLng())}
               position={marker.latlng}
               riseOnHover={true}
+              title={marker.title}
             >
               <Popup>
                 {marker.title}
@@ -313,6 +339,17 @@ export default (props) => {
                 <Button color='primary' onClick={() => handleEditMarker(marker)}>Edit</Button>
                 <Button color='secondary' onClick={() => props.handleDeleteMarker(marker)}>Delete</Button>
               </Popup>
+              {(props.tooltipsActive) ?
+                <Tooltip
+                  direction='top'
+                  offset={L.point(0, -1 * props.markerSize * props.mapZoom)}
+                  opacity='1'
+                  permanent
+                >
+                  {marker.title}
+                </Tooltip>
+                : undefined
+              }
             </Marker>
           ))}
         </LayerGroup>
@@ -333,6 +370,7 @@ export default (props) => {
               onDragend={event => props.handleMarkerDrag(marker, event.target.getLatLng())}
               position={marker.latlng}
               riseOnHover={true}
+              title={marker.title}
             >
               <Popup>
                 {marker.title}
@@ -342,6 +380,17 @@ export default (props) => {
                 <Button color='primary' onClick={() => handleEditMarker(marker)}>Edit</Button>
                 <Button color='secondary' onClick={() => props.handleDeleteMarker(marker)}>Delete</Button>
               </Popup>
+              {(props.tooltipsActive) ?
+                <Tooltip
+                  direction='top'
+                  offset={L.point(0, -1 * props.markerSize * props.mapZoom)}
+                  opacity='1'
+                  permanent
+                >
+                  {marker.title}
+                </Tooltip>
+                : undefined
+              }
             </Marker>
           ))}
         </LayerGroup>
@@ -362,6 +411,7 @@ export default (props) => {
               onDragend={event => props.handleMarkerDrag(marker, event.target.getLatLng())}
               position={marker.latlng}
               riseOnHover={true}
+              title={marker.title}
             >
               <Popup>
                 {marker.title}
@@ -371,6 +421,17 @@ export default (props) => {
                 <Button color='primary' onClick={() => handleEditMarker(marker)}>Edit</Button>
                 <Button color='secondary' onClick={() => props.handleDeleteMarker(marker)}>Delete</Button>
               </Popup>
+              {(props.tooltipsActive) ?
+                <Tooltip
+                  direction='top'
+                  offset={L.point(0, -1 * props.markerSize * props.mapZoom)}
+                  opacity='1'
+                  permanent
+                >
+                  {marker.title}
+                </Tooltip>
+                : undefined
+              }
             </Marker>
           ))}
         </LayerGroup>

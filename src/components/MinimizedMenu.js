@@ -52,6 +52,7 @@ import MessageIcon from '@material-ui/icons/Message'
 import PhotoSizeSelectActualIcon from '@material-ui/icons/PhotoSizeSelectActual'
 import PhotoSizeSelectLargeIcon from '@material-ui/icons/PhotoSizeSelectLarge'
 import RedoIcon from '@material-ui/icons/Redo'
+import SaveAltIcon from '@material-ui/icons/SaveAlt'
 import SaveIcon from '@material-ui/icons/Save'
 import UndoIcon from '@material-ui/icons/Undo'
 import ViewListIcon from '@material-ui/icons/ViewList'
@@ -101,6 +102,16 @@ export default (props) => {
     props.toggleSaveScenarioDialog()
   }
 
+  const handleLoadScenarioClick = () => {
+    props.handleMinMenuClose()
+    props.toggleLoadScenarioDialog()
+  }
+
+  const handleToggleTooltipsClick = () => {
+    props.handleMinMenuClose()
+    props.toggleTooltips()
+  }
+
   return (
     <Menu
       anchorEl={props.minMenuAnchorElement}
@@ -114,7 +125,7 @@ export default (props) => {
         <IconButton color='inherit'>
           <AddPhotoAlternateIcon />
           <Typography variant='body1'>
-            Add Marker
+            Add marker
           </Typography>
         </IconButton>
       </MenuItem>
@@ -144,7 +155,7 @@ export default (props) => {
         <IconButton color='inherit'>
           <ClearIcon />
           <Typography variant='body1'>
-            Clear All Markers
+            Clear all markers
           </Typography>
         </IconButton>
       </MenuItem>
@@ -152,7 +163,7 @@ export default (props) => {
         <IconButton color='inherit'>
           <PhotoSizeSelectActualIcon />
           <Typography variant='body1'>
-            Increase Marker Size
+            Increase marker size
           </Typography>
         </IconButton>
       </MenuItem>
@@ -160,7 +171,7 @@ export default (props) => {
         <IconButton color='inherit'>
           <PhotoSizeSelectLargeIcon />
           <Typography variant='body1'>
-            Decrease Marker Size
+            Decrease marker size
           </Typography>
         </IconButton>
       </MenuItem>
@@ -168,7 +179,7 @@ export default (props) => {
         <IconButton color='inherit'>
           <ColorLensIcon />
           <Typography variant='body1'>
-            Toggle Color
+            Toggle color
           </Typography>
         </IconButton>
       </MenuItem>
@@ -176,7 +187,7 @@ export default (props) => {
         <IconButton color='inherit' disabled>
           <ListAltIcon />
           <Typography variant='body1'>
-            COF Tools
+            CONOP tools
           </Typography>
         </IconButton>
       </MenuItem>
@@ -184,23 +195,31 @@ export default (props) => {
         <IconButton color='inherit' disabled>
           <ViewListIcon />
           <Typography variant='body1'>
-            View Marker List
+            View marker list
           </Typography>
         </IconButton>
       </MenuItem>
-      <MenuItem onClick={props.handleMinMenuClose}>
-        <IconButton color='inherit' disabled>
+      <MenuItem onClick={handleToggleTooltipsClick}>
+        <IconButton color='inherit'>
           <MessageIcon />
           <Typography variant='body1'>
-            Toggle Marker Labels
+            Toggle marker labels
           </Typography>
         </IconButton>
       </MenuItem>
-      <MenuItem onClick={props.handleMinMenuClose}>
+      <MenuItem onClick={handleSaveScenarioClick}>
         <IconButton color='inherit'>
           <SaveIcon />
           <Typography variant='body1'>
-            Save Scenario
+            Save scenario
+          </Typography>
+        </IconButton>
+      </MenuItem>
+      <MenuItem onClick={handleLoadScenarioClick}>
+        <IconButton color='inherit'>
+          <SaveAltIcon />
+          <Typography variant='body1'>
+            Load scenario
           </Typography>
         </IconButton>
       </MenuItem>
@@ -208,7 +227,7 @@ export default (props) => {
         <IconButton color='inherit' disabled>
           <GetAppIcon />
           <Typography variant='body1'>
-            Download Products
+            Download products
           </Typography>
         </IconButton>
       </MenuItem>

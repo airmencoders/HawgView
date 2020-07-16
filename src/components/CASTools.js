@@ -50,6 +50,7 @@ import MessageIcon from '@material-ui/icons/Message'
 import PhotoSizeSelectActualIcon from '@material-ui/icons/PhotoSizeSelectActual'
 import PhotoSizeSelectLargeIcon from '@material-ui/icons/PhotoSizeSelectLarge'
 import RedoIcon from '@material-ui/icons/Redo'
+import SaveAltIcon from '@material-ui/icons/SaveAlt'
 import SaveIcon from '@material-ui/icons/Save'
 import UndoIcon from '@material-ui/icons/Undo'
 import ViewListIcon from '@material-ui/icons/ViewList'
@@ -61,7 +62,7 @@ export default (props) => {
 
   return (
     <React.Fragment>
-      <Tooltip title='Add Marker'>
+      <Tooltip title='Add marker'>
         <IconButton
           color='inherit'
           onClick={props.handleMarkerDrawerToggle}
@@ -91,7 +92,7 @@ export default (props) => {
           </IconButton>
         </span>
       </Tooltip>
-      <Tooltip title='Clear All Markers'>
+      <Tooltip title='Clear all markers'>
         <IconButton
           color='inherit'
           onClick={props.handleClearMarkers}
@@ -99,7 +100,7 @@ export default (props) => {
           <ClearIcon />
         </IconButton>
       </Tooltip>
-      <Tooltip title='Increase Marker Size'>
+      <Tooltip title='Increase marker size'>
         <IconButton
           color='inherit'
           onClick={props.handleMarkerSizeIncrease}
@@ -107,7 +108,7 @@ export default (props) => {
           <PhotoSizeSelectActualIcon />
         </IconButton>
       </Tooltip>
-      <Tooltip title='Decrease Marker Size'>
+      <Tooltip title='Decrease marker size'>
         <IconButton
           color='inherit'
           onClick={props.handleMarkerSizeDecrease}
@@ -115,7 +116,7 @@ export default (props) => {
           <PhotoSizeSelectLargeIcon />
         </IconButton>
       </Tooltip>
-      <Tooltip title='Toggle Color'>
+      <Tooltip title='Toggle color'>
         <IconButton
           color='inherit'
           onClick={props.handleColorToggle}
@@ -123,28 +124,31 @@ export default (props) => {
           <ColorLensIcon />
         </IconButton>
       </Tooltip>
-      <Tooltip title='COF Tools'>
+      <Tooltip title='CONOP tools'>
         <span>
           <IconButton color='inherit' disabled>
             <ListAltIcon />
           </IconButton>
         </span>
       </Tooltip>
-      <Tooltip title='View Marker List'>
+      <Tooltip title='View marker list'>
         <span>
           <IconButton color='inherit' disabled>
             <ViewListIcon />
           </IconButton>
         </span>
       </Tooltip>
-      <Tooltip title='Toggle Marker Labels'>
+      <Tooltip title='Toggle marker labels'>
         <span>
-          <IconButton color='inherit' disabled>
+          <IconButton 
+            color='inherit'
+            onClick={props.toggleTooltips}
+          >
             <MessageIcon />
           </IconButton>
         </span>
       </Tooltip>
-      <Tooltip title='Save Scenario'>
+      <Tooltip title='Save scenario'>
         <IconButton
           color='inherit'
           onClick={props.toggleSaveScenarioDialog}
@@ -152,7 +156,15 @@ export default (props) => {
           <SaveIcon />
         </IconButton>
       </Tooltip>
-      <Tooltip title='Download Products'>
+      <Tooltip title='Load scenario'>
+          <IconButton
+            color='inherit'
+            onClick={props.toggleLoadScenarioDialog}
+          >
+            <SaveAltIcon />
+          </IconButton>
+      </Tooltip>
+      <Tooltip title='Download products'>
         <span>
           <IconButton color='inherit' disabled>
             <GetAppIcon />

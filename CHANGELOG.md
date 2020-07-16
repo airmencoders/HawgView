@@ -1,4 +1,14 @@
+## 2.9.0-alpha
+### Changes
+* Added load scenario functionality
+* Added Tooltip toggling
+* Added Toasts for Save/Load functions
+* Changed UX elements to use sentence case
+* Removed the Log In button from the navigation for now (Re-add later)
+* Removed the switch case from `classification-banner` for now (Potential to re-add later)
+
 ## 2.8.0-alpha
+### Changes
 * Finished updating the editMarkers functions to use an Object Payload versus multiple parameters for simplicity
 * Continued updating components to use props versus deconstructing props
 * Disabled toolbar options that are currently not supported
@@ -91,7 +101,7 @@
 - [x] Add `9-Line` functionality to `hostile markers` - (`2.7.0-alpha`)
 - [ ] Add `15-Line` functionality to `survivor markers`
 - [x] Add `MGRS` or `Lat/Lon` input to map - (`2.4.0-alpha`)
-- [ ] Add Edit marker functionality
+- [x] Add Edit marker functionality - (`2.5.0-alpha`)
 - [x] Add Delete marker functionality - (`2.5.0-alpha`)
 
 ## Farther off Tasks
@@ -102,7 +112,7 @@
 - [ ] Add `IP Run card` functionality to site
 - [ ] Add `Download Products` functionality to site
 - [x] Add `Save Scenario` functionality to site - (`2.8.0-alpha`)
-- [ ] Add `Load Scenario` functionality to site
+- [x] Add `Load Scenario` functionality to site - (`2.9.0-alpha`)
 - [ ] Add `Overwrite Scenario` functionality to site
 - [ ] Testing
 - [ ] Add entirety of back end handling to site
@@ -110,4 +120,4 @@
 - [ ] Add `NGA Maps` to site
 - [ ] Add `TAK Maps` to site
 - [ ] Fix ruler touch events
-- [ ] Research into using React's `context` API for passing props to children
+- ~~[ ] Research into using React's `context` API for passing props to children~~

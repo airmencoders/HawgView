@@ -30,12 +30,6 @@
 //export const editMarkers = (action, history, step, iconType, color, src, title, sovereignty, threatSovereignty, id, latlng, marker, data) => {
 export const editMarkers = (action, history, step, payload) => {
 
-  console.log('---- EDIT MARKERS FUNCTION ----')
-  console.log('Action:', action)
-  console.log('History:', history)
-  console.log('Step:', step)
-  console.log('Payload:', payload)
-
   switch (action) {
     case 'clear':
       return clearMarkers(history, step)
@@ -72,7 +66,7 @@ const clearMarkers = (history, step) => {
     history[step].threatMarkers.length > 0) {
 
     return {
-      action: 'Clear Markers',
+      action: 'clear markers',
       buildingLabels: [],
       combatAirPatrols: [],
       engagementAreas: [],
@@ -125,31 +119,31 @@ const createMarker = (history, step, payload) => {
       case 'friendly':
         return {
           ...targetHistory[step],
-          action: `Create ${payload.title}`,
+          action: `create ${payload.title}`,
           friendlyMarkers: [...targetHistory[step].friendlyMarkers, marker]
         }
       case 'hostile':
         return {
           ...targetHistory[step],
-          action: `Create ${payload.title}`,
+          action: `create ${payload.title}`,
           hostileMarkers: [...targetHistory[step].hostileMarkers, marker]
         }
       case 'ip':
         return {
           ...targetHistory[step],
-          action: `Create ${payload.title}`,
+          action: `create ${payload.title}`,
           initialPoints: [...targetHistory[step].initialPoints, marker]
         }
       case 'survivor':
         return {
           ...targetHistory[step],
-          action: `Create ${payload.title}`,
+          action: `create ${payload.title}`,
           survivors: [...targetHistory[step].survivors, marker]
         }
       case 'threat':
         return {
           ...targetHistory[step],
-          action: `Create ${payload.title}`,
+          action: `create ${payload.title}`,
           threatMarkers: [...targetHistory[step].threatMarkers, marker]
         }
       default:
@@ -168,31 +162,31 @@ const deleteMarker = (history, step, payload) => {
     case 'friendly':
       return {
         ...history[step],
-        action: `Delete ${marker.title}`,
+        action: `delete ${marker.title}`,
         friendlyMarkers: history[step].friendlyMarkers.filter(fMarker => fMarker.id !== marker.id)
       }
     case 'hostile':
       return {
         ...history[step],
-        action: `Delete ${marker.title}`,
+        action: `delete ${marker.title}`,
         hostileMarkers: history[step].hostileMarkers.filter(hMarker => hMarker.id !== marker.id)
       }
     case 'threat':
       return {
         ...history[step],
-        action: `Delete ${marker.title}`,
+        action: `delete ${marker.title}`,
         threatMarkers: history[step].threatMarkers.filter(tMarker => tMarker.id !== marker.id)
       }
     case 'ip':
       return {
         ...history[step],
-        action: `Delete ${marker.title}`,
+        action: `delete ${marker.title}`,
         initialPoints: history[step].initialPoints.filter(iMarker => iMarker.id !== marker.id)
       }
     case 'survivor':
       return {
         ...history[step],
-        action: `Delete ${marker.title}`,
+        action: `delete ${marker.title}`,
         survivors: history[step].survivors.filter(sMarker => sMarker.id !== marker.id)
       }
     default:
@@ -228,7 +222,7 @@ const dragMarker = (history, step, payload) => {
 
       return {
         ...targetHistory[step],
-        action: `Move ${marker.title}`,
+        action: `move ${marker.title}`,
         friendlyMarkers: [...filteredMarkers, newMarker]
       }
     case 'hostile':
@@ -240,7 +234,7 @@ const dragMarker = (history, step, payload) => {
 
       return {
         ...targetHistory[step],
-        action: `Move ${marker.title}`,
+        action: `move ${marker.title}`,
         hostileMarkers: [...filteredMarkers, newMarker]
       }
     case 'ip':
@@ -252,7 +246,7 @@ const dragMarker = (history, step, payload) => {
 
       return {
         ...targetHistory[step],
-        action: `Move ${marker.title}`,
+        action: `move ${marker.title}`,
         initialPoints: [...filteredMarkers, newMarker]
       }
     case 'survivor':
@@ -264,7 +258,7 @@ const dragMarker = (history, step, payload) => {
 
       return {
         ...targetHistory[step],
-        action: `Move ${marker.title}`,
+        action: `move ${marker.title}`,
         survivors: [...filteredMarkers, newMarker]
       }
     case 'threat':
@@ -276,7 +270,7 @@ const dragMarker = (history, step, payload) => {
 
       return {
         ...targetHistory[step],
-        action: `Move ${marker.title}`,
+        action: `move ${marker.title}`,
         threatMarkers: [...filteredMarkers, newMarker]
       }
     default:
@@ -309,7 +303,7 @@ const editMarker = (history, step, payload) => {
 
       return {
         ...targetHistory[step],
-        action: `Edit ${marker.title}`,
+        action: `edit ${marker.title}`,
         friendlyMarkers: [...filteredMarkers, newMarker]
       }
     case 'hostile':
@@ -324,7 +318,7 @@ const editMarker = (history, step, payload) => {
 
       return {
         ...targetHistory[step],
-        action: `Edit ${marker.title}`,
+        action: `edit ${marker.title}`,
         hostileMarkers: [...filteredMarkers, newMarker]
       }
     case 'ip':
@@ -339,7 +333,7 @@ const editMarker = (history, step, payload) => {
 
       return {
         ...targetHistory[step],
-        action: `Edit ${marker.title}`,
+        action: `edit ${marker.title}`,
         initialPoints: [...filteredMarkers, newMarker]
       }
     case 'survivor':
@@ -354,7 +348,7 @@ const editMarker = (history, step, payload) => {
 
       return {
         ...targetHistory[step],
-        action: `Edit ${marker.title}`,
+        action: `edit ${marker.title}`,
         survivors: [...filteredMarkers, newMarker]
       }
     case 'threat':
@@ -369,11 +363,11 @@ const editMarker = (history, step, payload) => {
 
       return {
         ...targetHistory[step],
-        action: `Edit ${marker.title}`,
+        action: `edit ${marker.title}`,
         threatMarkers: [...filteredMarkers, newMarker]
       }
     default:
-      console.error(`Error: Could not drag marker (${marker}). Invalid layer (${marker.layer})`)
+      console.error(`Error: Could not move marker (${marker}). Invalid layer (${marker.layer})`)
       return false
   }
 }

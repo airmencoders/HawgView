@@ -44,21 +44,17 @@ import Typography from '@material-ui/core/Typography'
 //----------------------------------------------------------------//
 export default ({ classification = 'unclassified' }) => {
 
-  const [bannerColor, setBannerColor] = React.useState('green')
-  const textColor = 'black'
+  /**
+   * SF-710 WHITE ON GREEN:     #007A33 / #FFFFFF
+   * SF-708 WHITE ON BLUE:      #0033A0 / #FFFFFF
+   * SF-707 WHITE ON RED:       #C8102E / #FFFFFF
+   * SF-706 WHITE ON ORANGE:    #FF671F / #FFFFFF
+   * SF-712 BLACK ON YELLOW:    #F7EA48 / #000000
+   * SF-709 BLACK ON LAVENDER:  #C1A7E2 / #000000 
+   */
 
-  React.useEffect(() => {
-    switch (classification.charAt(0)) {
-      case 's':
-        setBannerColor('red')
-        break
-      case 't':
-        setBannerColor('yellow')
-        break
-      default:
-        break
-    }
-  }, [classification])
+  const [bannerColor, setBannerColor] = React.useState('#007A33')
+  const [textColor, setTextColor] = '#FFFFFF'
 
   return (
     <AppBar

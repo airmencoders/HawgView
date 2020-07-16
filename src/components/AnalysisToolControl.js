@@ -74,7 +74,7 @@ export default ({ analysisToolActive, handleAnalysisToolToggle }) => {
     <Control position='topright'>
       <Tooltip
         placement='left'
-        title='Analysis Tool: Press ESC to finish, twice to exit'
+        title='Analysis tool: Press ESC to finish, twice to exit'
       >
         <Button
           className={classes.button}
