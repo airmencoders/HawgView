@@ -41,6 +41,8 @@ export const editMarkers = (action, history, step, payload) => {
       return dragMarker(history, step, payload)
     case 'edit':
       return editMarker(history, step, payload)
+    case '9line':
+      return edit9Line(history, step, payload)
     default:
       console.error(`Error: Invalid action ${action}`)
       return false
@@ -96,21 +98,6 @@ const clearMarkers = (history, step) => {
 const createMarker = (history, step, payload) => {
 
   if (payload.latlng !== null) {
-    /*const marker = {
-      color: payload.color,
-      data: payload.data,
-      elevation: payload.elevation,
-      iconType: payload.iconType,
-      iconUrl: payload.iconUrl,
-      id: payload.id,
-      latlng: payload.latlng,
-      layer: payload.layer,
-      range: payload.range,
-      sovereignty: payload.sovereignty,
-      threatType: payload.threatType,
-      title: payload.title,
-    }*/
-
     let targetHistory
     if (step === history.length - 1) {
       targetHistory = history.slice()
@@ -159,7 +146,7 @@ const createMarker = (history, step, payload) => {
 }
 
 const deleteMarker = (history, step, payload) => {
-  const marker = {...payload.marker}
+  const marker = { ...payload.marker }
 
   switch (marker.layer) {
     case 'friendly':
@@ -267,6 +254,44 @@ const dragMarker = (history, step, payload) => {
   }
 }
 
+const edit9Line = (history, step, payload) => {
+  let targetHistory, filteredMarkers
+  const marker = payload.marker
+
+  if (step === history.length - 1) {
+    targetHistory = history.slice()
+  } else {
+    targetHistory = history.slice(0, step + 1)
+  }
+
+  const newMarker = {
+    ...marker,
+    data: payload.data,
+  }
+
+  switch (marker.layer) {
+    case 'hostile':
+      filteredMarkers = targetHistory[step].hostileMarkers.filter(currentMarker => currentMarker.id !== marker.id)
+
+      return {
+        ...targetHistory[step],
+        action: `edit ${marker.title}`,
+        hostileMarkers: [...filteredMarkers, newMarker]
+      }
+    case 'threat':
+      filteredMarkers = targetHistory[step].threatMarkers.filter(currentMarker => currentMarker.id !== marker.id)
+     
+      return {
+        ...targetHistory[step],
+        action: `edit ${marker.title}`,
+        threatMarkers: [...filteredMarkers, newMarker]
+      }
+    default:
+      console.error(`Error: Could not edit marker (${marker}). Invalid layer (${marker.layer})`)
+      return false
+  }
+}
+
 const editMarker = (history, step, payload) => {
   let targetHistory, filteredMarkers, newMarker
 
@@ -331,11 +356,17 @@ const editMarker = (history, step, payload) => {
       }
     case 'threat':
       filteredMarkers = targetHistory[step].threatMarkers.filter(currentMarker => currentMarker.id !== marker.id)
+
       newMarker = {
         ...marker,
         data: payload.data,
+        fill: payload.fill,
+        label: payload.label,
+        range: payload.range,
         sovereignty: payload.sovereignty,
+        threatType: payload.threatType,
         title: payload.title,
+        unit: payload.unit,
       }
 
       return {
@@ -344,7 +375,7 @@ const editMarker = (history, step, payload) => {
         threatMarkers: [...filteredMarkers, newMarker]
       }
     default:
-      console.error(`Error: Could not move marker (${marker}). Invalid layer (${marker.layer})`)
+      console.error(`Error: Could not edit marker (${marker}). Invalid layer (${marker.layer})`)
       return false
   }
 }

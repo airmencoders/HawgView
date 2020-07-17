@@ -8,10 +8,12 @@ import DialogContent from '@material-ui/core/DialogContent'
 import DialogContentText from '@material-ui/core/DialogContentText'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import FormControl from '@material-ui/core/FormControl'
+import FormControlLabel from '@material-ui/core/FormControlLabel'
 import InputLabel from '@material-ui/core/InputLabel'
 import { makeStyles } from '@material-ui/core/styles'
 import MenuItem from '@material-ui/core/MenuItem'
 import Select from '@material-ui/core/Select'
+import Switch from '@material-ui/core/Switch'
 import TextField from '@material-ui/core/TextField'
 
 import { sovereignties } from '../constants/threats'
@@ -29,7 +31,7 @@ const useStyles = makeStyles(theme => ({
     marginLeft: theme.spacing(1),
     marginTop: '3px',
   },
-  fullWidthFormControl : {
+  fullWidthFormControl: {
     display: 'flex',
     marginTop: theme.spacing(1),
   },
@@ -44,19 +46,20 @@ const useStyles = makeStyles(theme => ({
 export default (props) => {
   const classes = useStyles()
 
-  const [custom, setCustom] = React.useState(true)
-  const [threat, setThreat] = React.useState(0)
-  const [label, setLabel] = React.useState('')
-  const [range, setRange] = React.useState('3')
-  const [unit, setUnit] = React.useState('NM')
-  const [sovereignty, setSovereignty] = React.useState('Hostile')
+  const [custom, setCustom] = React.useState(props.marker ? props.marker.threatType.title === 'Custom' ? true : false : true)
+  const [fill, setFill] = React.useState(props.marker ? props.marker.fill : false)
+  const [threat, setThreat] = React.useState(props.marker ? threats.indexOf(props.marker.threatType) : 0)
+  const [label, setLabel] = React.useState(props.marker ? props.marker.label : '')
+  const [range, setRange] = React.useState(props.marker ? props.marker.range : '3')
+  const [unit, setUnit] = React.useState(props.marker ? props.marker.unit : 'NM')
+  const [sovereignty, setSovereignty] = React.useState(props.marker ? props.marker.sovereignty : 'Hostile')
 
   const handleThreatChange = event => {
     setThreat(event.target.value)
     setRange(threats[event.target.value].range)
     setUnit('NM')
-    
-    if(event.target.value === 0) {
+
+    if (event.target.value === 0) {
       setLabel('')
       setCustom(true)
     } else {
@@ -66,21 +69,32 @@ export default (props) => {
   }
 
   const handleSubmit = () => {
-    if(props.marker === null) {
+    if (props.marker === null) {
       props.submit('create', {
         data: null,
         elevation: 0,
+        fill: fill,
         iconType: 'div',
         label: custom ? label : threats[threat].label,
         layer: 'threat',
-        range: range,
+        range: range === '' ? '1' : range,
         sovereignty: sovereignty,
         threatType: threats[threat],
-        title: label === '' ? 'Threat' : label,
+        title: label,
         unit: unit,
       })
     } else {
-      console.log('Edit Threat Not Available Yet')
+      props.submit('edit', {
+        marker: props.marker,
+        data: props.marker.data,
+        fill: fill,
+        label: custom ? label : threats[threat].label,
+        range: range === '' ? '1' : range,
+        sovereignty: sovereignty,
+        threatType: threats[threat],
+        title: label,
+        unit: unit,
+      })
     }
 
     props.toggle()
@@ -92,7 +106,7 @@ export default (props) => {
       open={props.open}
       onClose={props.toggle}
     >
-      <DialogTitle>Edit threat</DialogTitle>
+      <DialogTitle>{props.marker ? 'Edit threat' : 'Create threat'}</DialogTitle>
       <DialogContent>
         <FormControl
           className={classes.flex}
@@ -183,15 +197,29 @@ export default (props) => {
             ))}
           </Select>
         </FormControl>
+        <FormControlLabel
+          control={
+            <Switch
+              checked={fill}
+              onChange={event => setFill(event.target.checked)}
+              color='primary'
+            />
+          }
+          label='Fill'
+        />
       </DialogContent>
-    <DialogActions>
-      <Button color='primary'>Edit 9-Line</Button>
-      <Button color='secondary'>Delete 9-Line</Button>
-    </DialogActions>
-    <DialogActions>
-      <Button onClick={handleSubmit} color='primary'>Create Threat</Button>
-      <Button onClick={props.toggle}>Cancel</Button>
-    </DialogActions>
+      {props.marker && sovereignty !== 'Friendly' ? (
+        <DialogActions>
+          <Button color='primary' onClick={() => props.toggle9LineDialog()}>Edit 9-line</Button>
+          <Button color='secondary' onClick={() => props.submit('9line', { marker: props.marker, data: null })}>Delete 9-line</Button>
+        </DialogActions>
+      )
+        : undefined
+      }
+      <DialogActions>
+        <Button onClick={handleSubmit} color='primary'>Save changes</Button>
+        <Button onClick={(props.toggle)}>Cancel</Button>
+      </DialogActions>
     </Dialog >
   )
 }

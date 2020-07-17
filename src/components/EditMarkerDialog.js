@@ -21,13 +21,18 @@ export default (props) => {
 
   const [title, setTitle] = React.useState(props.marker.title)
 
-  const handleSave = () => {
-    props.submit({
+  const handleMarkerSave = () => {
+    props.submit('edit', {
+      marker: props.marker,
+      title: title,
+    })
+  }
+
+  const handleBuildingLabelSave = () => {
+    props.submit('edit', {
       marker: props.marker,
       title: title,
       color: props.marker.color,
-      data: props.marker.data,
-      sovereignty: props.marker.sovereignty,
     })
   }
 
@@ -59,7 +64,7 @@ export default (props) => {
               </Button>
               <Button
                 color='secondary'
-                onClick={() => props.submit({marker: props.marker, title: title, data: null})}
+                onClick={() => props.submit('9line', {marker: props.marker, data: null})}
               >
                 Delete 9-line
               </Button>
@@ -68,7 +73,7 @@ export default (props) => {
         }
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleSave} color='primary'>Save changes</Button>
+        <Button onClick={handleMarkerSave} color='primary'>Save changes</Button>
         <Button onClick={props.toggle}>Cancel</Button>
       </DialogActions>
     </Dialog>

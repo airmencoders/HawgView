@@ -70,32 +70,48 @@ export default (props) => {
 
   const useStyles = makeStyles(() => ({
     hostileThreat: {
-      fontSize: props.markerSize * props.mapZoom,
-      lineHeight: `${props.markerSize * props.mapZoom / 2}px`,
-      marginLeft: '-50%',
+      alignItems: 'center',
       color: 'red',
-      width: '200%',
+      display: 'flex',
+      fontSize: props.markerSize * props.mapZoom,
+      justifyContent: 'center',
+      margin: '0',
+      textAlign: 'center',
+      lineHeight: `${props.markerSize * props.mapZoom}px`,
+      wordWrap: 'break-word',
     },
     suspectThreat: {
-      fontSize: props.markerSize * props.mapZoom,
-      lineHeight: `${props.markerSize * props.mapZoom / 2}px`,
-      marginLeft: '-50%',
+      alignItems: 'center',
       color: 'yellow',
-      width: '200%',
+      display: 'flex',
+      fontSize: props.markerSize * props.mapZoom,
+      justifyContent: 'center',
+      margin: '0',
+      textAlign: 'center',
+      lineHeight: `${props.markerSize * props.mapZoom}px`,
+      wordWrap: 'break-word',
     },
     unknownThreat: {
-      fontSize: props.markerSize * props.mapZoom,
-      lineHeight: `${props.markerSize * props.mapZoom / 2}px`,
-      marginLeft: '-50%',
+      alignItems: 'center',
       color: 'white',
-      width: '200%',
+      display: 'flex',
+      fontSize: props.markerSize * props.mapZoom,
+      justifyContent: 'center',
+      margin: '0',
+      textAlign: 'center',
+      lineHeight: `${props.markerSize * props.mapZoom}px`,
+      wordWrap: 'break-word',
     },
     friendlyThreat: {
-      fontSize: props.markerSize * props.mapZoom,
-      lineHeight: `${props.markerSize * props.mapZoom / 2}px`,
-      marginLeft: '-50%',
+      alignItems: 'center',
       color: 'lime',
-      width: '200%',
+      display: 'flex',
+      fontSize: props.markerSize * props.mapZoom,
+      justifyContent: 'center',
+      margin: '0',
+      textAlign: 'center',
+      lineHeight: `${props.markerSize * props.mapZoom}px`,
+      wordWrap: 'break-word',
     },
   }))
 
@@ -104,6 +120,11 @@ export default (props) => {
   const handleEditMarker = marker => {
     props.setFocusedMarker(marker)
     props.toggleEditMarkerDialog()
+  }
+
+  const handleEditThreat = marker => {
+    props.setFocusedMarker(marker)
+    props.toggleEditThreatDialog()
   }
 
   return (
@@ -342,15 +363,17 @@ export default (props) => {
       <Overlay checked name='Threat Markers'>
         <LayerGroup>
           {props.threatMarkers.map(marker => (
-            <React.Fragment key={`threat-${marker.id}-${marker.title}`} >
+            <React.Fragment key={`threat-${marker.id}`}>
               <Marker
                 autoPan={true}
+                className={classes.hostileThreat}
                 draggable={true}
                 icon={L.divIcon({
                   className: marker.sovereignty === 'Hostile' ? classes.hostileThreat : marker.sovereignty === 'Suspect' ? classes.suspectThreat : marker.sovereignty === 'Unknown' ? classes.unknownThreat : classes.friendlyThreat,
                   html: marker.label,
+                  iconSize: [props.markerSize * props.mapZoom, props.markerSize * props.mapZoom],
                 })}
-                id={marker.id}                
+                id={marker.id}
                 onDragend={event => props.handleMarkerDrag(marker, event.target.getLatLng())}
                 position={marker.latlng}
                 riseOnHover={true}
@@ -361,7 +384,55 @@ export default (props) => {
                   <br />
                   {LatLon.parse(marker.latlng.lat, marker.latlng.lng).toUtm().toMgrs().toString()}
                   <br />
-                  <Button color='primary' onClick={() => handleEditMarker(marker)}>Edit</Button>
+                  {
+                  (marker.data !== null) ?
+                    <table>
+                      <tbody>
+                        <tr>
+                          <td>Label</td>
+                          <td>{marker.data.label}</td>
+                        </tr>
+                        <tr>
+                          <td>Type/Method</td>
+                          <td>{marker.data.typeMethod}</td>
+                        </tr>
+                        <tr>
+                          <td>IP / Hdg / Distance</td>
+                          <td>{marker.data.ipHdgDistance}</td>
+                        </tr>
+                        <tr>
+                          <td>Elevation</td>
+                          <td>{marker.data.elevation}</td>
+                        </tr>
+                        <tr>
+                          <td>Description</td>
+                          <td>{marker.data.description}</td>
+                        </tr>
+                        <tr>
+                          <td>Location</td>
+                          <td>{marker.data.location}</td>
+                        </tr>
+                        <tr>
+                          <td>Mark</td>
+                          <td>{marker.data.mark}</td>
+                        </tr>
+                        <tr>
+                          <td>Friendlies</td>
+                          <td>{marker.data.friendlies}</td>
+                        </tr>
+                        <tr>
+                          <td>Egress</td>
+                          <td>{marker.data.egress}</td>
+                        </tr>
+                        <tr>
+                          <td>Remarks/Restrictions</td>
+                          <td>{marker.data.remarks}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    : null
+                }
+                  <Button color='primary' onClick={() => handleEditThreat(marker)}>Edit</Button>
                   <Button color='secondary' onClick={() => props.handleDeleteMarker(marker)}>Delete</Button>
                 </Popup>
                 {(props.tooltipsActive) ?
@@ -380,7 +451,7 @@ export default (props) => {
                 center={marker.latlng}
                 color={marker.sovereignty === 'Hostile' ? 'red' : marker.sovereignty === 'Suspect' ? 'yellow' : marker.sovereignty === 'Unknown' ? 'White' : 'Lime'}
                 dashArray='12, 12'
-                fill={false}
+                fill={marker.fill}
                 radius={marker.unit === 'm' ? marker.range : marker.unit === 'km' ? marker.range * 1000 : marker.range * 1852}
               />
             </React.Fragment>

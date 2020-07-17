@@ -305,7 +305,7 @@ export default ({ state }) => {
    * @param {Object} marker The marker object (edit | delete)
    */
   const handleMarkerEdit = (action, payload) => {
-    const supportedActions = ['clear', 'create', 'delete', 'drag', 'edit']
+    const supportedActions = ['clear', 'create', 'delete', 'drag', 'edit', '9line']
 
     if (supportedActions.includes(action)) {
 
@@ -349,6 +349,7 @@ export default ({ state }) => {
         }
         setFocusedMarker(null)
         setEditMarkerDialogOpen(false)
+        setEditThreatDialogOpen(false)
         setEdit9LineDialogOpen(false)
       }
     } else {
@@ -495,6 +496,7 @@ export default ({ state }) => {
             survivors={history[step].survivors}
             threatMarkers={history[step].threatMarkers}
             toggleEditMarkerDialog={() => setEditMarkerDialogOpen(!editMarkerDialogOpen)}
+            toggleEditThreatDialog={() => setEditThreatDialogOpen(!editThreatDialogOpen)}
             handleDeleteMarker={marker => handleMarkerEdit('delete', { marker: marker })}
             tooltipsActive={tooltipsActive}
           />
@@ -576,7 +578,7 @@ export default ({ state }) => {
             //deleteData={marker => handleMarkerEdit('edit', {marker: marker, data: null})}
             open={editMarkerDialogOpen}
             marker={focusedMarker}
-            submit={payload => handleMarkerEdit('edit', payload)}
+            submit={(action, payload) => handleMarkerEdit(action, payload)}
             toggle={() => setEditMarkerDialogOpen(!editMarkerDialogOpen)}
             toggle9LineDialog={() => setEdit9LineDialogOpen(!edit9LineDialogOpen)}
           />
@@ -587,7 +589,7 @@ export default ({ state }) => {
           <Edit9LineDialog
             open={edit9LineDialogOpen}
             marker={focusedMarker}
-            submit={payload => handleMarkerEdit('edit', payload)}
+            submit={payload => handleMarkerEdit('9line', payload)}
             toggle={() => setEdit9LineDialogOpen(!edit9LineDialogOpen)}
           />
           : undefined
@@ -599,6 +601,7 @@ export default ({ state }) => {
             marker={focusedMarker}
             submit={(action, payload) => handleMarkerEdit(action, payload)}
             toggle={() => setEditThreatDialogOpen(!editThreatDialogOpen)}
+            toggle9LineDialog={() => setEdit9LineDialogOpen(!edit9LineDialogOpen)}
           />
           : undefined
       }

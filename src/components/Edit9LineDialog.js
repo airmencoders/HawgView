@@ -48,10 +48,7 @@ export default (props) => {
 
     props.submit({
       marker: props.marker,
-      color: props.marker.color,
       data: data,
-      sovereignty: props.marker.sovereignty,
-      title: props.marker.title,
     })
   }
 

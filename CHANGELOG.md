@@ -1,4 +1,15 @@
-## 2.10.0-alphas
+## 2.11.0-alpha
+### Changes
+* Added 'fill' option to `EditThreatDialog`
+* Threat markers now open the `EditThreatDialog` instead of the standard `EditMarkerDialog`
+* Any non-friendly threat can have 9-line data attached to it
+* Changed text to go from `Create threat` to `Edit threat` as appropriate and button now displays `Save Changes`
+* Updated `LayerControl` to display 9-line data appropriately for threats
+
+### Fixes
+* Fixed weird bug dealing with `Array.map` `key` value when changing the label to blank causing render issues with threats
+
+## 2.10.0-alpha
 ### Changes
 * Completed `EditThreatDialog`
 * Removed 'friendly' threats (Potential for re-add if requested.)
