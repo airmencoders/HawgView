@@ -68,7 +68,7 @@ export default (props) => {
         }
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleSave} color='primary'>Save Changes</Button>
+        <Button onClick={handleSave} color='primary'>Save changes</Button>
         <Button onClick={props.toggle}>Cancel</Button>
       </DialogActions>
     </Dialog>

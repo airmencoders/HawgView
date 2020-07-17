@@ -61,7 +61,7 @@ export default (props) => {
       open={props.open}
       onClose={props.toggle}
     >
-      <DialogTitle>Edit {props.marker.title} 9-Line</DialogTitle>
+      <DialogTitle>Edit {props.marker.title} 9-line</DialogTitle>
       <DialogContent>
         <TextField
           autoFocus={true}
@@ -146,7 +146,7 @@ export default (props) => {
         />
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleSubmit} color='primary'>Save Changes</Button>
+        <Button onClick={handleSubmit} color='primary'>Save changes</Button>
         <Button onClick={props.toggle}>Cancel</Button>
       </DialogActions>
     </Dialog>

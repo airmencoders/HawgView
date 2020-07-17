@@ -94,8 +94,9 @@ const clearMarkers = (history, step) => {
  * @param {Object} payload
  */
 const createMarker = (history, step, payload) => {
+
   if (payload.latlng !== null) {
-    const marker = {
+    /*const marker = {
       color: payload.color,
       data: payload.data,
       elevation: payload.elevation,
@@ -104,9 +105,11 @@ const createMarker = (history, step, payload) => {
       id: payload.id,
       latlng: payload.latlng,
       layer: payload.layer,
+      range: payload.range,
       sovereignty: payload.sovereignty,
+      threatType: payload.threatType,
       title: payload.title,
-    }
+    }*/
 
     let targetHistory
     if (step === history.length - 1) {
@@ -120,31 +123,31 @@ const createMarker = (history, step, payload) => {
         return {
           ...targetHistory[step],
           action: `create ${payload.title}`,
-          friendlyMarkers: [...targetHistory[step].friendlyMarkers, marker]
+          friendlyMarkers: [...targetHistory[step].friendlyMarkers, payload]
         }
       case 'hostile':
         return {
           ...targetHistory[step],
           action: `create ${payload.title}`,
-          hostileMarkers: [...targetHistory[step].hostileMarkers, marker]
+          hostileMarkers: [...targetHistory[step].hostileMarkers, payload]
         }
       case 'ip':
         return {
           ...targetHistory[step],
           action: `create ${payload.title}`,
-          initialPoints: [...targetHistory[step].initialPoints, marker]
+          initialPoints: [...targetHistory[step].initialPoints, payload]
         }
       case 'survivor':
         return {
           ...targetHistory[step],
           action: `create ${payload.title}`,
-          survivors: [...targetHistory[step].survivors, marker]
+          survivors: [...targetHistory[step].survivors, payload]
         }
       case 'threat':
         return {
           ...targetHistory[step],
           action: `create ${payload.title}`,
-          threatMarkers: [...targetHistory[step].threatMarkers, marker]
+          threatMarkers: [...targetHistory[step].threatMarkers, payload]
         }
       default:
         console.error(`Error: Could not create marker. Invalid layer (${payload.layer})`)
@@ -202,7 +205,7 @@ const deleteMarker = (history, step, payload) => {
  * @param {Object} newLatLng New Lat/Lng coordinates of the marker
  */
 const dragMarker = (history, step, payload) => {
-  let targetHistory, filteredMarkers, newMarker
+  let targetHistory, filteredMarkers
 
   const marker = payload.marker
 
@@ -212,13 +215,14 @@ const dragMarker = (history, step, payload) => {
     targetHistory = history.slice(0, step + 1)
   }
 
+  const newMarker = {
+    ...marker,
+    latlng: payload.latlng
+  }
+
   switch (marker.layer) {
     case 'friendly':
       filteredMarkers = targetHistory[step].friendlyMarkers.filter(currentMarker => currentMarker.id !== marker.id)
-      newMarker = {
-        ...marker,
-        latlng: payload.latlng
-      }
 
       return {
         ...targetHistory[step],
@@ -227,10 +231,6 @@ const dragMarker = (history, step, payload) => {
       }
     case 'hostile':
       filteredMarkers = targetHistory[step].hostileMarkers.filter(currentMarker => currentMarker.id !== marker.id)
-      newMarker = {
-        ...marker,
-        latlng: payload.latlng
-      }
 
       return {
         ...targetHistory[step],
@@ -239,10 +239,6 @@ const dragMarker = (history, step, payload) => {
       }
     case 'ip':
       filteredMarkers = targetHistory[step].initialPoints.filter(currentMarker => currentMarker.id !== marker.id)
-      newMarker = {
-        ...marker,
-        latlng: payload.latlng
-      }
 
       return {
         ...targetHistory[step],
@@ -251,10 +247,6 @@ const dragMarker = (history, step, payload) => {
       }
     case 'survivor':
       filteredMarkers = targetHistory[step].survivors.filter(currentMarker => currentMarker.id !== marker.id)
-      newMarker = {
-        ...marker,
-        latlng: payload.latlng
-      }
 
       return {
         ...targetHistory[step],
@@ -263,10 +255,6 @@ const dragMarker = (history, step, payload) => {
       }
     case 'threat':
       filteredMarkers = targetHistory[step].threatMarkers.filter(currentMarker => currentMarker.id !== marker.id)
-      newMarker = {
-        ...marker,
-        latlng: payload.latlng
-      }
 
       return {
         ...targetHistory[step],
@@ -295,9 +283,6 @@ const editMarker = (history, step, payload) => {
       filteredMarkers = targetHistory[step].friendlyMarkers.filter(currentMarker => currentMarker.id !== marker.id)
       newMarker = {
         ...marker,
-        color: payload.color,
-        data: payload.data,
-        sovereignty: payload.sovereignty,
         title: payload.title,
       }
 
@@ -310,9 +295,7 @@ const editMarker = (history, step, payload) => {
       filteredMarkers = targetHistory[step].hostileMarkers.filter(currentMarker => currentMarker.id !== marker.id)
       newMarker = {
         ...marker,
-        color: payload.color,
         data: payload.data,
-        sovereignty: payload.sovereignty,
         title: payload.title,
       }
 
@@ -325,9 +308,6 @@ const editMarker = (history, step, payload) => {
       filteredMarkers = targetHistory[step].initialPoints.filter(currentMarker => currentMarker.id !== marker.id)
       newMarker = {
         ...marker,
-        color: payload.color,
-        data: payload.data,
-        sovereignty: payload.sovereignty,
         title: payload.title,
       }
 
@@ -340,9 +320,7 @@ const editMarker = (history, step, payload) => {
       filteredMarkers = targetHistory[step].survivors.filter(currentMarker => currentMarker.id !== marker.id)
       newMarker = {
         ...marker,
-        color: payload.color,
         data: payload.data,
-        sovereignty: payload.sovereignty,
         title: payload.title,
       }
 
@@ -355,7 +333,6 @@ const editMarker = (history, step, payload) => {
       filteredMarkers = targetHistory[step].threatMarkers.filter(currentMarker => currentMarker.id !== marker.id)
       newMarker = {
         ...marker,
-        color: payload.color,
         data: payload.data,
         sovereignty: payload.sovereignty,
         title: payload.title,

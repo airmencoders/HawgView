@@ -80,13 +80,11 @@ export default ({ handleAddMarker, handleMarkerDrawerToggle }) => {
 
   const handleMarkerClick = (iconUrl, title) => {
     const payload = {
-      color: null,
       data: null,
       elevation: 0,   // TODO: Pull the elevation of the latlng from API
       iconType: 'img',
       iconUrl,
       layer: 'hostile',
-      sovereignty: null,
       title,
     }
     handleMarkerDrawerToggle()

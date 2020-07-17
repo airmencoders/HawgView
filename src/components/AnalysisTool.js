@@ -198,7 +198,7 @@ export default ({ analysisToolActive, analysisToolLineClosed, analysisToolMouse,
           analysisToolNm={analysisToolNm}
           analysisToolPoints={analysisToolPoints}
           analysisToolTotalM={analysisToolTotalM}
-          analysisToolTotalNm={analysisToolNm}
+          analysisToolTotalNm={analysisToolTotalNm}
           declination={declination}
         />
         <AnalysisToolPastLines

@@ -32,6 +32,7 @@
 //----------------------------------------------------------------//
 import React from 'react'
 import {
+  Circle,
   LayersControl,
   LayerGroup,
   Marker,
@@ -50,6 +51,7 @@ import Divider from '@material-ui/core/Divider'
 // Material-UI Components
 //----------------------------------------------------------------//
 import Button from '@material-ui/core/Button'
+import { makeStyles } from '@material-ui/core/styles'
 
 //----------------------------------------------------------------//
 // Custom Components
@@ -66,16 +68,42 @@ const { BaseLayer, Overlay } = LayersControl
 //----------------------------------------------------------------//
 export default (props) => {
 
+  const useStyles = makeStyles(() => ({
+    hostileThreat: {
+      fontSize: props.markerSize * props.mapZoom,
+      lineHeight: `${props.markerSize * props.mapZoom / 2}px`,
+      marginLeft: '-50%',
+      color: 'red',
+      width: '200%',
+    },
+    suspectThreat: {
+      fontSize: props.markerSize * props.mapZoom,
+      lineHeight: `${props.markerSize * props.mapZoom / 2}px`,
+      marginLeft: '-50%',
+      color: 'yellow',
+      width: '200%',
+    },
+    unknownThreat: {
+      fontSize: props.markerSize * props.mapZoom,
+      lineHeight: `${props.markerSize * props.mapZoom / 2}px`,
+      marginLeft: '-50%',
+      color: 'white',
+      width: '200%',
+    },
+    friendlyThreat: {
+      fontSize: props.markerSize * props.mapZoom,
+      lineHeight: `${props.markerSize * props.mapZoom / 2}px`,
+      marginLeft: '-50%',
+      color: 'lime',
+      width: '200%',
+    },
+  }))
+
+  const classes = useStyles()
+
   const handleEditMarker = marker => {
     props.setFocusedMarker(marker)
     props.toggleEditMarkerDialog()
-    /*switch(marker.sovereignty) {
-      case 'friendly':
-        props.toggleEditMarkerDialog()
-        break
-      default:
-        console.error(`Error: Could not edit marker (${marker.title}). Unhandled sovereignty (${marker.sovereignty})`)
-    }*/
   }
 
   return (
@@ -190,7 +218,6 @@ export default (props) => {
               autoPan={true}
               draggable={true}
               icon={L.icon({
-                type: marker.iconType,
                 iconUrl: marker.iconUrl,
                 iconSize: [props.markerSize * props.mapZoom, props.markerSize * props.mapZoom],
               })}
@@ -231,7 +258,6 @@ export default (props) => {
               autoPan={true}
               draggable={true}
               icon={L.icon({
-                type: marker.iconType,
                 iconUrl: marker.iconUrl,
                 iconSize: [props.markerSize * props.mapZoom, props.markerSize * props.mapZoom]
               })}
@@ -316,41 +342,48 @@ export default (props) => {
       <Overlay checked name='Threat Markers'>
         <LayerGroup>
           {props.threatMarkers.map(marker => (
-            <Marker
-              autoPan={true}
-              draggable={true}
-              icon={L.icon({
-                type: marker.iconType,
-                iconUrl: marker.iconUrl,
-                iconSize: [props.markerSize * props.mapZoom, props.markerSize * props.mapZoom]
-              })}
-              id={marker.id}
-              key={`threat-${marker.id}-${marker.title}`}
-              onDragend={event => props.handleMarkerDrag(marker, event.target.getLatLng())}
-              position={marker.latlng}
-              riseOnHover={true}
-              title={marker.title}
-            >
-              <Popup>
-                {marker.title}
-                <br />
-                {LatLon.parse(marker.latlng.lat, marker.latlng.lng).toUtm().toMgrs().toString()}
-                <br />
-                <Button color='primary' onClick={() => handleEditMarker(marker)}>Edit</Button>
-                <Button color='secondary' onClick={() => props.handleDeleteMarker(marker)}>Delete</Button>
-              </Popup>
-              {(props.tooltipsActive) ?
-                <Tooltip
-                  direction='top'
-                  offset={L.point(0, -1 * props.markerSize * props.mapZoom)}
-                  opacity='1'
-                  permanent
-                >
+            <React.Fragment key={`threat-${marker.id}-${marker.title}`} >
+              <Marker
+                autoPan={true}
+                draggable={true}
+                icon={L.divIcon({
+                  className: marker.sovereignty === 'Hostile' ? classes.hostileThreat : marker.sovereignty === 'Suspect' ? classes.suspectThreat : marker.sovereignty === 'Unknown' ? classes.unknownThreat : classes.friendlyThreat,
+                  html: marker.label,
+                })}
+                id={marker.id}                
+                onDragend={event => props.handleMarkerDrag(marker, event.target.getLatLng())}
+                position={marker.latlng}
+                riseOnHover={true}
+                title={marker.title}
+              >
+                <Popup>
                   {marker.title}
-                </Tooltip>
-                : undefined
-              }
-            </Marker>
+                  <br />
+                  {LatLon.parse(marker.latlng.lat, marker.latlng.lng).toUtm().toMgrs().toString()}
+                  <br />
+                  <Button color='primary' onClick={() => handleEditMarker(marker)}>Edit</Button>
+                  <Button color='secondary' onClick={() => props.handleDeleteMarker(marker)}>Delete</Button>
+                </Popup>
+                {(props.tooltipsActive) ?
+                  <Tooltip
+                    direction='top'
+                    offset={L.point(0, -1 * props.markerSize * props.mapZoom)}
+                    opacity='1'
+                    permanent
+                  >
+                    {marker.title}
+                  </Tooltip>
+                  : undefined
+                }
+              </Marker>
+              <Circle
+                center={marker.latlng}
+                color={marker.sovereignty === 'Hostile' ? 'red' : marker.sovereignty === 'Suspect' ? 'yellow' : marker.sovereignty === 'Unknown' ? 'White' : 'Lime'}
+                dashArray='12, 12'
+                fill={false}
+                radius={marker.unit === 'm' ? marker.range : marker.unit === 'km' ? marker.range * 1000 : marker.range * 1852}
+              />
+            </React.Fragment>
           ))}
         </LayerGroup>
       </Overlay>
@@ -361,7 +394,6 @@ export default (props) => {
               autoPan={true}
               draggable={true}
               icon={L.icon({
-                type: marker.iconType,
                 iconUrl: marker.iconUrl,
                 iconSize: [props.markerSize * props.mapZoom, props.markerSize * props.mapZoom]
               })}
@@ -402,7 +434,6 @@ export default (props) => {
               autoPan={true}
               draggable={true}
               icon={L.icon({
-                type: marker.iconType,
                 iconUrl: marker.iconUrl,
                 iconSize: [props.markerSize * props.mapZoom, props.markerSize * props.mapZoom]
               })}

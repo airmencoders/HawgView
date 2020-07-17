@@ -31,11 +31,11 @@
 // Top Level Modules
 //----------------------------------------------------------------//
 import React from 'react';
-import { 
-  BrowserRouter as Router, 
+import {
+  BrowserRouter as Router,
   Route,
   Switch,
-  Redirect
+  //Redirect
 } from 'react-router-dom'
 
 //----------------------------------------------------------------//
@@ -52,13 +52,13 @@ import CssBaseline from '@material-ui/core/CssBaseline'
 // Custom Pages
 //----------------------------------------------------------------//
 import CASPlanner from './pages/CASPlanner'
-import Login from './pages/Login'
+/*import Login from './pages/Login'
 
 const MyScenarios = () => {
   return (
     <h1>My Scenarios</h1>
   )
-}
+}*/
 
 //----------------------------------------------------------------//
 // App Component
@@ -87,18 +87,18 @@ class App extends React.Component {
                 state={this.state}
               />
             </Route>
-            <Route path='/login'>
-              <Login 
+            {/*<Route path='/login' >
+              <Login
                 state={this.state}
               />
-            </Route>
+            </Route >
             <Route path='/my-scenarios'>
               {(this.state.isAuthenticated) ?
                 <MyScenarios />
                 :
                 <Redirect to='/login?error=0x000001' />
               }
-            </Route>
+            </Route>*/}
           </Switch>
         </Router>
       </div>
@@ -107,3 +107,6 @@ class App extends React.Component {
 }
 
 export default App
+
+
+

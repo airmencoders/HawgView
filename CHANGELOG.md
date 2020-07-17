@@ -1,3 +1,12 @@
+## 2.10.0-alphas
+### Changes
+* Completed `EditThreatDialog`
+* Removed 'friendly' threats (Potential for re-add if requested.)
+* Added tasks to to-do list
+
+### Fixes
+* Fixed ruler bug - erroneously passing the active NM as the total NM
+
 ## 2.9.0-alpha
 ### Changes
 * Added load scenario functionality
@@ -6,6 +15,7 @@
 * Changed UX elements to use sentence case
 * Removed the Log In button from the navigation for now (Re-add later)
 * Removed the switch case from `classification-banner` for now (Potential to re-add later)
+* Commented out the `Login` route for now (re-add later)
 
 ## 2.8.0-alpha
 ### Changes
@@ -95,7 +105,7 @@
 - [x] Add `handleAddMarker` functionality to all remaining `markers` - (`2.1.0-alpha`)
 - [x] Add `clearAllMarkers` functionality to map - (`2.1.0-alpha`)
 - [x] Add `Marker Label` functionality to `markerDrawer` - (`2.4.0-alpha`)
-- [-] Add `Threat` Dialog - (Started `2.8.0-alpha`)
+- [x] Add `Threat` Dialog - (`2.10.0-alpha`)
 - [ ] Add `Combat Air Patrol (CAP)` Dialog
 - [ ] Add `Building Label` functionality to `markerDrawer`
 - [x] Add `9-Line` functionality to `hostile markers` - (`2.7.0-alpha`)
@@ -103,6 +113,9 @@
 - [x] Add `MGRS` or `Lat/Lon` input to map - (`2.4.0-alpha`)
 - [x] Add Edit marker functionality - (`2.5.0-alpha`)
 - [x] Add Delete marker functionality - (`2.5.0-alpha`)
+- [ ] Add option to have 'fill' in threats
+- [ ] Add 'stackable' option such that it disables the `onClick` for the markers, allowing users to click map to stack chits
+- [ ] Add `onClick` to threat rings that also manage the edit function
 
 ## Farther off Tasks
 - [ ] Add `MGRS Gridlines` to map

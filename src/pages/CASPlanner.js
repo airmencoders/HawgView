@@ -311,12 +311,19 @@ export default ({ state }) => {
 
       let updatedPayload = { ...payload }
 
+      let updatedTitle
+      if(payload.layer === 'threat') {
+        updatedTitle = payload.title
+      } else {
+        updatedTitle = markerLabel === '' ? payload.title : markerLabel
+      }
+
       if (action === 'create') {
         updatedPayload = {
           ...updatedPayload,
           id: markerId,
           latlng: clickedLatLng,
-          title: markerLabel === '' ? payload.title : markerLabel,
+          title: updatedTitle,
         }
       }
 
@@ -590,7 +597,7 @@ export default ({ state }) => {
           <EditThreatDialog
             open={editThreatDialogOpen}
             marker={focusedMarker}
-            submit={undefined}
+            submit={(action, payload) => handleMarkerEdit(action, payload)}
             toggle={() => setEditThreatDialogOpen(!editThreatDialogOpen)}
           />
           : undefined

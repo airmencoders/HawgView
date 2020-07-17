@@ -53,8 +53,8 @@ export default ({ classification = 'unclassified' }) => {
    * SF-709 BLACK ON LAVENDER:  #C1A7E2 / #000000 
    */
 
-  const [bannerColor, setBannerColor] = React.useState('#007A33')
-  const [textColor, setTextColor] = '#FFFFFF'
+  const [bannerColor, setBannerColor] = React.useState('green')
+  const [textColor, setTextColor] = React.useState('black')
 
   return (
     <AppBar

@@ -44,11 +44,47 @@ const useStyles = makeStyles(theme => ({
 export default (props) => {
   const classes = useStyles()
 
-  const [threat, setThreat] = React.useState('Custom')
+  const [custom, setCustom] = React.useState(true)
+  const [threat, setThreat] = React.useState(0)
   const [label, setLabel] = React.useState('')
   const [range, setRange] = React.useState('3')
   const [unit, setUnit] = React.useState('NM')
   const [sovereignty, setSovereignty] = React.useState('Hostile')
+
+  const handleThreatChange = event => {
+    setThreat(event.target.value)
+    setRange(threats[event.target.value].range)
+    setUnit('NM')
+    
+    if(event.target.value === 0) {
+      setLabel('')
+      setCustom(true)
+    } else {
+      setLabel(threats[event.target.value].title)
+      setCustom(false)
+    }
+  }
+
+  const handleSubmit = () => {
+    if(props.marker === null) {
+      props.submit('create', {
+        data: null,
+        elevation: 0,
+        iconType: 'div',
+        label: custom ? label : threats[threat].label,
+        layer: 'threat',
+        range: range,
+        sovereignty: sovereignty,
+        threatType: threats[threat],
+        title: label === '' ? 'Threat' : label,
+        unit: unit,
+      })
+    } else {
+      console.log('Edit Threat Not Available Yet')
+    }
+
+    props.toggle()
+  }
 
   return (
     <Dialog
@@ -56,24 +92,24 @@ export default (props) => {
       open={props.open}
       onClose={props.toggle}
     >
-      <DialogTitle>Edit Threat</DialogTitle>
+      <DialogTitle>Edit threat</DialogTitle>
       <DialogContent>
         <FormControl
           className={classes.flex}
           variant='outlined'
         >
-          <InputLabel>Mission Threat</InputLabel>
+          <InputLabel>Threat type</InputLabel>
           <Select
             className={classes.grow}
             label='Mission Threat'
             margin='dense'
-            onChange={event => setThreat(event.target.value)}
+            onChange={handleThreatChange}
             value={threat}
           >
-            {threats.map(threat => (
+            {threats.map((threat, index) => (
               <MenuItem
                 key={threat.title}
-                value={threat.title}
+                value={index}
               >
                 {threat.title}
               </MenuItem>
@@ -95,6 +131,7 @@ export default (props) => {
         >
           <TextField
             className={classes.grow}
+            disabled={!custom}
             margin='dense'
             label='Range'
             onChange={event => setRange(event.target.value)}
@@ -107,6 +144,7 @@ export default (props) => {
           >
             <InputLabel>Unit</InputLabel>
             <Select
+              disabled={!custom}
               label='Unit'
               margin='dense'
               onChange={event => setUnit(event.target.value)}
@@ -151,7 +189,7 @@ export default (props) => {
       <Button color='secondary'>Delete 9-Line</Button>
     </DialogActions>
     <DialogActions>
-      <Button onClick={props.toggle} color='primary'>Create Threat</Button>
+      <Button onClick={handleSubmit} color='primary'>Create Threat</Button>
       <Button onClick={props.toggle}>Cancel</Button>
     </DialogActions>
     </Dialog >
