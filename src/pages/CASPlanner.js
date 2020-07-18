@@ -61,6 +61,7 @@ import CASNavigation from '../components/CASNavigation'
 import CASTools from '../components/CASTools'
 import CoordInput from '../components/CoordInput'
 import Edit9LineDialog from '../components/Edit9LineDialog'
+import Edit15LineDialog from '../components/Edit15LineDialog'
 import EditThreatDialog from '../components/EditThreatDialog'
 import EditMarkerDialog from '../components/EditMarkerDialog'
 import { editMarkers } from '../functions/editMarkers'
@@ -135,8 +136,6 @@ export default ({ state }) => {
   const [edit15LineDialogOpen, setEdit15LineDialogOpen] = React.useState(false)
   const [editCapDialogOpen, setEditCapDialogOpen] = React.useState(false)
   const [editMarkerDialogOpen, setEditMarkerDialogOpen] = React.useState(false)
-  const [editHostileMarkerDialogOpen, setEditHostileMarkerDialogOpen] = React.useState(false)
-  const [editSurvivorDialogOpen, setEditSurvivorDialogOpen] = React.useState(false)
   const [editThreatDialogOpen, setEditThreatDialogOpen] = React.useState(false)
   const [focusedMarker, setFocusedMarker] = React.useState(null)
   const [history, setHistory] = React.useState([{
@@ -317,7 +316,7 @@ export default ({ state }) => {
    * @param {Object} marker The marker object (edit | delete)
    */
   const handleMarkerEdit = (action, payload) => {
-    const supportedActions = ['clear', 'create', 'delete', 'drag', 'edit', '9line']
+    const supportedActions = ['clear', 'create', 'delete', 'drag', 'edit', '9line', '15line']
 
     if (supportedActions.includes(action)) {
 
@@ -363,6 +362,7 @@ export default ({ state }) => {
         setEditMarkerDialogOpen(false)
         setEditThreatDialogOpen(false)
         setEdit9LineDialogOpen(false)
+        setEdit15LineDialogOpen(false)
       }
     } else {
       console.error(`Unsupported action ${action}. Could not modify Markers`)
@@ -611,6 +611,7 @@ export default ({ state }) => {
             submit={(action, payload) => handleMarkerEdit(action, payload)}
             toggle={() => setEditMarkerDialogOpen(!editMarkerDialogOpen)}
             toggle9LineDialog={() => setEdit9LineDialogOpen(!edit9LineDialogOpen)}
+            toggle15LineDialog={() => setEdit15LineDialogOpen(!edit15LineDialogOpen)}
           />
           : undefined
       }
@@ -623,6 +624,16 @@ export default ({ state }) => {
             toggle={() => setEdit9LineDialogOpen(!edit9LineDialogOpen)}
           />
           : undefined
+      }
+      {
+        (edit15LineDialogOpen) ?
+        <Edit15LineDialog
+          open={edit15LineDialogOpen}
+          marker={focusedMarker}
+          submit={payload => handleMarkerEdit('15line', payload)}
+          toggle={() => setEdit15LineDialogOpen(!edit15LineDialogOpen)}
+        />
+        : undefined
       }
       {
         (editThreatDialogOpen) ?

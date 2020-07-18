@@ -43,6 +43,8 @@ export const editMarkers = (action, history, step, payload) => {
       return editMarker(history, step, payload)
     case '9line':
       return edit9Line(history, step, payload)
+    case '15line':
+      return edit15Line(history, step, payload)
     default:
       console.error(`Error: Invalid action ${action}`)
       return false
@@ -280,7 +282,7 @@ const edit9Line = (history, step, payload) => {
       }
     case 'threat':
       filteredMarkers = targetHistory[step].threatMarkers.filter(currentMarker => currentMarker.id !== marker.id)
-     
+
       return {
         ...targetHistory[step],
         action: `edit ${marker.title}`,
@@ -289,6 +291,30 @@ const edit9Line = (history, step, payload) => {
     default:
       console.error(`Error: Could not edit marker (${marker}). Invalid layer (${marker.layer})`)
       return false
+  }
+}
+
+const edit15Line = (history, step, payload) => {
+  let targetHistory, filteredMarkers
+  const marker = payload.marker
+
+  if (step === history.length - 1) {
+    targetHistory = history.slice()
+  } else {
+    targetHistory = history.slice(0, step + 1)
+  }
+
+  const newMarker = {
+    ...marker,
+    data: payload.data,
+  }
+
+  filteredMarkers = targetHistory[step].survivors.filter(currentMarker => currentMarker.id !== marker.id)
+
+  return {
+    ...targetHistory[step],
+    action: `edit ${marker.title}`,
+    survivors: [...filteredMarkers, newMarker]
   }
 }
 
@@ -320,7 +346,6 @@ const editMarker = (history, step, payload) => {
       filteredMarkers = targetHistory[step].hostileMarkers.filter(currentMarker => currentMarker.id !== marker.id)
       newMarker = {
         ...marker,
-        data: payload.data,
         title: payload.title,
       }
 
@@ -345,7 +370,6 @@ const editMarker = (history, step, payload) => {
       filteredMarkers = targetHistory[step].survivors.filter(currentMarker => currentMarker.id !== marker.id)
       newMarker = {
         ...marker,
-        data: payload.data,
         title: payload.title,
       }
 
@@ -359,7 +383,6 @@ const editMarker = (history, step, payload) => {
 
       newMarker = {
         ...marker,
-        data: payload.data,
         fill: payload.fill,
         label: payload.label,
         range: payload.range,

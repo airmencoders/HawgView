@@ -1,3 +1,9 @@
+## 2.14.0-alpha
+### Changes
+* Added `15LineDialog`
+* Added functionality to save and edit 15 lines
+* When a marker has data, displays the data instead of the title/location/data (repetitive information)
+
 ## 2.13.0-alpha
 ### Changes
 * Threat circles can edit the threat object

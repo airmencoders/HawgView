@@ -64,10 +64,28 @@ export default (props) => {
               </Button>
               <Button
                 color='secondary'
-                onClick={() => props.submit('9line', {marker: props.marker, data: null})}
+                onClick={() => props.submit('9line', { marker: props.marker, data: null })}
               >
                 Delete 9-line
               </Button>
+            </DialogContent>
+            : null
+        }
+        {
+          (props.marker.layer === 'survivor') ?
+            <DialogContent>
+              <Button
+                color='primary'
+                onClick={() => props.toggle15LineDialog()}
+              >
+                Edit 15-Line
+            </Button>
+              <Button
+                color='secondary'
+                onClick={() => props.submit('15line', { marker: props.marker, data: null })}
+              >
+                Delete 15-Line
+            </Button>
             </DialogContent>
             : null
         }

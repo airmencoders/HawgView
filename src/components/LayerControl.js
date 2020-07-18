@@ -174,6 +174,69 @@ export default (props) => {
     </table>
   )
 
+  const render15line = data => (
+    <table style={{ width: '500px' }}>
+      <tbody>
+        <tr>
+          <td>Callsign/Freq/PLS/HHRID</td>
+          <td>{data.callsign} / {data.frequency} / {data.plsHhrid}</td>
+        </tr>
+        <tr>
+          <td>Number of Objectives</td>
+          <td>{data.numObjectives}</td>
+        </tr>
+        <tr>
+          <td>Location/Elevation/Date/Time(z)/Source</td>
+          <td>{data.location} / {data.elevation} / {data.dateTime} / {data.source}</td>
+        </tr>
+        <tr>
+          <td>Condition</td>
+          <td>{data.condition}</td>
+        </tr>
+        <tr>
+          <td>Equipment</td>
+          <td>{data.equipment}</td>
+        </tr>
+        <tr>
+          <td>Authentication</td>
+          <td>{data.authentication}</td>
+        </tr>
+        <tr>
+          <td>Threats</td>
+          <td>{data.threats}</td>
+        </tr>
+        <tr>
+          <td>PZ Description</td>
+          <td>{data.pzDescription}</td>
+        </tr>
+        <tr>
+          <td>OSC/frequency</td>
+          <td>{data.oscFreq}</td>
+        </tr>
+        <tr>
+          <td>IP/Heading</td>
+          <td>{data.ipHdg}</td>
+        </tr>
+        <tr>
+          <td>Rescort</td>
+          <td>{data.rescort}</td>
+        </tr>
+        <tr>
+          <td>Terminal Area Gameplan</td>
+          <td>{data.gameplan}</td>
+        </tr>
+        <tr>
+          <td>Signal</td>
+          <td>{data.signal}</td>
+        </tr>
+        <tr>
+          <td>Egress Hdg</td>
+          <td>{data.egress}</td>
+        </tr>
+      </tbody>
+    </table>
+  )
+
   return (
     <LayersControl position='topright'>
       <BaseLayer checked name='ESRI Imagery Firefly'>
@@ -366,14 +429,15 @@ export default (props) => {
               title={marker.title}
             >
               <Popup>
-                {marker.title}
-                <br />
-                {LatLon.parse(marker.latlng.lat, marker.latlng.lng).toUtm().toMgrs().toString()}
-                <br />
-                {
-                  (marker.data !== null) ?
-                    render9line(marker.data)
-                    : null
+                {(marker.data !== null) ?
+                  render9line(marker.data)
+                  :
+                  <React.Fragment>
+                    {marker.title}
+                    <br />
+                    {LatLon.parse(marker.latlng.lat, marker.latlng.lng).toUtm().toMgrs().toString()}
+                    <br />
+                  </React.Fragment>
                 }
                 <Button color='primary' onClick={() => handleEditMarker(marker)}>Edit</Button>
                 <Button color='secondary' onClick={() => props.handleDeleteMarker(marker)}>Delete</Button>
@@ -442,14 +506,15 @@ export default (props) => {
                 title={marker.title}
               >
                 <Popup>
-                  {marker.title}
-                  <br />
-                  {LatLon.parse(marker.latlng.lat, marker.latlng.lng).toUtm().toMgrs().toString()}
-                  <br />
-                  {
-                    (marker.data !== null) ?
-                      render9line(marker.data)
-                      : null
+                  {(marker.data !== null) ?
+                    render9line(marker.data)
+                    :
+                    <React.Fragment>
+                      {marker.title}
+                      <br />
+                      {LatLon.parse(marker.latlng.lat, marker.latlng.lng).toUtm().toMgrs().toString()}
+                      <br />
+                    </React.Fragment>
                   }
                   <Button color='primary' onClick={() => handleEditThreat(marker)}>Edit</Button>
                   <Button color='secondary' onClick={() => props.handleDeleteMarker(marker)}>Delete</Button>
@@ -473,15 +538,18 @@ export default (props) => {
                 fill={marker.fill}
                 radius={marker.unit === 'm' ? Number.parseInt(marker.range) : marker.unit === 'km' ? marker.range * 1000 : marker.range * 1852}
               >
-                <Popup>
-                  {marker.title}
-                  <br />
-                  {LatLon.parse(marker.latlng.lat, marker.latlng.lng).toUtm().toMgrs().toString()}
-                  <br />
-                  {
-                    (marker.data !== null) ?
-                      render9line(marker.data)
-                      : null
+                <Popup
+                  maxWidth={1000}
+                >
+                  {(marker.data !== null) ?
+                    render9line(marker.data)
+                    :
+                    <React.Fragment>
+                      {marker.title}
+                      <br />
+                      {LatLon.parse(marker.latlng.lat, marker.latlng.lng).toUtm().toMgrs().toString()}
+                      <br />
+                    </React.Fragment>
                   }
                   <Button color='primary' onClick={() => handleEditThreat(marker)}>Edit</Button>
                   <Button color='secondary' onClick={() => props.handleDeleteMarker(marker)}>Delete</Button>
@@ -507,19 +575,6 @@ export default (props) => {
                 riseOnHover={true}
                 title={marker.title}
               >
-                <Popup>
-                  {marker.title}
-                  <br />
-                  {LatLon.parse(marker.latlng.lat, marker.latlng.lng).toUtm().toMgrs().toString()}
-                  <br />
-                  {
-                    (marker.data !== null) ?
-                      render9line(marker.data)
-                      : null
-                  }
-                  <Button color='primary' onClick={() => handleEditThreat(marker)}>Edit</Button>
-                  <Button color='secondary' onClick={() => props.handleDeleteMarker(marker)}>Delete</Button>
-                </Popup>
                 {(props.tooltipsActive) ?
                   <Tooltip
                     direction='top'
@@ -561,11 +616,21 @@ export default (props) => {
               riseOnHover={true}
               title={marker.title}
             >
-              <Popup>
-                {marker.title}
-                <br />
-                {LatLon.parse(marker.latlng.lat, marker.latlng.lng).toUtm().toMgrs().toString()}
-                <br />
+              <Popup
+                maxWidth={1000}
+              >
+
+                {
+                  (marker.data !== null) ?
+                    render15line(marker.data)
+                    :
+                    <React.Fragment>
+                      {marker.title}
+                      < br />
+                      {LatLon.parse(marker.latlng.lat, marker.latlng.lng).toUtm().toMgrs().toString()}
+                      < br />
+                    </React.Fragment>
+                }
                 <Button color='primary' onClick={() => handleEditMarker(marker)}>Edit</Button>
                 <Button color='secondary' onClick={() => props.handleDeleteMarker(marker)}>Delete</Button>
               </Popup>
