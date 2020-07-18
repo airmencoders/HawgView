@@ -43,10 +43,9 @@ import { makeStyles } from '@material-ui/core/styles'
 import Tooltip from '@material-ui/core/Tooltip'
 
 //----------------------------------------------------------------//
-// Iconify Components
+// Material-UI Icons
 //----------------------------------------------------------------//
-import { Icon } from '@iconify/react'
-import rulerIcon from '@iconify/icons-mdi/ruler'
+import SquareFootIcon from '@material-ui/icons/SquareFoot'
 
 //----------------------------------------------------------------//
 // Custom Class Styling
@@ -79,14 +78,12 @@ export default ({ analysisToolActive, handleAnalysisToolToggle }) => {
         <Button
           className={classes.button}
           color={(analysisToolActive) ? 'primary' : undefined}
-          onClick={handleAnalysisToolToggle}
+          onClick={() => handleAnalysisToolToggle()}
           size='small'
           variant='contained'
         >
-          <Icon
-            className={classes.icon}
-            icon={rulerIcon}
-          />
+          <SquareFootIcon className={classes.icon} />
+
         </Button>
       </Tooltip>
     </Control>

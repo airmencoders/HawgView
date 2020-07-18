@@ -45,8 +45,6 @@ import {
 import L from 'leaflet'
 import { LatLon } from 'geodesy/mgrs'
 
-import Divider from '@material-ui/core/Divider'
-
 //----------------------------------------------------------------//
 // Material-UI Components
 //----------------------------------------------------------------//
@@ -67,6 +65,8 @@ const { BaseLayer, Overlay } = LayersControl
 // Map Control Component
 //----------------------------------------------------------------//
 export default (props) => {
+
+  const interactive = props.mouseClickActive
 
   const useStyles = makeStyles(() => ({
     hostileThreat: {
@@ -126,6 +126,53 @@ export default (props) => {
     props.setFocusedMarker(marker)
     props.toggleEditThreatDialog()
   }
+
+  const render9line = data => (
+    <table>
+      <tbody>
+        <tr>
+          <td>Label</td>
+          <td>{data.label}</td>
+        </tr>
+        <tr>
+          <td>Type/Method</td>
+          <td>{data.typeMethod}</td>
+        </tr>
+        <tr>
+          <td>IP / Hdg / Distance</td>
+          <td>{data.ipHdgDistance}</td>
+        </tr>
+        <tr>
+          <td>Elevation</td>
+          <td>{data.elevation}</td>
+        </tr>
+        <tr>
+          <td>Description</td>
+          <td>{data.description}</td>
+        </tr>
+        <tr>
+          <td>Location</td>
+          <td>{data.location}</td>
+        </tr>
+        <tr>
+          <td>Mark</td>
+          <td>{data.mark}</td>
+        </tr>
+        <tr>
+          <td>Friendlies</td>
+          <td>{data.friendlies}</td>
+        </tr>
+        <tr>
+          <td>Egress</td>
+          <td>{data.egress}</td>
+        </tr>
+        <tr>
+          <td>Remarks/Restrictions</td>
+          <td>{data.remarks}</td>
+        </tr>
+      </tbody>
+    </table>
+  )
 
   return (
     <LayersControl position='topright'>
@@ -234,7 +281,7 @@ export default (props) => {
       </Overlay>
       <Overlay checked name='Friendly Markers'>
         <LayerGroup>
-          {props.friendlyMarkers.map(marker => (
+          {interactive && props.friendlyMarkers.map(marker => (
             <Marker
               autoPan={true}
               draggable={true}
@@ -270,11 +317,40 @@ export default (props) => {
               }
             </Marker>
           ))}
+          {!interactive && props.friendlyMarkers.map(marker => (
+            <Marker
+              autoPan={true}
+              draggable={true}
+              icon={L.icon({
+                iconUrl: marker.iconUrl,
+                iconSize: [props.markerSize * props.mapZoom, props.markerSize * props.mapZoom],
+              })}
+              id={marker.id}
+              interactive={false}
+              key={`friendly-${marker.id}-${marker.title}`}
+              onDragend={event => props.handleMarkerDrag(marker, event.target.getLatLng())}
+              position={marker.latlng}
+              riseOnHover={true}
+              title={marker.title}
+            >
+              {(props.tooltipsActive) ?
+                <Tooltip
+                  direction='top'
+                  offset={L.point(0, -1 * props.markerSize * props.mapZoom)}
+                  opacity='1'
+                  permanent
+                >
+                  {marker.title}
+                </Tooltip>
+                : undefined
+              }
+            </Marker>
+          ))}
         </LayerGroup>
       </Overlay>
       <Overlay checked name='Hostile Markers'>
         <LayerGroup>
-          {props.hostileMarkers.map(marker => (
+          {interactive && props.hostileMarkers.map(marker => (
             <Marker
               autoPan={true}
               draggable={true}
@@ -296,50 +372,7 @@ export default (props) => {
                 <br />
                 {
                   (marker.data !== null) ?
-                    <table>
-                      <tbody>
-                        <tr>
-                          <td>Label</td>
-                          <td>{marker.data.label}</td>
-                        </tr>
-                        <tr>
-                          <td>Type/Method</td>
-                          <td>{marker.data.typeMethod}</td>
-                        </tr>
-                        <tr>
-                          <td>IP / Hdg / Distance</td>
-                          <td>{marker.data.ipHdgDistance}</td>
-                        </tr>
-                        <tr>
-                          <td>Elevation</td>
-                          <td>{marker.data.elevation}</td>
-                        </tr>
-                        <tr>
-                          <td>Description</td>
-                          <td>{marker.data.description}</td>
-                        </tr>
-                        <tr>
-                          <td>Location</td>
-                          <td>{marker.data.location}</td>
-                        </tr>
-                        <tr>
-                          <td>Mark</td>
-                          <td>{marker.data.mark}</td>
-                        </tr>
-                        <tr>
-                          <td>Friendlies</td>
-                          <td>{marker.data.friendlies}</td>
-                        </tr>
-                        <tr>
-                          <td>Egress</td>
-                          <td>{marker.data.egress}</td>
-                        </tr>
-                        <tr>
-                          <td>Remarks/Restrictions</td>
-                          <td>{marker.data.remarks}</td>
-                        </tr>
-                      </tbody>
-                    </table>
+                    render9line(marker.data)
                     : null
                 }
                 <Button color='primary' onClick={() => handleEditMarker(marker)}>Edit</Button>
@@ -358,11 +391,40 @@ export default (props) => {
               }
             </Marker>
           ))}
+          {!interactive && props.hostileMarkers.map(marker => (
+            <Marker
+              autoPan={true}
+              draggable={true}
+              icon={L.icon({
+                iconUrl: marker.iconUrl,
+                iconSize: [props.markerSize * props.mapZoom, props.markerSize * props.mapZoom]
+              })}
+              id={marker.id}
+              interactive={false}
+              key={`hostile-${marker.id}-${marker.title}`}
+              onDragend={event => props.handleMarkerDrag(marker, event.target.getLatLng())}
+              position={marker.latlng}
+              riseOnHover={true}
+              title={marker.title}
+            >
+              {(props.tooltipsActive) ?
+                <Tooltip
+                  direction='top'
+                  offset={L.point(0, -1 * props.markerSize * props.mapZoom)}
+                  opacity='1'
+                  permanent
+                >
+                  {marker.title}
+                </Tooltip>
+                : undefined
+              }
+            </Marker>
+          ))}
         </LayerGroup>
       </Overlay>
       <Overlay checked name='Threat Markers'>
         <LayerGroup>
-          {props.threatMarkers.map(marker => (
+          {interactive && props.threatMarkers.map(marker => (
             <React.Fragment key={`threat-${marker.id}`}>
               <Marker
                 autoPan={true}
@@ -385,53 +447,10 @@ export default (props) => {
                   {LatLon.parse(marker.latlng.lat, marker.latlng.lng).toUtm().toMgrs().toString()}
                   <br />
                   {
-                  (marker.data !== null) ?
-                    <table>
-                      <tbody>
-                        <tr>
-                          <td>Label</td>
-                          <td>{marker.data.label}</td>
-                        </tr>
-                        <tr>
-                          <td>Type/Method</td>
-                          <td>{marker.data.typeMethod}</td>
-                        </tr>
-                        <tr>
-                          <td>IP / Hdg / Distance</td>
-                          <td>{marker.data.ipHdgDistance}</td>
-                        </tr>
-                        <tr>
-                          <td>Elevation</td>
-                          <td>{marker.data.elevation}</td>
-                        </tr>
-                        <tr>
-                          <td>Description</td>
-                          <td>{marker.data.description}</td>
-                        </tr>
-                        <tr>
-                          <td>Location</td>
-                          <td>{marker.data.location}</td>
-                        </tr>
-                        <tr>
-                          <td>Mark</td>
-                          <td>{marker.data.mark}</td>
-                        </tr>
-                        <tr>
-                          <td>Friendlies</td>
-                          <td>{marker.data.friendlies}</td>
-                        </tr>
-                        <tr>
-                          <td>Egress</td>
-                          <td>{marker.data.egress}</td>
-                        </tr>
-                        <tr>
-                          <td>Remarks/Restrictions</td>
-                          <td>{marker.data.remarks}</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                    : null
-                }
+                    (marker.data !== null) ?
+                      render9line(marker.data)
+                      : null
+                  }
                   <Button color='primary' onClick={() => handleEditThreat(marker)}>Edit</Button>
                   <Button color='secondary' onClick={() => props.handleDeleteMarker(marker)}>Delete</Button>
                 </Popup>
@@ -456,11 +475,51 @@ export default (props) => {
               />
             </React.Fragment>
           ))}
+          {!interactive && props.threatMarkers.map(marker => (
+            <React.Fragment key={`threat-${marker.id}`}>
+              <Marker
+                autoPan={true}
+                className={classes.hostileThreat}
+                draggable={true}
+                icon={L.divIcon({
+                  className: marker.sovereignty === 'Hostile' ? classes.hostileThreat : marker.sovereignty === 'Suspect' ? classes.suspectThreat : marker.sovereignty === 'Unknown' ? classes.unknownThreat : classes.friendlyThreat,
+                  html: marker.label,
+                  iconSize: [props.markerSize * props.mapZoom, props.markerSize * props.mapZoom],
+                })}
+                id={marker.id}
+                interactive={false}
+                onDragend={event => props.handleMarkerDrag(marker, event.target.getLatLng())}
+                position={marker.latlng}
+                riseOnHover={true}
+                title={marker.title}
+              >
+                {(props.tooltipsActive) ?
+                  <Tooltip
+                    direction='top'
+                    offset={L.point(0, -1 * props.markerSize * props.mapZoom)}
+                    opacity='1'
+                    permanent
+                  >
+                    {marker.title}
+                  </Tooltip>
+                  : undefined
+                }
+              </Marker>
+              <Circle
+                center={marker.latlng}
+                color={marker.sovereignty === 'Hostile' ? 'red' : marker.sovereignty === 'Suspect' ? 'yellow' : marker.sovereignty === 'Unknown' ? 'White' : 'Lime'}
+                dashArray='12, 12'
+                fill={marker.fill}
+                interactive={false}
+                radius={marker.unit === 'm' ? marker.range : marker.unit === 'km' ? marker.range * 1000 : marker.range * 1852}
+              />
+            </React.Fragment>
+          ))}
         </LayerGroup>
       </Overlay>
       <Overlay checked name='Survivors'>
         <LayerGroup>
-          {props.survivors.map(marker => (
+          {interactive && props.survivors.map(marker => (
             <Marker
               autoPan={true}
               draggable={true}
@@ -496,11 +555,40 @@ export default (props) => {
               }
             </Marker>
           ))}
+          {!interactive && props.survivors.map(marker => (
+            <Marker
+              autoPan={true}
+              draggable={true}
+              icon={L.icon({
+                iconUrl: marker.iconUrl,
+                iconSize: [props.markerSize * props.mapZoom, props.markerSize * props.mapZoom]
+              })}
+              id={marker.id}
+              interactive={false}
+              key={`survivor-${marker.id}-${marker.title}`}
+              onDragend={event => props.handleMarkerDrag(marker, event.target.getLatLng())}
+              position={marker.latlng}
+              riseOnHover={true}
+              title={marker.title}
+            >
+              {(props.tooltipsActive) ?
+                <Tooltip
+                  direction='top'
+                  offset={L.point(0, -1 * props.markerSize * props.mapZoom)}
+                  opacity='1'
+                  permanent
+                >
+                  {marker.title}
+                </Tooltip>
+                : undefined
+              }
+            </Marker>
+          ))}
         </LayerGroup>
       </Overlay>
       <Overlay checked name='IPs'>
         <LayerGroup>
-          {props.initialPoints.map(marker => (
+          {interactive && props.initialPoints.map(marker => (
             <Marker
               autoPan={true}
               draggable={true}
@@ -523,6 +611,35 @@ export default (props) => {
                 <Button color='primary' onClick={() => handleEditMarker(marker)}>Edit</Button>
                 <Button color='secondary' onClick={() => props.handleDeleteMarker(marker)}>Delete</Button>
               </Popup>
+              {(props.tooltipsActive) ?
+                <Tooltip
+                  direction='top'
+                  offset={L.point(0, -1 * props.markerSize * props.mapZoom)}
+                  opacity='1'
+                  permanent
+                >
+                  {marker.title}
+                </Tooltip>
+                : undefined
+              }
+            </Marker>
+          ))}
+          {!interactive && props.initialPoints.map(marker => (
+            <Marker
+              autoPan={true}
+              draggable={true}
+              icon={L.icon({
+                iconUrl: marker.iconUrl,
+                iconSize: [props.markerSize * props.mapZoom, props.markerSize * props.mapZoom]
+              })}
+              id={marker.id}
+              interactive={false}
+              key={`ip-${marker.id}-${marker.title}`}
+              onDragend={event => props.handleMarkerDrag(marker, event.target.getLatLng())}
+              position={marker.latlng}
+              riseOnHover={true}
+              title={marker.title}
+            >
               {(props.tooltipsActive) ?
                 <Tooltip
                   direction='top'

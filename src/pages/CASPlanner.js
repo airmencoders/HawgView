@@ -165,6 +165,7 @@ export default ({ state }) => {
   const [markerSize, setMarkerSize] = React.useState(3)
   const [menuAnchorElement, setMenuAnchorElement] = React.useState(null)
   const [minMenuAnchorElement, setMinMenuAnchorElement] = React.useState(null)
+  const [mouseClickActive, setMouseClickActive] = React.useState(true)
   const [saveScenarioDialogOpen, setSaveScenarioDialogOpen] = React.useState(false)
   const [snackbarMessage, setSnackbarMessage] = React.useState(undefined)
   const [snackbarOpen, setSnackbarOpen] = React.useState(false)
@@ -190,6 +191,17 @@ export default ({ state }) => {
   const handleMinMenuClose = () => {
     setMinMenuAnchorElement(null)
   }
+
+  /**
+   * React hook that listens for the resize of the window and closes the minimized menu if it's open
+   */
+  React.useEffect(() => {
+    window.addEventListener('resize', handleMinMenuClose, false)
+
+    return () => {
+      window.removeEventListener('resize', handleMinMenuClose, false)
+    }
+  }, [])
 
 
   /**
@@ -279,15 +291,15 @@ export default ({ state }) => {
   }
 
   const toast = (message, severity) => {
-    setSnackPack(prev => [...prev, {message, key: new Date().getTime(), severity }])
+    setSnackPack(prev => [...prev, { message, key: new Date().getTime(), severity }])
   }
 
   React.useEffect(() => {
-    if(snackPack.length && !snackbarMessage) {
-      setSnackbarMessage({...snackPack[0]})
+    if (snackPack.length && !snackbarMessage) {
+      setSnackbarMessage({ ...snackPack[0] })
       setSnackPack(prev => prev.slice(1))
       setSnackbarOpen(true)
-    } else if(snackPack.length && snackbarMessage && snackbarOpen) {
+    } else if (snackPack.length && snackbarMessage && snackbarOpen) {
       setSnackbarOpen(false)
     }
 
@@ -312,7 +324,7 @@ export default ({ state }) => {
       let updatedPayload = { ...payload }
 
       let updatedTitle
-      if(payload.layer === 'threat') {
+      if (payload.layer === 'threat') {
         updatedTitle = payload.title
       } else {
         updatedTitle = markerLabel === '' ? payload.title : markerLabel
@@ -403,6 +415,15 @@ export default ({ state }) => {
     }
   }
 
+  const handleAnalysisToolToggle = () => {
+    if(analysisToolActive) {
+      setMouseClickActive(true)
+    } else {
+      setMouseClickActive(false)
+    }
+    setAnalysisToolActive(!analysisToolActive)
+  }
+
   return (
     <Box
       display='flex'
@@ -427,11 +448,15 @@ export default ({ state }) => {
               handleColorToggle={handleColorToggle}
               handleRedo={handleRedo}
               handleUndo={handleUndo}
+              mapColor={mapColor}
+              mouseClickActive={mouseClickActive}
               redoAction={(step === history.length - 1) ? '' : history[step + 1].action}
               redoDisabled={(step === history.length - 1)}
               toggleLoadScenarioDialog={() => setLoadScenarioDialogOpen(!loadScenarioDialogOpen)}
               toggleSaveScenarioDialog={() => setSaveScenarioDialogOpen(!saveScenarioDialogOpen)}
               toggleTooltips={() => setTooltipsActive(!tooltipsActive)}
+              tooltipsActive={tooltipsActive}
+              toggleMouseClick={() => setMouseClickActive(!mouseClickActive)}
               undoAction={(step === 0) ? '' : history[step].action}
               undoDisabled={(step === 0)}
             />
@@ -465,13 +490,17 @@ export default ({ state }) => {
             handleMinMenuClose={handleMinMenuClose}
             handleRedo={handleRedo}
             handleUndo={handleUndo}
+            mapColor={mapColor}
             minimizedMenuOpen={minimizedMenuOpen}
             minMenuAnchorElement={minMenuAnchorElement}
+            mouseClickActive={mouseClickActive}
             redoAction={(step === history.length - 1) ? '' : history[step + 1].action}
             redoDisabled={(step === history.length - 1)}
             toggleLoadScenarioDialog={() => setLoadScenarioDialogOpen(!loadScenarioDialogOpen)}
             toggleSaveScenarioDialog={() => setSaveScenarioDialogOpen(!saveScenarioDialogOpen)}
             toggleTooltips={() => setTooltipsActive(!tooltipsActive)}
+            tooltipsActive={tooltipsActive}
+            toggleMouseClick={() => setMouseClickActive(!mouseClickActive)}
             undoAction={(step === 0) ? '' : history[step].action}
             undoDisabled={(step === 0)}
           />
@@ -492,6 +521,7 @@ export default ({ state }) => {
             initialPoints={history[step].initialPoints}
             mapZoom={mapZoom}
             markerSize={markerSize}
+            mouseClickActive={mouseClickActive}
             setFocusedMarker={marker => setFocusedMarker(marker)}
             survivors={history[step].survivors}
             threatMarkers={history[step].threatMarkers}
@@ -507,9 +537,9 @@ export default ({ state }) => {
             analysisToolMouse={analysisToolMouse}
             setAnalysisToolMouse={setAnalysisToolMouse}
             setClickedLatLng={setClickedLatLng}
-            setAnalysisToolActive={setAnalysisToolActive}
             setMapPopup={setMapPopup}
             setAnalysisToolLineClosed={setAnalysisToolLineClosed}
+            toggleAnalysisTool={() => handleAnalysisToolToggle()}
             clickedLatLng={clickedLatLng}
           />
           <ScaleControl />

@@ -1,3 +1,14 @@
+## 2.12.0-alpha
+### Changes
+* Changed from `ColorLensIcon` to `InvertColorsIcon` for the map tools and minimized map
+* Changed from `Messages` to `LabelIcon` for the tooltips
+* `LabelIcon` and `InvertColorsIcon` now display an off icon when active to display to user options
+* Changed from using iconify icon for analysis tool to a Material-UI icon `SquareFoot`
+* Added the ability to render markers that do not interact with the user (user cannot click the marker for details - used for stacking markers or for when the analysis tool is active)
+
+### Fixes
+* `MinimizedMenu` now closes when the window is resized
+
 ## 2.11.0-alpha
 ### Changes
 * Added 'fill' option to `EditThreatDialog`
@@ -124,9 +135,9 @@
 - [x] Add `MGRS` or `Lat/Lon` input to map - (`2.4.0-alpha`)
 - [x] Add Edit marker functionality - (`2.5.0-alpha`)
 - [x] Add Delete marker functionality - (`2.5.0-alpha`)
-- [ ] Add option to have 'fill' in threats
-- [ ] Add 'stackable' option such that it disables the `onClick` for the markers, allowing users to click map to stack chits
-- [ ] Add `onClick` to threat rings that also manage the edit function
+- [x] Add option to have 'fill' in threats - (`2.11.0-alpha`)
+- [x] Add 'stackable' option such that it disables the `onClick` for the markers, allowing users to click map to stack chits - (`2.12.0-alpha`)
+~~Add `onClick` to threat rings that also manage the edit function~~ (Would require to render the popup multiple times (already doing this with the markers though))
 
 ## Farther off Tasks
 - [ ] Add `MGRS Gridlines` to map
@@ -144,4 +155,4 @@
 - [ ] Add `NGA Maps` to site
 - [ ] Add `TAK Maps` to site
 - [ ] Fix ruler touch events
-- ~~[ ] Research into using React's `context` API for passing props to children~~
+~~Research into using React's `context` API for passing props to children~~ (Not required at this time)

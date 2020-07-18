@@ -45,7 +45,7 @@ import AnalysisToolPastLines from '../components/AnalysisToolPastLines'
 //----------------------------------------------------------------//
 // Analysis Tool Component
 //----------------------------------------------------------------//
-export default ({ analysisToolActive, analysisToolLineClosed, analysisToolMouse, clickedLatLng, setAnalysisToolLineClosed, setAnalysisToolMouse, setClickedLatLng, setAnalysisToolActive, setMapPopup }) => {
+export default ({ analysisToolActive, analysisToolLineClosed, analysisToolMouse, clickedLatLng, setAnalysisToolLineClosed, setAnalysisToolMouse, setClickedLatLng, toggleAnalysisTool, setMapPopup }) => {
   /**
    * State variables
    */
@@ -116,7 +116,7 @@ export default ({ analysisToolActive, analysisToolLineClosed, analysisToolMouse,
     setAnalysisToolLines([])
     setClickedLatLng(null)
     setMapPopup(null)
-    setAnalysisToolActive(!analysisToolActive)
+    toggleAnalysisTool()
   }
 
   /**
@@ -188,7 +188,7 @@ export default ({ analysisToolActive, analysisToolLineClosed, analysisToolMouse,
       <AnalysisToolControl
         analysisToolActive={analysisToolActive}
         clickedLatLng={clickedLatLng}
-        handleAnalysisToolToggle={handleAnalysisToolToggle}
+        handleAnalysisToolToggle={() => handleAnalysisToolToggle()}
       />
       <FeatureGroup>
         <AnalysisToolActiveLine

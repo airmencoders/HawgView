@@ -43,15 +43,19 @@ import Tooltip from '@material-ui/core/Tooltip'
 //----------------------------------------------------------------//
 import AddPhotoAlternateIcon from '@material-ui/icons/AddPhotoAlternate'
 import ClearIcon from '@material-ui/icons/Clear'
-import ColorLensIcon from '@material-ui/icons/ColorLens'
+import DescriptionIcon from '@material-ui/icons/Description'
 import GetAppIcon from '@material-ui/icons/GetApp'
-import ListAltIcon from '@material-ui/icons/ListAlt'
-import MessageIcon from '@material-ui/icons/Message'
+import InvertColorsIcon from '@material-ui/icons/InvertColors'
+import InvertColorsOffIcon from '@material-ui/icons/InvertColorsOff'
+import LabelIcon from '@material-ui/icons/Label'
+import LabelOffIcon from '@material-ui/icons/LabelOff'
 import PhotoSizeSelectActualIcon from '@material-ui/icons/PhotoSizeSelectActual'
 import PhotoSizeSelectLargeIcon from '@material-ui/icons/PhotoSizeSelectLarge'
 import RedoIcon from '@material-ui/icons/Redo'
 import SaveAltIcon from '@material-ui/icons/SaveAlt'
 import SaveIcon from '@material-ui/icons/Save'
+import SpeakerNotesIcon from '@material-ui/icons/SpeakerNotes'
+import SpeakerNotesOffIcon from '@material-ui/icons/SpeakerNotesOff'
 import UndoIcon from '@material-ui/icons/Undo'
 import ViewListIcon from '@material-ui/icons/ViewList'
 
@@ -116,18 +120,18 @@ export default (props) => {
           <PhotoSizeSelectLargeIcon />
         </IconButton>
       </Tooltip>
-      <Tooltip title='Toggle color'>
+      <Tooltip title='Toggle map color'>
         <IconButton
           color='inherit'
           onClick={props.handleColorToggle}
         >
-          <ColorLensIcon />
+          {props.mapColor ? <InvertColorsIcon /> : <InvertColorsOffIcon />}
         </IconButton>
       </Tooltip>
       <Tooltip title='CONOP tools'>
         <span>
           <IconButton color='inherit' disabled>
-            <ListAltIcon />
+            <DescriptionIcon />
           </IconButton>
         </span>
       </Tooltip>
@@ -144,9 +148,17 @@ export default (props) => {
             color='inherit'
             onClick={props.toggleTooltips}
           >
-            <MessageIcon />
+            {props.tooltipsActive ? <LabelOffIcon /> : <LabelIcon />}
           </IconButton>
         </span>
+      </Tooltip>
+      <Tooltip title='Toggle marker popups'>
+        <IconButton
+          color='inherit'
+          onClick={props.toggleMouseClick}
+        >
+          {props.mouseClickActive ? <SpeakerNotesOffIcon /> : <SpeakerNotesIcon />}
+        </IconButton>
       </Tooltip>
       <Tooltip title='Save scenario'>
         <IconButton
