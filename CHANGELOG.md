@@ -1,3 +1,10 @@
+## 2.13.0-alpha
+### Changes
+* Threat circles can edit the threat object
+
+### Fixes
+* Fixed bug in `EditThreatDialog` where the wrong data was passed to pre-populate the label `TextField`
+
 ## 2.12.0-alpha
 ### Changes
 * Changed from `ColorLensIcon` to `InvertColorsIcon` for the map tools and minimized map

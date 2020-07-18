@@ -49,7 +49,7 @@ export default (props) => {
   const [custom, setCustom] = React.useState(props.marker ? props.marker.threatType.title === 'Custom' ? true : false : true)
   const [fill, setFill] = React.useState(props.marker ? props.marker.fill : false)
   const [threat, setThreat] = React.useState(props.marker ? threats.indexOf(props.marker.threatType) : 0)
-  const [label, setLabel] = React.useState(props.marker ? props.marker.label : '')
+  const [label, setLabel] = React.useState(props.marker ? props.marker.title : '')
   const [range, setRange] = React.useState(props.marker ? props.marker.range : '3')
   const [unit, setUnit] = React.useState(props.marker ? props.marker.unit : 'NM')
   const [sovereignty, setSovereignty] = React.useState(props.marker ? props.marker.sovereignty : 'Hostile')

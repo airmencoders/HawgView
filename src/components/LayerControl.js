@@ -471,8 +471,22 @@ export default (props) => {
                 color={marker.sovereignty === 'Hostile' ? 'red' : marker.sovereignty === 'Suspect' ? 'yellow' : marker.sovereignty === 'Unknown' ? 'White' : 'Lime'}
                 dashArray='12, 12'
                 fill={marker.fill}
-                radius={marker.unit === 'm' ? marker.range : marker.unit === 'km' ? marker.range * 1000 : marker.range * 1852}
-              />
+                radius={marker.unit === 'm' ? Number.parseInt(marker.range) : marker.unit === 'km' ? marker.range * 1000 : marker.range * 1852}
+              >
+                <Popup>
+                  {marker.title}
+                  <br />
+                  {LatLon.parse(marker.latlng.lat, marker.latlng.lng).toUtm().toMgrs().toString()}
+                  <br />
+                  {
+                    (marker.data !== null) ?
+                      render9line(marker.data)
+                      : null
+                  }
+                  <Button color='primary' onClick={() => handleEditThreat(marker)}>Edit</Button>
+                  <Button color='secondary' onClick={() => props.handleDeleteMarker(marker)}>Delete</Button>
+                </Popup>
+              </Circle>
             </React.Fragment>
           ))}
           {!interactive && props.threatMarkers.map(marker => (
@@ -493,6 +507,19 @@ export default (props) => {
                 riseOnHover={true}
                 title={marker.title}
               >
+                <Popup>
+                  {marker.title}
+                  <br />
+                  {LatLon.parse(marker.latlng.lat, marker.latlng.lng).toUtm().toMgrs().toString()}
+                  <br />
+                  {
+                    (marker.data !== null) ?
+                      render9line(marker.data)
+                      : null
+                  }
+                  <Button color='primary' onClick={() => handleEditThreat(marker)}>Edit</Button>
+                  <Button color='secondary' onClick={() => props.handleDeleteMarker(marker)}>Delete</Button>
+                </Popup>
                 {(props.tooltipsActive) ?
                   <Tooltip
                     direction='top'
@@ -511,7 +538,7 @@ export default (props) => {
                 dashArray='12, 12'
                 fill={marker.fill}
                 interactive={false}
-                radius={marker.unit === 'm' ? marker.range : marker.unit === 'km' ? marker.range * 1000 : marker.range * 1852}
+                radius={marker.unit === 'm' ? Number.parseInt(marker.range) : marker.unit === 'km' ? marker.range * 1000 : marker.range * 1852}
               />
             </React.Fragment>
           ))}
