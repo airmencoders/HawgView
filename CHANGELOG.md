@@ -1,3 +1,8 @@
+## 2.15.0-alpha
+### Changes
+* Added placeholder controls for remaining draw tools
+* Added items to to-do list
+
 ## 2.14.0-alpha
 ### Changes
 * Added `15LineDialog`
@@ -144,11 +149,13 @@
 - [ ] Add `Combat Air Patrol (CAP)` Dialog
 - [ ] Add `Building Label` functionality to `markerDrawer`
 - [x] Add `9-Line` functionality to `hostile markers` - (`2.7.0-alpha`)
-- [ ] Add `15-Line` functionality to `survivor markers`
+- [x] Add `15-Line` functionality to `survivor markers` - (`2-14-0-alpha`)
 - [x] Add `MGRS` or `Lat/Lon` input to map - (`2.4.0-alpha`)
 - [x] Add Edit marker functionality - (`2.5.0-alpha`)
 - [x] Add Delete marker functionality - (`2.5.0-alpha`)
 - [x] Add option to have 'fill' in threats - (`2.11.0-alpha`)
+- [ ] Combine various tools into one button group control
+- [ ] Selecting a different draw item or tool should disable the currently enabled one (without saving)
 - [x] Add 'stackable' option such that it disables the `onClick` for the markers, allowing users to click map to stack chits - (`2.12.0-alpha`)
 ~~Add `onClick` to threat rings that also manage the edit function~~ (Would require to render the popup multiple times (already doing this with the markers though))
 

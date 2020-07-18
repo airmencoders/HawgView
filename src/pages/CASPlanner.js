@@ -59,6 +59,7 @@ import AnalysisTool from '../components/AnalysisTool'
 import AuthenticatedUserMenu from '../components/AuthenticatedUserMenu'
 import CASNavigation from '../components/CASNavigation'
 import CASTools from '../components/CASTools'
+import CircleTool from '../components/CircleTool'
 import CoordInput from '../components/CoordInput'
 import Edit9LineDialog from '../components/Edit9LineDialog'
 import Edit15LineDialog from '../components/Edit15LineDialog'
@@ -66,10 +67,13 @@ import EditThreatDialog from '../components/EditThreatDialog'
 import EditMarkerDialog from '../components/EditMarkerDialog'
 import { editMarkers } from '../functions/editMarkers'
 import LayerControl from '../components/LayerControl'
+import LineTool from '../components/LineTool'
 import MarkerDrawer from '../components/MarkerDrawer'
 import Map from '../components/Map'
 import MinimizedMenu from '../components/MinimizedMenu'
+import PolygonTool from '../components/PolygonTool'
 import UnauthenticatedUserMenu from '../components/UnauthenticatedUserMenu'
+import RectangleTool from '../components/RectangleTool'
 import SaveScenarioDialog from '../components/SaveScenarioDialog'
 import LoadScenarioDialog from '../components/LoadScenarioDialog'
 import Alert from '../components/Alert'
@@ -131,6 +135,7 @@ export default ({ state }) => {
   const [analysisToolActive, setAnalysisToolActive] = React.useState(false)
   const [analysisToolLineClosed, setAnalysisToolLineClosed] = React.useState(true)
   const [analysisToolMouse, setAnalysisToolMouse] = React.useState(null)
+  const [circleToolActive, setCircleToolActive] = React.useState(null)
   const [clickedLatLng, setClickedLatLng] = React.useState(null)
   const [edit9LineDialogOpen, setEdit9LineDialogOpen] = React.useState(false)
   const [edit15LineDialogOpen, setEdit15LineDialogOpen] = React.useState(false)
@@ -152,6 +157,7 @@ export default ({ state }) => {
     survivors: [],
     threatMarkers: [],
   }])
+  const [lineToolActive, setLineToolActive] = React.useState(false)
   const [loadedScenario, setLoadedScenario] = React.useState({})
   const [loadScenarioDialogOpen, setLoadScenarioDialogOpen] = React.useState(false)
   const [map, setMap] = React.useState(null)
@@ -165,6 +171,8 @@ export default ({ state }) => {
   const [menuAnchorElement, setMenuAnchorElement] = React.useState(null)
   const [minMenuAnchorElement, setMinMenuAnchorElement] = React.useState(null)
   const [mouseClickActive, setMouseClickActive] = React.useState(true)
+  const [polygonToolActive, setPolygonToolActive] = React.useState(false)
+  const [rectangleToolActive, setRectangleToolActive] = React.useState(false)
   const [saveScenarioDialogOpen, setSaveScenarioDialogOpen] = React.useState(false)
   const [snackbarMessage, setSnackbarMessage] = React.useState(undefined)
   const [snackbarOpen, setSnackbarOpen] = React.useState(false)
@@ -416,7 +424,7 @@ export default ({ state }) => {
   }
 
   const handleAnalysisToolToggle = () => {
-    if(analysisToolActive) {
+    if (analysisToolActive) {
       setMouseClickActive(true)
     } else {
       setMouseClickActive(false)
@@ -542,6 +550,22 @@ export default ({ state }) => {
             toggleAnalysisTool={() => handleAnalysisToolToggle()}
             clickedLatLng={clickedLatLng}
           />
+          <LineTool
+            active={lineToolActive}
+            toggle={() => setLineToolActive(!lineToolActive)}
+          />
+          <CircleTool
+            active={circleToolActive}
+            toggle={() => setCircleToolActive(!circleToolActive)}
+          />
+          <RectangleTool
+            active={rectangleToolActive}
+            toggle={() => setRectangleToolActive(!rectangleToolActive)}
+          />
+          <PolygonTool
+            active={polygonToolActive}
+            toggle={() => setPolygonToolActive(!polygonToolActive)}
+          />
           <ScaleControl />
           {(clickedLatLng !== null && mapPopup !== null && analysisToolActive === false) ?
             <Popup
@@ -627,13 +651,13 @@ export default ({ state }) => {
       }
       {
         (edit15LineDialogOpen) ?
-        <Edit15LineDialog
-          open={edit15LineDialogOpen}
-          marker={focusedMarker}
-          submit={payload => handleMarkerEdit('15line', payload)}
-          toggle={() => setEdit15LineDialogOpen(!edit15LineDialogOpen)}
-        />
-        : undefined
+          <Edit15LineDialog
+            open={edit15LineDialogOpen}
+            marker={focusedMarker}
+            submit={payload => handleMarkerEdit('15line', payload)}
+            toggle={() => setEdit15LineDialogOpen(!edit15LineDialogOpen)}
+          />
+          : undefined
       }
       {
         (editThreatDialogOpen) ?
