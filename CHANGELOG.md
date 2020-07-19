@@ -1,3 +1,7 @@
+## 2.16.0-alpha
+### Changes
+* Moved tools to all one button group
+
 ## 2.15.0-alpha
 ### Changes
 * Added placeholder controls for remaining draw tools

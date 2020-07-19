@@ -39,7 +39,6 @@ import { FeatureGroup } from 'react-leaflet'
 // Custom Components
 //----------------------------------------------------------------//
 import AnalysisToolActiveLine from '../components/AnalysisToolActiveLine'
-import AnalysisToolControl from '../components/AnalysisToolControl'
 import AnalysisToolPastLines from '../components/AnalysisToolPastLines'
 
 //----------------------------------------------------------------//
@@ -184,27 +183,20 @@ export default ({ analysisToolActive, analysisToolLineClosed, analysisToolMouse,
   }
 
   return (
-    <React.Fragment>
-      <AnalysisToolControl
-        analysisToolActive={analysisToolActive}
-        clickedLatLng={clickedLatLng}
-        handleAnalysisToolToggle={() => handleAnalysisToolToggle()}
+    <FeatureGroup>
+      <AnalysisToolActiveLine
+        analysisToolHdg={analysisToolHdg}
+        analysisToolMouse={analysisToolMouse}
+        analysisToolM={analysisToolM}
+        analysisToolNm={analysisToolNm}
+        analysisToolPoints={analysisToolPoints}
+        analysisToolTotalM={analysisToolTotalM}
+        analysisToolTotalNm={analysisToolTotalNm}
+        declination={declination}
       />
-      <FeatureGroup>
-        <AnalysisToolActiveLine
-          analysisToolHdg={analysisToolHdg}
-          analysisToolMouse={analysisToolMouse}
-          analysisToolM={analysisToolM}
-          analysisToolNm={analysisToolNm}
-          analysisToolPoints={analysisToolPoints}
-          analysisToolTotalM={analysisToolTotalM}
-          analysisToolTotalNm={analysisToolTotalNm}
-          declination={declination}
-        />
-        <AnalysisToolPastLines
-          analysisToolLines={analysisToolLines}
-        />
-      </FeatureGroup>
-    </React.Fragment>
+      <AnalysisToolPastLines
+        analysisToolLines={analysisToolLines}
+      />
+    </FeatureGroup>
   )
 }

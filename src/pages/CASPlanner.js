@@ -38,19 +38,29 @@ import {
   ScaleControl,
   ZoomControl
 } from 'react-leaflet'
+
+import { Icon } from '@iconify/react'
 //----------------------------------------------------------------//
 // Material-UI Core Components
 //----------------------------------------------------------------//
 import Box from '@material-ui/core/Box'
+import Button from '@material-ui/core/Button'
 import IconButton from '@material-ui/core/IconButton'
 import { makeStyles } from '@material-ui/core/styles'
 import Snackbar from '@material-ui/core/Snackbar'
+import Tooltip from '@material-ui/core/Tooltip'
 
 //----------------------------------------------------------------//
 // Material-UI Icons
 //----------------------------------------------------------------//
 import CloseIcon from '@material-ui/icons/Close'
+import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord'
 import MoreVertIcon from '@material-ui/icons/MoreVert'
+import StopIcon from '@material-ui/icons/Stop'
+import SquareFootIcon from '@material-ui/icons/SquareFoot'
+import TimelineIcon from '@material-ui/icons/Timeline'
+
+import pentagonIcon from '@iconify/icons-mdi/pentagon'
 
 //----------------------------------------------------------------//
 // Custom Components
@@ -59,7 +69,6 @@ import AnalysisTool from '../components/AnalysisTool'
 import AuthenticatedUserMenu from '../components/AuthenticatedUserMenu'
 import CASNavigation from '../components/CASNavigation'
 import CASTools from '../components/CASTools'
-import CircleTool from '../components/CircleTool'
 import CoordInput from '../components/CoordInput'
 import Edit9LineDialog from '../components/Edit9LineDialog'
 import Edit15LineDialog from '../components/Edit15LineDialog'
@@ -67,16 +76,14 @@ import EditThreatDialog from '../components/EditThreatDialog'
 import EditMarkerDialog from '../components/EditMarkerDialog'
 import { editMarkers } from '../functions/editMarkers'
 import LayerControl from '../components/LayerControl'
-import LineTool from '../components/LineTool'
 import MarkerDrawer from '../components/MarkerDrawer'
 import Map from '../components/Map'
 import MinimizedMenu from '../components/MinimizedMenu'
-import PolygonTool from '../components/PolygonTool'
 import UnauthenticatedUserMenu from '../components/UnauthenticatedUserMenu'
-import RectangleTool from '../components/RectangleTool'
 import SaveScenarioDialog from '../components/SaveScenarioDialog'
 import LoadScenarioDialog from '../components/LoadScenarioDialog'
 import Alert from '../components/Alert'
+import ToolControls from '../components/ToolControls'
 
 //----------------------------------------------------------------//
 // Custom Class Styling
@@ -111,6 +118,9 @@ const useStyles = makeStyles(theme => ({
   },
   grow: {
     flexGrow: 1,
+  },
+  icon: {
+    fontSize: '25px',
   },
 }))
 
@@ -264,6 +274,48 @@ export default ({ state }) => {
   const handleMapPopupClose = () => {
     setClickedLatLng(null)
     setMapPopup(null)
+  }
+
+  const toggleTools = tool => {
+    switch (tool) {
+      case 'analysis':
+        setAnalysisToolActive(!analysisToolActive)
+        setLineToolActive(false)
+        setCircleToolActive(false)
+        setRectangleToolActive(false)
+        setPolygonToolActive(false)
+        break
+      case 'line':
+        setAnalysisToolActive(false)
+        setLineToolActive(!lineToolActive)
+        setCircleToolActive(false)
+        setRectangleToolActive(false)
+        setPolygonToolActive(false)
+        break
+      case 'circle':
+        setAnalysisToolActive(false)
+        setLineToolActive(false)
+        setCircleToolActive(!circleToolActive)
+        setRectangleToolActive(false)
+        setPolygonToolActive(false)
+        break
+      case 'rectangle':
+        setAnalysisToolActive(false)
+        setLineToolActive(false)
+        setCircleToolActive(false)
+        setRectangleToolActive(!rectangleToolActive)
+        setPolygonToolActive(false)
+        break
+      case 'polygon':
+        setAnalysisToolActive(false)
+        setLineToolActive(false)
+        setCircleToolActive(false)
+        setRectangleToolActive(false)
+        setPolygonToolActive(!polygonToolActive)
+        break
+      default:
+        console.error(`Error: Tool (${tool}) not recognized.`)
+    }
   }
 
   /**
@@ -539,6 +591,48 @@ export default ({ state }) => {
             tooltipsActive={tooltipsActive}
           />
           <ZoomControl position='topright' />
+          <ToolControls>
+            <Tooltip position='left' title='Analysis tool: Press ESC to finish, twice to exit'>
+              <Button
+                color={analysisToolActive ? 'primary' : undefined}
+                onClick={() => toggleTools('analysis')}
+              >
+                <SquareFootIcon className={classes.icon} />
+              </Button>
+            </Tooltip>
+            <Tooltip position='left' title='Draw line'>
+              <Button
+                color={lineToolActive ? 'primary' : undefined}
+                onClick={() => toggleTools('line')}
+              >
+                <TimelineIcon className={classes.icon} />
+              </Button>
+            </Tooltip>
+            <Tooltip position='left' title='Draw circle'>
+              <Button
+                color={circleToolActive ? 'primary' : undefined}
+                onClick={() => toggleTools('circle')}
+              >
+                <FiberManualRecordIcon className={classes.icon} />
+              </Button>
+            </Tooltip>
+            <Tooltip position='left' title='Draw rectangle'>
+              <Button
+                color={rectangleToolActive ? 'primary' : undefined}
+                onClick={() => toggleTools('rectangle')}
+              >
+                <StopIcon className={classes.icon} />
+              </Button>
+            </Tooltip>
+            <Tooltip position='left' title='Draw polygon'>
+              <Button
+                color={polygonToolActive ? 'primary' : undefined}
+                onClick={() => toggleTools('polygon')}
+              >
+                <Icon className={classes.icon} icon={pentagonIcon} />
+              </Button>
+            </Tooltip>
+          </ToolControls>
           <AnalysisTool
             analysisToolActive={analysisToolActive}
             analysisToolLineClosed={analysisToolLineClosed}
@@ -549,22 +643,6 @@ export default ({ state }) => {
             setAnalysisToolLineClosed={setAnalysisToolLineClosed}
             toggleAnalysisTool={() => handleAnalysisToolToggle()}
             clickedLatLng={clickedLatLng}
-          />
-          <LineTool
-            active={lineToolActive}
-            toggle={() => setLineToolActive(!lineToolActive)}
-          />
-          <CircleTool
-            active={circleToolActive}
-            toggle={() => setCircleToolActive(!circleToolActive)}
-          />
-          <RectangleTool
-            active={rectangleToolActive}
-            toggle={() => setRectangleToolActive(!rectangleToolActive)}
-          />
-          <PolygonTool
-            active={polygonToolActive}
-            toggle={() => setPolygonToolActive(!polygonToolActive)}
           />
           <ScaleControl />
           {(clickedLatLng !== null && mapPopup !== null && analysisToolActive === false) ?
