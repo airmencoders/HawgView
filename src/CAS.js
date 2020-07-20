@@ -73,6 +73,7 @@ import MarkerDrawer from './components/MarkerDrawer'
 import Map from './components/Map'
 import MinimizedMenu from './components/MinimizedMenu'
 import UnauthenticatedUserMenu from './components/UnauthenticatedUserMenu'
+import RectangleTool from './components/RectangleTool'
 import SaveScenarioDialog from './components/SaveScenarioDialog'
 import LoadScenarioDialog from './components/LoadScenarioDialog'
 import Alert from './components/Alert'
@@ -219,7 +220,7 @@ export default ({ state }) => {
     if (analysisToolActive && !analysisToolLineClosed) {
       setMouseCoords(latlng)
     }
-    if (circleToolActive) {
+    if (circleToolActive || rectangleToolActive) {
       setMouseCoords(latlng)
     }
   }
@@ -441,6 +442,33 @@ export default ({ state }) => {
     setSnackbarOpen(false)
   }
 
+  const createRectangle = bounds => {
+    let targetHistory
+    if (step === history.length - 1) {
+      targetHistory = history.slice()
+    } else {
+      targetHistory = history.slice(0, step + 1)
+    }
+
+    const rectangle = {
+      bounds: bounds.bounds,
+      color: 'red',   // To-do: go off of state
+    }
+
+    const newStep = {
+      ...targetHistory[step],
+      action: `Create rectangle`,
+      rectangles: [...targetHistory[step].rectangles, rectangle]
+    }
+
+    setHistory([...targetHistory, newStep])
+    setStep(step + 1)
+
+    setRectangleToolActive(false)
+    setClickedLatLng(null)
+    setMouseCoords(null)
+  }
+
   const createCircle = (center, radius) => {
     let targetHistory
     if (step === history.length - 1) {
@@ -606,6 +634,7 @@ export default ({ state }) => {
             mapZoom={mapZoom}
             markerSize={markerSize}
             mouseClickActive={mouseClickActive}
+            rectangles={history[step].rectangles}
             setFocusedMarker={marker => setFocusedMarker(marker)}
             survivors={history[step].survivors}
             threatMarkers={history[step].threatMarkers}
@@ -642,8 +671,16 @@ export default ({ state }) => {
             submit={(center, radius) => createCircle(center, radius)}
             toggle={() => toggleTools('circle')}
           />
+          <RectangleTool
+            active={rectangleToolActive}
+            color='red'   // Todo use the state from the marker
+            latlng={clickedLatLng}
+            mouseCoords={mouseCoords}
+            submit={bounds => createRectangle(bounds)}
+            toggle={() => toggleTools('rectangle')}
+          />
           <ScaleControl />
-          {(clickedLatLng !== null && mapPopup !== null && analysisToolActive === false && circleToolActive === false) ?
+          {(clickedLatLng !== null && mapPopup !== null && analysisToolActive === false && circleToolActive === false && rectangleToolActive === false) ?
             <Popup
               maxWidth={500}
               position={clickedLatLng}

@@ -12,9 +12,13 @@ export default (props) => {
 
   React.useEffect(() => {
     document.addEventListener('keydown', handleEsc, false)
+    setCenter(null)
+    setRadius(0)
 
     return () => {
       document.removeEventListener('keydown', handleEsc, false)
+      setCenter(null)
+      setRadius(0)
     }
   }, [props.active])
 
@@ -25,16 +29,11 @@ export default (props) => {
   }, [props.mouseCoords])
 
   React.useEffect(() => {
-    setCenter(null)
-    setRadius(0)
-  }, [props.active])
-
-  React.useEffect(() => {
-    if(center === null) {
+    if (center === null) {
       setCenter(props.latlng)
     }
 
-    if(props.active && center !== null && radius !== 0) {
+    if (props.active && center !== null && radius !== 0) {
       props.submit(center, radius)
     }
   }, [props.latlng])

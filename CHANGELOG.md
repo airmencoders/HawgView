@@ -1,3 +1,8 @@
+## 2.18.0-alpha
+### Changes
+* Finished Rectangle Tool
+* Potential to change and use the create marker tool which will make the marker with popup (invisible marker) and the data required to make the shape
+
 ## 2.17.2-alpha
 ### Fixes
 * Fixed map issue when adding the `CircleTool` defaulted the map popup to false

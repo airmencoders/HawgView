@@ -39,6 +39,7 @@ import {
   Polygon,
   Polyline,
   Popup,
+  Rectangle,
   TileLayer,
   Tooltip,
 } from 'react-leaflet'
@@ -767,9 +768,15 @@ export default (props) => {
 
         </LayerGroup>
       </Overlay>
-      <Overlay checked name='Engagement Areas'>
+      <Overlay checked name='Rectangles'>
         <LayerGroup>
-
+          {props.rectangles.map((rectangle, index) => (
+            <Rectangle
+              bounds={rectangle.bounds}
+              color={rectangle.color}
+              key={`rectangle-${index}`}
+            />
+          ))}
         </LayerGroup>
       </Overlay>
       <Overlay checked name='Circles'>
