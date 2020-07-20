@@ -1,4 +1,9 @@
+## 2.17.1-alpha
+### Fixes
+* Using the analysis tool no longer adds circles to the map.
+
 ## 2.17.0-alpha
+### Changes
 * Users can now add circles to the map
 * Added tasks to to-do list
 

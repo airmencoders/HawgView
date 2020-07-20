@@ -29,12 +29,12 @@ export default (props) => {
       setCenter(props.latlng)
     }
 
-    if (center !== null && props.latlng !== null && props.latlng !== center) {
+    if (props.active && center !== null && props.latlng !== null && props.latlng !== center) {
       setCenter(null)
       setRadius(0)
       props.submit(center, radius)
     }
-  }, [center, props.latlng])
+  }, [props.active, center, props.latlng])
 
   const handleEsc = event => {
     if (props.active && event.key === 'Escape') {
