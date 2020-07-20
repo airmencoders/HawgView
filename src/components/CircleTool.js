@@ -25,26 +25,29 @@ export default (props) => {
   }, [props.mouseCoords])
 
   React.useEffect(() => {
-    if (center === null) {
+    setCenter(null)
+    setRadius(0)
+  }, [props.active])
+
+  React.useEffect(() => {
+    if(center === null) {
       setCenter(props.latlng)
     }
 
-    if (props.active && center !== null && props.latlng !== null && props.latlng !== center) {
-      setCenter(null)
-      setRadius(0)
+    if(props.active && center !== null && radius !== 0) {
       props.submit(center, radius)
     }
-  }, [props.active, center, props.latlng])
+  }, [props.latlng])
 
   const handleEsc = event => {
     if (props.active && event.key === 'Escape') {
-      props.toggle()
       setRadius(0)
       setCenter(null)
+      props.toggle()
     }
   }
 
-  if (center !== null && props.active) {
+  if (props.active && center !== null) {
     return (
       <FeatureGroup>
         <Circle

@@ -1,3 +1,7 @@
+## 2.17.2-alpha
+### Fixes
+* Fixed map issue when adding the `CircleTool` defaulted the map popup to false
+
 ## 2.17.1-alpha
 ### Fixes
 * Using the analysis tool no longer adds circles to the map.
