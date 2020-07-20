@@ -33,14 +33,14 @@ export default (props) => {
     date: new Date(),
     data: {
       buildingLabels: props.data.buildingLabels,
-      combatAirPatrols: props.data.combatAirPatrols,
-      engagementAreas: props.data.engagementAreas,
+      circles: props.data.circles,
+      combatAirPatrols: props.data.combatAirPatrols,      
       friendlyMarkers: props.data.friendlyMarkers,
       hostileMarkers: props.data.hostileMarkers,
       initialPoints: props.data.initialPoints,
       lines: props.data.lines,
-      polygons: props.data.polygons,
-      restrictedOperatingZones: props.data.restrictedOperatingZones,
+      polygons: props.data.polygons,      
+      rectangles: props.data.rectangles,
       survivors: props.data.survivors,
       threatMarkers: props.data.threatMarkers
     }

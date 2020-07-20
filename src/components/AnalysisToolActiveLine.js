@@ -64,7 +64,7 @@ const useStyles = makeStyles(theme => ({
 //----------------------------------------------------------------//
 // Analysis Tool Active Line Component
 //----------------------------------------------------------------//
-export default ({ analysisToolHdg, analysisToolMouse, analysisToolM, analysisToolNm, analysisToolPoints, analysisToolTotalM, analysisToolTotalNm, declination }) => {
+export default ({ active, analysisToolHdg, mouseCoords, analysisToolM, analysisToolNm, analysisToolPoints, analysisToolTotalM, analysisToolTotalNm, declination }) => {
   const classes = useStyles()
 
   return (
@@ -73,11 +73,11 @@ export default ({ analysisToolHdg, analysisToolMouse, analysisToolM, analysisToo
         /**
          * Active Line
          */
-        (analysisToolPoints.length > 0 && analysisToolMouse !== null) ?
+        (analysisToolPoints.length > 0 && mouseCoords !== null) ?
           <Polyline
             color='red'
             dashArray='1 7'
-            positions={[...analysisToolPoints.map(point => point.point), analysisToolMouse]}
+            positions={[...analysisToolPoints.map(point => point.point), mouseCoords]}
             weight='2'
           />
           : undefined
@@ -112,9 +112,9 @@ export default ({ analysisToolHdg, analysisToolMouse, analysisToolM, analysisToo
         /**
          * Mouse Circle Marker
          */
-        (analysisToolMouse !== null) ?
+        (mouseCoords !== null && active) ?
           <CircleMarker
-            center={analysisToolMouse}
+            center={mouseCoords}
             color='red'
             radius='2'
           >

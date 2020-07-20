@@ -35,16 +35,18 @@
 import React from 'react'
 import { FeatureGroup } from 'react-leaflet'
 
+import { distanceAndHeading } from '../functions/mathFunctions'
+
 //----------------------------------------------------------------//
 // Custom Components
 //----------------------------------------------------------------//
-import AnalysisToolActiveLine from '../components/AnalysisToolActiveLine'
-import AnalysisToolPastLines from '../components/AnalysisToolPastLines'
+import AnalysisToolActiveLine from './AnalysisToolActiveLine'
+import AnalysisToolPastLines from './AnalysisToolPastLines'
 
 //----------------------------------------------------------------//
 // Analysis Tool Component
 //----------------------------------------------------------------//
-export default ({ analysisToolActive, analysisToolLineClosed, analysisToolMouse, clickedLatLng, setAnalysisToolLineClosed, setAnalysisToolMouse, setClickedLatLng, toggleAnalysisTool, setMapPopup }) => {
+export default ({ analysisToolActive, analysisToolLineClosed, mouseCoords, clickedLatLng, setAnalysisToolLineClosed, setMouseCoords, setClickedLatLng, toggleAnalysisTool, setMapPopup }) => {
   /**
    * State variables
    */
@@ -103,10 +105,10 @@ export default ({ analysisToolActive, analysisToolLineClosed, analysisToolMouse,
    * As long as there are two lat/lon points to calculate (starting point and mouse) call the function
    */
   React.useEffect(() => {
-    if (clickedLatLng !== null && analysisToolMouse !== null) {
+    if (clickedLatLng !== null && mouseCoords !== null) {
       calculateHeadingAndDistance()
     }
-  }, [clickedLatLng, analysisToolMouse])
+  }, [clickedLatLng, mouseCoords])
 
   /**
    * Handle the Analysis Tool Toggle. Perform startup/cleanup actions
@@ -123,10 +125,15 @@ export default ({ analysisToolActive, analysisToolLineClosed, analysisToolMouse,
    * Uses the NOAA NGDC Magnetic Declination API to get the magnetic variance using the World Magnetic Model (WMM) for the starting point
    */
   const calculateHeadingAndDistance = () => {
-    const f1 = clickedLatLng.lat
+    const distAndHdg = distanceAndHeading(clickedLatLng, mouseCoords, declination)
+
+    setAnalysisToolHdg(distAndHdg.heading)
+    setAnalysisToolM(distAndHdg.meters)
+    setAnalysisToolNm(distAndHdg.nm)
+    /*const f1 = clickedLatLng.lat
     const l1 = clickedLatLng.lng
-    const f2 = analysisToolMouse.lat
-    const l2 = analysisToolMouse.lng
+    const f2 = mouseCoords.lat
+    const l2 = mouseCoords.lng
 
     const toRadian = Math.PI / 180
     const metersR = 6371 * 1000
@@ -143,7 +150,7 @@ export default ({ analysisToolActive, analysisToolLineClosed, analysisToolMouse,
     const a = Math.sin(deltaF / 2) * Math.sin(deltaF / 2) + Math.cos(f1 * toRadian) * Math.cos(f2 * toRadian) * Math.sin(deltaL / 2) * Math.sin(deltaL / 2)
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
     setAnalysisToolM(c * metersR)
-    setAnalysisToolNm(c * nmR)
+    setAnalysisToolNm(c * nmR)**/
   }
 
   /**
@@ -173,7 +180,7 @@ export default ({ analysisToolActive, analysisToolLineClosed, analysisToolMouse,
     }
     setAnalysisToolPoints([])
     setClickedLatLng(null)
-    setAnalysisToolMouse(null)
+    setMouseCoords(null)
     setDeclination(null)
     setAnalysisToolHdg(0)
     setAnalysisToolNm(0)
@@ -185,8 +192,9 @@ export default ({ analysisToolActive, analysisToolLineClosed, analysisToolMouse,
   return (
     <FeatureGroup>
       <AnalysisToolActiveLine
+        active={analysisToolActive}
         analysisToolHdg={analysisToolHdg}
-        analysisToolMouse={analysisToolMouse}
+        mouseCoords={mouseCoords}
         analysisToolM={analysisToolM}
         analysisToolNm={analysisToolNm}
         analysisToolPoints={analysisToolPoints}

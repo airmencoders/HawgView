@@ -58,28 +58,28 @@ export const editMarkers = (action, history, step, payload) => {
  */
 const clearMarkers = (history, step) => {
   if (history[step].buildingLabels.length > 0 ||
+    history[step].circles.length > 0 ||
     history[step].combatAirPatrols.length > 0 ||
-    history[step].engagementAreas.length > 0 ||
     history[step].friendlyMarkers.length > 0 ||
     history[step].hostileMarkers.length > 0 ||
     history[step].initialPoints.length > 0 ||
     history[step].lines.length > 0 ||
     history[step].polygons.length > 0 ||
-    history[step].restrictedOperatingZones.length > 0 ||
+    history[step].rectangles.length > 0 ||
     history[step].survivors.length > 0 ||
     history[step].threatMarkers.length > 0) {
 
     return {
-      action: 'clear markers',
+      action: 'Clear markers',
       buildingLabels: [],
+      circles: [],
       combatAirPatrols: [],
-      engagementAreas: [],
       friendlyMarkers: [],
       hostileMarkers: [],
       initialPoints: [],
       lines: [],
       polygons: [],
-      restrictedOperatingZones: [],
+      rectangles: [],
       survivors: [],
       threatMarkers: [],
     }

@@ -30,83 +30,72 @@
 //----------------------------------------------------------------//
 // Top Level Modules
 //----------------------------------------------------------------//
-import React from 'react';
-import {
-  BrowserRouter as Router,
-  Route,
-  Switch,
-  //Redirect
-} from 'react-router-dom'
+import React from 'react'
 
 //----------------------------------------------------------------//
 // Material-UI Core Components
 //----------------------------------------------------------------//
-import CssBaseline from '@material-ui/core/CssBaseline'
+import Divider from '@material-ui/core/Divider'
+import Drawer from '@material-ui/core/Drawer'
+import FormControlLabel from '@material-ui/core/FormControlLabel'
+import FormGroup from '@material-ui/core/FormGroup'
+import Grid from '@material-ui/core/Grid'
+import { makeStyles } from '@material-ui/core/styles'
+import Switch from '@material-ui/core/Switch'
+import TextField from '@material-ui/core/TextField'
 
 //----------------------------------------------------------------//
 // Custom Components
 //----------------------------------------------------------------//
-
+import FriendlyMarkers from './FriendlyMarkers'
+import HostileMarkers from './HostileMarkers'
+import PersistentMarkers from './PersistentMarkers'
 
 //----------------------------------------------------------------//
-// Custom Pages
+// Custom Class Styling
 //----------------------------------------------------------------//
-import CAS from './CAS'
-/*import Login from './pages/Login'
+const drawerWidth = 240
 
-const MyScenarios = () => {
+const useStyles = makeStyles(theme => ({
+  descriptionField: {
+    margin: theme.spacing(2),
+  },
+  drawer: {
+    [theme.breakpoints.up('sm')]: {
+      width: drawerWidth,
+      flexShrink: 0,
+    },
+  },
+  drawerPaper: {
+    width: drawerWidth,
+  },
+}))
+
+//----------------------------------------------------------------//
+// Marker Drawer Component
+//----------------------------------------------------------------//
+export default (props) => {
+  const classes = useStyles()
+
+  const container = props.window !== undefined ? () => window().document.body : undefined
+
   return (
-    <h1>My Scenarios</h1>
+    <nav
+      className={classes.drawer}
+    >
+      <Drawer
+        container={container}
+        variant='temporary'
+        anchor='left'
+        open={props.open}
+        onClose={props.toggle}
+        classes={{ paper: classes.drawerPaper, }}
+        ModalProps={{ keepMounted: true, }}
+      >
+        <div>
+
+        </div>
+      </Drawer>
+    </nav>
   )
-}*/
-
-//----------------------------------------------------------------//
-// App Component
-//----------------------------------------------------------------//
-class App extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      classification: 'unclassified',
-      isAuthenticated: false,
-      user: null,
-    }
-  }
-
-  //----------------------------------------------------------------//
-  // Render the Router
-  //----------------------------------------------------------------//
-  render() {
-    return (
-      <div className='App'>
-        <CssBaseline />
-        <Router>
-          <Switch>
-            <Route exact path='/'>
-              <CAS
-                state={this.state}
-              />
-            </Route>
-            {/*<Route path='/login' >
-              <Login
-                state={this.state}
-              />
-            </Route >
-            <Route path='/my-scenarios'>
-              {(this.state.isAuthenticated) ?
-                <MyScenarios />
-                :
-                <Redirect to='/login?error=0x000001' />
-              }
-            </Route>*/}
-          </Switch>
-        </Router>
-      </div>
-    )
-  }
 }
-
-export default App
-
-
-

@@ -772,9 +772,16 @@ export default (props) => {
 
         </LayerGroup>
       </Overlay>
-      <Overlay checked name='ROZs'>
+      <Overlay checked name='Circles'>
         <LayerGroup>
-
+          {props.circles.map((circle, index) => (
+            <Circle
+              center={circle.center}
+              color={circle.color}
+              key={`circle-${index}`}
+              radius={circle.radius}
+            />
+          ))}
         </LayerGroup>
       </Overlay>
     </LayersControl>

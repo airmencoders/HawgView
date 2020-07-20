@@ -1,3 +1,7 @@
+## 2.17.0-alpha
+* Users can now add circles to the map
+* Added tasks to to-do list
+
 ## 2.16.0-alpha
 ### Changes
 * Moved tools to all one button group
@@ -165,7 +169,8 @@
 
 ## Farther off Tasks
 - [ ] Add `MGRS Gridlines` to map
-- [ ] Add `Drawing` capabilities to map
+- [-] Add `Drawing` capabilities to map - (Started `2.17.0-alpha`)
+- [ ] Add values to the `DrawDrawer`
 - [x] Add `Ruler` control to map - (`2.2.0-alpha`)
 - [ ] Add `Concept of Operations (CONOP)` functionality to site
 - [ ] Add `IP Run card` functionality to site
