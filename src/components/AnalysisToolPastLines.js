@@ -55,7 +55,7 @@ const useStyles = makeStyles(theme => ({
 //----------------------------------------------------------------//
 // Analysis Tool Past Lines Component
 //----------------------------------------------------------------//
-export default ({ analysisToolLines }) => {
+export default (props) => {
   const classes = useStyles()
 
   return (
@@ -64,7 +64,7 @@ export default ({ analysisToolLines }) => {
       /**
        * Past Lines
        */
-      analysisToolLines.map((line, lineIndex) => (
+      props.lines.map((line, lineIndex) => (
         <Polyline
           color='red'
           dashArray='1 7'
@@ -76,7 +76,7 @@ export default ({ analysisToolLines }) => {
       /**
        * Past Circle Markers
        */
-      analysisToolLines.map((line, lineIndex) => {
+      props.lines.map((line, lineIndex) => {
         return (
           line.map((point, pointIndex) => (
             <CircleMarker

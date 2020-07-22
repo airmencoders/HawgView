@@ -46,18 +46,28 @@ import AnalysisToolPastLines from './AnalysisToolPastLines'
 //----------------------------------------------------------------//
 // Analysis Tool Component
 //----------------------------------------------------------------//
-export default ({ analysisToolActive, analysisToolLineClosed, mouseCoords, clickedLatLng, setAnalysisToolLineClosed, setMouseCoords, setClickedLatLng, toggleAnalysisTool, setMapPopup }) => {
+//export default ({ analysisToolActive, analysisToolLineClosed, mouseCoords, clickedLatLng, setAnalysisToolLineClosed, setMouseCoords, setClickedLatLng, toggleAnalysisTool, setMapPopup }) => {
+export default (props) => {
   /**
    * State variables
    */
-  const [analysisToolHdg, setAnalysisToolHdg] = React.useState(0)
-  const [analysisToolLines, setAnalysisToolLines] = React.useState([])
-  const [analysisToolM, setAnalysisToolM] = React.useState(0)
-  const [analysisToolNm, setAnalysisToolNm] = React.useState(0)
-  const [analysisToolPoints, setAnalysisToolPoints] = React.useState([])
-  const [analysisToolTotalNm, setAnalysisToolTotalNm] = React.useState(0)
-  const [analysisToolTotalM, setAnalysisToolTotalM] = React.useState(0)
+  const [hdg, setHdg] = React.useState(0)
+  const [lines, setLines] = React.useState([])
+  const [meters, setMeters] = React.useState(0)
+  const [miles, setMiles] = React.useState(0)
+  const [points, setPoints] = React.useState([])
+  const [totalMiles, setTotalMiles] = React.useState(0)
+  const [totalMeters, setTotalMeters] = React.useState(0)
   const [declination, setDeclination] = React.useState(null)
+
+  React.useEffect(() => {
+    console.log('active', props.active)
+  }, [props.active])
+
+  React.useEffect(() => {
+    closeLine()
+    setLines([])
+  }, [props.active])
 
   /**
    * Add Key and mouse listeners for the map
@@ -67,59 +77,58 @@ export default ({ analysisToolActive, analysisToolLineClosed, mouseCoords, click
    */
   React.useEffect(() => {
     document.addEventListener('keydown', handleEscPress, false)
-    document.addEventListener('dblclick', closeLine, false)
+    //document.addEventListener('dblclick', closeLine, false)
 
     return () => {
       document.removeEventListener('keydown', handleEscPress, false)
-      document.removeEventListener('dblclick', closeLine, false)
-      console.log('interesting')
+      //document.removeEventListener('dblclick', closeLine, false)
     }
-  }, [analysisToolActive, analysisToolPoints, analysisToolLineClosed])
+  }, [props.active, props.lineClosed, points])
 
   /**
    * Every time the clicked latlng changes and isn't null, add it to the analysis tool
    * As long as the tool is active
    */
   React.useEffect(() => {
-    if (clickedLatLng !== null && analysisToolActive) {
-      setAnalysisToolTotalM(analysisToolTotalM + analysisToolM)
-      setAnalysisToolTotalNm(analysisToolTotalNm + analysisToolNm)
+    if (props.latlng !== null && props.active) {
+      props.setLineClosed(false)
+      setTotalMeters(totalMeters + meters)
+      setTotalMiles(totalMiles + miles)
 
       const newPoint = {
-        point: clickedLatLng,
-        hdg: analysisToolHdg,
-        nm: analysisToolTotalNm + analysisToolNm,
-        m: analysisToolTotalM + analysisToolM,
+        point: props.latlng,
+        hdg: hdg,
+        nm: totalMiles + miles,
+        m: totalMeters + meters,
         declination: declination
       }
-      setAnalysisToolPoints([...analysisToolPoints, newPoint])
+      setPoints([...points, newPoint])
 
       // Set the declination
       setDeclination(null)
-      fetch(`https://www.ngdc.noaa.gov/geomag-web/calculators/calculateDeclination?lat1=${clickedLatLng.lat}&lon1=${clickedLatLng.lng}&resultFormat=json`)
+      fetch(`https://www.ngdc.noaa.gov/geomag-web/calculators/calculateDeclination?lat1=${props.latlng.lat}&lon1=${props.latlng.lng}&resultFormat=json`)
         .then(response => response.json())
         .then(json => setDeclination(json.result[0].declination))
     }
-  }, [clickedLatLng])
+  }, [props.latlng])
 
   /**
    * As long as there are two lat/lon points to calculate (starting point and mouse) call the function
    */
   React.useEffect(() => {
-    if (clickedLatLng !== null && mouseCoords !== null) {
+    if (props.latlng !== null && props.mouseCoords !== null) {
       calculateHeadingAndDistance()
     }
-  }, [clickedLatLng, mouseCoords])
+  }, [props.latlng, props.mouseCoords])
 
   /**
    * Handle the Analysis Tool Toggle. Perform startup/cleanup actions
    */
-  const handleAnalysisToolToggle = () => {
-    setAnalysisToolLines([])
-    setAnalysisToolPoints([])
-    setClickedLatLng(null)
-    setMapPopup(null)
-    toggleAnalysisTool()
+  const toggle = () => {
+    closeLine()
+    setLines([])
+    setPoints([])
+    props.toggle()
   }
 
   /**
@@ -127,32 +136,11 @@ export default ({ analysisToolActive, analysisToolLineClosed, mouseCoords, click
    * Uses the NOAA NGDC Magnetic Declination API to get the magnetic variance using the World Magnetic Model (WMM) for the starting point
    */
   const calculateHeadingAndDistance = () => {
-    const distAndHdg = distanceAndHeading(clickedLatLng, mouseCoords, declination)
+    const distAndHdg = distanceAndHeading(props.latlng, props.mouseCoords, declination)
 
-    setAnalysisToolHdg(distAndHdg.heading)
-    setAnalysisToolM(distAndHdg.meters)
-    setAnalysisToolNm(distAndHdg.nm)
-    /*const f1 = clickedLatLng.lat
-    const l1 = clickedLatLng.lng
-    const f2 = mouseCoords.lat
-    const l2 = mouseCoords.lng
-
-    const toRadian = Math.PI / 180
-    const metersR = 6371 * 1000
-    const nmR = 6371 * 0.539956803
-
-    const y = Math.sin((l2 - l1) * toRadian) * Math.cos(f2 * toRadian)
-    const x = Math.cos(f1 * toRadian) * Math.sin(f2 * toRadian) - Math.sin(f1 * toRadian) * Math.cos(f2 * toRadian) * Math.cos((l2 - l1) * toRadian)
-    const bearing = Math.atan2(y, x) * 180 / Math.PI
-    const heading = bearing + ((declination === null) ? 0 : declination)
-    setAnalysisToolHdg(heading + ((heading < 0) ? heading + 360 : 0))
-
-    const deltaF = (f2 - f1) * toRadian
-    const deltaL = (l2 - l1) * toRadian
-    const a = Math.sin(deltaF / 2) * Math.sin(deltaF / 2) + Math.cos(f1 * toRadian) * Math.cos(f2 * toRadian) * Math.sin(deltaL / 2) * Math.sin(deltaL / 2)
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
-    setAnalysisToolM(c * metersR)
-    setAnalysisToolNm(c * nmR)**/
+    setHdg(distAndHdg.heading)
+    setMeters(distAndHdg.meters)
+    setMiles(distAndHdg.nm)
   }
 
   /**
@@ -161,13 +149,12 @@ export default ({ analysisToolActive, analysisToolLineClosed, mouseCoords, click
    * @param {Event} event Key press event
    */
   const handleEscPress = event => {
-    if (analysisToolActive && event.key === 'Escape') {
-      if (analysisToolLineClosed) {
-        handleAnalysisToolToggle()
+    if (props.active && event.key === 'Escape') {
+      if (props.lineClosed) {
+        toggle()
       } else {
         closeLine()
       }
-      setClickedLatLng(null)
     }
   }
 
@@ -176,36 +163,36 @@ export default ({ analysisToolActive, analysisToolLineClosed, mouseCoords, click
    * and resets the tool for another line
    */
   const closeLine = () => {
-    setAnalysisToolLineClosed(true)
-    if (analysisToolPoints.length > 1) {
-      setAnalysisToolLines([...analysisToolLines, [...analysisToolPoints]])
+    props.clearLatlng()
+    props.clearMouse()
+    props.setLineClosed(true)
+    if (points.length > 1) {
+      setLines([...lines, [...points]])
     }
-    setAnalysisToolPoints([])
-    setClickedLatLng(null)
-    setMouseCoords(null)
+    setPoints([])
     setDeclination(null)
-    setAnalysisToolHdg(0)
-    setAnalysisToolNm(0)
-    setAnalysisToolM(0)
-    setAnalysisToolTotalNm(0)
-    setAnalysisToolTotalM(0)
+    setHdg(0)
+    setMiles(0)
+    setMeters(0)
+    setTotalMiles(0)
+    setTotalMeters(0)
   }
 
   return (
     <FeatureGroup>
       <AnalysisToolActiveLine
-        active={analysisToolActive}
-        analysisToolHdg={analysisToolHdg}
-        mouseCoords={mouseCoords}
-        analysisToolM={analysisToolM}
-        analysisToolNm={analysisToolNm}
-        analysisToolPoints={analysisToolPoints}
-        analysisToolTotalM={analysisToolTotalM}
-        analysisToolTotalNm={analysisToolTotalNm}
+        active={props.active}
+        hdg={hdg}
+        mouseCoords={props.mouseCoords}
+        meters={meters}
+        miles={miles}
+        points={points}
+        totalMeters={totalMeters}
+        totalMiles={totalMiles}
         declination={declination}
       />
       <AnalysisToolPastLines
-        analysisToolLines={analysisToolLines}
+        lines={lines}
       />
     </FeatureGroup>
   )

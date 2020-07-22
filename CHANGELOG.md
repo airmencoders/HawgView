@@ -1,3 +1,7 @@
+## 2.18.2-alpha
+### Fixes
+* Ruler now properly closes when swapping tools
+
 ## 2.18.1-alpha
 ### Fixes
 * Fixed heading issue with ruler

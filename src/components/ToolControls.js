@@ -7,7 +7,6 @@ import { makeStyles } from '@material-ui/core/styles'
 import Tooltip from '@material-ui/core/Tooltip'
 
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord'
-import SettingsIcon from '@material-ui/icons/Settings'
 import StopIcon from '@material-ui/icons/Stop'
 import SquareFootIcon from '@material-ui/icons/SquareFoot'
 import TimelineIcon from '@material-ui/icons/Timeline'
@@ -34,7 +33,7 @@ export default (props) => {
       >
         <Tooltip placement='left' title='Analysis tool: Press ESC to finish, twice to exit'>
           <Button
-            color={props.analysisToolActive ? 'primary' : undefined}
+            color={props.activeTool === 'analysis' ? 'primary' : undefined}
             onClick={() => props.toggle('analysis')}
           >
             <SquareFootIcon className={classes.icon} />
@@ -42,7 +41,7 @@ export default (props) => {
         </Tooltip>
         <Tooltip placement='left' title='Draw line'>
           <Button
-            color={props.lineToolActive ? 'primary' : undefined}
+            color={props.activeTool === 'line' ? 'primary' : undefined}
             onClick={() => props.toggle('line')}
           >
             <TimelineIcon className={classes.icon} />
@@ -50,7 +49,7 @@ export default (props) => {
         </Tooltip>
         <Tooltip placement='left' title='Draw circle'>
           <Button
-            color={props.circleToolActive ? 'primary' : undefined}
+            color={props.activeTool === 'circle' ? 'primary' : undefined}
             onClick={() => props.toggle('circle')}
           >
             <FiberManualRecordIcon className={classes.icon} />
@@ -58,7 +57,7 @@ export default (props) => {
         </Tooltip>
         <Tooltip placement='left' title='Draw rectangle'>
           <Button
-            color={props.rectangleToolActive ? 'primary' : undefined}
+            color={props.activeTool === 'rectangle' ? 'primary' : undefined}
             onClick={() => props.toggle('rectangle')}
           >
             <StopIcon className={classes.icon} />
@@ -66,17 +65,10 @@ export default (props) => {
         </Tooltip>
         <Tooltip placement='left' title='Draw polygon'>
           <Button
-            color={props.polygonToolActive ? 'primary' : undefined}
+            color={props.activeTool === 'polygon' ? 'primary' : undefined}
             onClick={() => props.toggle('polygon')}
           >
             <Icon className={classes.icon} icon={pentagonIcon} />
-          </Button>
-        </Tooltip>
-        <Tooltip placement='left' title='Draw settings'>
-          <Button
-            onClick={() => props.toggle('settings')}
-          >
-            <SettingsIcon className={classes.icon} />
           </Button>
         </Tooltip>
       </ButtonGroup>

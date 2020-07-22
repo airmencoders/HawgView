@@ -64,7 +64,8 @@ const useStyles = makeStyles(theme => ({
 //----------------------------------------------------------------//
 // Analysis Tool Active Line Component
 //----------------------------------------------------------------//
-export default ({ active, analysisToolHdg, mouseCoords, analysisToolM, analysisToolNm, analysisToolPoints, analysisToolTotalM, analysisToolTotalNm, declination }) => {
+//export default ({ active, analysisToolHdg, mouseCoords, analysisToolM, analysisToolNm, analysisToolPoints, analysisToolTotalM, analysisToolTotalNm, declination }) => {
+export default (props) => {
   const classes = useStyles()
 
   return (
@@ -73,11 +74,11 @@ export default ({ active, analysisToolHdg, mouseCoords, analysisToolM, analysisT
         /**
          * Active Line
          */
-        (analysisToolPoints.length > 0 && mouseCoords !== null) ?
+        (props.points.length > 0 && props.mouseCoords !== null) ?
           <Polyline
             color='red'
             dashArray='1 7'
-            positions={[...analysisToolPoints.map(point => point.point), mouseCoords]}
+            positions={[...props.points.map(point => point.point), props.mouseCoords]}
             weight='2'
           />
           : undefined
@@ -86,7 +87,7 @@ export default ({ active, analysisToolHdg, mouseCoords, analysisToolM, analysisT
         /**
          * Active Circle Markers
          */
-        analysisToolPoints.map((point, index) => (
+        props.points.map((point, index) => (
           <CircleMarker
             center={point.point}
             color='red'
@@ -112,9 +113,9 @@ export default ({ active, analysisToolHdg, mouseCoords, analysisToolM, analysisT
         /**
          * Mouse Circle Marker
          */
-        (mouseCoords !== null && active) ?
+        (props.mouseCoords !== null && props.active) ?
           <CircleMarker
-            center={mouseCoords}
+            center={props.mouseCoords}
             color='red'
             radius='2'
           >
@@ -124,11 +125,11 @@ export default ({ active, analysisToolHdg, mouseCoords, analysisToolM, analysisT
               permanent={true}
               sticky={true}
             >
-              <b>{(declination === null) ? 'True:' : 'Mag:'} </b>{analysisToolHdg.toFixed(2)}&deg;
+              <b>{(props.declination === null) ? 'True:' : 'Mag:'} </b>{props.hdg.toFixed(2)}&deg;
               <br />
-              <b>NM: </b>{(analysisToolTotalNm + analysisToolNm).toFixed(2)} {(analysisToolTotalNm > 0) ? `(+${analysisToolNm.toFixed(2)})` : undefined}
+              <b>NM: </b>{(props.totalMiles + props.miles).toFixed(2)} {(props.totalMiles > 0) ? `(+${props.miles.toFixed(2)})` : undefined}
               <br />
-              <b>Meters: </b>{(analysisToolTotalM + analysisToolM).toFixed(2)} {(analysisToolTotalM > 0) ? `(+${analysisToolM.toFixed(2)})` : undefined}
+              <b>Meters: </b>{(props.totalMeters + props.meters).toFixed(2)} {(props.totalMeters > 0) ? `(+${props.meters.toFixed(2)})` : undefined}
             </Tooltip>
           </CircleMarker>
           : undefined

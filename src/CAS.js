@@ -133,8 +133,9 @@ export default ({ state }) => {
   //----------------------------------------------------------------//
   // State Variables
   //----------------------------------------------------------------//
+  const [activeTool, setActiveTool] = React.useState(null)
   const [analysisToolActive, setAnalysisToolActive] = React.useState(false)
-  const [analysisToolLineClosed, setAnalysisToolLineClosed] = React.useState(true)
+  //const [analysisToolLineClosed, setAnalysisToolLineClosed] = React.useState(true)
   const [mouseCoords, setMouseCoords] = React.useState(null)
   const [circleToolActive, setCircleToolActive] = React.useState(false)
   const [clickedLatLng, setClickedLatLng] = React.useState(null)
@@ -159,6 +160,7 @@ export default ({ state }) => {
     survivors: [],
     threatMarkers: [],
   }])
+  const [lineClosed, setLineClosed] = React.useState(true)
   const [lineToolActive, setLineToolActive] = React.useState(false)
   const [loadScenarioDialogOpen, setLoadScenarioDialogOpen] = React.useState(false)
   const [map, setMap] = React.useState(null)
@@ -217,13 +219,17 @@ export default ({ state }) => {
    * @param {Object} latlng LatLng coordinates of the mouse cursor
    */
   const handleMouseMove = latlng => {
-    if (analysisToolActive && !analysisToolLineClosed) {
-      setMouseCoords(latlng)
-    }
-    if (circleToolActive || rectangleToolActive) {
+    if (activeTool !== null && !lineClosed) {
       setMouseCoords(latlng)
     }
   }
+
+  React.useEffect(() => {
+    activeTool === null ?
+      setMouseClickActive(true)
+      :
+      setMouseClickActive(false)
+  }, [activeTool])
 
   /**
    * React hook that sets the popup whenever the clicked Lat/Lng changes
@@ -248,15 +254,13 @@ export default ({ state }) => {
       // Parse MGRS
       const mgrs = latlngD.toUtm().toMgrs().toString()
 
-      if (!analysisToolActive) {
+      if (activeTool === null) {
         setMapPopup({
           latlng: latlngD.toString(),
           dm: `${latDM}, ${lngDM}`,
           dms: `${latDMS}, ${lngDMS}`,
           mgrs
         })
-      } else if (analysisToolActive && analysisToolLineClosed) {
-        setAnalysisToolLineClosed(false)
       }
     }
   }, [clickedLatLng])
@@ -272,51 +276,25 @@ export default ({ state }) => {
   const toggleTools = tool => {
 
     setClickedLatLng(null)
+    setMouseCoords(null)
+    setLineClosed(true)
     setMapPopup(null)
 
     switch (tool) {
       case 'analysis':
-        analysisToolActive ? setMouseClickActive(true) : setMouseClickActive(false)
-        setAnalysisToolActive(!analysisToolActive)
-        setLineToolActive(false)
-        setCircleToolActive(false)
-        setRectangleToolActive(false)
-        setPolygonToolActive(false)
+        activeTool === 'analysis' ? setActiveTool(null) : setActiveTool('analysis')
         break
       case 'line':
-        lineToolActive ? setMouseClickActive(true) : setMouseClickActive(false)
-        setAnalysisToolActive(false)
-        setLineToolActive(!lineToolActive)
-        setCircleToolActive(false)
-        setRectangleToolActive(false)
-        setPolygonToolActive(false)
+        activeTool === 'line' ? setActiveTool(null) : setActiveTool('line')
         break
       case 'circle':
-        circleToolActive ? setMouseClickActive(true) : setMouseClickActive(false)
-        setAnalysisToolActive(false)
-        setLineToolActive(false)
-        setCircleToolActive(!circleToolActive)
-        setRectangleToolActive(false)
-        setPolygonToolActive(false)
+        activeTool === 'circle' ? setActiveTool(null) : setActiveTool('circle')
         break
       case 'rectangle':
-        rectangleToolActive ? setMouseClickActive(true) : setMouseClickActive(false)
-        setAnalysisToolActive(false)
-        setLineToolActive(false)
-        setCircleToolActive(false)
-        setRectangleToolActive(!rectangleToolActive)
-        setPolygonToolActive(false)
+        activeTool === 'rectangle' ? setActiveTool(null) : setActiveTool('rectangle')
         break
       case 'polygon':
-        polygonToolActive ? setMouseClickActive(true) : setMouseClickActive(false)
-        setAnalysisToolActive(false)
-        setLineToolActive(false)
-        setCircleToolActive(false)
-        setRectangleToolActive(false)
-        setPolygonToolActive(!polygonToolActive)
-        break
-      case 'settings':
-        setDrawDrawerOpen(true)
+        activeTool === 'polygon' ? setActiveTool(null) : setActiveTool('polygon')
         break
       default:
         console.error(`Error: Tool (${tool}) not recognized.`)
@@ -620,7 +598,7 @@ export default ({ state }) => {
       <Box flex={1}>
         <Map
           setMap={setMap}
-          toolActive={analysisToolActive || lineToolActive || circleToolActive || rectangleToolActive || polygonToolActive}
+          toolActive={activeTool !== null}
           setMapZoom={zoom => setMapZoom(zoom)}
           setClickedLatLng={latlng => setClickedLatLng(latlng)}
           handleMouseMove={latlng => handleMouseMove(latlng)}
@@ -645,26 +623,21 @@ export default ({ state }) => {
           />
           <ZoomControl position='topright' />
           <ToolControls
-            analysisToolActive={analysisToolActive}
-            circleToolActive={circleToolActive}
-            lineToolActive={lineToolActive}
-            polygonToolActive={polygonToolActive}
-            rectangleToolActive={rectangleToolActive}
+            activeTool={activeTool}
             toggle={tool => toggleTools(tool)}
           />
           <AnalysisTool
-            analysisToolActive={analysisToolActive}
-            analysisToolLineClosed={analysisToolLineClosed}
+            active={activeTool === 'analysis'}
+            clearLatlng={() => setClickedLatLng(null)}
+            clearMouse={() => setMouseCoords(null)}
+            lineClosed={lineClosed}
             mouseCoords={mouseCoords}
-            setMouseCoords={setMouseCoords}
-            setClickedLatLng={setClickedLatLng}
-            setMapPopup={setMapPopup}
-            setAnalysisToolLineClosed={setAnalysisToolLineClosed}
-            toggleAnalysisTool={() => toggleTools('analysis')}
-            clickedLatLng={clickedLatLng}
+            setLineClosed={setLineClosed}
+            toggle={() => toggleTools('analysis')}
+            latlng={clickedLatLng}
           />
           <CircleTool
-            active={circleToolActive}
+            active={activeTool === 'circle'}
             color='red'   // Todo use the state from the marker
             latlng={clickedLatLng}
             mouseCoords={mouseCoords}
@@ -672,7 +645,7 @@ export default ({ state }) => {
             toggle={() => toggleTools('circle')}
           />
           <RectangleTool
-            active={rectangleToolActive}
+            active={activeTool === 'rectangle'}
             color='red'   // Todo use the state from the marker
             latlng={clickedLatLng}
             mouseCoords={mouseCoords}
@@ -680,7 +653,7 @@ export default ({ state }) => {
             toggle={() => toggleTools('rectangle')}
           />
           <ScaleControl />
-          {(clickedLatLng !== null && mapPopup !== null && analysisToolActive === false && circleToolActive === false && rectangleToolActive === false) ?
+          {(clickedLatLng !== null && mapPopup !== null && activeTool === null) ?
             <Popup
               maxWidth={500}
               position={clickedLatLng}
