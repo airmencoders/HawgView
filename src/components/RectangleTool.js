@@ -7,22 +7,19 @@ import {
 export default (props) => {
 
   const [startLatlng, setStartLatlng] = React.useState(null)
-  const [endLatlng, setEndLatlng] = React.useState(null)
 
   React.useEffect(() => {
     document.addEventListener('keydown', handleEsc, false)
     setStartLatlng(null)
-    setEndLatlng(null)
 
     return () => {
       document.removeEventListener('keydown', handleEsc, false)
       setStartLatlng(null)
-      setEndLatlng(null)
     }
   }, [props.active])
 
   React.useEffect(() => {
-    if (startLatlng === null) {
+    if (props.active && startLatlng === null) {
       setStartLatlng(props.latlng)
     }
 
@@ -34,11 +31,9 @@ export default (props) => {
   const handleEsc = event => {
     if (props.active && event.key === 'Escape') {
       setStartLatlng(null)
-      setEndLatlng(null)
       props.toggle()
     }
   }
-
 
   if (props.active && startLatlng !== null & props.mouseCoords !== null) {
     return (

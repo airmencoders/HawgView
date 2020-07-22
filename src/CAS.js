@@ -219,7 +219,9 @@ export default ({ state }) => {
    * @param {Object} latlng LatLng coordinates of the mouse cursor
    */
   const handleMouseMove = latlng => {
-    if (activeTool !== null && !lineClosed) {
+    if (activeTool === 'analysis' && !lineClosed) {
+      setMouseCoords(latlng)
+    } else if(activeTool !== null && activeTool !== 'analysis') {
       setMouseCoords(latlng)
     }
   }
@@ -442,7 +444,7 @@ export default ({ state }) => {
     setHistory([...targetHistory, newStep])
     setStep(step + 1)
 
-    setRectangleToolActive(false)
+    setActiveTool(null)
     setClickedLatLng(null)
     setMouseCoords(null)
   }
@@ -470,7 +472,7 @@ export default ({ state }) => {
     setHistory([...targetHistory, newStep])
     setStep(step + 1)
 
-    setCircleToolActive(false)
+    setActiveTool(null)
     setClickedLatLng(null)
     setMouseCoords(null)
   }

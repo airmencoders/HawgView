@@ -23,20 +23,20 @@ export default (props) => {
   }, [props.active])
 
   React.useEffect(() => {
-    if (props.latlng !== null && props.mouseCoords !== null) {
+    if (props.active && props.latlng !== null && props.mouseCoords !== null) {
       setRadius(distanceAndHeading(props.latlng, props.mouseCoords, 0).meters)
     }
-  }, [props.mouseCoords])
+  }, [props.active, props.latlng, props.mouseCoords])
 
   React.useEffect(() => {
-    if (center === null) {
+    if (props.active && center === null) {
       setCenter(props.latlng)
     }
 
     if (props.active && center !== null && radius !== 0) {
       props.submit(center, radius)
     }
-  }, [props.latlng])
+  }, [props.active, props.latlng])
 
   const handleEsc = event => {
     if (props.active && event.key === 'Escape') {

@@ -61,10 +61,6 @@ export default (props) => {
   const [declination, setDeclination] = React.useState(null)
 
   React.useEffect(() => {
-    console.log('active', props.active)
-  }, [props.active])
-
-  React.useEffect(() => {
     closeLine()
     setLines([])
   }, [props.active])

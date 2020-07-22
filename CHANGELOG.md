@@ -1,3 +1,8 @@
+## 2.18.3-alpha
+### Fixes
+* Circle and Rectangle tool now properly work with new state variables
+* Circle and Rectangle tool now properly only set latlng when active
+
 ## 2.18.2-alpha
 ### Fixes
 * Ruler now properly closes when swapping tools
