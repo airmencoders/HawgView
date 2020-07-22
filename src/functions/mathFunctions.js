@@ -5,12 +5,13 @@ export const distanceAndHeading = (point1, point2, declination) => {
   const l2 = point2.lng
 
   const toRadian = Math.PI / 180
+  const toDegrees = 180 / Math.PI
   const metersR = 6371 * 1000
   const nmR = 6371 * 0.539956803
 
   const y = Math.sin((l2 - l1) * toRadian) * Math.cos(f2 * toRadian)
   const x = Math.cos(f1 * toRadian) * Math.sin(f2 * toRadian) - Math.sin(f1 * toRadian) * Math.cos(f2 * toRadian) * Math.cos((l2 - l1) * toRadian)
-  const bearing = Math.atan2(y, x) * 180 / Math.PI
+  const bearing = Math.atan2(y, x) * toDegrees
   const heading = bearing + ((declination === null) ? 0 : declination)
 
   const deltaF = (f2 - f1) * toRadian
@@ -19,7 +20,7 @@ export const distanceAndHeading = (point1, point2, declination) => {
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
 
   return {
-    heading: heading + ((heading < 0) ? heading + 360 : 0),
+    heading: heading + ((heading < 0) ? 360 : 0),
     meters: c * metersR,
     nm: c * nmR
   }

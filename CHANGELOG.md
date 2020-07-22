@@ -1,3 +1,10 @@
+## 2.18.1-alpha
+### Fixes
+* Fixed heading issue with ruler
+
+### Tasks
+* Need to fix ruler issue with toggling, maybe take a look at how intricate the drawing was and refactor.
+
 ## 2.18.0-alpha
 ### Changes
 * Finished Rectangle Tool

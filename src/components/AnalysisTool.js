@@ -72,6 +72,7 @@ export default ({ analysisToolActive, analysisToolLineClosed, mouseCoords, click
     return () => {
       document.removeEventListener('keydown', handleEscPress, false)
       document.removeEventListener('dblclick', closeLine, false)
+      console.log('interesting')
     }
   }, [analysisToolActive, analysisToolPoints, analysisToolLineClosed])
 
@@ -115,6 +116,7 @@ export default ({ analysisToolActive, analysisToolLineClosed, mouseCoords, click
    */
   const handleAnalysisToolToggle = () => {
     setAnalysisToolLines([])
+    setAnalysisToolPoints([])
     setClickedLatLng(null)
     setMapPopup(null)
     toggleAnalysisTool()
