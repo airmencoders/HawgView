@@ -1,3 +1,7 @@
+## 2.18.4-alpha
+### Fixes
+* `MinimizedMenu` no longer uses `Button` or `IconButton` but just the baseline `MenuItem` which removes the double shaded button and ripple effect
+
 ## 2.18.3-alpha
 ### Fixes
 * Circle and Rectangle tool now properly work with new state variables

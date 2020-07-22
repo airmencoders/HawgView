@@ -35,10 +35,9 @@ import React from 'react'
 //----------------------------------------------------------------//
 // Material-UI Core Components
 //----------------------------------------------------------------//
-import IconButton from '@material-ui/core/IconButton'
+import { makeStyles } from '@material-ui/core/styles'
 import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
-import Typography from '@material-ui/core/Typography'
 
 //----------------------------------------------------------------//
 // Material-UI Icons
@@ -46,6 +45,7 @@ import Typography from '@material-ui/core/Typography'
 import AddPhotoAlternateIcon from '@material-ui/icons/AddPhotoAlternate'
 import ClearIcon from '@material-ui/icons/Clear'
 import DescriptionIcon from '@material-ui/icons/Description'
+import FolderOpenIcon from '@material-ui/icons/FolderOpen'
 import GetAppIcon from '@material-ui/icons/GetApp'
 import InvertColorsIcon from '@material-ui/icons/InvertColors'
 import InvertColorsOffIcon from '@material-ui/icons/InvertColorsOff'
@@ -54,17 +54,23 @@ import LabelOffIcon from '@material-ui/icons/LabelOff'
 import PhotoSizeSelectActualIcon from '@material-ui/icons/PhotoSizeSelectActual'
 import PhotoSizeSelectLargeIcon from '@material-ui/icons/PhotoSizeSelectLarge'
 import RedoIcon from '@material-ui/icons/Redo'
-import SaveAltIcon from '@material-ui/icons/SaveAlt'
 import SaveIcon from '@material-ui/icons/Save'
 import SpeakerNotesIcon from '@material-ui/icons/SpeakerNotes'
 import SpeakerNotesOffIcon from '@material-ui/icons/SpeakerNotesOff'
 import UndoIcon from '@material-ui/icons/Undo'
 import ViewListIcon from '@material-ui/icons/ViewList'
 
+const useStyles = makeStyles(theme => ({
+  icon: {
+    marginRight: theme.spacing(1),
+  },
+}))
+
 //----------------------------------------------------------------//
 // Minimized Menu Component
 //----------------------------------------------------------------//
 export default (props) => {
+  const classes = useStyles()
 
   const handleAddMarkerClick = () => {
     props.handleMinMenuClose()
@@ -131,122 +137,66 @@ export default (props) => {
       transformOrigin={{ vertical: 'top', horizontal: 'right' }}
     >
       <MenuItem onClick={handleAddMarkerClick}>
-        <IconButton color='inherit'>
-          <AddPhotoAlternateIcon />
-          <Typography variant='body1'>
-            Add marker
-          </Typography>
-        </IconButton>
+        <AddPhotoAlternateIcon className={classes.icon} />
+        Add Marker
       </MenuItem>
-      <MenuItem onClick={!props.undoDisabled ? handleUndoClick : undefined}>
-        <IconButton
-          color='inherit'
-          disabled={props.undoDisabled}
-        >
-          <UndoIcon />
-          <Typography variant='body1'>
-            Undo {props.undoAction}
-          </Typography>
-        </IconButton>
+      <MenuItem
+        disabled={props.undoDisabled}
+        onClick={!props.undoDisabled ? handleUndoClick : undefined}
+      >
+        <UndoIcon className={classes.icon} />
+        Undo {props.undoAction}
       </MenuItem>
-      <MenuItem onClick={!props.redoDisabled ? handleRedoClick : undefined}>
-        <IconButton
-          color='inherit'
-          disabled={props.redoDisabled}
-        >
-          <RedoIcon />
-          <Typography variant='body1'>
-            Redo {props.redoACtion}
-          </Typography>
-        </IconButton>
+      <MenuItem
+        disabled={props.redoDisabled}
+        onClick={!props.redoDisabled ? handleRedoClick : undefined}
+      >
+        <RedoIcon className={classes.icon} />
+        Redo {props.redoAction}
       </MenuItem>
       <MenuItem onClick={handleClearMarkersClick}>
-        <IconButton color='inherit'>
-          <ClearIcon />
-          <Typography variant='body1'>
-            Clear all markers
-          </Typography>
-        </IconButton>
+        <ClearIcon className={classes.icon} />
+        Clear all markers
       </MenuItem>
       <MenuItem onClick={handleMarkerSizeIncreaseClick}>
-        <IconButton color='inherit'>
-          <PhotoSizeSelectActualIcon />
-          <Typography variant='body1'>
-            Increase marker size
-          </Typography>
-        </IconButton>
+        <PhotoSizeSelectActualIcon className={classes.icon} />
+        Increase marker size
       </MenuItem>
       <MenuItem onClick={handleMarkerSizeDecreaseClick}>
-        <IconButton color='inherit'>
-          <PhotoSizeSelectLargeIcon />
-          <Typography variant='body1'>
-            Decrease marker size
-          </Typography>
-        </IconButton>
+        <PhotoSizeSelectLargeIcon className={classes.icon} />
+        Decrease marker size
       </MenuItem>
       <MenuItem onClick={handleColorToggleClick}>
-        <IconButton color='inherit'>
-          {props.mapColor ? <InvertColorsIcon /> : <InvertColorsOffIcon />}
-          <Typography variant='body1'>
-            Toggle map color
-          </Typography>
-        </IconButton>
+        {props.mapColor ? <InvertColorsIcon className={classes.icon} /> : <InvertColorsOffIcon className={classes.icon} />}
+        Toggle map color
       </MenuItem>
-      <MenuItem onClick={props.handleMinMenuClose}>
-        <IconButton color='inherit' disabled>
-          <DescriptionIcon />
-          <Typography variant='body1'>
-            CONOP tools
-          </Typography>
-        </IconButton>
+      <MenuItem onClick={props.handleMinMenuClose} disabled>
+        <DescriptionIcon className={classes.icon} />
+        CONOP tools
       </MenuItem>
-      <MenuItem onClick={props.handleMinMenuClose}>
-        <IconButton color='inherit' disabled>
-          <ViewListIcon />
-          <Typography variant='body1'>
-            View marker list
-          </Typography>
-        </IconButton>
+      <MenuItem onClick={props.handleMinMenuClose} disabled>
+        <ViewListIcon className={classes.icon} />
+        View marker list
       </MenuItem>
       <MenuItem onClick={handleToggleTooltipsClick}>
-        <IconButton color='inherit'>
-          {props.tooltipsActive ? <LabelOffIcon /> : <LabelIcon />}
-          <Typography variant='body1'>
-            Toggle marker labels
-          </Typography>
-        </IconButton>
+        {props.tooltipsActive ? <LabelOffIcon className={classes.icon} /> : <LabelIcon className={classes.icon} />}
+        Toggle marker labels
       </MenuItem>
       <MenuItem onClick={handleToggleMouseClick}>
-        <IconButton color='inherit'>
-          {props.mouseClickActive ? <SpeakerNotesOffIcon /> : <SpeakerNotesIcon />}
-          <Typography variant='body1'>
-            Toggle marker popups
-          </Typography>
-        </IconButton>
+        {props.mouseClickActive ? <SpeakerNotesOffIcon className={classes.icon} /> : <SpeakerNotesIcon className={classes.icon} />}
+        Toggle marker popups
       </MenuItem>
       <MenuItem onClick={handleSaveScenarioClick}>
-        <IconButton color='inherit'>
-          <SaveIcon />
-          <Typography variant='body1'>
-            Save scenario
-          </Typography>
-        </IconButton>
+        <SaveIcon className={classes.icon} />
+        Save scenario
       </MenuItem>
       <MenuItem onClick={handleLoadScenarioClick}>
-        <IconButton color='inherit'>
-          <SaveAltIcon />
-          <Typography variant='body1'>
-            Load scenario
-          </Typography>
-        </IconButton>
+        <FolderOpenIcon className={classes.icon} />
+        Load scenario
       </MenuItem>
       <MenuItem onClick={props.handleMinMenuClose}>
-        <IconButton color='inherit' disabled>
-          <GetAppIcon />
-          <Typography variant='body1'>
-            Download products
-          </Typography>
-        </IconButton>
+        <GetAppIcon className={classes.icon} />
+        Download products
       </MenuItem>
     </Menu>
   )
