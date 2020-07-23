@@ -69,6 +69,7 @@ import EditThreatDialog from './components/EditThreatDialog'
 import EditMarkerDialog from './components/EditMarkerDialog'
 import { editMarkers } from './functions/editMarkers'
 import LayerControl from './components/LayerControl'
+import LineTool from './components/LineTool'
 import MarkerDrawer from './components/MarkerDrawer'
 import Map from './components/Map'
 import MinimizedMenu from './components/MinimizedMenu'
@@ -134,10 +135,7 @@ export default ({ state }) => {
   // State Variables
   //----------------------------------------------------------------//
   const [activeTool, setActiveTool] = React.useState(null)
-  const [analysisToolActive, setAnalysisToolActive] = React.useState(false)
-  //const [analysisToolLineClosed, setAnalysisToolLineClosed] = React.useState(true)
   const [mouseCoords, setMouseCoords] = React.useState(null)
-  const [circleToolActive, setCircleToolActive] = React.useState(false)
   const [clickedLatLng, setClickedLatLng] = React.useState(null)
   const [drawDrawerOpen, setDrawDrawerOpen] = React.useState(false)
   const [edit9LineDialogOpen, setEdit9LineDialogOpen] = React.useState(false)
@@ -161,7 +159,6 @@ export default ({ state }) => {
     threatMarkers: [],
   }])
   const [lineClosed, setLineClosed] = React.useState(true)
-  const [lineToolActive, setLineToolActive] = React.useState(false)
   const [loadScenarioDialogOpen, setLoadScenarioDialogOpen] = React.useState(false)
   const [map, setMap] = React.useState(null)
   const [mapColor, setMapColor] = React.useState(true)
@@ -174,8 +171,6 @@ export default ({ state }) => {
   const [menuAnchorElement, setMenuAnchorElement] = React.useState(null)
   const [minMenuAnchorElement, setMinMenuAnchorElement] = React.useState(null)
   const [mouseClickActive, setMouseClickActive] = React.useState(true)
-  const [polygonToolActive, setPolygonToolActive] = React.useState(false)
-  const [rectangleToolActive, setRectangleToolActive] = React.useState(false)
   const [saveScenarioDialogOpen, setSaveScenarioDialogOpen] = React.useState(false)
   const [snackbarMessage, setSnackbarMessage] = React.useState(undefined)
   const [snackbarOpen, setSnackbarOpen] = React.useState(false)
@@ -422,6 +417,62 @@ export default ({ state }) => {
     setSnackbarOpen(false)
   }
 
+  const createLine = object => {
+    let targetHistory
+    if (step === history.length - 1) {
+      targetHistory = history.slice()
+    } else {
+      targetHistory = history.slice(0, step + 1)
+    }
+
+    const line = {
+      positions: object,
+      color: 'red',     // Todo: go off of state
+      //dash array      // Todo
+    }
+
+    const newStep = {
+      ...targetHistory[step],
+      action: `Create line`,
+      lines: [...targetHistory[step].lines, line]
+    }
+
+    setHistory([...targetHistory, newStep])
+    setStep(step + 1)
+
+    setActiveTool(null)
+    setClickedLatLng(null)
+    setMouseCoords(null)
+  }
+
+  const createPolygon = object => {
+    let targetHistory
+    if (step === history.length - 1) {
+      targetHistory = history.slice()
+    } else {
+      targetHistory = history.slice(0, step + 1)
+    }
+
+    const polygon = {
+      positions: object,
+      color: 'red',     // Todo: go off of state
+      //dash array      // Todo
+    }
+
+    const newStep = {
+      ...targetHistory[step],
+      action: `Create line`,
+      polygons: [...targetHistory[step].polygons, polygon]
+    }
+
+    setHistory([...targetHistory, newStep])
+    setStep(step + 1)
+
+    setActiveTool(null)
+    setClickedLatLng(null)
+    setMouseCoords(null)
+  }
+
   const createRectangle = bounds => {
     let targetHistory
     if (step === history.length - 1) {
@@ -606,18 +657,12 @@ export default ({ state }) => {
           handleMouseMove={latlng => handleMouseMove(latlng)}
         >
           <LayerControl
-            circles={history[step].circles}
-            friendlyMarkers={history[step].friendlyMarkers}
             handleMarkerDrag={(marker, latlng) => handleMarkerEdit('drag', { marker: marker, latlng: latlng })}
-            hostileMarkers={history[step].hostileMarkers}
-            initialPoints={history[step].initialPoints}
             mapZoom={mapZoom}
             markerSize={markerSize}
             mouseClickActive={mouseClickActive}
-            rectangles={history[step].rectangles}
             setFocusedMarker={marker => setFocusedMarker(marker)}
-            survivors={history[step].survivors}
-            threatMarkers={history[step].threatMarkers}
+            step={history[step]}
             toggleEditMarkerDialog={() => setEditMarkerDialogOpen(!editMarkerDialogOpen)}
             toggleEditThreatDialog={() => setEditThreatDialogOpen(!editThreatDialogOpen)}
             handleDeleteMarker={marker => handleMarkerEdit('delete', { marker: marker })}
@@ -638,6 +683,15 @@ export default ({ state }) => {
             toggle={() => toggleTools('analysis')}
             latlng={clickedLatLng}
           />
+          <LineTool
+            active={activeTool === 'line'}
+            color='red'   // Todo use the state from the marker
+            //dashArray   // Todo
+            latlng={clickedLatLng}
+            mouseCoords={mouseCoords}
+            submit={positions => createLine(positions)} // Todo, likely an object with information about the line (dash array, color, label, etc...)
+            toggle={() => toggleTools('line')}
+          />
           <CircleTool
             active={activeTool === 'circle'}
             color='red'   // Todo use the state from the marker
@@ -653,6 +707,14 @@ export default ({ state }) => {
             mouseCoords={mouseCoords}
             submit={bounds => createRectangle(bounds)}
             toggle={() => toggleTools('rectangle')}
+          />
+          <LineTool
+            active={activeTool === 'polygon'}
+            color='red'   // Same todo
+            latlng={clickedLatLng}
+            mouseCoords={mouseCoords}
+            submit={positions => createPolygon(positions)}
+            toggle={() => toggleTools('polygon')}
           />
           <ScaleControl />
           {(clickedLatLng !== null && mapPopup !== null && activeTool === null) ?

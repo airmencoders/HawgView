@@ -345,7 +345,7 @@ export default (props) => {
       </Overlay>
       <Overlay checked name='Friendly Markers'>
         <LayerGroup>
-          {interactive && props.friendlyMarkers.map(marker => (
+          {interactive && props.step.friendlyMarkers.map(marker => (
             <Marker
               autoPan={true}
               draggable={true}
@@ -381,7 +381,7 @@ export default (props) => {
               }
             </Marker>
           ))}
-          {!interactive && props.friendlyMarkers.map(marker => (
+          {!interactive && props.step.friendlyMarkers.map(marker => (
             <Marker
               autoPan={true}
               draggable={true}
@@ -414,7 +414,7 @@ export default (props) => {
       </Overlay>
       <Overlay checked name='Hostile Markers'>
         <LayerGroup>
-          {interactive && props.hostileMarkers.map(marker => (
+          {interactive && props.step.hostileMarkers.map(marker => (
             <Marker
               autoPan={true}
               draggable={true}
@@ -456,7 +456,7 @@ export default (props) => {
               }
             </Marker>
           ))}
-          {!interactive && props.hostileMarkers.map(marker => (
+          {!interactive && props.step.hostileMarkers.map(marker => (
             <Marker
               autoPan={true}
               draggable={true}
@@ -489,7 +489,7 @@ export default (props) => {
       </Overlay>
       <Overlay checked name='Threat Markers'>
         <LayerGroup>
-          {interactive && props.threatMarkers.map(marker => (
+          {interactive && props.step.threatMarkers.map(marker => (
             <React.Fragment key={`threat-${marker.id}`}>
               <Marker
                 autoPan={true}
@@ -558,7 +558,7 @@ export default (props) => {
               </Circle>
             </React.Fragment>
           ))}
-          {!interactive && props.threatMarkers.map(marker => (
+          {!interactive && props.step.threatMarkers.map(marker => (
             <React.Fragment key={`threat-${marker.id}`}>
               <Marker
                 autoPan={true}
@@ -602,7 +602,7 @@ export default (props) => {
       </Overlay>
       <Overlay checked name='Survivors'>
         <LayerGroup>
-          {interactive && props.survivors.map(marker => (
+          {interactive && props.step.survivors.map(marker => (
             <Marker
               autoPan={true}
               draggable={true}
@@ -648,7 +648,7 @@ export default (props) => {
               }
             </Marker>
           ))}
-          {!interactive && props.survivors.map(marker => (
+          {!interactive && props.step.survivors.map(marker => (
             <Marker
               autoPan={true}
               draggable={true}
@@ -681,7 +681,7 @@ export default (props) => {
       </Overlay>
       <Overlay checked name='IPs'>
         <LayerGroup>
-          {interactive && props.initialPoints.map(marker => (
+          {interactive && props.step.initialPoints.map(marker => (
             <Marker
               autoPan={true}
               draggable={true}
@@ -717,7 +717,7 @@ export default (props) => {
               }
             </Marker>
           ))}
-          {!interactive && props.initialPoints.map(marker => (
+          {!interactive && props.step.initialPoints.map(marker => (
             <Marker
               autoPan={true}
               draggable={true}
@@ -760,17 +760,29 @@ export default (props) => {
       </Overlay>
       <Overlay checked name='Lines'>
         <LayerGroup>
-
+          {props.step.lines.map((line, index) => (
+            <Polyline
+              positions={line.positions}
+              color={line.color}
+              key={`line-${index}`}
+            />
+          ))}
         </LayerGroup>
       </Overlay>
       <Overlay checked name='Polygons'>
         <LayerGroup>
-
+          {props.step.polygons.map((polygon, index) => (
+            <Polygon
+              positions={polygon.positions}
+              color={polygon.color}
+              key={`polygon-${index}`}
+            />
+          ))}
         </LayerGroup>
       </Overlay>
       <Overlay checked name='Rectangles'>
         <LayerGroup>
-          {props.rectangles.map((rectangle, index) => (
+          {props.step.rectangles.map((rectangle, index) => (
             <Rectangle
               bounds={rectangle.bounds}
               color={rectangle.color}
@@ -781,7 +793,7 @@ export default (props) => {
       </Overlay>
       <Overlay checked name='Circles'>
         <LayerGroup>
-          {props.circles.map((circle, index) => (
+          {props.step.circles.map((circle, index) => (
             <Circle
               center={circle.center}
               color={circle.color}

@@ -1,3 +1,9 @@
+## 2.19.0-alpha
+### Changes
+* Pass the history as an object to `LayerControl` rather than each individual subset 
+* Basic shape tools are completed
+* Added task in task list
+
 ## 2.18.4-alpha
 ### Fixes
 * `MinimizedMenu` no longer uses `Button` or `IconButton` but just the baseline `MenuItem` which removes the double shaded button and ripple effect
@@ -196,15 +202,15 @@
 - [x] Add Edit marker functionality - (`2.5.0-alpha`)
 - [x] Add Delete marker functionality - (`2.5.0-alpha`)
 - [x] Add option to have 'fill' in threats - (`2.11.0-alpha`)
-- [ ] Combine various tools into one button group control
-- [ ] Selecting a different draw item or tool should disable the currently enabled one (without saving)
+- [x] Combine various tools into one button group control - (`2.16.0-alpha`)
+- [x] Selecting a different draw item or tool should disable the currently enabled one (without saving) - (`2.16.0-alpha`)
 - [x] Add 'stackable' option such that it disables the `onClick` for the markers, allowing users to click map to stack chits - (`2.12.0-alpha`)
-~~Add `onClick` to threat rings that also manage the edit function~~ (Would require to render the popup multiple times (already doing this with the markers though))
 
 ## Farther off Tasks
 - [ ] Add `MGRS Gridlines` to map
-- [-] Add `Drawing` capabilities to map - (Started `2.17.0-alpha`)
-- [ ] Add values to the `DrawDrawer`
+- [x] Add `Drawing` capabilities to map - (`2.19.0-alpha`)
+- [ ] Create editing function for the `drawingDrawer`
+- [ ] Move edit marker from dialog to side drawer
 - [x] Add `Ruler` control to map - (`2.2.0-alpha`)
 - [ ] Add `Concept of Operations (CONOP)` functionality to site
 - [ ] Add `IP Run card` functionality to site
@@ -218,4 +224,3 @@
 - [ ] Add `NGA Maps` to site
 - [ ] Add `TAK Maps` to site
 - [ ] Fix ruler touch events
-~~Research into using React's `context` API for passing props to children~~ (Not required at this time)
