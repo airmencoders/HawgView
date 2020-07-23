@@ -1,6 +1,6 @@
 {
   "name": "hawgview",
-  "version": "2.19.0-alpha",
+  "version": "2.20.0-alpha",
   "private": true,
   "dependencies": {
     "@iconify/icons-mdi": "^1.0.115",
@@ -14,10 +14,14 @@
     "fontsource-roboto": "^2.1.4",
     "geodesy": "^2.2.1",
     "leaflet": "^1.6.0",
+    "leaflet-ellipse": "^0.9.1",
     "react": "^16.13.1",
+    "react-color": "^2.18.1",
     "react-dom": "^16.13.1",
     "react-leaflet": "^2.7.0",
+    "react-leaflet-arrowheads": "^1.0.6",
     "react-leaflet-control": "^2.1.2",
+    "react-leaflet-curve": "^2.0.1",
     "react-router-dom": "^5.2.0",
     "react-scripts": "^3.4.1"
   },

@@ -1,3 +1,16 @@
+## 2.20.0-alpha
+### Changes
+* Added packages
+* Updated `Dependencies` section of `README.md`
+* Renamed `DrawOptionsDrawer` to `ShapeDrawer`
+* Added content to `ShapeDrawer`
+
+### Tasks
+- [ ] Set drawer to open when user finishes drawing a shape
+- [ ] Set drawer to open when editing shape 
+- [ ] When editing shape, auto save options (easier to incorporate, downside is more steps in history array)
+- [ ] Need to implement shape state in all the states
+
 ## 2.19.0-alpha
 ### Changes
 * Pass the history as an object to `LayerControl` rather than each individual subset 

@@ -57,12 +57,12 @@ import MoreVertIcon from '@material-ui/icons/MoreVert'
 // Custom Components
 //----------------------------------------------------------------//
 import AnalysisTool from './components/AnalysisTool'
-import AuthenticatedUserMenu from './components/AuthenticatedUserMenu'
+//import AuthenticatedUserMenu from './components/AuthenticatedUserMenu'
 import CASNavigation from './components/CASNavigation'
 import CASTools from './components/CASTools'
 import CircleTool from './components/CircleTool'
 import CoordInput from './components/CoordInput'
-import DrawDrawer from './components/DrawDrawer'
+import ShapeDrawer from './components/ShapeDrawer'
 import Edit9LineDialog from './components/Edit9LineDialog'
 import Edit15LineDialog from './components/Edit15LineDialog'
 import EditThreatDialog from './components/EditThreatDialog'
@@ -73,7 +73,7 @@ import LineTool from './components/LineTool'
 import MarkerDrawer from './components/MarkerDrawer'
 import Map from './components/Map'
 import MinimizedMenu from './components/MinimizedMenu'
-import UnauthenticatedUserMenu from './components/UnauthenticatedUserMenu'
+//import UnauthenticatedUserMenu from './components/UnauthenticatedUserMenu'
 import RectangleTool from './components/RectangleTool'
 import SaveScenarioDialog from './components/SaveScenarioDialog'
 import LoadScenarioDialog from './components/LoadScenarioDialog'
@@ -137,10 +137,9 @@ export default ({ state }) => {
   const [activeTool, setActiveTool] = React.useState(null)
   const [mouseCoords, setMouseCoords] = React.useState(null)
   const [clickedLatLng, setClickedLatLng] = React.useState(null)
-  const [drawDrawerOpen, setDrawDrawerOpen] = React.useState(false)
   const [edit9LineDialogOpen, setEdit9LineDialogOpen] = React.useState(false)
   const [edit15LineDialogOpen, setEdit15LineDialogOpen] = React.useState(false)
-  const [editCapDialogOpen, setEditCapDialogOpen] = React.useState(false)
+  //const [editCapDialogOpen, setEditCapDialogOpen] = React.useState(false)
   const [editMarkerDialogOpen, setEditMarkerDialogOpen] = React.useState(false)
   const [editThreatDialogOpen, setEditThreatDialogOpen] = React.useState(false)
   const [focusedMarker, setFocusedMarker] = React.useState(null)
@@ -168,26 +167,33 @@ export default ({ state }) => {
   const [markerId, setMarkerId] = React.useState(0)
   const [markerLabel, setMarkerLabel] = React.useState('')
   const [markerSize, setMarkerSize] = React.useState(3)
-  const [menuAnchorElement, setMenuAnchorElement] = React.useState(null)
+  //const [menuAnchorElement, setMenuAnchorElement] = React.useState(null)
   const [minMenuAnchorElement, setMinMenuAnchorElement] = React.useState(null)
   const [mouseClickActive, setMouseClickActive] = React.useState(true)
   const [saveScenarioDialogOpen, setSaveScenarioDialogOpen] = React.useState(false)
+  const [shapeDashed, setShapeDashed] = React.useState(false)
+  const [shapeDashArray, setShapeDashArray] = React.useState('12, 12')
+  const [shapeDrawerOpen, setShapeDrawerOpen] = React.useState(true)
+  const [shapeFill, setShapeFill] = React.useState(false)
+  const [shapeFillColor, setShapeFillColor] = React.useState('#4A90E2')
+  const [shapeLabel, setShapeLabel] = React.useState('')
+  const [shapeStrokeColor, setShapeStrokeColor] = React.useState('#4A90E2')
   const [snackbarMessage, setSnackbarMessage] = React.useState(undefined)
   const [snackbarOpen, setSnackbarOpen] = React.useState(false)
   const [snackPack, setSnackPack] = React.useState([])
   const [step, setStep] = React.useState(0)
   const [tooltipsActive, setTooltipsActive] = React.useState(false)
 
-  const menuOpen = Boolean(menuAnchorElement)
+ // const menuOpen = Boolean(menuAnchorElement)
   const minimizedMenuOpen = Boolean(minMenuAnchorElement)
 
-  const handleMenuOpen = event => {
+  /*const handleMenuOpen = event => {
     setMenuAnchorElement(event.currentTarget)
   }
 
   const handleMenuClose = () => {
     setMenuAnchorElement(null)
-  }
+  }*/
 
   const handleMinMenuOpen = event => {
     setMinMenuAnchorElement(event.currentTarget)
@@ -260,7 +266,7 @@ export default ({ state }) => {
         })
       }
     }
-  }, [clickedLatLng])
+  }, [clickedLatLng, activeTool])
 
   /**
    * Helper function to do multiple things when closing the map Popup
@@ -526,6 +532,7 @@ export default ({ state }) => {
     setActiveTool(null)
     setClickedLatLng(null)
     setMouseCoords(null)
+    setShapeDrawerOpen(true)
   }
 
   const handleLoadScenario = data => {
@@ -756,9 +763,21 @@ export default ({ state }) => {
         setMarkerLabel={setMarkerLabel}
         toggleEditThreatDialog={() => setEditThreatDialogOpen(!editThreatDialogOpen)}
       />
-      <DrawDrawer
-        open={drawDrawerOpen}
-        toggle={() => setDrawDrawerOpen(!drawDrawerOpen)}
+      <ShapeDrawer
+        open={shapeDrawerOpen}
+        setShapeDashArray={value => setShapeDashArray(value)}
+        setShapeDashed={setShapeDashed}
+        setShapeFill={setShapeFill}
+        setShapeFillColor={value => setShapeFillColor(value)}
+        setShapeLabel={value => setShapeLabel(value)}
+        setShapeStrokeColor={value => setShapeStrokeColor(value)}
+        shapeDashArray={shapeDashArray}
+        shapeDashed={shapeDashed}
+        shapeFill={shapeFill}
+        shapeFillColor={shapeFillColor}
+        shapeLabel={shapeLabel}
+        shapeStrokeColor={shapeStrokeColor}
+        toggle={() => setShapeDrawerOpen(!shapeDrawerOpen)}
       />
       <Snackbar
         anchorOrigin={{
