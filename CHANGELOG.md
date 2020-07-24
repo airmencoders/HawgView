@@ -1,3 +1,14 @@
+## 2.21.0-alpha
+### Changes
+* Shape drawer opens when editing and creating Circle (need to finish implementing for all shapes)
+* Creating a shape now creates a marker in the object array with requisite information
+* Creating a shape also sets it automatically as the focused marker
+* Can now edit/delete a shape
+* Closing the shape drawer saves the changes and resets the values
+
+### Fixes
+* Fixed bug using old labelling convention
+
 ## 2.20.0-alpha
 ### Changes
 * Added packages
@@ -6,10 +17,8 @@
 * Added content to `ShapeDrawer`
 
 ### Tasks
-- [ ] Set drawer to open when user finishes drawing a shape
-- [ ] Set drawer to open when editing shape 
-- [ ] When editing shape, auto save options (easier to incorporate, downside is more steps in history array)
-- [ ] Need to implement shape state in all the states
+- [x] Set drawer to open when user finishes drawing a shape - (`2.21.0-alpha`)
+- [x] Set drawer to open when editing shape - (`2.21.0-alpha`)
 
 ## 2.19.0-alpha
 ### Changes

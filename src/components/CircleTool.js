@@ -34,7 +34,15 @@ export default (props) => {
     }
 
     if (props.active && center !== null && radius !== 0) {
-      props.submit(center, radius)
+      props.submit('create', {
+        color: '#4A90E2',
+        dashArray: null,
+        fillColor: null,
+        latlng: center,
+        layer: 'circle',
+        radius: radius,
+        title: '',
+      })
     }
   }, [props.active, props.latlng])
 
@@ -51,7 +59,8 @@ export default (props) => {
       <FeatureGroup>
         <Circle
           center={center}
-          color={props.color}
+          color='#4A90E2'
+          fill={null}
           radius={radius}
         />
       </FeatureGroup>

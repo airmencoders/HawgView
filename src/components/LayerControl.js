@@ -56,6 +56,7 @@ import { makeStyles } from '@material-ui/core/styles'
 // Custom Components
 //----------------------------------------------------------------//
 import { airspace } from '../constants/airspace'
+import { CirclePicker } from 'react-color'
 
 //----------------------------------------------------------------//
 // React-Leaflet Layers
@@ -126,6 +127,11 @@ export default (props) => {
   const handleEditThreat = marker => {
     props.setFocusedMarker(marker)
     props.toggleEditThreatDialog()
+  }
+
+  const handleEditShape = marker => {
+    props.setFocusedMarker(marker)
+    props.setShapeDrawerOpen(true)
   }
 
   const render9line = data => (
@@ -493,7 +499,6 @@ export default (props) => {
             <React.Fragment key={`threat-${marker.id}`}>
               <Marker
                 autoPan={true}
-                className={classes.hostileThreat}
                 draggable={true}
                 icon={L.divIcon({
                   className: marker.sovereignty === 'Hostile' ? classes.hostileThreat : marker.sovereignty === 'Suspect' ? classes.suspectThreat : marker.sovereignty === 'Unknown' ? classes.unknownThreat : classes.friendlyThreat,
@@ -753,7 +758,7 @@ export default (props) => {
 
         </LayerGroup>
       </Overlay>
-      <Overlay checked name='CAPs'>
+      <Overlay checked name='Ellipses'>
         <LayerGroup>
 
         </LayerGroup>
@@ -793,13 +798,52 @@ export default (props) => {
       </Overlay>
       <Overlay checked name='Circles'>
         <LayerGroup>
-          {props.step.circles.map((circle, index) => (
-            <Circle
-              center={circle.center}
-              color={circle.color}
-              key={`circle-${index}`}
-              radius={circle.radius}
-            />
+          {props.step.circles.map(circle => (
+            <React.Fragment key={`circle-${circle.id}-${circle.title}`}>
+              <Marker
+                autoPan={true}
+                draggable={true}
+                icon={L.divIcon({
+                  className: '',
+                  iconSize: [props.markerSize * props.mapZoom, props.markerSize * props.mapZoom],
+                })}
+                id={circle.id}
+                onDragend={event => props.handleMarkerDrag(circle, event.target.getLatLng())}
+                position={circle.latlng}
+                riseOnHover={true}
+                title={circle.title}
+              >
+                <Popup>
+                  <React.Fragment>
+                    {circle.title}
+                    <br />
+                    {LatLon.parse(circle.latlng.lat, circle.latlng.lng).toUtm().toMgrs().toString()}
+                    <br />
+                  </React.Fragment>
+                  <Button color='primary' onClick={() => handleEditShape(circle)}>Edit</Button>
+                  <Button color='secondary' onClick={() => props.handleDeleteMarker(circle)}>Delete</Button>
+                </Popup>
+                {(props.tooltipsActive) ?
+                  <Tooltip
+                    direction='top'
+                    offset={L.point(0, -1 * props.markerSize * props.mapZoom)}
+                    opacity='1'
+                    permanent
+                  >
+                    {circle.title}
+                  </Tooltip>
+                  : undefined
+                }
+              </Marker>
+              <Circle
+                center={circle.latlng}
+                color={circle.color}
+                dashArray={circle.dashArray}
+                fill={circle.fillColor === null ? false : true}
+                fillColor={circle.fillColor === null ? undefined : circle.fillColor}
+                radius={circle.radius}
+              />
+            </React.Fragment>
           ))}
         </LayerGroup>
       </Overlay>

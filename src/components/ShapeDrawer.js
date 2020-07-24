@@ -74,7 +74,43 @@ const useStyles = makeStyles(theme => ({
 export default (props) => {
   const classes = useStyles()
 
+  const [dashed, setDashed] = React.useState(false)
+  const [dashArray, setDashArray] = React.useState('12, 12')
+  const [fill, setFill] = React.useState(false)
+  const [fillColor, setFillColor] = React.useState('#4A90E2')
+  const [title, setTitle] = React.useState('')
+  const [color, setColor] = React.useState('#4A90E2')
+
   const container = props.window !== undefined ? () => window().document.body : undefined
+
+  React.useEffect(() => {
+    if (props.marker !== null) {
+      setDashed(props.marker.dashArray === null ? false : true)
+      setDashArray(props.marker.dashArray === null ? '12, 12' : props.marker.dashArray)
+      setFill(props.marker.fillColor === null ? false : true)
+      setFillColor(props.marker.fillColor === null ? '#4A90E2' : props.marker.fillColor)
+      setTitle(props.marker.title)
+      setColor(props.marker.color)
+    }
+  }, [props.marker])
+
+  const handleClose = () => {
+    const payload = {
+      marker: props.marker,
+      color: color,
+      dashArray: dashed ? dashArray : null,
+      fillColor: fill ? fillColor : null,
+      title: title,
+    }
+    props.onClose('edit', payload)
+    props.toggle()
+    setDashed(false)
+    setDashArray('12, 12')
+    setFill(false)
+    setFillColor('#4A90E2')
+    setTitle('')
+    setColor('#4A90E2')
+  }
 
   return (
     <nav
@@ -85,7 +121,7 @@ export default (props) => {
         variant='temporary'
         anchor='left'
         open={props.open}
-        onClose={props.toggle}
+        onClose={handleClose}
         classes={{ paper: classes.drawerPaper, }}
         ModalProps={{ keepMounted: true, }}
       >
@@ -97,9 +133,9 @@ export default (props) => {
           <TextField
             className={classes.marginsMd}
             label='Shape Label'
-            onChange={event => props.setShapeLabel(event.target.value)}
+            onChange={event => setTitle(event.target.value)}
             variant='outlined'
-            value={props.shapeLabel}
+            value={title}
           />
         </Grid>
         <Grid
@@ -114,9 +150,9 @@ export default (props) => {
           </Typography>
           <ColorPicker
             className={classes.marginsMd}
-            color={props.shapeStrokeColor}
+            color={color}
             disableAlpha={true}
-            onChange={color => props.setShapeStrokeColor(color.hex)}
+            onChange={color => setColor(color.hex)}
           />
         </Grid>
         <Grid
@@ -128,16 +164,16 @@ export default (props) => {
             <FormControlLabel
               control={
                 <Switch
-                  checked={props.shapeFill}
+                  checked={fill}
                   color='primary'
                   name='fill'
-                  onChange={() => props.setShapeFill(!props.shapeFill)}
+                  onChange={() => setFill(!fill)}
                 />
               }
               label='Fill'
             />
           </FormGroup>
-          {(props.shapeFill) ?
+          {(fill) ?
             <Grid
               container
               direction='row'
@@ -148,9 +184,9 @@ export default (props) => {
             </Typography>
               <ColorPicker
                 className={classes.marginsMd}
-                color={props.shapeFillColor}
+                color={fillColor}
                 disableAlpha={true}
-                onChange={color => props.setShapeFillColor(color.hex)}
+                onChange={color => setFillColor(color.hex)}
               />
             </Grid>
             : null
@@ -165,16 +201,16 @@ export default (props) => {
             <FormControlLabel
               control={
                 <Switch
-                  checked={props.shapeDashed}
+                  checked={dashed}
                   color='primary'
                   name='dashed'
-                  onChange={() => props.setShapeDashed(!props.shapeDashed)}
+                  onChange={() => setDashed(!dashed)}
                 />
               }
               label='Dashed'
             />
           </FormGroup>
-          {(props.shapeDashed) ?
+          {(dashed) ?
             <Grid
               container
               direction='row'
@@ -184,9 +220,9 @@ export default (props) => {
                 className={classes.marginsMd}
                 helperText='Comma separated values, every other number is line to gap in pixels.'
                 label='Dash Array'
-                onChange={event => props.setShapeDashArray(event.target.value)}
+                onChange={event => setDashArray(event.target.value)}
                 variant='outlined'
-                value={props.shapeDashArray}
+                value={dashArray}
               />
             </Grid>
             : null

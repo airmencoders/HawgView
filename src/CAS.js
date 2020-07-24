@@ -38,6 +38,7 @@ import {
   ScaleControl,
   ZoomControl
 } from 'react-leaflet'
+import Ellipse from './components/Ellipse'
 
 //----------------------------------------------------------------//
 // Material-UI Core Components
@@ -171,20 +172,20 @@ export default ({ state }) => {
   const [minMenuAnchorElement, setMinMenuAnchorElement] = React.useState(null)
   const [mouseClickActive, setMouseClickActive] = React.useState(true)
   const [saveScenarioDialogOpen, setSaveScenarioDialogOpen] = React.useState(false)
-  const [shapeDashed, setShapeDashed] = React.useState(false)
-  const [shapeDashArray, setShapeDashArray] = React.useState('12, 12')
-  const [shapeDrawerOpen, setShapeDrawerOpen] = React.useState(true)
-  const [shapeFill, setShapeFill] = React.useState(false)
-  const [shapeFillColor, setShapeFillColor] = React.useState('#4A90E2')
-  const [shapeLabel, setShapeLabel] = React.useState('')
-  const [shapeStrokeColor, setShapeStrokeColor] = React.useState('#4A90E2')
+  //const [shapeDashed, setShapeDashed] = React.useState(false)
+  //const [shapeDashArray, setShapeDashArray] = React.useState('12, 12')
+  const [shapeDrawerOpen, setShapeDrawerOpen] = React.useState(false)
+  //const [shapeFill, setShapeFill] = React.useState(false)
+  //const [shapeFillColor, setShapeFillColor] = React.useState('#4A90E2')
+  //const [shapeLabel, setShapeLabel] = React.useState('')
+  //const [shapeStrokeColor, setShapeStrokeColor] = React.useState('#4A90E2')
   const [snackbarMessage, setSnackbarMessage] = React.useState(undefined)
   const [snackbarOpen, setSnackbarOpen] = React.useState(false)
   const [snackPack, setSnackPack] = React.useState([])
   const [step, setStep] = React.useState(0)
   const [tooltipsActive, setTooltipsActive] = React.useState(false)
 
- // const menuOpen = Boolean(menuAnchorElement)
+  // const menuOpen = Boolean(menuAnchorElement)
   const minimizedMenuOpen = Boolean(minMenuAnchorElement)
 
   /*const handleMenuOpen = event => {
@@ -222,7 +223,7 @@ export default ({ state }) => {
   const handleMouseMove = latlng => {
     if (activeTool === 'analysis' && !lineClosed) {
       setMouseCoords(latlng)
-    } else if(activeTool !== null && activeTool !== 'analysis') {
+    } else if (activeTool !== null && activeTool !== 'analysis') {
       setMouseCoords(latlng)
     }
   }
@@ -379,9 +380,14 @@ export default ({ state }) => {
         updatedPayload = {
           ...updatedPayload,
           id: markerId,
-          latlng: clickedLatLng,
-          title: updatedTitle,
         }
+
+        if (payload.layer === 'friendly' || payload.layer === 'hostile' || payload.layer === 'threat' || payload.layer === 'survivor' || payload.layer === 'ip')
+          updatedPayload = {
+            ...updatedPayload,
+            latlng: clickedLatLng,
+            title: updatedTitle,
+          }
       }
 
       // Take the payload and add in the marker id (for when creating marker)
@@ -399,6 +405,7 @@ export default ({ state }) => {
         setHistory([...targetHistory, newStep])
         setStep(step + 1)
         setClickedLatLng(null)
+        setMouseCoords(null)
 
         if (action === 'create') {
           setMarkerId(markerId + 1)
@@ -409,6 +416,12 @@ export default ({ state }) => {
         setEditThreatDialogOpen(false)
         setEdit9LineDialogOpen(false)
         setEdit15LineDialogOpen(false)
+
+        if (payload.layer === 'circle') {
+          setFocusedMarker(updatedPayload)
+          setShapeDrawerOpen(true)
+          setActiveTool(null)
+        }
       }
     } else {
       console.error(`Unsupported action ${action}. Could not modify Markers`)
@@ -449,6 +462,7 @@ export default ({ state }) => {
     setActiveTool(null)
     setClickedLatLng(null)
     setMouseCoords(null)
+    setShapeDrawerOpen(true)
   }
 
   const createPolygon = object => {
@@ -477,6 +491,7 @@ export default ({ state }) => {
     setActiveTool(null)
     setClickedLatLng(null)
     setMouseCoords(null)
+    setShapeDrawerOpen(true)
   }
 
   const createRectangle = bounds => {
@@ -496,34 +511,6 @@ export default ({ state }) => {
       ...targetHistory[step],
       action: `Create rectangle`,
       rectangles: [...targetHistory[step].rectangles, rectangle]
-    }
-
-    setHistory([...targetHistory, newStep])
-    setStep(step + 1)
-
-    setActiveTool(null)
-    setClickedLatLng(null)
-    setMouseCoords(null)
-  }
-
-  const createCircle = (center, radius) => {
-    let targetHistory
-    if (step === history.length - 1) {
-      targetHistory = history.slice()
-    } else {
-      targetHistory = history.slice(0, step + 1)
-    }
-
-    const circle = {
-      center: center,
-      color: 'red', // To-do: go off of state from the drawDrawer
-      radius: radius,
-    }
-
-    const newStep = {
-      ...targetHistory[step],
-      action: `Create circle`,
-      circles: [...targetHistory[step].circles, circle]
     }
 
     setHistory([...targetHistory, newStep])
@@ -553,14 +540,14 @@ export default ({ state }) => {
       const newStep = {
         action: 'load scenario',
         buildingLabels: json.data.buildingLabels,
-        combatAirPatrols: json.data.combatAirPatrols,
-        engagementAreas: json.data.engagementAreas,
+        ellipses: json.data.ellipses,
+        rectangles: json.data.rectangles,
         friendlyMarkers: json.data.friendlyMarkers,
         hostileMarkers: json.data.hostileMarkers,
         initialPoints: json.data.initialPoints,
         lines: json.data.lines,
         polygons: json.data.polygons,
-        restrictedOperatingZones: json.data.restrictedOperatingZones,
+        circles: json.data.circles,
         survivors: json.data.survivors,
         threatMarkers: json.data.threatMarkers
       }
@@ -670,6 +657,7 @@ export default ({ state }) => {
             mouseClickActive={mouseClickActive}
             setFocusedMarker={marker => setFocusedMarker(marker)}
             step={history[step]}
+            setShapeDrawerOpen={setShapeDrawerOpen}
             toggleEditMarkerDialog={() => setEditMarkerDialogOpen(!editMarkerDialogOpen)}
             toggleEditThreatDialog={() => setEditThreatDialogOpen(!editThreatDialogOpen)}
             handleDeleteMarker={marker => handleMarkerEdit('delete', { marker: marker })}
@@ -701,10 +689,13 @@ export default ({ state }) => {
           />
           <CircleTool
             active={activeTool === 'circle'}
-            color='red'   // Todo use the state from the marker
+            //color={shapeStrokeColor}   // Todo use the state from the marker
+            //dashArray={shapeDashed ? shapeDashArray : null}
+            //fillColor={shapeFill ? shapeFillColor : null}
             latlng={clickedLatLng}
             mouseCoords={mouseCoords}
-            submit={(center, radius) => createCircle(center, radius)}
+            submit={(action, payload) => handleMarkerEdit(action, payload)}
+            //title={shapeLabel}
             toggle={() => toggleTools('circle')}
           />
           <RectangleTool
@@ -724,6 +715,17 @@ export default ({ state }) => {
             toggle={() => toggleTools('polygon')}
           />
           <ScaleControl />
+          <Ellipse
+            center={[51.505, -0.05]}
+            map={map}
+            radii={[500, 200]}
+            tilt={0}
+            options={{
+              color: 'lime',
+              fillColor: 'lime',
+              fillOpacity: 0.5
+            }}
+          />
           {(clickedLatLng !== null && mapPopup !== null && activeTool === null) ?
             <Popup
               maxWidth={500}
@@ -764,19 +766,21 @@ export default ({ state }) => {
         toggleEditThreatDialog={() => setEditThreatDialogOpen(!editThreatDialogOpen)}
       />
       <ShapeDrawer
+        marker={focusedMarker}
+        onClose={(action, payload) => handleMarkerEdit(action, payload)}
         open={shapeDrawerOpen}
-        setShapeDashArray={value => setShapeDashArray(value)}
+        /*setShapeDashArray={value => setShapeDashArray(value)}
         setShapeDashed={setShapeDashed}
         setShapeFill={setShapeFill}
-        setShapeFillColor={value => setShapeFillColor(value)}
-        setShapeLabel={value => setShapeLabel(value)}
-        setShapeStrokeColor={value => setShapeStrokeColor(value)}
+        setShapeFillColor={value => setShapeFillColor(value)}*/
+        //setShapeLabel={value => setShapeLabel(value)}
+        /*setShapeStrokeColor={value => setShapeStrokeColor(value)}
         shapeDashArray={shapeDashArray}
         shapeDashed={shapeDashed}
         shapeFill={shapeFill}
         shapeFillColor={shapeFillColor}
         shapeLabel={shapeLabel}
-        shapeStrokeColor={shapeStrokeColor}
+        shapeStrokeColor={shapeStrokeColor}*/
         toggle={() => setShapeDrawerOpen(!shapeDrawerOpen)}
       />
       <Snackbar

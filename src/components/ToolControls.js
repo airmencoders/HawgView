@@ -14,6 +14,7 @@ import TimelineIcon from '@material-ui/icons/Timeline'
 import { Icon } from '@iconify/react'
 
 import pentagonIcon from '@iconify/icons-mdi/pentagon'
+import ellipse from '@iconify/icons-mdi/ellipse'
 
 const useStyles = makeStyles(theme => ({
   icon: {
@@ -69,6 +70,14 @@ export default (props) => {
             onClick={() => props.toggle('polygon')}
           >
             <Icon className={classes.icon} icon={pentagonIcon} />
+          </Button>
+        </Tooltip>
+        <Tooltip placement='left' title='Draw ellipse'>
+          <Button
+            color={props.activeTool === 'ellipse' ? 'primary' : undefined}
+            onClick={() => props.toggle('ellipse')}
+          >
+            <Icon className={classes.icon} icon={ellipse} />
           </Button>
         </Tooltip>
       </ButtonGroup>
