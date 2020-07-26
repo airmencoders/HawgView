@@ -141,8 +141,14 @@ const createMarker = (history, step, payload) => {
       case 'circle':
         return {
           ...targetHistory[step],
-          action: `create ${payload.title}`,
+          action: `create circle`,
           circles: [...targetHistory[step].circles, payload]
+        }
+      case 'rectangle':
+        return {
+          ...targetHistory[step],
+          action: `create rectangle`,
+          rectangles: [...targetHistory[step].rectangles, payload]
         }
       default:
         console.error(`Error: Could not create marker. Invalid layer (${payload.layer})`)
@@ -190,8 +196,14 @@ const deleteMarker = (history, step, payload) => {
     case 'circle':
       return {
         ...history[step],
-        action: `delete ${marker.title}`,
+        action: `delete circle ${marker.title}`,
         circles: history[step].circles.filter(cMarker => cMarker.id !== marker.id)
+      }
+    case 'rectangle':
+      return {
+        ...history[step],
+        action: `delete rectangle ${marker.title}`,
+        rectangles: history[step].rectangles.filter(rMarker => rMarker.id !== marker.id)
       }
     default:
       console.error(`Error: Could not delete marker (${marker}). Invalid layer (${marker.layer})`)
@@ -267,8 +279,16 @@ const dragMarker = (history, step, payload) => {
 
       return {
         ...targetHistory[step],
-        action: `move ${marker.title}`,
+        action: `move circle ${marker.title}`,
         circles: [...filteredMarkers, newMarker]
+      }
+    case 'rectangle':
+      filteredMarkers = targetHistory[step].rectangles.filter(currentMarker => currentMarker.id !== marker.id)
+
+      return {
+        ...targetHistory[step],
+        action: `move rectangle ${marker.title}`,
+        rectangles: [...filteredMarkers, newMarker]
       }
     default:
       console.error(`Error: Could not drag marker (${marker}). Invalid sovereignty (${marker.sovereignty})`)
@@ -430,8 +450,24 @@ const editMarker = (history, step, payload) => {
 
       return {
         ...targetHistory[step],
-        action: `edit ${marker.title}`,
+        action: `edit circle ${marker.title}`,
         circles: [...filteredMarkers, newMarker]
+      }
+    case 'rectangle':
+      filteredMarkers = targetHistory[step].rectangles.filter(currentMarker => currentMarker.id !== marker.id)
+
+      newMarker = {
+        ...marker,
+        color: payload.color,
+        fillColor: payload.fillColor,
+        title: payload.title,
+        dashArray: payload.dashArray,
+      }
+
+      return {
+        ...targetHistory[step],
+        action: `edit rectangle ${marker.title}`,
+        rectangles: [...filteredMarkers, newMarker]
       }
     default:
       console.error(`Error: Could not edit marker (${marker}). Invalid layer (${marker.layer})`)

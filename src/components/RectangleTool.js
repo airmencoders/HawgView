@@ -24,7 +24,14 @@ export default (props) => {
     }
 
     if (props.active && startLatlng !== null) {
-      props.submit({bounds: [startLatlng, props.latlng]})
+      props.submit('create', {
+        bounds: [startLatlng, props.latlng],
+        color: '#4A90E2',
+        dashArray: null,
+        fillColor: null,
+        layer: 'rectangle',
+        title: '',
+      })
     }
   }, [props.latlng])
 
@@ -40,7 +47,9 @@ export default (props) => {
       <FeatureGroup>
         <Rectangle
           bounds={[startLatlng, props.mouseCoords]}
-          color={props.color}
+          color='#4A90E2'
+          fill={null}
+          weight={4}
         />
       </FeatureGroup>
     )

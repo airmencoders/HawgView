@@ -1,3 +1,7 @@
+## 2.22.0-alpha
+### Changes
+* Rectangle now functions like circles with options
+
 ## 2.21.0-alpha
 ### Changes
 * Shape drawer opens when editing and creating Circle (need to finish implementing for all shapes)

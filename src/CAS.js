@@ -172,13 +172,7 @@ export default ({ state }) => {
   const [minMenuAnchorElement, setMinMenuAnchorElement] = React.useState(null)
   const [mouseClickActive, setMouseClickActive] = React.useState(true)
   const [saveScenarioDialogOpen, setSaveScenarioDialogOpen] = React.useState(false)
-  //const [shapeDashed, setShapeDashed] = React.useState(false)
-  //const [shapeDashArray, setShapeDashArray] = React.useState('12, 12')
   const [shapeDrawerOpen, setShapeDrawerOpen] = React.useState(false)
-  //const [shapeFill, setShapeFill] = React.useState(false)
-  //const [shapeFillColor, setShapeFillColor] = React.useState('#4A90E2')
-  //const [shapeLabel, setShapeLabel] = React.useState('')
-  //const [shapeStrokeColor, setShapeStrokeColor] = React.useState('#4A90E2')
   const [snackbarMessage, setSnackbarMessage] = React.useState(undefined)
   const [snackbarOpen, setSnackbarOpen] = React.useState(false)
   const [snackPack, setSnackPack] = React.useState([])
@@ -417,7 +411,7 @@ export default ({ state }) => {
         setEdit9LineDialogOpen(false)
         setEdit15LineDialogOpen(false)
 
-        if (payload.layer === 'circle') {
+        if (payload.layer === 'circle' || payload.layer === 'rectangle' || payload.layer === 'line' || payload.layer === 'polygon') {
           setFocusedMarker(updatedPayload)
           setShapeDrawerOpen(true)
           setActiveTool(null)
@@ -689,21 +683,16 @@ export default ({ state }) => {
           />
           <CircleTool
             active={activeTool === 'circle'}
-            //color={shapeStrokeColor}   // Todo use the state from the marker
-            //dashArray={shapeDashed ? shapeDashArray : null}
-            //fillColor={shapeFill ? shapeFillColor : null}
             latlng={clickedLatLng}
             mouseCoords={mouseCoords}
             submit={(action, payload) => handleMarkerEdit(action, payload)}
-            //title={shapeLabel}
             toggle={() => toggleTools('circle')}
           />
           <RectangleTool
             active={activeTool === 'rectangle'}
-            color='red'   // Todo use the state from the marker
             latlng={clickedLatLng}
             mouseCoords={mouseCoords}
-            submit={bounds => createRectangle(bounds)}
+            submit={(action, payload) => handleMarkerEdit(action, payload)}
             toggle={() => toggleTools('rectangle')}
           />
           <LineTool

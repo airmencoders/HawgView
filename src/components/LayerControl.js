@@ -787,63 +787,63 @@ export default (props) => {
       </Overlay>
       <Overlay checked name='Rectangles'>
         <LayerGroup>
-          {props.step.rectangles.map((rectangle, index) => (
+          {props.step.rectangles.map(rectangle => (
             <Rectangle
               bounds={rectangle.bounds}
               color={rectangle.color}
-              key={`rectangle-${index}`}
-            />
+              dashArray={rectangle.dashArray}
+              fill={rectangle.fillColor === null ? false : true}
+              fillColor={rectangle.fillColor === null ? undefined : rectangle.fillColor}
+              key={`rectangle-${rectangle.id}-${rectangle.title}`}
+              weight={4}
+            >
+              <Popup>
+                <React.Fragment>
+                  {rectangle.title}
+                  <br/>
+                </React.Fragment>
+                <Button color='primary' onClick={() => handleEditShape(rectangle)}>Edit</Button>
+                <Button color='secondary' onclick={() => props.handleDeleteMarker(rectangle)}>Delete</Button>
+              </Popup>
+            </Rectangle>
           ))}
         </LayerGroup>
       </Overlay>
       <Overlay checked name='Circles'>
         <LayerGroup>
           {props.step.circles.map(circle => (
-            <React.Fragment key={`circle-${circle.id}-${circle.title}`}>
-              <Marker
-                autoPan={true}
-                draggable={true}
-                icon={L.divIcon({
-                  className: '',
-                  iconSize: [props.markerSize * props.mapZoom, props.markerSize * props.mapZoom],
-                })}
-                id={circle.id}
-                onDragend={event => props.handleMarkerDrag(circle, event.target.getLatLng())}
-                position={circle.latlng}
-                riseOnHover={true}
-                title={circle.title}
-              >
-                <Popup>
-                  <React.Fragment>
-                    {circle.title}
-                    <br />
-                    {LatLon.parse(circle.latlng.lat, circle.latlng.lng).toUtm().toMgrs().toString()}
-                    <br />
-                  </React.Fragment>
-                  <Button color='primary' onClick={() => handleEditShape(circle)}>Edit</Button>
-                  <Button color='secondary' onClick={() => props.handleDeleteMarker(circle)}>Delete</Button>
-                </Popup>
-                {(props.tooltipsActive) ?
-                  <Tooltip
-                    direction='top'
-                    offset={L.point(0, -1 * props.markerSize * props.mapZoom)}
-                    opacity='1'
-                    permanent
-                  >
-                    {circle.title}
-                  </Tooltip>
-                  : undefined
-                }
-              </Marker>
-              <Circle
-                center={circle.latlng}
-                color={circle.color}
-                dashArray={circle.dashArray}
-                fill={circle.fillColor === null ? false : true}
-                fillColor={circle.fillColor === null ? undefined : circle.fillColor}
-                radius={circle.radius}
-              />
-            </React.Fragment>
+            <Circle
+              center={circle.latlng}
+              color={circle.color}
+              dashArray={circle.dashArray}
+              fill={circle.fillColor === null ? false : true}
+              fillColor={circle.fillColor === null ? undefined : circle.fillColor}
+              key={`circle-${circle.id}-${circle.title}`}
+              radius={circle.radius}
+              weight={4}
+            >
+              <Popup>
+                <React.Fragment>
+                  {circle.title}
+                  <br />
+                  {LatLon.parse(circle.latlng.lat, circle.latlng.lng).toUtm().toMgrs().toString()}
+                  <br />
+                </React.Fragment>
+                <Button color='primary' onClick={() => handleEditShape(circle)}>Edit</Button>
+                <Button color='secondary' onClick={() => props.handleDeleteMarker(circle)}>Delete</Button>
+              </Popup>
+              {(props.tooltipsActive) ?
+                <Tooltip
+                  direction='top'
+                  offset={L.point(0, -1 * props.markerSize * props.mapZoom)}
+                  opacity='1'
+                  permanent
+                >
+                  {circle.title}
+                </Tooltip>
+                : undefined
+              }
+            </Circle>
           ))}
         </LayerGroup>
       </Overlay>

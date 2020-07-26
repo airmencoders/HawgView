@@ -62,6 +62,7 @@ export default (props) => {
           color='#4A90E2'
           fill={null}
           radius={radius}
+          weight={4}
         />
       </FeatureGroup>
     )
