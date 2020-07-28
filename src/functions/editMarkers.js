@@ -59,7 +59,7 @@ export const editMarkers = (action, history, step, payload) => {
 const clearMarkers = (history, step) => {
   if (history[step].buildingLabels.length > 0 ||
     history[step].circles.length > 0 ||
-    history[step].combatAirPatrols.length > 0 ||
+    history[step].ellipses.length > 0 ||
     history[step].friendlyMarkers.length > 0 ||
     history[step].hostileMarkers.length > 0 ||
     history[step].initialPoints.length > 0 ||
@@ -150,6 +150,24 @@ const createMarker = (history, step, payload) => {
           action: `create rectangle`,
           rectangles: [...targetHistory[step].rectangles, payload]
         }
+      case 'line':
+        return {
+          ...targetHistory[step],
+          action: `create line`,
+          lines: [...targetHistory[step].lines, payload]
+        }
+      case 'polygon':
+        return {
+          ...targetHistory[step],
+          action: `create polygon`,
+          polygons: [...targetHistory[step].polygons, payload]
+        }
+      case 'building':
+        return {
+          ...targetHistory[step],
+          action: `create building label`,
+          buildingLabels: [...targetHistory[step].buildingLabels, payload]
+        }
       default:
         console.error(`Error: Could not create marker. Invalid layer (${payload.layer})`)
         return false
@@ -204,6 +222,24 @@ const deleteMarker = (history, step, payload) => {
         ...history[step],
         action: `delete rectangle ${marker.title}`,
         rectangles: history[step].rectangles.filter(rMarker => rMarker.id !== marker.id)
+      }
+    case 'line':
+      return {
+        ...history[step],
+        action: `delete line ${marker.title}`,
+        lines: history[step].lines.filter(lMarker => lMarker.id !== marker.id)
+      }
+    case 'polygon':
+      return {
+        ...history[step],
+        action: `delete polygon ${marker.title}`,
+        polygons: history[step].polygons.filter(pMarker => pMarker.id !== marker.id)  
+      }
+    case 'building':
+      return {
+        ...history[step],
+        action: `delete building label ${marker.title}`,
+        buildingLabels: history[step].buildingLabels.filter(lMarker => lMarker.id !== marker.id)
       }
     default:
       console.error(`Error: Could not delete marker (${marker}). Invalid layer (${marker.layer})`)
@@ -289,6 +325,14 @@ const dragMarker = (history, step, payload) => {
         ...targetHistory[step],
         action: `move rectangle ${marker.title}`,
         rectangles: [...filteredMarkers, newMarker]
+      }
+    case 'building':
+      filteredMarkers = targetHistory[step].buildingLabels.filter(currentMarker => currentMarker.id !== marker.id)
+
+      return {
+        ...targetHistory[step],
+        action: `move building label ${marker.id}`,
+        buildingLabels: [...filteredMarkers, newMarker]
       }
     default:
       console.error(`Error: Could not drag marker (${marker}). Invalid sovereignty (${marker.sovereignty})`)
@@ -468,6 +512,51 @@ const editMarker = (history, step, payload) => {
         ...targetHistory[step],
         action: `edit rectangle ${marker.title}`,
         rectangles: [...filteredMarkers, newMarker]
+      }
+    case 'line':
+      filteredMarkers = targetHistory[step].lines.filter(currentMarker => currentMarker.id !== marker.id)
+
+      newMarker = {
+        ...marker,
+        color: payload.color,
+        title: payload.title,
+        dashArray: payload.dashArray,
+      }
+
+      return {
+        ...targetHistory[step],
+        action: `edit line ${marker.title}`,
+        lines: [...filteredMarkers, newMarker]
+      }
+    case 'polygon':
+      filteredMarkers = targetHistory[step].polygons.filter(currentMarker => currentMarker.id !== marker.id)
+
+      newMarker = {
+        ...marker,
+        color: payload.color,
+        dashArray: payload.dashArray,
+        fillColor: payload.fillColor,
+        title: payload.title,
+      }
+
+      return {
+        ...targetHistory[step],
+        action: `edit polygon ${marker.title}`,
+        polygons: [...filteredMarkers, newMarker]
+      }
+    case 'building':
+      filteredMarkers = targetHistory[step].buildingLabels.filter(currentMarker => currentMarker.id !== marker.id)
+
+      newMarker = {
+        ...marker,
+        color: payload.color,
+        title: payload.title,
+      }
+
+      return {
+        ...targetHistory[step],
+        action: `edit building label ${marker.title}`,
+        buildingLabels: [...filteredMarkers, newMarker]
       }
     default:
       console.error(`Error: Could not edit marker (${marker}). Invalid layer (${marker.layer})`)

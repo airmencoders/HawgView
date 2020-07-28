@@ -152,7 +152,7 @@ export default ({ handleAddMarker, handleMarkerDrawerToggle, toggleEditThreatDia
         <Button
           className={classes.button}
           color='primary'
-          onClick={() => handleMarkerClick(null, 'div', 'Building', 'building')}
+          onClick={() => handleMarkerClick(null, 'div', 'BLDG', 'building')}
         >
           BLDG LABEL
         </Button>

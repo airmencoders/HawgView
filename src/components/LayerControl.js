@@ -755,7 +755,29 @@ export default (props) => {
       </Overlay>
       <Overlay checked name='Building Labels'>
         <LayerGroup>
-
+          {props.step.buildingLabels.map(label => (
+            <Marker
+              autoPan={true}
+              draggable={true}
+              icon={L.divIcon({
+                className: '',
+                html: label.title,
+                iconSize: [props.markerSize * props.mapZoom, props.markerSize * props.mapZoom],
+              })}
+              id={label.id}
+              onDragend={event => props.handleMarkerDrag(label, event.target.getLatLng())}
+              position={label.latlng}
+              riseOnHover={true}
+              title={label.title}
+            >
+              <Popup>
+                {label.title}
+                <br/>
+                <Button color='primary'>Edit</Button>
+                <Button color='secondary'>Delete</Button>
+              </Popup>
+            </Marker>
+          ))}
         </LayerGroup>
       </Overlay>
       <Overlay checked name='Ellipses'>
@@ -769,8 +791,19 @@ export default (props) => {
             <Polyline
               positions={line.positions}
               color={line.color}
+              dashArray={line.dashArray}
               key={`line-${index}`}
-            />
+              weight={4}
+            >
+              <Popup>
+                <React.Fragment>
+                  {line.title}
+                  <br/>
+                </React.Fragment>
+                <Button color='primary' onClick={() => handleEditShape(line)}>Edit</Button>
+                <Button color='secondary' onClick={() => props.handleDeleteMarker(line)}>Delete</Button>
+              </Popup>
+            </Polyline>
           ))}
         </LayerGroup>
       </Overlay>
@@ -780,8 +813,21 @@ export default (props) => {
             <Polygon
               positions={polygon.positions}
               color={polygon.color}
+              dashArray={polygon.dashArray}
+              fill={polygon.fillColor === null ? false : true}
+              fillColor={polygon.fillColor}
               key={`polygon-${index}`}
-            />
+              weight={4}
+            >
+              <Popup>
+                <React.Fragment>
+                  {polygon.title}
+                  <br />
+                </React.Fragment>
+                <Button color='primary' onClick={() => handleEditShape(polygon)}>Edit</Button>
+                <Button color='secondary' onClick={() => props.handleDeleteMarker(polygon)}>Delete</Button>
+              </Popup>
+            </Polygon>
           ))}
         </LayerGroup>
       </Overlay>

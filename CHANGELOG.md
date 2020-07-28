@@ -1,3 +1,18 @@
+## 2.23.0-alpha
+### Changes
+* Lines now function like circles and rectangles with options
+* Line/Polygon now use `Enter` key to finish instead of escape
+* `ShapeDrawer` now does not show a fill when shape is a line
+* Added a `save` button to the `ShapeDrawer` to avoid unnecessary history changes when closing the shape drawer if nothing was changed/saved
+* Started work to port over `leaflet-ellipse` to something dynamic that I can use with `Path`
+* Building labels now are added onto the map
+
+### Tasks
+- [ ] Figure way to dynamically change color of text styling with the divIcon
+
+### Fixes
+* Lat/Lng input now also recognizes commas and spaces as delimiters between lat and long
+
 ## 2.22.0-alpha
 ### Changes
 * Rectangle now functions like circles with options
@@ -215,34 +230,12 @@
 * Removed `Old BMGR` and `New BMGR` Airspace and included only the new boundaries in `Restricted Areas`
 * Changed name to Hawg View **(Multiple Requests)**
 
-## Tasks to be Completed
-- [x] Add `handleAddMarker` functionality to all remaining `markers` - (`2.1.0-alpha`)
-- [x] Add `clearAllMarkers` functionality to map - (`2.1.0-alpha`)
-- [x] Add `Marker Label` functionality to `markerDrawer` - (`2.4.0-alpha`)
-- [x] Add `Threat` Dialog - (`2.10.0-alpha`)
-- [ ] Add `Combat Air Patrol (CAP)` Dialog
-- [ ] Add `Building Label` functionality to `markerDrawer`
-- [x] Add `9-Line` functionality to `hostile markers` - (`2.7.0-alpha`)
-- [x] Add `15-Line` functionality to `survivor markers` - (`2-14-0-alpha`)
-- [x] Add `MGRS` or `Lat/Lon` input to map - (`2.4.0-alpha`)
-- [x] Add Edit marker functionality - (`2.5.0-alpha`)
-- [x] Add Delete marker functionality - (`2.5.0-alpha`)
-- [x] Add option to have 'fill' in threats - (`2.11.0-alpha`)
-- [x] Combine various tools into one button group control - (`2.16.0-alpha`)
-- [x] Selecting a different draw item or tool should disable the currently enabled one (without saving) - (`2.16.0-alpha`)
-- [x] Add 'stackable' option such that it disables the `onClick` for the markers, allowing users to click map to stack chits - (`2.12.0-alpha`)
-
 ## Farther off Tasks
 - [ ] Add `MGRS Gridlines` to map
-- [x] Add `Drawing` capabilities to map - (`2.19.0-alpha`)
-- [ ] Create editing function for the `drawingDrawer`
 - [ ] Move edit marker from dialog to side drawer
-- [x] Add `Ruler` control to map - (`2.2.0-alpha`)
 - [ ] Add `Concept of Operations (CONOP)` functionality to site
 - [ ] Add `IP Run card` functionality to site
 - [ ] Add `Download Products` functionality to site
-- [x] Add `Save Scenario` functionality to site - (`2.8.0-alpha`)
-- [x] Add `Load Scenario` functionality to site - (`2.9.0-alpha`)
 - [ ] Add `Overwrite Scenario` functionality to site
 - [ ] Testing
 - [ ] Add entirety of back end handling to site

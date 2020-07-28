@@ -85,6 +85,8 @@ import ToolControls from './components/ToolControls'
 // Custom Class Styling
 //----------------------------------------------------------------//
 import 'leaflet/dist/leaflet.css'
+import EllipseTool from './components/EllipseTool'
+import { ellipse } from 'leaflet'
 
 const useStyles = makeStyles(theme => ({
   leafletMap: {
@@ -294,6 +296,9 @@ export default ({ state }) => {
       case 'polygon':
         activeTool === 'polygon' ? setActiveTool(null) : setActiveTool('polygon')
         break
+      case 'ellipse':
+        activeTool === 'ellipse' ? setActiveTool(ellipse) : setActiveTool('ellipse')
+        break
       default:
         console.error(`Error: Tool (${tool}) not recognized.`)
     }
@@ -346,7 +351,6 @@ export default ({ state }) => {
   }, [snackPack, snackbarMessage, snackbarOpen])
 
   /**
-   * Todo: change this to ('action', 'payload') somewhat like reducers
    * 
    * @param {String} action The action to be completed
    * @param {String} src Source of the marker image (create)
@@ -376,7 +380,7 @@ export default ({ state }) => {
           id: markerId,
         }
 
-        if (payload.layer === 'friendly' || payload.layer === 'hostile' || payload.layer === 'threat' || payload.layer === 'survivor' || payload.layer === 'ip')
+        if (payload.layer === 'friendly' || payload.layer === 'hostile' || payload.layer === 'threat' || payload.layer === 'survivor' || payload.layer === 'ip' || payload.layer === 'building')
           updatedPayload = {
             ...updatedPayload,
             latlng: clickedLatLng,
@@ -430,34 +434,6 @@ export default ({ state }) => {
     setSnackbarOpen(false)
   }
 
-  const createLine = object => {
-    let targetHistory
-    if (step === history.length - 1) {
-      targetHistory = history.slice()
-    } else {
-      targetHistory = history.slice(0, step + 1)
-    }
-
-    const line = {
-      positions: object,
-      color: 'red',     // Todo: go off of state
-      //dash array      // Todo
-    }
-
-    const newStep = {
-      ...targetHistory[step],
-      action: `Create line`,
-      lines: [...targetHistory[step].lines, line]
-    }
-
-    setHistory([...targetHistory, newStep])
-    setStep(step + 1)
-
-    setActiveTool(null)
-    setClickedLatLng(null)
-    setMouseCoords(null)
-    setShapeDrawerOpen(true)
-  }
 
   const createPolygon = object => {
     let targetHistory
@@ -477,34 +453,6 @@ export default ({ state }) => {
       ...targetHistory[step],
       action: `Create line`,
       polygons: [...targetHistory[step].polygons, polygon]
-    }
-
-    setHistory([...targetHistory, newStep])
-    setStep(step + 1)
-
-    setActiveTool(null)
-    setClickedLatLng(null)
-    setMouseCoords(null)
-    setShapeDrawerOpen(true)
-  }
-
-  const createRectangle = bounds => {
-    let targetHistory
-    if (step === history.length - 1) {
-      targetHistory = history.slice()
-    } else {
-      targetHistory = history.slice(0, step + 1)
-    }
-
-    const rectangle = {
-      bounds: bounds.bounds,
-      color: 'red',   // To-do: go off of state
-    }
-
-    const newStep = {
-      ...targetHistory[step],
-      action: `Create rectangle`,
-      rectangles: [...targetHistory[step].rectangles, rectangle]
     }
 
     setHistory([...targetHistory, newStep])
@@ -674,12 +622,11 @@ export default ({ state }) => {
           />
           <LineTool
             active={activeTool === 'line'}
-            color='red'   // Todo use the state from the marker
-            //dashArray   // Todo
             latlng={clickedLatLng}
             mouseCoords={mouseCoords}
-            submit={positions => createLine(positions)} // Todo, likely an object with information about the line (dash array, color, label, etc...)
+            submit={(action, payload) => handleMarkerEdit(action, payload)}
             toggle={() => toggleTools('line')}
+            tool={activeTool}
           />
           <CircleTool
             active={activeTool === 'circle'}
@@ -697,11 +644,18 @@ export default ({ state }) => {
           />
           <LineTool
             active={activeTool === 'polygon'}
-            color='red'   // Same todo
             latlng={clickedLatLng}
             mouseCoords={mouseCoords}
-            submit={positions => createPolygon(positions)}
+            submit={(action, payload) => handleMarkerEdit(action, payload)}
             toggle={() => toggleTools('polygon')}
+            tool={activeTool}
+          />
+          <EllipseTool
+            active={activeTool === 'ellipse'}
+            latlng={clickedLatLng}
+            mouseCoords={mouseCoords}
+            submit={(action, payload) => handleMarkerEdit(action, payload)}
+            toggle={() => toggleTools('ellipse')}
           />
           <ScaleControl />
           <Ellipse
@@ -756,20 +710,9 @@ export default ({ state }) => {
       />
       <ShapeDrawer
         marker={focusedMarker}
-        onClose={(action, payload) => handleMarkerEdit(action, payload)}
+        //onClose={(action, payload) => handleMarkerEdit(action, payload)}
         open={shapeDrawerOpen}
-        /*setShapeDashArray={value => setShapeDashArray(value)}
-        setShapeDashed={setShapeDashed}
-        setShapeFill={setShapeFill}
-        setShapeFillColor={value => setShapeFillColor(value)}*/
-        //setShapeLabel={value => setShapeLabel(value)}
-        /*setShapeStrokeColor={value => setShapeStrokeColor(value)}
-        shapeDashArray={shapeDashArray}
-        shapeDashed={shapeDashed}
-        shapeFill={shapeFill}
-        shapeFillColor={shapeFillColor}
-        shapeLabel={shapeLabel}
-        shapeStrokeColor={shapeStrokeColor}*/
+        submit={(action, payload) => handleMarkerEdit(action, payload)}
         toggle={() => setShapeDrawerOpen(!shapeDrawerOpen)}
       />
       <Snackbar

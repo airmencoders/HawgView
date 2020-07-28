@@ -36,6 +36,7 @@ import { SketchPicker as ColorPicker } from 'react-color'
 //----------------------------------------------------------------//
 // Material-UI Core Components
 //----------------------------------------------------------------//
+import Button from '@material-ui/core/Button'
 import Drawer from '@material-ui/core/Drawer'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import FormGroup from '@material-ui/core/FormGroup'
@@ -94,7 +95,7 @@ export default (props) => {
     }
   }, [props.marker])
 
-  const handleClose = () => {
+  const handleSubmit = () => {
     const payload = {
       marker: props.marker,
       color: color,
@@ -102,7 +103,7 @@ export default (props) => {
       fillColor: fill ? fillColor : null,
       title: title,
     }
-    props.onClose('edit', payload)
+    props.submit('edit', payload)
     props.toggle()
     setDashed(false)
     setDashArray('12, 12')
@@ -121,7 +122,7 @@ export default (props) => {
         variant='temporary'
         anchor='left'
         open={props.open}
-        onClose={handleClose}
+        onClose={props.toggle}
         classes={{ paper: classes.drawerPaper, }}
         ModalProps={{ keepMounted: true, }}
       >
@@ -155,43 +156,46 @@ export default (props) => {
             onChange={color => setColor(color.hex)}
           />
         </Grid>
-        <Grid
-          container
-          direction='row'
-          justify='center'
-        >
-          <FormGroup>
-            <FormControlLabel
-              control={
-                <Switch
-                  checked={fill}
-                  color='primary'
-                  name='fill'
-                  onChange={() => setFill(!fill)}
-                />
-              }
-              label='Fill'
-            />
-          </FormGroup>
-          {(fill) ?
-            <Grid
-              container
-              direction='row'
-              justify='center'
-            >
-              <Typography variant='body1'>
-                Fill Color
-            </Typography>
-              <ColorPicker
-                className={classes.marginsMd}
-                color={fillColor}
-                disableAlpha={true}
-                onChange={color => setFillColor(color.hex)}
+        {(props.marker !== null && props.marker.layer !== 'line') ?
+          <Grid
+            container
+            direction='row'
+            justify='center'
+          >
+            <FormGroup>
+              <FormControlLabel
+                control={
+                  <Switch
+                    checked={fill}
+                    color='primary'
+                    name='fill'
+                    onChange={() => setFill(!fill)}
+                  />
+                }
+                label='Fill'
               />
-            </Grid>
-            : null
-          }
-        </Grid>
+            </FormGroup>
+            {(fill) ?
+              <Grid
+                container
+                direction='row'
+                justify='center'
+              >
+                <Typography variant='body1'>
+                  Fill Color
+          </Typography>
+                <ColorPicker
+                  className={classes.marginsMd}
+                  color={fillColor}
+                  disableAlpha={true}
+                  onChange={color => setFillColor(color.hex)}
+                />
+              </Grid>
+              : null
+            }
+          </Grid>
+          : null
+        }
         <Grid
           container
           direction='row'
@@ -228,6 +232,20 @@ export default (props) => {
             : null
           }
         </Grid>
+        <Grid
+          container
+          direction='row'
+          justify='center'>
+          <Button
+            className={classes.marginsMd}
+            color='primary'
+            onClick={() => handleSubmit()}
+            variant='contained'
+          >
+            Save Changes
+          </Button>
+        </Grid>
+
       </Drawer>
     </nav>
   )

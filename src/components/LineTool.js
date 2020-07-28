@@ -36,6 +36,7 @@ import React from 'react'
 import {
   FeatureGroup,
   Polyline,
+  Polygon,
 } from 'react-leaflet'
 
 //----------------------------------------------------------------//
@@ -58,10 +59,10 @@ export default (props) => {
    * ENTER: For use with the MGRS search (Possible to just have listener in that tool)
    */
   React.useEffect(() => {
-    document.addEventListener('keydown', handleEscPress, false)
+    document.addEventListener('keydown', handleKeyPress, false)
 
     return () => {
-      document.removeEventListener('keydown', handleEscPress, false)
+      document.removeEventListener('keydown', handleKeyPress, false)
     }
   }, [props.active, positions])
 
@@ -80,10 +81,30 @@ export default (props) => {
    * 
    * @param {Event} event Key press event
    */
-  const handleEscPress = event => {
-    if (props.active && event.key === 'Escape') {
+  const handleKeyPress = event => {
+    if (props.active && event.key === 'Enter') {
       if (positions.length > 1) {
-        props.submit(positions)
+        if (props.tool === 'line') {
+          props.submit('create', {
+            color: '#4A90E2',
+            dashArray: null,
+            layer: 'line',
+            positions: positions,
+            title: '',
+          })
+        } else if (props.tool === 'polygon') {
+          props.submit('create', {
+            color: '#4A90E2',
+            dashArray: null,
+            fillColor: null,
+            layer: 'polygon',
+            positions: positions,
+            title: '',
+          })
+        } else {
+          console.error(`Invalid tool (${props.tool}) selected.`)
+        }
+
       }
 
       setPositions([])
@@ -92,12 +113,14 @@ export default (props) => {
   }
 
   return (
-    (props.active && positions.length > 0) ?
-    <FeatureGroup>
-      <Polyline
-        positions={[...positions, props.mouseCoords]}
-      />
-    </FeatureGroup>
-    : null
+    (props.active && positions.length > 0 && props.mouseCoords !== null) ?
+      <FeatureGroup>
+        <Polyline
+          color='#4A90E2'
+          positions={[...positions, props.mouseCoords]}
+          weight={4}
+        />
+      </FeatureGroup>
+      : null
   )
 }

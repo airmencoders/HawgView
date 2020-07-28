@@ -40,7 +40,7 @@ export default (props) => {
             <SquareFootIcon className={classes.icon} />
           </Button>
         </Tooltip>
-        <Tooltip placement='left' title='Draw line'>
+        <Tooltip placement='left' title='Draw line: Press Enter to finish'>
           <Button
             color={props.activeTool === 'line' ? 'primary' : undefined}
             onClick={() => props.toggle('line')}
@@ -48,7 +48,7 @@ export default (props) => {
             <TimelineIcon className={classes.icon} />
           </Button>
         </Tooltip>
-        <Tooltip placement='left' title='Draw circle'>
+        <Tooltip placement='left' title='Draw circle: Click to set circle, again to set radius'>
           <Button
             color={props.activeTool === 'circle' ? 'primary' : undefined}
             onClick={() => props.toggle('circle')}
@@ -56,7 +56,7 @@ export default (props) => {
             <FiberManualRecordIcon className={classes.icon} />
           </Button>
         </Tooltip>
-        <Tooltip placement='left' title='Draw rectangle'>
+        <Tooltip placement='left' title='Draw rectangle: Click to set each corner'>
           <Button
             color={props.activeTool === 'rectangle' ? 'primary' : undefined}
             onClick={() => props.toggle('rectangle')}
@@ -64,7 +64,7 @@ export default (props) => {
             <StopIcon className={classes.icon} />
           </Button>
         </Tooltip>
-        <Tooltip placement='left' title='Draw polygon'>
+        <Tooltip placement='left' title='Draw polygon: Press Enter to finish'>
           <Button
             color={props.activeTool === 'polygon' ? 'primary' : undefined}
             onClick={() => props.toggle('polygon')}
