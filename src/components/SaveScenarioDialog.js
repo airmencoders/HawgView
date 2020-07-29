@@ -21,6 +21,8 @@ export default (props) => {
   const classes = useStyles()
   let scenarioRef = React.useRef(null)
 
+  const [name, setName] = React.useState('')
+
   const copyScenario = () => {
     scenarioRef.current.children[1].children[0].select()
     document.execCommand('copy')
@@ -29,12 +31,13 @@ export default (props) => {
   }
 
   const scenario = {
+    name: name,
     classification: 'UNCLASSIFIED',
     date: new Date(),
     data: {
       buildingLabels: props.data.buildingLabels,
       circles: props.data.circles,
-      combatAirPatrols: props.data.combatAirPatrols,      
+      ellipses: props.data.ellipses,      
       friendlyMarkers: props.data.friendlyMarkers,
       hostileMarkers: props.data.hostileMarkers,
       initialPoints: props.data.initialPoints,
@@ -56,6 +59,12 @@ export default (props) => {
     >
       <DialogTitle>Save Scenario</DialogTitle>
       <DialogContent>
+        <TextField
+          fullWidth={true}
+          onChange={event => setName(event.target.value)}
+          variant='outlined'
+          value={name}
+        />
         <DialogContentText>Copy the data below</DialogContentText>
         <TextField
           className={classes.form}

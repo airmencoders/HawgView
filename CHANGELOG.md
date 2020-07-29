@@ -1,3 +1,9 @@
+## 2.25.0-alpha
+### Changes
+* Finally got the ellipse working to make it dynamic and work with the React components
+* Added scenario name to the `saveDialog`
+* Document title now changes to the loaded scenario's name
+
 ## 2.24.0-alpha
 ### Changes
 * Still figuring out how to work with porting over `leaflet-ellipse` to make it dynamic

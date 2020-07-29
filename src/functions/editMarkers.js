@@ -578,6 +578,7 @@ const editMarker = (history, step, payload) => {
         color: payload.color,
         dashArray: payload.dashArray,
         fillColor: payload.fillColor,
+        tilt: payload.tilt,
         title: payload.title,
         length: payload.length,
         width: payload.width,

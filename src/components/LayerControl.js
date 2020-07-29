@@ -56,6 +56,7 @@ import { makeStyles } from '@material-ui/core/styles'
 // Custom Components
 //----------------------------------------------------------------//
 import { airspace } from '../constants/airspace'
+import Ellipse from './Ellipse'
 
 //----------------------------------------------------------------//
 // React-Leaflet Layers
@@ -781,6 +782,29 @@ export default (props) => {
       </Overlay>
       <Overlay checked name='Ellipses'>
         <LayerGroup>
+          {props.step.ellipses.map(ellipse => (
+            <Ellipse
+              center={ellipse.center}
+              length={ellipse.length}
+              width={ellipse.width}
+              tilt={ellipse.tilt}
+              key={`ellipse-${ellipse.id}-${ellipse.title}`}
+              options={{
+                color: ellipse.color,
+                dashArray: ellipse.dashArray,
+                fill: ellipse.fillColor === null ? false : true,
+                fillColor: ellipse.fillColor,
+                weight: 4,
+              }}
+            >
+              <Popup>
+                {ellipse.title}
+                <br />
+                <Button color='primary' onClick={() => handleEditShape(ellipse)}>Edit</Button>
+                <Button color='secondary' onClick={() => props.handleDeleteMarker(ellipse)}>Delete</Button>
+              </Popup>
+            </Ellipse>
+          ))}
         </LayerGroup>
       </Overlay>
       <Overlay checked name='Lines'>

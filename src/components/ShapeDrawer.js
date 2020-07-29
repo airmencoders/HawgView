@@ -118,9 +118,10 @@ export default (props) => {
         ...payload,
         length: length * 926,
         width: width * 926,
-        tilt: tilt + 90,
+        tilt: Number.parseInt(tilt) + 90
       }
     }
+
     props.submit('edit', payload)
     props.toggle()
     setDashed(false)

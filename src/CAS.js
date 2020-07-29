@@ -38,7 +38,6 @@ import {
   ScaleControl,
   ZoomControl
 } from 'react-leaflet'
-//import Ellipse from './components/Ellipse'
 
 //----------------------------------------------------------------//
 // Material-UI Core Components
@@ -130,9 +129,6 @@ const maxMarkerSize = 10
 export default ({ state }) => {
   const classes = useStyles()
 
-  // Set the Page Title
-  document.title = 'Hawg View | CAS Planner'
-
   //----------------------------------------------------------------//
   // State Variables
   //----------------------------------------------------------------//
@@ -179,6 +175,7 @@ export default ({ state }) => {
   const [snackPack, setSnackPack] = React.useState([])
   const [step, setStep] = React.useState(0)
   const [tooltipsActive, setTooltipsActive] = React.useState(false)
+  const [pageTitle, setPageTitle] = React.useState('CAS Planner')
 
   // const menuOpen = Boolean(menuAnchorElement)
   const minimizedMenuOpen = Boolean(minMenuAnchorElement)
@@ -190,6 +187,10 @@ export default ({ state }) => {
   const handleMenuClose = () => {
     setMenuAnchorElement(null)
   }*/
+
+  React.useEffect(() => {
+    document.title = `Hawg View | ${pageTitle}`
+  }, [pageTitle])
 
   const handleMinMenuOpen = event => {
     setMinMenuAnchorElement(event.currentTarget)
@@ -492,6 +493,12 @@ export default ({ state }) => {
         circles: json.data.circles,
         survivors: json.data.survivors,
         threatMarkers: json.data.threatMarkers
+      }
+
+      if(json.name === '') {
+        setPageTitle('CAS Planner')
+      } else {
+        setPageTitle(json.name)
       }
 
       setHistory([...history, newStep])

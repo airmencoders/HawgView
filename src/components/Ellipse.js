@@ -1,34 +1,33 @@
+// https://www.manongdao.com/article-2180787.html
+
 import React from 'react'
 import L from 'leaflet'
 import 'leaflet-ellipse'
+import { Path, withLeaflet } from 'react-leaflet'
 
-export default (props) => {
-  const [center,] = React.useState(props.center)
-  const [radii,] = React.useState(props.radii)
-  const [tilt,] = React.useState(props.tilt)
-  const [options,] = React.useState(props.options)
+class Ellipse extends Path {
 
-  React.useEffect(() => {
-    if (center !== null && radii !== null && tilt !== null && options !== null) {
-      L.ellipse(center, radii, tilt, options).addTo(props.layer)
+  createLeafletElement(props) {
+    return new L.ellipse(props.center, [props.length, props.width], props.tilt, props.options)
+  }
+
+  updateLeafletElement(fromProps, toProps) {
+    if (toProps.center !== fromProps.center) {
+      this.leafletElement.setLatLng(toProps.center)
     }
-  }, [center, radii, tilt, options])
 
-  return (
-    null
-  )
+    if (toProps.tilt !== fromProps.tilt) {
+      this.leafletElement.setTilt(toProps.tilt)
+    }
+
+    if (toProps.options !== fromProps.options) {
+      this.leafletElement.setStyle(toProps.options)
+    }
+
+    if (toProps.length !== fromProps.length || toProps.width !== fromProps.width) {
+      this.leafletElement.setRadius([toProps.length, toProps.width])
+    }
+  }
 }
 
-/*export default (props) => {
-
-  return (
-    <svg>
-      <ellipse
-        cx='100'
-        cy='50'
-        rx='100'
-        ry='50'
-      />
-    </svg>
-  )
-}*/
+export default withLeaflet(Ellipse);
