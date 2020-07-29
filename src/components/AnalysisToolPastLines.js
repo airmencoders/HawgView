@@ -48,7 +48,6 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: 'white',
     borderWidth: 'medium',
     borderColor: '#de0000',
-    //fontSize: 'smaller',
   },
 }))
 
@@ -60,11 +59,7 @@ export default (props) => {
 
   return (
     <React.Fragment>
-      {
-      /**
-       * Past Lines
-       */
-      props.lines.map((line, lineIndex) => (
+      {props.lines.map((line, lineIndex) => (
         <Polyline
           color='red'
           dashArray='1 7'
@@ -72,11 +67,7 @@ export default (props) => {
           positions={[line.map(point => point.point)]}
         />
       ))}
-      {
-      /**
-       * Past Circle Markers
-       */
-      props.lines.map((line, lineIndex) => {
+      {props.lines.map((line, lineIndex) => {
         return (
           line.map((point, pointIndex) => (
             <CircleMarker

@@ -38,7 +38,7 @@ import {
   ScaleControl,
   ZoomControl
 } from 'react-leaflet'
-import Ellipse from './components/Ellipse'
+//import Ellipse from './components/Ellipse'
 
 //----------------------------------------------------------------//
 // Material-UI Core Components
@@ -68,6 +68,7 @@ import Edit9LineDialog from './components/Edit9LineDialog'
 import Edit15LineDialog from './components/Edit15LineDialog'
 import EditThreatDialog from './components/EditThreatDialog'
 import EditMarkerDialog from './components/EditMarkerDialog'
+import EllipseTool from './components/EllipseTool'
 import { editMarkers } from './functions/editMarkers'
 import LayerControl from './components/LayerControl'
 import LineTool from './components/LineTool'
@@ -85,8 +86,6 @@ import ToolControls from './components/ToolControls'
 // Custom Class Styling
 //----------------------------------------------------------------//
 import 'leaflet/dist/leaflet.css'
-import EllipseTool from './components/EllipseTool'
-import { ellipse } from 'leaflet'
 
 const useStyles = makeStyles(theme => ({
   leafletMap: {
@@ -150,7 +149,7 @@ export default ({ state }) => {
     action: '',
     buildingLabels: [],
     circles: [],
-    combatAirPatrols: [],
+    ellipses: [],
     friendlyMarkers: [],
     hostileMarkers: [],
     initialPoints: [],
@@ -297,9 +296,10 @@ export default ({ state }) => {
         activeTool === 'polygon' ? setActiveTool(null) : setActiveTool('polygon')
         break
       case 'ellipse':
-        activeTool === 'ellipse' ? setActiveTool(ellipse) : setActiveTool('ellipse')
+        activeTool === 'ellipse' ? setActiveTool(null) : setActiveTool('ellipse')
         break
       default:
+        setActiveTool(null)
         console.error(`Error: Tool (${tool}) not recognized.`)
     }
   }
@@ -415,7 +415,7 @@ export default ({ state }) => {
         setEdit9LineDialogOpen(false)
         setEdit15LineDialogOpen(false)
 
-        if (payload.layer === 'circle' || payload.layer === 'rectangle' || payload.layer === 'line' || payload.layer === 'polygon') {
+        if (payload.layer === 'circle' || payload.layer === 'rectangle' || payload.layer === 'line' || payload.layer === 'polygon' || payload.layer === 'ellipse') {
           setFocusedMarker(updatedPayload)
           setShapeDrawerOpen(true)
           setActiveTool(null)
@@ -594,6 +594,7 @@ export default ({ state }) => {
         >
           <LayerControl
             handleMarkerDrag={(marker, latlng) => handleMarkerEdit('drag', { marker: marker, latlng: latlng })}
+            map={map}
             mapZoom={mapZoom}
             markerSize={markerSize}
             mouseClickActive={mouseClickActive}
@@ -653,22 +654,10 @@ export default ({ state }) => {
           <EllipseTool
             active={activeTool === 'ellipse'}
             latlng={clickedLatLng}
-            mouseCoords={mouseCoords}
             submit={(action, payload) => handleMarkerEdit(action, payload)}
             toggle={() => toggleTools('ellipse')}
           />
           <ScaleControl />
-          <Ellipse
-            center={[51.505, -0.05]}
-            map={map}
-            radii={[500, 200]}
-            tilt={0}
-            options={{
-              color: 'lime',
-              fillColor: 'lime',
-              fillOpacity: 0.5
-            }}
-          />
           {(clickedLatLng !== null && mapPopup !== null && activeTool === null) ?
             <Popup
               maxWidth={500}
@@ -710,7 +699,6 @@ export default ({ state }) => {
       />
       <ShapeDrawer
         marker={focusedMarker}
-        //onClose={(action, payload) => handleMarkerEdit(action, payload)}
         open={shapeDrawerOpen}
         submit={(action, payload) => handleMarkerEdit(action, payload)}
         toggle={() => setShapeDrawerOpen(!shapeDrawerOpen)}

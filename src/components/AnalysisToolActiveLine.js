@@ -64,17 +64,12 @@ const useStyles = makeStyles(theme => ({
 //----------------------------------------------------------------//
 // Analysis Tool Active Line Component
 //----------------------------------------------------------------//
-//export default ({ active, analysisToolHdg, mouseCoords, analysisToolM, analysisToolNm, analysisToolPoints, analysisToolTotalM, analysisToolTotalNm, declination }) => {
 export default (props) => {
   const classes = useStyles()
 
   return (
     <React.Fragment>
-      {
-        /**
-         * Active Line
-         */
-        (props.points.length > 0 && props.mouseCoords !== null) ?
+      {(props.points.length > 0 && props.mouseCoords !== null) ?
           <Polyline
             color='red'
             dashArray='1 7'
@@ -83,11 +78,7 @@ export default (props) => {
           />
           : undefined
       }
-      {
-        /**
-         * Active Circle Markers
-         */
-        props.points.map((point, index) => (
+      {props.points.map((point, index) => (
           <CircleMarker
             center={point.point}
             color='red'
@@ -109,11 +100,7 @@ export default (props) => {
             }
           </CircleMarker>
         ))}
-      {
-        /**
-         * Mouse Circle Marker
-         */
-        (props.mouseCoords !== null && props.active) ?
+      {(props.mouseCoords !== null && props.active) ?
           <CircleMarker
             center={props.mouseCoords}
             color='red'

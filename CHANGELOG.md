@@ -1,3 +1,7 @@
+## 2.24.0-alpha
+### Changes
+* Still figuring out how to work with porting over `leaflet-ellipse` to make it dynamic
+
 ## 2.23.0-alpha
 ### Changes
 * Lines now function like circles and rectangles with options
@@ -229,17 +233,3 @@
 * Sub-Divided airspace into smaller files for ease of future additions/modifications
 * Removed `Old BMGR` and `New BMGR` Airspace and included only the new boundaries in `Restricted Areas`
 * Changed name to Hawg View **(Multiple Requests)**
-
-## Farther off Tasks
-- [ ] Add `MGRS Gridlines` to map
-- [ ] Move edit marker from dialog to side drawer
-- [ ] Add `Concept of Operations (CONOP)` functionality to site
-- [ ] Add `IP Run card` functionality to site
-- [ ] Add `Download Products` functionality to site
-- [ ] Add `Overwrite Scenario` functionality to site
-- [ ] Testing
-- [ ] Add entirety of back end handling to site
-- [ ] Incorporate Platform One SSO Login to site
-- [ ] Add `NGA Maps` to site
-- [ ] Add `TAK Maps` to site
-- [ ] Fix ruler touch events

@@ -46,11 +46,7 @@ import AnalysisToolPastLines from './AnalysisToolPastLines'
 //----------------------------------------------------------------//
 // Analysis Tool Component
 //----------------------------------------------------------------//
-//export default ({ analysisToolActive, analysisToolLineClosed, mouseCoords, clickedLatLng, setAnalysisToolLineClosed, setMouseCoords, setClickedLatLng, toggleAnalysisTool, setMapPopup }) => {
 export default (props) => {
-  /**
-   * State variables
-   */
   const [hdg, setHdg] = React.useState(0)
   const [lines, setLines] = React.useState([])
   const [meters, setMeters] = React.useState(0)

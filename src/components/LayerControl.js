@@ -56,7 +56,6 @@ import { makeStyles } from '@material-ui/core/styles'
 // Custom Components
 //----------------------------------------------------------------//
 import { airspace } from '../constants/airspace'
-import { CirclePicker } from 'react-color'
 
 //----------------------------------------------------------------//
 // React-Leaflet Layers
@@ -772,7 +771,7 @@ export default (props) => {
             >
               <Popup>
                 {label.title}
-                <br/>
+                <br />
                 <Button color='primary'>Edit</Button>
                 <Button color='secondary'>Delete</Button>
               </Popup>
@@ -782,7 +781,6 @@ export default (props) => {
       </Overlay>
       <Overlay checked name='Ellipses'>
         <LayerGroup>
-
         </LayerGroup>
       </Overlay>
       <Overlay checked name='Lines'>
@@ -798,7 +796,7 @@ export default (props) => {
               <Popup>
                 <React.Fragment>
                   {line.title}
-                  <br/>
+                  <br />
                 </React.Fragment>
                 <Button color='primary' onClick={() => handleEditShape(line)}>Edit</Button>
                 <Button color='secondary' onClick={() => props.handleDeleteMarker(line)}>Delete</Button>
@@ -846,7 +844,7 @@ export default (props) => {
               <Popup>
                 <React.Fragment>
                   {rectangle.title}
-                  <br/>
+                  <br />
                 </React.Fragment>
                 <Button color='primary' onClick={() => handleEditShape(rectangle)}>Edit</Button>
                 <Button color='secondary' onclick={() => props.handleDeleteMarker(rectangle)}>Delete</Button>

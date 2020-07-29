@@ -81,6 +81,9 @@ export default (props) => {
   const [fillColor, setFillColor] = React.useState('#4A90E2')
   const [title, setTitle] = React.useState('')
   const [color, setColor] = React.useState('#4A90E2')
+  const [length, setLength] = React.useState(10)
+  const [width, setWidth] = React.useState(2)
+  const [tilt, setTilt] = React.useState(0)
 
   const container = props.window !== undefined ? () => window().document.body : undefined
 
@@ -92,16 +95,31 @@ export default (props) => {
       setFillColor(props.marker.fillColor === null ? '#4A90E2' : props.marker.fillColor)
       setTitle(props.marker.title)
       setColor(props.marker.color)
+
+      if (props.marker.layer === 'ellipse') {
+        setLength(props.marker.length / 926)
+        setWidth(props.marker.width / 926)
+        setTilt(props.marker.tilt - 90)
+      }
     }
   }, [props.marker])
 
   const handleSubmit = () => {
-    const payload = {
+    let payload = {
       marker: props.marker,
       color: color,
       dashArray: dashed ? dashArray : null,
       fillColor: fill ? fillColor : null,
       title: title,
+    }
+
+    if (props.marker.layer === 'ellipse') {
+      payload = {
+        ...payload,
+        length: length * 926,
+        width: width * 926,
+        tilt: tilt + 90,
+      }
     }
     props.submit('edit', payload)
     props.toggle()
@@ -111,6 +129,9 @@ export default (props) => {
     setFillColor('#4A90E2')
     setTitle('')
     setColor('#4A90E2')
+    setLength(10)
+    setWidth(2)
+    setTilt(90)
   }
 
   return (
@@ -133,11 +154,38 @@ export default (props) => {
         >
           <TextField
             className={classes.marginsMd}
-            label='Shape Label'
+            label='Shape label'
             onChange={event => setTitle(event.target.value)}
             variant='outlined'
             value={title}
           />
+          {(props.marker !== null && props.marker.layer === 'ellipse') ?
+            <React.Fragment>
+              <TextField
+                className={classes.marginsMd}
+                label='Ellipse length'
+                onChange={event => setLength(event.target.value)}
+                variant='outlined'
+                value={length}
+              />
+              <TextField
+                className={classes.marginsSm}
+                label='Ellipse width'
+                onChange={event => setWidth(event.target.value)}
+                variant='outlined'
+                value={width}
+              />
+              <TextField
+                className={classes.marginsSm}
+                helperText=' -90 (W) to 90 (E)'
+                label='Ellipse tilt'
+                onChange={event => setTilt(event.target.value)}
+                variant='outlined'
+                value={tilt}
+              />
+            </React.Fragment>
+            : null
+          }
         </Grid>
         <Grid
           container

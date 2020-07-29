@@ -43,7 +43,6 @@ import Tooltip from '@material-ui/core/Tooltip'
 // Custom Marker Icons
 //----------------------------------------------------------------//
 import ada from '../markers/persistent/ada.svg'
-import cap from '../markers/persistent/cap.svg'
 import ip from '../markers/persistent/ip.svg'
 import missile from '../markers/persistent/missile.svg'
 import survivor from '../markers/persistent/srv.svg'
@@ -130,13 +129,6 @@ export default ({ handleAddMarker, handleMarkerDrawerToggle, toggleEditThreatDia
             className={classes.image}
             onClick={toggleEditThreatDialogClick}
             src={threat}
-          />
-        </Tooltip>
-        <Tooltip title='CAP'>
-          <img
-            alt='CAP'
-            className={classes.image}
-            src={cap}
           />
         </Tooltip>
         <Tooltip title='Survivor'>

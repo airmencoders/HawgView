@@ -1,22 +1,26 @@
 import React from 'react'
-import L from 'leaflet'
-import 'leaflet-ellipse'
-
-import {
-  LayerGroup,
-} from 'react-leaflet'
 
 export default (props) => {
 
-  const [center, setCenter] = React.useState([36.2794, -86.1328])
-  const [radii, setRadii] = React.useState([500, 200])
-  const [tilt, setTilt] = React.useState(0)
-  const [options, setOptions] = React.useState({color: '#4A90E2', fill: false})
+  /**
+   * Since the Leaflet Ellipse plugin isn't dynamic, we're kinda hacking it here.
+   * Create an ellipse with the default values that the user can then change through the drawer
+   */ 
+  React.useEffect(() => {
+    if(props.active && props.latlng !== null) {
+      props.submit('create', {
+        center: props.latlng,
+        color: '#4A90E2',
+        dashArray: null,
+        fillColor: null,
+        layer: 'ellipse',
+        length: 9260,
+        tilt: 90,
+        title: '',
+        width: 4630,
+      })
+    }
+  }, [props.active, props.latlng])
 
-  console.log('ellipse', L.ellipse(center, radii, tilt, options))
-  return (
-    <LayerGroup>
-      
-    </LayerGroup>
-  )
+  return null
 }

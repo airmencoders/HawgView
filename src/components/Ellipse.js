@@ -3,14 +3,14 @@ import L from 'leaflet'
 import 'leaflet-ellipse'
 
 export default (props) => {
-  const [center, setCenter] = React.useState(props.center)
-  const [radii, setRadii] = React.useState(props.radii)
-  const [tilt, setTilt] = React.useState(props.tilt)
-  const [options, setOptions] = React.useState(props.options)
+  const [center,] = React.useState(props.center)
+  const [radii,] = React.useState(props.radii)
+  const [tilt,] = React.useState(props.tilt)
+  const [options,] = React.useState(props.options)
 
   React.useEffect(() => {
     if (center !== null && radii !== null && tilt !== null && options !== null) {
-      L.ellipse(center, radii, tilt, options).addTo(props.map)
+      L.ellipse(center, radii, tilt, options).addTo(props.layer)
     }
   }, [center, radii, tilt, options])
 
@@ -18,3 +18,17 @@ export default (props) => {
     null
   )
 }
+
+/*export default (props) => {
+
+  return (
+    <svg>
+      <ellipse
+        cx='100'
+        cy='50'
+        rx='100'
+        ry='50'
+      />
+    </svg>
+  )
+}*/

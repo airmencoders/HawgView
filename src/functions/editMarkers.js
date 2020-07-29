@@ -73,7 +73,7 @@ const clearMarkers = (history, step) => {
       action: 'Clear markers',
       buildingLabels: [],
       circles: [],
-      combatAirPatrols: [],
+      ellipses: [],
       friendlyMarkers: [],
       hostileMarkers: [],
       initialPoints: [],
@@ -168,6 +168,12 @@ const createMarker = (history, step, payload) => {
           action: `create building label`,
           buildingLabels: [...targetHistory[step].buildingLabels, payload]
         }
+      case 'ellipse':
+        return {
+          ...targetHistory[step],
+          action: `create ellipse`,
+          ellipses: [...targetHistory[step].ellipses, payload]
+        }
       default:
         console.error(`Error: Could not create marker. Invalid layer (${payload.layer})`)
         return false
@@ -240,6 +246,12 @@ const deleteMarker = (history, step, payload) => {
         ...history[step],
         action: `delete building label ${marker.title}`,
         buildingLabels: history[step].buildingLabels.filter(lMarker => lMarker.id !== marker.id)
+      }
+    case 'ellipse':
+      return {
+        ...history[step],
+        action: `delete ellipse ${marker.title}`,
+        ellipses: history[step].ellipses.filter(eMarker => eMarker.id !== marker.id)
       }
     default:
       console.error(`Error: Could not delete marker (${marker}). Invalid layer (${marker.layer})`)
@@ -557,6 +569,24 @@ const editMarker = (history, step, payload) => {
         ...targetHistory[step],
         action: `edit building label ${marker.title}`,
         buildingLabels: [...filteredMarkers, newMarker]
+      }
+    case 'ellipse':
+      filteredMarkers = targetHistory[step].ellipses.filter(currentMarker => currentMarker.id !== marker.id)
+
+      newMarker = {
+        ...marker,
+        color: payload.color,
+        dashArray: payload.dashArray,
+        fillColor: payload.fillColor,
+        title: payload.title,
+        length: payload.length,
+        width: payload.width,
+      }
+
+      return {
+        ...targetHistory[step],
+        action: `edit ellipse ${marker.title}`,
+        ellipses: [...filteredMarkers, newMarker]
       }
     default:
       console.error(`Error: Could not edit marker (${marker}). Invalid layer (${marker.layer})`)
