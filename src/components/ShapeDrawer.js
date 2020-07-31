@@ -170,14 +170,14 @@ export default (props) => {
                 value={length}
               />
               <TextField
-                className={classes.marginsSm}
+                className={classes.marginsMd}
                 label='Ellipse width'
                 onChange={event => setWidth(event.target.value)}
                 variant='outlined'
                 value={width}
               />
               <TextField
-                className={classes.marginsSm}
+                className={classes.marginsMd}
                 helperText=' -90 (W) to 90 (E)'
                 label='Ellipse tilt'
                 onChange={event => setTilt(event.target.value)}

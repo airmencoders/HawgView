@@ -57,6 +57,7 @@ import { makeStyles } from '@material-ui/core/styles'
 //----------------------------------------------------------------//
 import { airspace } from '../constants/airspace'
 import Ellipse from './Ellipse'
+import MGRSGrids from './MGRSGrids'
 
 //----------------------------------------------------------------//
 // React-Leaflet Layers
@@ -262,6 +263,25 @@ export default (props) => {
           keepMounted
         />
       </BaseLayer>
+      <Overlay checked name='MGRS Lines'>
+        {/*<LayerGroup>
+          <Polyline
+            positions={
+              [
+                [[-90,-180], [90,-180]], 
+                [[-90,-174], [90,-174]],
+                [[-90,-100], [90,-100]],
+              ]
+            }
+            color='red'
+          />
+          </LayerGroup>*/}
+        <MGRSGrids 
+          keepMounted={true}
+          map={props.map}
+          zoom={props.mapZoom}
+        />
+      </Overlay>
       <Overlay checked name='Map Labels'>
         <TileLayer
           url='https://services.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}'

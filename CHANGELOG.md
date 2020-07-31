@@ -1,3 +1,16 @@
+## 2.26.0-alpha (UNCOMMITTED)
+### Changes
+* Removed `CAP` image from markers folder
+* Grid zone breaks are now working in the MGRS gridlines component
+
+### Tasks
+- [ ] Finish the rest of the closer in grids
+- [ ] Label all the gridlines
+- [ ] Change color of the gridlines
+
+### Fixes
+* Fixed margins of the Ellipse options in `ShapeDrawer`
+
 ## 2.25.0-alpha
 ### Changes
 * Finally got the ellipse working to make it dynamic and work with the React components
