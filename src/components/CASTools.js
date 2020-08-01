@@ -54,8 +54,6 @@ import PhotoSizeSelectActualIcon from '@material-ui/icons/PhotoSizeSelectActual'
 import PhotoSizeSelectLargeIcon from '@material-ui/icons/PhotoSizeSelectLarge'
 import RedoIcon from '@material-ui/icons/Redo'
 import SaveIcon from '@material-ui/icons/Save'
-import SpeakerNotesIcon from '@material-ui/icons/SpeakerNotes'
-import SpeakerNotesOffIcon from '@material-ui/icons/SpeakerNotesOff'
 import UndoIcon from '@material-ui/icons/Undo'
 import ViewListIcon from '@material-ui/icons/ViewList'
 
@@ -151,14 +149,6 @@ export default (props) => {
             {props.tooltipsActive ? <LabelOffIcon /> : <LabelIcon />}
           </IconButton>
         </span>
-      </Tooltip>
-      <Tooltip title='Toggle marker popups'>
-        <IconButton
-          color='inherit'
-          onClick={props.toggleMouseClick}
-        >
-          {props.mouseClickActive ? <SpeakerNotesOffIcon /> : <SpeakerNotesIcon />}
-        </IconButton>
       </Tooltip>
       <Tooltip title='Save scenario'>
         <IconButton

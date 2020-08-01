@@ -55,8 +55,6 @@ import PhotoSizeSelectActualIcon from '@material-ui/icons/PhotoSizeSelectActual'
 import PhotoSizeSelectLargeIcon from '@material-ui/icons/PhotoSizeSelectLarge'
 import RedoIcon from '@material-ui/icons/Redo'
 import SaveIcon from '@material-ui/icons/Save'
-import SpeakerNotesIcon from '@material-ui/icons/SpeakerNotes'
-import SpeakerNotesOffIcon from '@material-ui/icons/SpeakerNotesOff'
 import UndoIcon from '@material-ui/icons/Undo'
 import ViewListIcon from '@material-ui/icons/ViewList'
 
@@ -122,11 +120,6 @@ export default (props) => {
     props.toggleTooltips()
   }
 
-  const handleToggleMouseClick = () => {
-    props.handleMinMenuClose()
-    props.toggleMouseClick()
-  }
-
   return (
     <Menu
       anchorEl={props.minMenuAnchorElement}
@@ -181,10 +174,6 @@ export default (props) => {
       <MenuItem onClick={handleToggleTooltipsClick}>
         {props.tooltipsActive ? <LabelOffIcon className={classes.icon} /> : <LabelIcon className={classes.icon} />}
         Toggle marker labels
-      </MenuItem>
-      <MenuItem onClick={handleToggleMouseClick}>
-        {props.mouseClickActive ? <SpeakerNotesOffIcon className={classes.icon} /> : <SpeakerNotesIcon className={classes.icon} />}
-        Toggle marker popups
       </MenuItem>
       <MenuItem onClick={handleSaveScenarioClick}>
         <SaveIcon className={classes.icon} />

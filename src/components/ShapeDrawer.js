@@ -123,7 +123,7 @@ export default (props) => {
     }
 
     props.submit('edit', payload)
-    props.toggle()
+    props.onClose()
     setDashed(false)
     setDashArray('12, 12')
     setFill(false)
@@ -144,7 +144,7 @@ export default (props) => {
         variant='temporary'
         anchor='left'
         open={props.open}
-        onClose={props.toggle}
+        onClose={props.onClose}
         classes={{ paper: classes.drawerPaper, }}
         ModalProps={{ keepMounted: true, }}
       >

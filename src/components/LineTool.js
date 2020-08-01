@@ -90,7 +90,7 @@ export default (props) => {
             dashArray: null,
             layer: 'line',
             positions: positions,
-            title: '',
+            title: 'Line',
           })
         } else if (props.tool === 'polygon') {
           props.submit('create', {
@@ -99,7 +99,7 @@ export default (props) => {
             fillColor: null,
             layer: 'polygon',
             positions: positions,
-            title: '',
+            title: 'Polygon',
           })
         } else {
           console.error(`Invalid tool (${props.tool}) selected.`)

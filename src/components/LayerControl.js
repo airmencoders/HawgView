@@ -69,8 +69,6 @@ const { BaseLayer, Overlay } = LayersControl
 //----------------------------------------------------------------//
 export default (props) => {
 
-  const interactive = props.mouseClickActive
-
   const useStyles = makeStyles(() => ({
     hostileThreat: {
       alignItems: 'center',
@@ -123,6 +121,11 @@ export default (props) => {
   const handleEditMarker = marker => {
     props.setFocusedMarker(marker)
     props.toggleEditMarkerDialog()
+  }
+
+  const handlePopupClose = () => {
+    props.setFocusedMarker(null)
+    props.setClickedLatLng(null)
   }
 
   const handleEditThreat = marker => {
@@ -264,19 +267,7 @@ export default (props) => {
         />
       </BaseLayer>
       <Overlay checked name='MGRS Lines'>
-        {/*<LayerGroup>
-          <Polyline
-            positions={
-              [
-                [[-90,-180], [90,-180]], 
-                [[-90,-174], [90,-174]],
-                [[-90,-100], [90,-100]],
-              ]
-            }
-            color='red'
-          />
-          </LayerGroup>*/}
-        <MGRSGrids 
+        <MGRSGrids
           keepMounted={true}
           map={props.map}
           zoom={props.mapZoom}
@@ -371,7 +362,7 @@ export default (props) => {
       </Overlay>
       <Overlay checked name='Friendly Markers'>
         <LayerGroup>
-          {interactive && props.step.friendlyMarkers.map(marker => (
+          {props.interactive && props.step.friendlyMarkers.map(marker => (
             <Marker
               autoPan={true}
               draggable={true}
@@ -381,12 +372,15 @@ export default (props) => {
               })}
               id={marker.id}
               key={`friendly-${marker.id}-${marker.title}`}
+              onClick={() => props.setFocusedMarker(marker)}
               onDragend={event => props.handleMarkerDrag(marker, event.target.getLatLng())}
               position={marker.latlng}
               riseOnHover={true}
               title={marker.title}
             >
-              <Popup>
+              <Popup
+                onClose={handlePopupClose}
+              >
                 {marker.title}
                 <br />
                 {LatLon.parse(marker.latlng.lat, marker.latlng.lng).toUtm().toMgrs().toString()}
@@ -407,10 +401,8 @@ export default (props) => {
               }
             </Marker>
           ))}
-          {!interactive && props.step.friendlyMarkers.map(marker => (
+          {!props.interactive && props.step.friendlyMarkers.map(marker => (
             <Marker
-              autoPan={true}
-              draggable={true}
               icon={L.icon({
                 iconUrl: marker.iconUrl,
                 iconSize: [props.markerSize * props.mapZoom, props.markerSize * props.mapZoom],
@@ -418,9 +410,7 @@ export default (props) => {
               id={marker.id}
               interactive={false}
               key={`friendly-${marker.id}-${marker.title}`}
-              onDragend={event => props.handleMarkerDrag(marker, event.target.getLatLng())}
               position={marker.latlng}
-              riseOnHover={true}
               title={marker.title}
             >
               {(props.tooltipsActive) ?
@@ -440,7 +430,7 @@ export default (props) => {
       </Overlay>
       <Overlay checked name='Hostile Markers'>
         <LayerGroup>
-          {interactive && props.step.hostileMarkers.map(marker => (
+          {props.interactive && props.step.hostileMarkers.map(marker => (
             <Marker
               autoPan={true}
               draggable={true}
@@ -450,6 +440,7 @@ export default (props) => {
               })}
               id={marker.id}
               key={`hostile-${marker.id}-${marker.title}`}
+              onClick={() => props.setFocusedMarker(marker)}
               onDragend={event => props.handleMarkerDrag(marker, event.target.getLatLng())}
               position={marker.latlng}
               riseOnHover={true}
@@ -482,10 +473,8 @@ export default (props) => {
               }
             </Marker>
           ))}
-          {!interactive && props.step.hostileMarkers.map(marker => (
+          {!props.interactive && props.step.hostileMarkers.map(marker => (
             <Marker
-              autoPan={true}
-              draggable={true}
               icon={L.icon({
                 iconUrl: marker.iconUrl,
                 iconSize: [props.markerSize * props.mapZoom, props.markerSize * props.mapZoom]
@@ -493,9 +482,7 @@ export default (props) => {
               id={marker.id}
               interactive={false}
               key={`hostile-${marker.id}-${marker.title}`}
-              onDragend={event => props.handleMarkerDrag(marker, event.target.getLatLng())}
               position={marker.latlng}
-              riseOnHover={true}
               title={marker.title}
             >
               {(props.tooltipsActive) ?
@@ -515,7 +502,7 @@ export default (props) => {
       </Overlay>
       <Overlay checked name='Threat Markers'>
         <LayerGroup>
-          {interactive && props.step.threatMarkers.map(marker => (
+          {props.interactive && props.step.threatMarkers.map(marker => (
             <React.Fragment key={`threat-${marker.id}`}>
               <Marker
                 autoPan={true}
@@ -526,6 +513,7 @@ export default (props) => {
                   iconSize: [props.markerSize * props.mapZoom, props.markerSize * props.mapZoom],
                 })}
                 id={marker.id}
+                onClick={() => props.setFocusedMarker(marker)}
                 onDragend={event => props.handleMarkerDrag(marker, event.target.getLatLng())}
                 position={marker.latlng}
                 riseOnHover={true}
@@ -583,22 +571,16 @@ export default (props) => {
               </Circle>
             </React.Fragment>
           ))}
-          {!interactive && props.step.threatMarkers.map(marker => (
+          {!props.interactive && props.step.threatMarkers.map(marker => (
             <React.Fragment key={`threat-${marker.id}`}>
               <Marker
-                autoPan={true}
-                className={classes.hostileThreat}
-                draggable={true}
                 icon={L.divIcon({
                   className: marker.sovereignty === 'Hostile' ? classes.hostileThreat : marker.sovereignty === 'Suspect' ? classes.suspectThreat : marker.sovereignty === 'Unknown' ? classes.unknownThreat : classes.friendlyThreat,
                   html: marker.label,
                   iconSize: [props.markerSize * props.mapZoom, props.markerSize * props.mapZoom],
                 })}
                 id={marker.id}
-                interactive={false}
-                onDragend={event => props.handleMarkerDrag(marker, event.target.getLatLng())}
                 position={marker.latlng}
-                riseOnHover={true}
                 title={marker.title}
               >
                 {(props.tooltipsActive) ?
@@ -618,16 +600,16 @@ export default (props) => {
                 color={marker.sovereignty === 'Hostile' ? 'red' : marker.sovereignty === 'Suspect' ? 'yellow' : marker.sovereignty === 'Unknown' ? 'White' : 'Lime'}
                 dashArray='12, 12'
                 fill={marker.fill}
-                interactive={false}
                 radius={marker.unit === 'm' ? Number.parseInt(marker.range) : marker.unit === 'km' ? marker.range * 1000 : marker.range * 1852}
-              />
+              >
+              </Circle>
             </React.Fragment>
           ))}
         </LayerGroup>
       </Overlay>
       <Overlay checked name='Survivors'>
         <LayerGroup>
-          {interactive && props.step.survivors.map(marker => (
+          {props.interactive && props.step.survivors.map(marker => (
             <Marker
               autoPan={true}
               draggable={true}
@@ -637,6 +619,7 @@ export default (props) => {
               })}
               id={marker.id}
               key={`survivor-${marker.id}-${marker.title}`}
+              onClick={() => props.setFocusedMarker(marker)}
               onDragend={event => props.handleMarkerDrag(marker, event.target.getLatLng())}
               position={marker.latlng}
               riseOnHover={true}
@@ -673,20 +656,15 @@ export default (props) => {
               }
             </Marker>
           ))}
-          {!interactive && props.step.survivors.map(marker => (
+          {!props.interactive && props.step.survivors.map(marker => (
             <Marker
-              autoPan={true}
-              draggable={true}
               icon={L.icon({
                 iconUrl: marker.iconUrl,
                 iconSize: [props.markerSize * props.mapZoom, props.markerSize * props.mapZoom]
               })}
               id={marker.id}
-              interactive={false}
               key={`survivor-${marker.id}-${marker.title}`}
-              onDragend={event => props.handleMarkerDrag(marker, event.target.getLatLng())}
               position={marker.latlng}
-              riseOnHover={true}
               title={marker.title}
             >
               {(props.tooltipsActive) ?
@@ -706,7 +684,7 @@ export default (props) => {
       </Overlay>
       <Overlay checked name='IPs'>
         <LayerGroup>
-          {interactive && props.step.initialPoints.map(marker => (
+          {props.interactive && props.step.initialPoints.map(marker => (
             <Marker
               autoPan={true}
               draggable={true}
@@ -716,6 +694,7 @@ export default (props) => {
               })}
               id={marker.id}
               key={`ip-${marker.id}-${marker.title}`}
+              onClick={() => props.setFocusedMarker(marker)}
               onDragend={event => props.handleMarkerDrag(marker, event.target.getLatLng())}
               position={marker.latlng}
               riseOnHover={true}
@@ -742,20 +721,15 @@ export default (props) => {
               }
             </Marker>
           ))}
-          {!interactive && props.step.initialPoints.map(marker => (
+          {!props.interactive && props.step.initialPoints.map(marker => (
             <Marker
-              autoPan={true}
-              draggable={true}
               icon={L.icon({
                 iconUrl: marker.iconUrl,
                 iconSize: [props.markerSize * props.mapZoom, props.markerSize * props.mapZoom]
               })}
               id={marker.id}
-              interactive={false}
               key={`ip-${marker.id}-${marker.title}`}
-              onDragend={event => props.handleMarkerDrag(marker, event.target.getLatLng())}
               position={marker.latlng}
-              riseOnHover={true}
               title={marker.title}
             >
               {(props.tooltipsActive) ?
@@ -785,6 +759,7 @@ export default (props) => {
                 iconSize: [props.markerSize * props.mapZoom, props.markerSize * props.mapZoom],
               })}
               id={label.id}
+              onClick={() => props.setFocusedMarker(label)}
               onDragend={event => props.handleMarkerDrag(label, event.target.getLatLng())}
               position={label.latlng}
               riseOnHover={true}
@@ -798,11 +773,23 @@ export default (props) => {
               </Popup>
             </Marker>
           ))}
+          {!props.step.buildingLabels.map(label => (
+            <Marker
+              icon={L.divIcon({
+                className: '',
+                html: label.title,
+                iconSize: [props.markerSize * props.mapZoom, props.markerSize * props.mapZoom],
+              })}
+              id={label.id}
+              position={label.latlng}
+              title={label.title}
+            />
+          ))}
         </LayerGroup>
       </Overlay>
       <Overlay checked name='Ellipses'>
         <LayerGroup>
-          {props.step.ellipses.map(ellipse => (
+          {props.interactive && props.step.ellipses.map(ellipse => (
             <Ellipse
               center={ellipse.center}
               length={ellipse.length}
@@ -825,11 +812,27 @@ export default (props) => {
               </Popup>
             </Ellipse>
           ))}
+          {!props.interactive && props.step.ellipses.map(ellipse => (
+            <Ellipse
+              center={ellipse.center}
+              length={ellipse.length}
+              width={ellipse.width}
+              tilt={ellipse.tilt}
+              key={`ellipse-${ellipse.id}-${ellipse.title}`}
+              options={{
+                color: ellipse.color,
+                dashArray: ellipse.dashArray,
+                fill: ellipse.fillColor === null ? false : true,
+                fillColor: ellipse.fillColor,
+                weight: 4,
+              }}
+            />
+          ))}
         </LayerGroup>
       </Overlay>
       <Overlay checked name='Lines'>
         <LayerGroup>
-          {props.step.lines.map((line, index) => (
+          {props.interactive && props.step.lines.map((line, index) => (
             <Polyline
               positions={line.positions}
               color={line.color}
@@ -847,11 +850,20 @@ export default (props) => {
               </Popup>
             </Polyline>
           ))}
+          {!props.interactive && props.step.lines.map((line, index) => (
+            <Polyline
+              positions={line.positions}
+              color={line.color}
+              dashArray={line.dashArray}
+              key={`line-${index}`}
+              weight={4}
+            />
+          ))}
         </LayerGroup>
       </Overlay>
       <Overlay checked name='Polygons'>
         <LayerGroup>
-          {props.step.polygons.map((polygon, index) => (
+          {props.interactive && props.step.polygons.map((polygon, index) => (
             <Polygon
               positions={polygon.positions}
               color={polygon.color}
@@ -871,11 +883,22 @@ export default (props) => {
               </Popup>
             </Polygon>
           ))}
+          {!props.interactive && props.step.polygons.map((polygon, index) => (
+            <Polygon
+              positions={polygon.positions}
+              color={polygon.color}
+              dashArray={polygon.dashArray}
+              fill={polygon.fillColor === null ? false : true}
+              fillColor={polygon.fillColor}
+              key={`polygon-${index}`}
+              weight={4}
+            />
+          ))}
         </LayerGroup>
       </Overlay>
       <Overlay checked name='Rectangles'>
         <LayerGroup>
-          {props.step.rectangles.map(rectangle => (
+          {props.interactive && props.step.rectangles.map(rectangle => (
             <Rectangle
               bounds={rectangle.bounds}
               color={rectangle.color}
@@ -895,11 +918,22 @@ export default (props) => {
               </Popup>
             </Rectangle>
           ))}
+          {!props.interactive && props.step.rectangles.map(rectangle => (
+            <Rectangle
+              bounds={rectangle.bounds}
+              color={rectangle.color}
+              dashArray={rectangle.dashArray}
+              fill={rectangle.fillColor === null ? false : true}
+              fillColor={rectangle.fillColor === null ? undefined : rectangle.fillColor}
+              key={`rectangle-${rectangle.id}-${rectangle.title}`}
+              weight={4}
+            />
+          ))}
         </LayerGroup>
       </Overlay>
       <Overlay checked name='Circles'>
         <LayerGroup>
-          {props.step.circles.map(circle => (
+          {props.interactive && props.step.circles.map(circle => (
             <Circle
               center={circle.latlng}
               color={circle.color}
@@ -920,6 +954,30 @@ export default (props) => {
                 <Button color='primary' onClick={() => handleEditShape(circle)}>Edit</Button>
                 <Button color='secondary' onClick={() => props.handleDeleteMarker(circle)}>Delete</Button>
               </Popup>
+              {(props.tooltipsActive) ?
+                <Tooltip
+                  direction='top'
+                  offset={L.point(0, -1 * props.markerSize * props.mapZoom)}
+                  opacity='1'
+                  permanent
+                >
+                  {circle.title}
+                </Tooltip>
+                : undefined
+              }
+            </Circle>
+          ))}
+          {!props.interactive && props.step.circles.map(circle => (
+            <Circle
+              center={circle.latlng}
+              color={circle.color}
+              dashArray={circle.dashArray}
+              fill={circle.fillColor === null ? false : true}
+              fillColor={circle.fillColor === null ? undefined : circle.fillColor}
+              key={`circle-${circle.id}-${circle.title}`}
+              radius={circle.radius}
+              weight={4}
+            >
               {(props.tooltipsActive) ?
                 <Tooltip
                   direction='top'

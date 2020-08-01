@@ -80,7 +80,7 @@ export default (props) => {
         latlng: center,
         layer: 'circle',
         radius: radius,
-        title: '',
+        title: 'Circle',
       })
     }
   }, [props.active, props.latlng])

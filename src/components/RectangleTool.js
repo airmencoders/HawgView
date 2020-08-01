@@ -30,7 +30,7 @@ export default (props) => {
         dashArray: null,
         fillColor: null,
         layer: 'rectangle',
-        title: '',
+        title: 'Rectangle',
       })
     }
   }, [props.latlng])

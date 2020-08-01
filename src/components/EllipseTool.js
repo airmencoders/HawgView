@@ -16,7 +16,7 @@ export default (props) => {
         layer: 'ellipse',
         length: 9260,
         tilt: 90,
-        title: '',
+        title: 'Ellipse',
         width: 4630,
       })
     }
