@@ -446,7 +446,9 @@ export default (props) => {
               riseOnHover={true}
               title={marker.title}
             >
-              <Popup>
+              <Popup
+                onClose={handlePopupClose}
+              >
                 {(marker.data !== null) ?
                   render9line(marker.data)
                   :
@@ -519,7 +521,9 @@ export default (props) => {
                 riseOnHover={true}
                 title={marker.title}
               >
-                <Popup>
+                <Popup
+                  onClose={handlePopupClose}
+                >
                   {(marker.data !== null) ?
                     render9line(marker.data)
                     :
@@ -627,6 +631,7 @@ export default (props) => {
             >
               <Popup
                 maxWidth={1000}
+                onClose={handlePopupClose}
               >
 
                 {
@@ -700,7 +705,9 @@ export default (props) => {
               riseOnHover={true}
               title={marker.title}
             >
-              <Popup>
+              <Popup
+                onClose={handlePopupClose}
+              >
                 {marker.title}
                 <br />
                 {LatLon.parse(marker.latlng.lat, marker.latlng.lng).toUtm().toMgrs().toString()}
@@ -759,14 +766,19 @@ export default (props) => {
                 iconSize: [props.markerSize * props.mapZoom, props.markerSize * props.mapZoom],
               })}
               id={label.id}
+              key={`building-label-${label.id}-${label.title}`}
               onClick={() => props.setFocusedMarker(label)}
               onDragend={event => props.handleMarkerDrag(label, event.target.getLatLng())}
               position={label.latlng}
               riseOnHover={true}
               title={label.title}
             >
-              <Popup>
+              <Popup
+                onClose={handlePopupClose}
+              >
                 {label.title}
+                <br />
+                {LatLon.parse(label.latlng.lat, label.latlng.lng).toUtm().toMgrs().toString()}
                 <br />
                 <Button color='primary'>Edit</Button>
                 <Button color='secondary'>Delete</Button>
@@ -781,6 +793,7 @@ export default (props) => {
                 iconSize: [props.markerSize * props.mapZoom, props.markerSize * props.mapZoom],
               })}
               id={label.id}
+              key={`building-label-${label.id}-${label.title}`}
               position={label.latlng}
               title={label.title}
             />
@@ -804,7 +817,9 @@ export default (props) => {
                 weight: 4,
               }}
             >
-              <Popup>
+              <Popup
+                onClose={handlePopupClose}
+              >
                 {ellipse.title}
                 <br />
                 <Button color='primary' onClick={() => handleEditShape(ellipse)}>Edit</Button>
@@ -840,7 +855,9 @@ export default (props) => {
               key={`line-${index}`}
               weight={4}
             >
-              <Popup>
+              <Popup
+                onClose={handlePopupClose}
+              >
                 <React.Fragment>
                   {line.title}
                   <br />
@@ -873,7 +890,9 @@ export default (props) => {
               key={`polygon-${index}`}
               weight={4}
             >
-              <Popup>
+              <Popup
+                onClose={handlePopupClose}
+              >
                 <React.Fragment>
                   {polygon.title}
                   <br />
@@ -908,7 +927,9 @@ export default (props) => {
               key={`rectangle-${rectangle.id}-${rectangle.title}`}
               weight={4}
             >
-              <Popup>
+              <Popup
+                onClose={handlePopupClose}
+              >
                 <React.Fragment>
                   {rectangle.title}
                   <br />
@@ -944,7 +965,9 @@ export default (props) => {
               radius={circle.radius}
               weight={4}
             >
-              <Popup>
+              <Popup
+                onClose={handlePopupClose}
+              >
                 <React.Fragment>
                   {circle.title}
                   <br />

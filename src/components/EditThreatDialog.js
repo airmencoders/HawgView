@@ -46,13 +46,13 @@ const useStyles = makeStyles(theme => ({
 export default (props) => {
   const classes = useStyles()
 
-  const [custom, setCustom] = React.useState(props.marker ? props.marker.threatType.title === 'Custom' ? true : false : true)
-  const [fill, setFill] = React.useState(props.marker ? props.marker.fill : false)
-  const [threat, setThreat] = React.useState(props.marker ? threats.indexOf(props.marker.threatType) : 0)
-  const [label, setLabel] = React.useState(props.marker ? props.marker.title : '')
-  const [range, setRange] = React.useState(props.marker ? props.marker.range : '3')
-  const [unit, setUnit] = React.useState(props.marker ? props.marker.unit : 'NM')
-  const [sovereignty, setSovereignty] = React.useState(props.marker ? props.marker.sovereignty : 'Hostile')
+  const [custom, setCustom] = React.useState(props.marker !== null && props.marker.layer === 'threat' ? props.marker.threatType.title === 'Custom' ? true : false : true)
+  const [fill, setFill] = React.useState(props.marker !== null && props.marker.layer === 'threat' ? props.marker.fill : false)
+  const [threat, setThreat] = React.useState(props.marker !== null && props.marker.layer === 'threat' ? threats.indexOf(props.marker.threatType) : 0)
+  const [label, setLabel] = React.useState(props.marker !== null && props.marker.layer === 'threat' ? props.marker.title : '')
+  const [range, setRange] = React.useState(props.marker !== null && props.marker.layer === 'threat' ? props.marker.range : '3')
+  const [unit, setUnit] = React.useState(props.marker !== null && props.marker.layer === 'threat' ? props.marker.unit : 'NM')
+  const [sovereignty, setSovereignty] = React.useState(props.marker !== null && props.marker.layer === 'threat' ? props.marker.sovereignty : 'Hostile')
 
   const handleThreatChange = event => {
     setThreat(event.target.value)
@@ -69,7 +69,7 @@ export default (props) => {
   }
 
   const handleSubmit = () => {
-    if (props.marker === null) {
+    if (props.marker === null || props.marker.layer === 'threat') {
       props.submit('create', {
         data: null,
         elevation: 0,
@@ -106,7 +106,7 @@ export default (props) => {
       open={props.open}
       onClose={props.toggle}
     >
-      <DialogTitle>{props.marker ? 'Edit threat' : 'Create threat'}</DialogTitle>
+      <DialogTitle>{props.marker !== null && props.marker.layer === 'threat' ? 'Edit threat' : 'Create threat'}</DialogTitle>
       <DialogContent>
         <FormControl
           className={classes.flex}

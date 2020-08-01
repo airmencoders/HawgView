@@ -1,4 +1,22 @@
-## 2.26.0-alpha (UNCOMMITTED)
+## 2.27.1-alpha
+### Fixes
+* Persistent markers only add color and data as required for specific layers fixing `react-color` failures
+* Added `key` to building label fixing `react` warnings
+
+## 2.27.0-alpha
+### Changes
+* Removed the `Toggle Mouse Click` Button from the toolbar
+* Activating a tool now disables the mouse clicks automatically
+* Added the `interactive` property to the rest of the shapes
+* Clicking on a marker will now set the `clickedLatLng` state to the marker's latlng property for stacking chits exactly
+* Updated the `mapPopup` component to not display when there is a `focusedMarker`
+* Thanks SHAA for the idea about the clicked latlng
+* Shapes now come with a default title
+
+### Tasks
+- [ ] Add tooltips to all the shapes
+
+## 2.26.0-alpha
 ### Changes
 * Removed `CAP` image from markers folder
 * Grid zone breaks are now working in the MGRS gridlines component

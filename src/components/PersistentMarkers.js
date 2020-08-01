@@ -70,15 +70,28 @@ export default ({ handleAddMarker, handleMarkerDrawerToggle, toggleEditThreatDia
   const classes = useStyles()
 
   const handleMarkerClick = (iconUrl, iconType, title, layer) => {
-    const payload = {
-      color: iconType === 'div' ? '#ff0000' : null,    // Defaults to red, user can change afterwards when editing
-      data: null,
+    let payload = {
       elevation: 0,   // TODO: Pull the elevation of the latlng from API
       iconType,
       iconUrl,
       layer,
       title,
     }
+
+    if (layer === 'building') {
+      payload = {
+        ...payload,
+        color: '#ff0000'
+      }
+    }
+
+    if (layer === 'hostile' || layer === 'threat' || layer === 'survivor') {
+      payload = {
+        ...payload,
+        data: null
+      }
+    }
+
     handleMarkerDrawerToggle()
     handleAddMarker(payload)
   }

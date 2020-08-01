@@ -274,7 +274,7 @@ export default ({ state }) => {
   /**
    * Helper function to do multiple things when closing the map Popup
    */
-  const handleMapPopupClose = () => {
+  const handleMapReset = () => {
     setClickedLatLng(null)
     setFocusedMarker(null)
     setMapPopup(null)
@@ -310,12 +310,6 @@ export default ({ state }) => {
         setActiveTool(null)
         console.error(`Error: Tool (${tool}) not recognized.`)
     }
-  }
-
-  const handleShapeDrawerClose = () => {
-    setFocusedMarker(null)
-    setClickedLatLng(null)
-    setShapeDrawerOpen(false)
   }
 
   /**
@@ -653,7 +647,7 @@ export default ({ state }) => {
             <Popup
               maxWidth={500}
               position={clickedLatLng}
-              onClose={() => handleMapPopupClose()}
+              onClose={handleMapReset}
             >
               <table className={classes.popupTable}>
                 <tbody>
@@ -690,7 +684,7 @@ export default ({ state }) => {
       />
       <ShapeDrawer
         marker={focusedMarker}
-        onClose={handleShapeDrawerClose}
+        onClose={handleMapReset}
         open={shapeDrawerOpen}
         submit={(action, payload) => handleMarkerEdit(action, payload)}
       />
@@ -718,6 +712,7 @@ export default ({ state }) => {
         (editMarkerDialogOpen) ?
           <EditMarkerDialog
             //deleteData={marker => handleMarkerEdit('edit', {marker: marker, data: null})}
+            onExited={handleMapReset}
             open={editMarkerDialogOpen}
             marker={focusedMarker}
             submit={(action, payload) => handleMarkerEdit(action, payload)}
@@ -730,6 +725,7 @@ export default ({ state }) => {
       {
         (edit9LineDialogOpen) ?
           <Edit9LineDialog
+          onExited={handleMapReset}
             open={edit9LineDialogOpen}
             marker={focusedMarker}
             submit={payload => handleMarkerEdit('9line', payload)}
@@ -740,6 +736,7 @@ export default ({ state }) => {
       {
         (edit15LineDialogOpen) ?
           <Edit15LineDialog
+            onExited={handleMapReset}
             open={edit15LineDialogOpen}
             marker={focusedMarker}
             submit={payload => handleMarkerEdit('15line', payload)}
@@ -750,6 +747,7 @@ export default ({ state }) => {
       {
         (editThreatDialogOpen) ?
           <EditThreatDialog
+            onExited={handleMapReset}
             open={editThreatDialogOpen}
             marker={focusedMarker}
             submit={(action, payload) => handleMarkerEdit(action, payload)}
