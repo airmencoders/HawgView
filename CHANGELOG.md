@@ -1,3 +1,16 @@
+## 2.28.0-alpha
+### Changes
+* Added black background to map
+* More closely ported `leaflet-grids` resulting in a better outcome for MGRS Gridzones
+
+### Fixes
+* Map popup no longer auto pans, fixing map jump issues
+
+### Tasks
+- [ ] Change attribution to be a link, reducing space required
+- [ ] Finish the gridlines
+- [ ] add `try/catch` for the MGRS translation to catch errors when clicking outside the world wrap when zoomed out
+
 ## 2.27.1-alpha
 ### Fixes
 * Persistent markers only add color and data as required for specific layers fixing `react-color` failures

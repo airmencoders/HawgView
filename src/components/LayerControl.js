@@ -266,9 +266,8 @@ export default (props) => {
           keepMounted
         />
       </BaseLayer>
-      <Overlay checked name='MGRS Lines'>
+      <Overlay name='MGRS Lines'>
         <MGRSGrids
-          keepMounted={true}
           map={props.map}
           zoom={props.mapZoom}
         />

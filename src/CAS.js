@@ -645,6 +645,7 @@ export default ({ state }) => {
           <ScaleControl />
           {(clickedLatLng !== null && mapPopup !== null && activeTool === null && focusedMarker === null) ?
             <Popup
+              autoPan={false}
               maxWidth={500}
               position={clickedLatLng}
               onClose={handleMapReset}

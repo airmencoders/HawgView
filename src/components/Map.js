@@ -45,6 +45,7 @@ import { makeStyles } from '@material-ui/core/styles'
 //----------------------------------------------------------------//
 const useStyles = makeStyles(() => ({
   leafletMap: {
+    backgroundColor: 'black',
     height: '100%',
     width: '100%',
   },
