@@ -1,3 +1,7 @@
+## 2.28.1-alpha
+### Fixes
+* Fix bug blocking `ShapeDrawer` from closing properly
+
 ## 2.28.0-alpha
 ### Changes
 * Added black background to map

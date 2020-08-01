@@ -278,6 +278,8 @@ export default ({ state }) => {
     setClickedLatLng(null)
     setFocusedMarker(null)
     setMapPopup(null)
+    setShapeDrawerOpen(false)
+    setMarkerDrawerOpen(false)
   }
 
   const toggleTools = tool => {
