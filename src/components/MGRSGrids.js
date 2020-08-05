@@ -8,6 +8,8 @@ import {
 
 import { makeStyles } from '@material-ui/core/styles'
 
+import { LLtoUTM, UTMtoLL } from '../functions/gridMath'
+
 const useStyles = makeStyles(theme => ({
   lineStyle: {
 
@@ -24,31 +26,32 @@ const useStyles = makeStyles(theme => ({
 export default (props) => {
   const classes = useStyles()
 
+  let tempLines, tempLabels
+
   // To-do: use props and user settings?
   const zoneStyle = {
     color: 'orange',
     opacity: 0.6,
   }
 
-  const [lines, setLines] = React.useState([])
+  const lineStyle = {
+    color: 'cyan',
+    opacity: 0.6,
+  }
+
+  const [zoneLines, setZoneLines] = React.useState([])
+  const [gridLines, setGridLines] = React.useState([])
   const [labels, setLabels] = React.useState([])
-
-  //const mapBounds = props.map.getBounds().pad(0.5)
-  const northBound = 84//mapBounds.getNorth()//84
-  const southBound = -80//mapBounds.getSouth()//-80
-  const eastBound = 180//mapBounds.getEast() //180
-  const westBound = -180//mapBounds.getWest() //-180
-  /*const labelBounds = props.map.getBounds().pad(-0.03)
-  const labelNorth = labelBounds.getNorth()
-  const labelSouth = labelBounds.getSouth()
-  const labelEast = labelBounds.getEast()
-  const labelWest = labelBounds.getWest()*/
-
-  let tempLines = []
-  let tempLabels = []
 
   React.useEffect(() => {
     generateGridZones()
+    props.map.on('zoomend', generateGridZones)
+    props.map.on('moveend', generateGridZones)
+
+    return () => {
+      props.map.off('zoomend', generateGridZones)
+      props.map.off('moveend', generateGridZones)
+    }
   }, [])
 
   const gridSpacing = () => {
@@ -91,9 +94,11 @@ export default (props) => {
       })
       const previous = lngArray[i - 1] ? lngArray[i - 1] : 0
       const labelPoint = L.latLng(centerLat, previous + ((lngArray[i] - previous) / 2))
+      const labelUTM = LLtoUTM(labelPoint)
       tempLabels.push({
         position: labelPoint,
-        text: getMGRSZoneNumber(labelPoint.lat, labelPoint.lng) + getMGRSZoneLetter(labelPoint.lat)
+        text: labelUTM.zoneNumber + '' + labelUTM.zoneLetter
+        //text: getMGRSZoneNumber(labelPoint.lat, labelPoint.lng) + getMGRSZoneLetter(labelPoint.lat)
       })
     }
   }
@@ -106,95 +111,70 @@ export default (props) => {
     return Math.floor(number / snap) * snap
   }
 
-  const getMGRSZoneLetter = lat => {
-    if (lat <= 84 && lat >= 72) {
-      return 'X'
-    } else if (lat < 72 && lat >= 64) {
-      return 'W'
-    } else if (lat < 64 && lat >= 56) {
-      return 'V'
-    } else if (lat < 56 && lat >= 48) {
-      return 'U'
-    } else if (lat < 48 && lat >= 40) {
-      return 'T'
-    } else if (lat < 40 && lat >= 32) {
-      return 'S'
-    } else if (lat < 32 && lat >= 24) {
-      return 'R'
-    } else if (lat < 24 && lat >= 16) {
-      return 'Q'
-    } else if (lat < 16 && lat >= 8) {
-      return 'P'
-    } else if (lat < 8 && lat >= 0) {
-      return 'N'
-    } else if (lat < 0 && lat >= -8) {
-      return 'M'
-    } else if (lat < -8 && lat >= -16) {
-      return 'L'
-    } else if (lat < -16 && lat >= -24) {
-      return 'K'
-    } else if (lat < -24 && lat >= -32) {
-      return 'J'
-    } else if (lat < -32 && lat >= -40) {
-      return 'H'
-    } else if (lat < -40 && lat >= -48) {
-      return 'G'
-    } else if (lat < -48 && lat >= -56) {
-      return 'F'
-    } else if (lat < -56 && lat >= -64) {
-      return 'E'
-    } else if (lat < -64 && lat >= -72) {
-      return 'D'
-    } else if (lat < -72 && lat >= -80) {
-      return 'C'
-    } else {
-      return 'Z'
-    }
+  const generateHorizontalLine = (point1, point2, west, east) => {
+    const slope = (point1.lat - point2.lat) / (point1.lng - point2.lng)
+    const b = point1.lat - slope * point1.lng
+
+    const newWest = slope * west + b
+    const newEast = slope * east + b
+
+    return [L.latLng(newWest, west), L.latLng(newEast, east)]
   }
 
-  const getMGRSZoneNumber = (lat, lng) => {
-    let zoneNumber = Math.floor((lng + 180) / 6) + 1
+  const generateVerticalLine = (line, west, east) => {
+    const points = line.getLatLngs()
+    const point1 = points[0]
+    let point2 = points[points.length - 1]
+    const slope = (point1.lat - point2.lat) / (point1.lng - point2.lng)
 
-    if (lng === 180) {
-      zoneNumber = 60
+    if (point2.lng > east) {
+      const newLat = point1.lat + (slope * (east - point1.lng))
+      point2 = L.latLng(newLat, east)
     }
 
-    if (lat >= 56 && lat < 64 && lng >= 3 && lng < 12) {
-      zoneNumber = 32
+    if (point2.lng < west) {
+      const newLat = point1.lat + (slope * (west - point1.lng))
+      point2 = L.latLng(newLat, west)
     }
 
-    if (lat >= 72 && lat < 84) {
-      if (lng >= 0 && lng < 9) {
-        zoneNumber = 31
-      } else if (lng >= 9 && lng < 21) {
-        zoneNumber = 33
-      } else if (lng >= 21 && lng < 33) {
-        zoneNumber = 35
-      } else if (lng >= 33 && lng < 42) {
-        zoneNumber = 37
-      }
-    }
-
-    return zoneNumber
+    return [point1, point2]
   }
 
   const generateGridZones = () => {
     //===============================================================================
-    // MGRS Gridzone break lines
+    // MGRS Grid Zones
     //===============================================================================
+    let mapBounds = props.map.getBounds().pad(0.5)
+    let northBound = mapBounds.getNorth()//84//mapBounds.getNorth()//84
+    let southBound = mapBounds.getSouth()//- 80//mapBounds.getSouth()//-80
+    let eastBound = mapBounds.getEast()//180//mapBounds.getEast() //180
+    let westBound = mapBounds.getWest()//-180//mapBounds.getWest() //-180
+    /*const labelBounds = props.map.getBounds().pad(-0.03)
+    const labelNorth = labelBounds.getNorth()
+    const labelSouth = labelBounds.getSouth()
+    const labelEast = labelBounds.getEast()
+    const labelWest = labelBounds.getWest()*/
+
     let lat = snapTo(southBound, 8)
     let lng = snapTo(westBound, 6) + 6
     let latCoords = []
     let latMGRS = []
     let lngMGRS = []
-    let zoneBreaks = [westBound, westBound]
+    let zoneBreaks = [westBound]
+
+    tempLines = []
+    tempLabels = []
 
     if (lat < -80) {
       lat = -80
     }
 
+    if (lng < -180) {
+      lng = -180
+    }
+
     // Push the horizontal coords
-    while (lat <= northBound) {
+    while (lat <= northBound && lat <= 84) {
       latCoords.push(lat)
       if (lat === 72) {
         latMGRS.push(lat + 6)
@@ -206,7 +186,7 @@ export default (props) => {
     }
 
     // Push the vertical lines
-    while (lng < eastBound) {
+    while (lng <= eastBound && lng <= 180) {
       zoneBreaks.push(lng)
       lng += 6
     }
@@ -214,9 +194,9 @@ export default (props) => {
     // Hack to make this work....
     zoneBreaks.push(eastBound)
     zoneBreaks.push(eastBound)
-    zoneBreaks.push(eastBound)
 
-    // Create horizontal lines in the non exclusion zone
+
+    // Create vertical lines in the non exclusion zone
     for (var i = 1; i < zoneBreaks.length - 1; i++) {
       if (zoneBreaks[i] <= 0 || zoneBreaks[i] >= 42) {
         tempLines.push({
@@ -247,8 +227,8 @@ export default (props) => {
     for (let y in latCoords) {
       tempLines.push({
         positions: [
-          [latCoords[y], westBound],
-          [latCoords[y], eastBound]
+          [latCoords[y], Math.max(westBound, -180)],
+          [latCoords[y], Math.min(eastBound, 180)]
         ]
       })
 
@@ -266,9 +246,12 @@ export default (props) => {
           const centerLat = previousLat + Math.abs(latCoords[y] - previousLat) / 2
           previousLng = lngArray[x - 1] ? lngArray[x - 1] : 0
           const labelPoint = L.latLng(centerLat, previousLng + ((lngArray[x] - previousLng) / 2))
+          const labelUTM = LLtoUTM(labelPoint)
+          const number = labelUTM.zoneNumber > 60 ? labelUTM.zoneNumber % 60 : labelUTM.zoneNumber < 1 ? labelUTM.zoneNumber + 60 : labelUTM.zoneNumber
           tempLabels.push({
             position: labelPoint,
-            text: getMGRSZoneNumber(labelPoint.lat, labelPoint.lng) + getMGRSZoneLetter(labelPoint.lat)
+            text: number + '' + labelUTM.zoneLetter
+            //text: getMGRSZoneNumber(labelPoint.lat, labelPoint.lng) + getMGRSZoneLetter(labelPoint.lat)
           })
         }
       }
@@ -278,36 +261,149 @@ export default (props) => {
     for (let x = 0; x < lngMGRS.length - 1; x++) {
       for (let y = 0; y < latMGRS.length - 1; y++) {
         const labelPoint = L.latLng(latMGRS[y], lngMGRS[x])
+        const labelUTM = LLtoUTM(labelPoint)
+        const number = labelUTM.zoneNumber > 60 ? labelUTM.zoneNumber % 60 : labelUTM.zoneNumber < 1 ? labelUTM.zoneNumber + 60 : labelUTM.zoneNumber
         tempLabels.push({
           position: labelPoint,
-          text: getMGRSZoneNumber(labelPoint.lat, labelPoint.lng) + getMGRSZoneLetter(labelPoint.lat)
+          text: number + '' + labelUTM.zoneLetter
+          //text: getMGRSZoneNumber(labelPoint.lat, labelPoint.lng) + getMGRSZoneLetter(labelPoint.lat)
         })
       }
     }
 
-    setLines([...tempLines])
+    setZoneLines([...tempLines])
     setLabels([...tempLabels])
 
+    const fFactor = 0.000001
+    mapBounds = props.map.getBounds().pad(0.1)
+    tempLines = []
+    tempLabels = []
+
+    for (let i = 0; i < zoneBreaks.length - 1; i++) {
+      const northwestLL = L.latLng(northBound, zoneBreaks[i] + fFactor)
+      const southeastLL = L.latLng(southBound, zoneBreaks[i + 1] - fFactor)
+      const centerLL = L.latLngBounds(northwestLL, southeastLL).getCenter()
+      const northwestUTM = LLtoUTM(northwestLL)
+      const southeastUTM = LLtoUTM(southeastLL)
+      const centerUTM = LLtoUTM(centerLL)
+
+      let buffer
+      let lat = snap(southeastUTM.northing)
+      while (lat < northwestUTM.northing) {
+        let leftUTM = {
+          northing: lat,
+          easting: northwestUTM.easting,
+          zoneLetter: centerUTM.zoneLetter,
+          zoneNumber: centerUTM.zoneNumber
+        }
+
+        const leftLL = UTMtoLL(leftUTM)
+        //leftUTM.northing += gridSpacing() / 2
+
+        let rightUTM = {
+          northing: lat,
+          easting: southeastUTM.easting,
+          zoneLetter: centerUTM.zoneLetter,
+          zoneNumber: centerUTM.zoneNumber
+        }
+
+        const rightLL = UTMtoLL(rightUTM)
+        //rightUTM.northing += gridSpacing() / 2
+
+        tempLines.push({positions: generateHorizontalLine(leftLL, rightLL, zoneBreaks[i], zoneBreaks[i + 1])})
+
+        lat += gridSpacing()
+      }
+    }
+
+    setGridLines([...tempLines])
+  }
+
+  const generateGrids = () => {
     //===============================================================================
     // MGRS grid lines (10, 100, 1,000, 10,000 meter lines)
     //===============================================================================
-    const fFactor = .000001
+    // TODO: the issue here is the gridlines are just too much to render, so it's doing the math for literally EVERY SINGLE GridZone in the world which, of course slows it down
+    // Instead, the answer here is to 'redraw' like the previous module did. But rather than calling a 'redraw', it instead just re-renders every time props.zoom changes.
+    // The first iteration doesn't matter, that can be done only once with no issues, but here it's so intensive that we need to just render only what's on the screen which changes the iterations from like
+    // hundreds of thousands of lines to just....a couple dozen.
+    /*const fFactor = .000001
     const gridBounds = props.map.getBounds().pad(0.1)
-    tempLabels = []
+    let tempLabels = []
+    let tempLines = []
+    const spacing = gridSpacing()
 
     let labelY = []
     let labelX = []
     let drawn = false
 
+    console.log('---generating grids---')
+    console.log('zoneBreaks.length', zoneBreaks.length)
+
+    for (let i = 0; i < zoneBreaks.length - 1; i++) {
+      const NWLL = L.latLng(northBound, zoneBreaks[i] + fFactor)
+      const SELL = L.latLng(southBound, zoneBreaks[i + 1] - fFactor)
+      const CLL = L.latLngBounds(NWLL, SELL).getCenter()
+      const CUTM = LLtoUTM(CLL)
+      const SEUTM = LLtoUTM(SELL)
+      const NWUTM = LLtoUTM(NWLL)
+
+      let buffer
+
+      console.log('Index', i)
+
+      let lat = snap(SEUTM.northing)
+      while (lat < NWUTM.northing) {
+        console.log('Latitude:', lat)
+        let leftUTM = {
+          northing: lat,
+          easting: NWUTM.easting,
+          zoneLetter: CUTM.zoneLetter,
+          zoneNumber: CUTM.zoneNumber
+        }
+
+        const leftLL = UTMtoLL(leftUTM)
+        leftUTM.northing = + spacing / 2
+        const leftLabel = UTMtoLL(leftUTM)
+
+        let rightUTM = {
+          northing: lat,
+          easting: SEUTM.easting,
+          zoneLetter: CUTM.zoneLetter,
+          zoneNumber: CUTM.zoneNumber
+        }
+
+        const rightLL = UTMtoLL(rightUTM)
+        rightUTM.northing += spacing / 2
+        const rightLabel = UTMtoLL(rightUTM)
+
+        tempLines.push(generateHorizontalLine(leftLL, rightLL, zoneBreaks[i], zoneBreaks[i + 1]))
+
+        lat += spacing
+      }
+
+    }
+    // TODO: Figure out the zoom levels in order to NOT crash the browser
+
+    //setLines([...lines, ...tempLines])
+    setLines([...lines, ...tempLines])*/
   }
 
   return (
     <LayerGroup>
-      {lines.map((line, index) => (
+      {props.zoom > 3 && zoneLines.map((line, index) => (
         <Polyline
           color={zoneStyle.color}
-          key={`mgrs-line-${index}`}
+          key={`mgrs-zone-line-${index}`}
           opacity={zoneStyle.opacity}
+          positions={line.positions}
+        />
+      ))}
+      {props.zoom >= 9 && gridLines.map((line, index) => (
+        <Polyline
+          color={lineStyle.color}
+          key={`mgrs-grid-line-${index}`}
+          opacity={lineStyle.opacity}
           positions={line.positions}
         />
       ))}
