@@ -1,3 +1,12 @@
+## 2.29.0-alpha
+### Changes
+* `MGRSGrids` component complete. Some nuances but they look good
+
+## 2.28.2-alpha
+### Changes
+* MGRSGrids component now uses the mapBounds in order to not crash the browser by trying to make too many lines
+* Started work on the 100K lines, looking good
+
 ## 2.28.1-alpha
 ### Fixes
 * Fix bug blocking `ShapeDrawer` from closing properly

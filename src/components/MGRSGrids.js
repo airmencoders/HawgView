@@ -8,7 +8,7 @@ import {
 
 import { makeStyles } from '@material-ui/core/styles'
 
-import { LLtoUTM, UTMtoLL } from '../functions/gridMath'
+import gridMath from '../functions/gridMath' //{ gridMath.LLtoUTM, gridMath.UTMtoLL } from '../functions/gridMath'
 
 const useStyles = makeStyles(theme => ({
   lineStyle: {
@@ -52,7 +52,7 @@ export default (props) => {
       props.map.off('zoomend', generateGridZones)
       props.map.off('moveend', generateGridZones)
     }
-  }, [])
+  }, [props.zoom])
 
   const gridSpacing = () => {
     if (props.zoom < 10) {
@@ -94,7 +94,7 @@ export default (props) => {
       })
       const previous = lngArray[i - 1] ? lngArray[i - 1] : 0
       const labelPoint = L.latLng(centerLat, previous + ((lngArray[i] - previous) / 2))
-      const labelUTM = LLtoUTM(labelPoint)
+      const labelUTM = gridMath.LLtoUTM(labelPoint)
       tempLabels.push({
         position: labelPoint,
         text: labelUTM.zoneNumber + '' + labelUTM.zoneLetter
@@ -121,10 +121,7 @@ export default (props) => {
     return [L.latLng(newWest, west), L.latLng(newEast, east)]
   }
 
-  const generateVerticalLine = (line, west, east) => {
-    const points = line.getLatLngs()
-    const point1 = points[0]
-    let point2 = points[points.length - 1]
+  const generateVerticalLine = (point1, point2, west, east) => {
     const slope = (point1.lat - point2.lat) / (point1.lng - point2.lng)
 
     if (point2.lng > east) {
@@ -246,7 +243,7 @@ export default (props) => {
           const centerLat = previousLat + Math.abs(latCoords[y] - previousLat) / 2
           previousLng = lngArray[x - 1] ? lngArray[x - 1] : 0
           const labelPoint = L.latLng(centerLat, previousLng + ((lngArray[x] - previousLng) / 2))
-          const labelUTM = LLtoUTM(labelPoint)
+          const labelUTM = gridMath.LLtoUTM(labelPoint)
           const number = labelUTM.zoneNumber > 60 ? labelUTM.zoneNumber % 60 : labelUTM.zoneNumber < 1 ? labelUTM.zoneNumber + 60 : labelUTM.zoneNumber
           tempLabels.push({
             position: labelPoint,
@@ -261,7 +258,7 @@ export default (props) => {
     for (let x = 0; x < lngMGRS.length - 1; x++) {
       for (let y = 0; y < latMGRS.length - 1; y++) {
         const labelPoint = L.latLng(latMGRS[y], lngMGRS[x])
-        const labelUTM = LLtoUTM(labelPoint)
+        const labelUTM = gridMath.LLtoUTM(labelPoint)
         const number = labelUTM.zoneNumber > 60 ? labelUTM.zoneNumber % 60 : labelUTM.zoneNumber < 1 ? labelUTM.zoneNumber + 60 : labelUTM.zoneNumber
         tempLabels.push({
           position: labelPoint,
@@ -274,20 +271,27 @@ export default (props) => {
     setZoneLines([...tempLines])
     setLabels([...tempLabels])
 
+    //===============================================================================
+    // MGRS Grid Lines
+    //===============================================================================
+
     const fFactor = 0.000001
     mapBounds = props.map.getBounds().pad(0.1)
     tempLines = []
     tempLabels = []
+    let horizontalLabelLines = []
+    let verticalLabelLines = []
+    let drawn
 
+    // Draw the horizontal lines
     for (let i = 0; i < zoneBreaks.length - 1; i++) {
       const northwestLL = L.latLng(northBound, zoneBreaks[i] + fFactor)
       const southeastLL = L.latLng(southBound, zoneBreaks[i + 1] - fFactor)
       const centerLL = L.latLngBounds(northwestLL, southeastLL).getCenter()
-      const northwestUTM = LLtoUTM(northwestLL)
-      const southeastUTM = LLtoUTM(southeastLL)
-      const centerUTM = LLtoUTM(centerLL)
+      const northwestUTM = gridMath.LLtoUTM(northwestLL)
+      const southeastUTM = gridMath.LLtoUTM(southeastLL)
+      const centerUTM = gridMath.LLtoUTM(centerLL)
 
-      let buffer
       let lat = snap(southeastUTM.northing)
       while (lat < northwestUTM.northing) {
         let leftUTM = {
@@ -297,8 +301,7 @@ export default (props) => {
           zoneNumber: centerUTM.zoneNumber
         }
 
-        const leftLL = UTMtoLL(leftUTM)
-        //leftUTM.northing += gridSpacing() / 2
+        const leftLL = gridMath.UTMtoLL(leftUTM)
 
         let rightUTM = {
           northing: lat,
@@ -307,86 +310,130 @@ export default (props) => {
           zoneNumber: centerUTM.zoneNumber
         }
 
-        const rightLL = UTMtoLL(rightUTM)
-        //rightUTM.northing += gridSpacing() / 2
+        const rightLL = gridMath.UTMtoLL(rightUTM)
 
-        tempLines.push({positions: generateHorizontalLine(leftLL, rightLL, zoneBreaks[i], zoneBreaks[i + 1])})
+        if (props.zoom === 9) {
+          leftUTM.northing += gridSpacing() / 2
+          rightUTM.northing += gridSpacing() / 2
+        }
 
+        const leftLabel = gridMath.UTMtoLL(leftUTM)
+        const rightLabel = gridMath.UTMtoLL(rightUTM)
+
+        tempLines.push({ positions: generateHorizontalLine(leftLL, rightLL, zoneBreaks[i], zoneBreaks[i + 1]) })
+        horizontalLabelLines.push({ positions: generateHorizontalLine(leftLabel, rightLabel, zoneBreaks[i], zoneBreaks[i + 1]) })
         lat += gridSpacing()
       }
-    }
 
-    setGridLines([...tempLines])
-  }
-
-  const generateGrids = () => {
-    //===============================================================================
-    // MGRS grid lines (10, 100, 1,000, 10,000 meter lines)
-    //===============================================================================
-    // TODO: the issue here is the gridlines are just too much to render, so it's doing the math for literally EVERY SINGLE GridZone in the world which, of course slows it down
-    // Instead, the answer here is to 'redraw' like the previous module did. But rather than calling a 'redraw', it instead just re-renders every time props.zoom changes.
-    // The first iteration doesn't matter, that can be done only once with no issues, but here it's so intensive that we need to just render only what's on the screen which changes the iterations from like
-    // hundreds of thousands of lines to just....a couple dozen.
-    /*const fFactor = .000001
-    const gridBounds = props.map.getBounds().pad(0.1)
-    let tempLabels = []
-    let tempLines = []
-    const spacing = gridSpacing()
-
-    let labelY = []
-    let labelX = []
-    let drawn = false
-
-    console.log('---generating grids---')
-    console.log('zoneBreaks.length', zoneBreaks.length)
-
-    for (let i = 0; i < zoneBreaks.length - 1; i++) {
-      const NWLL = L.latLng(northBound, zoneBreaks[i] + fFactor)
-      const SELL = L.latLng(southBound, zoneBreaks[i + 1] - fFactor)
-      const CLL = L.latLngBounds(NWLL, SELL).getCenter()
-      const CUTM = LLtoUTM(CLL)
-      const SEUTM = LLtoUTM(SELL)
-      const NWUTM = LLtoUTM(NWLL)
-
-      let buffer
-
-      console.log('Index', i)
-
-      let lat = snap(SEUTM.northing)
-      while (lat < NWUTM.northing) {
-        console.log('Latitude:', lat)
-        let leftUTM = {
-          northing: lat,
-          easting: NWUTM.easting,
-          zoneLetter: CUTM.zoneLetter,
-          zoneNumber: CUTM.zoneNumber
+      // Draw Vertical Lines
+      let lng = snap(northwestUTM.easting - gridSpacing())
+      while (lng < southeastUTM.easting) {
+        let bottomUTM = {
+          northing: southeastUTM.northing,
+          easting: lng,
+          zoneLetter: centerUTM.zoneLetter,
+          zoneNumber: centerUTM.zoneNumber
         }
 
-        const leftLL = UTMtoLL(leftUTM)
-        leftUTM.northing = + spacing / 2
-        const leftLabel = UTMtoLL(leftUTM)
+        const bottomLL = gridMath.UTMtoLL(bottomUTM)
 
-        let rightUTM = {
-          northing: lat,
-          easting: SEUTM.easting,
-          zoneLetter: CUTM.zoneLetter,
-          zoneNumber: CUTM.zoneNumber
+        let topUTM = {
+          northing: northwestUTM.northing,
+          easting: lng,
+          zoneLetter: centerUTM.zoneLetter,
+          zoneNumber: centerUTM.zoneNumber
         }
 
-        const rightLL = UTMtoLL(rightUTM)
-        rightUTM.northing += spacing / 2
-        const rightLabel = UTMtoLL(rightUTM)
+        const topLL = gridMath.UTMtoLL(topUTM)
 
-        tempLines.push(generateHorizontalLine(leftLL, rightLL, zoneBreaks[i], zoneBreaks[i + 1]))
+        if (props.zoom === 9) {
+          bottomUTM.easting += gridSpacing() / 2
+          topUTM.easting += gridSpacing() / 2
+        }
 
-        lat += spacing
+        const bottomLabel = gridMath.UTMtoLL(bottomUTM)
+        const topLabel = gridMath.UTMtoLL(topUTM)
+
+        tempLines.push({ positions: generateVerticalLine(bottomLL, topLL, zoneBreaks[i], zoneBreaks[i + 1]) })
+        verticalLabelLines.push({ positions: generateVerticalLine(bottomLabel, topLabel, zoneBreaks[i], zoneBreaks[i + 1]) })
+        lng += gridSpacing()
       }
 
-    }
-    // TODO: Figure out the zoom levels in order to NOT crash the browser
+      if (props.zoom >= 9) {
+        // Draw grid labels (E/W borders)
+        if (mgrsAccuracy() === 0) {
+          for (let x in horizontalLabelLines) {
+            for (let y in verticalLabelLines) {
+              let labelPoint = gridMath.lineIntersect(horizontalLabelLines[x].positions, verticalLabelLines[y].positions)
+              if (labelPoint && mapBounds.contains(labelPoint)) {
+                let label = gridMath.forward([labelPoint.lng, labelPoint.lat], mgrsAccuracy())
 
-    //setLines([...lines, ...tempLines])
-    setLines([...lines, ...tempLines])*/
+                if (props.zoom >= 8) {
+                  label = label.substr(4)
+                }
+
+                tempLabels.push({
+                  position: labelPoint,
+                  text: label
+                })
+              }
+            }
+          }
+        } else {
+          mapBounds = props.map.getBounds().pad(-0.05)
+          for (let x in horizontalLabelLines) {
+            drawn = false
+            for (let y in verticalLabelLines) {
+              let labelPoint = gridMath.lineIntersect(horizontalLabelLines[x].positions, verticalLabelLines[y].positions)
+              if (labelPoint && mapBounds.contains(labelPoint) && !drawn) {
+                let label = gridMath.forward([mapBounds.getWest(), labelPoint.lat], mgrsAccuracy())
+                label = label.substr(7)
+                let gridArray = label.split(' ')
+                label = Number.parseInt(gridArray[1]) + 1
+
+                if (mgrsAccuracy() === 1) {
+                  label = label % 10
+                }
+
+                labelPoint.lng = mapBounds.getWest()
+                tempLabels.push({
+                  position: labelPoint,
+                  text: label
+                })
+                drawn = true
+              }
+            }
+          }
+
+          for (let y in verticalLabelLines) {
+            drawn = false
+            for (let x in horizontalLabelLines) {
+              let labelPoint = gridMath.lineIntersect(horizontalLabelLines[x].positions, verticalLabelLines[y].positions)
+              if (labelPoint && mapBounds.contains(labelPoint) && !drawn) {
+                let label = gridMath.forward([labelPoint.lng, labelPoint.lat], mgrsAccuracy())
+                label = label.substr(7)
+
+                let gridArray = label.split(' ')
+                label = Number.parseInt(gridArray[0]) + 1
+
+                if (mgrsAccuracy() === 1) {
+                  label = label % 10
+                }
+
+                labelPoint.lat = mapBounds.getSouth()
+                tempLabels.push({
+                  position: labelPoint,
+                  text: label
+                })
+                drawn = true
+              }
+            }
+          }
+        }
+        setLabels([...tempLabels])
+      }
+    }
+    setGridLines([...tempLines])
   }
 
   return (
