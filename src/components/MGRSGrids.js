@@ -35,8 +35,9 @@ export default (props) => {
   }
 
   const lineStyle = {
-    color: 'cyan',
-    opacity: 0.6,
+    color: 'white',
+    opacity: 1,
+    weight: 1,
   }
 
   const [zoneLines, setZoneLines] = React.useState([])
@@ -312,10 +313,9 @@ export default (props) => {
 
         const rightLL = gridMath.UTMtoLL(rightUTM)
 
-        if (props.zoom === 9) {
-          leftUTM.northing += gridSpacing() / 2
-          rightUTM.northing += gridSpacing() / 2
-        }
+        leftUTM.northing += gridSpacing() / 2
+        rightUTM.northing += gridSpacing() / 2
+
 
         const leftLabel = gridMath.UTMtoLL(leftUTM)
         const rightLabel = gridMath.UTMtoLL(rightUTM)
@@ -346,10 +346,8 @@ export default (props) => {
 
         const topLL = gridMath.UTMtoLL(topUTM)
 
-        if (props.zoom === 9) {
-          bottomUTM.easting += gridSpacing() / 2
-          topUTM.easting += gridSpacing() / 2
-        }
+        bottomUTM.easting += gridSpacing() / 2
+        topUTM.easting += gridSpacing() / 2
 
         const bottomLabel = gridMath.UTMtoLL(bottomUTM)
         const topLabel = gridMath.UTMtoLL(topUTM)
@@ -380,7 +378,7 @@ export default (props) => {
             }
           }
         } else {
-          mapBounds = props.map.getBounds().pad(-0.05)
+          mapBounds = props.map.getBounds().pad(0.1)
           for (let x in horizontalLabelLines) {
             drawn = false
             for (let y in verticalLabelLines) {
@@ -389,13 +387,12 @@ export default (props) => {
                 let label = gridMath.forward([mapBounds.getWest(), labelPoint.lat], mgrsAccuracy())
                 label = label.substr(7)
                 let gridArray = label.split(' ')
-                label = Number.parseInt(gridArray[1]) + 1
+                label = gridArray[1]
 
-                if (mgrsAccuracy() === 1) {
-                  label = label % 10
-                }
-
-                labelPoint.lng = mapBounds.getWest()
+                let labelUTM = gridMath.LLtoUTM(labelPoint)
+                labelUTM.northing -= gridSpacing() / 2
+                labelPoint = gridMath.UTMtoLL(labelUTM)
+                labelPoint.lng = props.map.getBounds().pad(-0.05).getWest()
                 tempLabels.push({
                   position: labelPoint,
                   text: label
@@ -414,13 +411,12 @@ export default (props) => {
                 label = label.substr(7)
 
                 let gridArray = label.split(' ')
-                label = Number.parseInt(gridArray[0]) + 1
+                label = gridArray[0]
 
-                if (mgrsAccuracy() === 1) {
-                  label = label % 10
-                }
-
-                labelPoint.lat = mapBounds.getSouth()
+                let labelUTM = gridMath.LLtoUTM(labelPoint)
+                labelUTM.easting -= gridSpacing() / 2
+                labelPoint = gridMath.UTMtoLL(labelUTM)
+                labelPoint.lat = props.map.getBounds().pad(-0.05).getSouth()
                 tempLabels.push({
                   position: labelPoint,
                   text: label
@@ -452,6 +448,7 @@ export default (props) => {
           key={`mgrs-grid-line-${index}`}
           opacity={lineStyle.opacity}
           positions={line.positions}
+          weight={lineStyle.weight}
         />
       ))}
       {props.zoom > 3 && labels.map((label, index) => (

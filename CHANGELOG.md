@@ -1,3 +1,10 @@
+## 2.29.1-alpha
+### Changes
+* Gridlines are white now
+
+### Fixes
+* Gridlabels properly positioned on lines while maintaining proper coordinates
+
 ## 2.29.0-alpha
 ### Changes
 * `MGRSGrids` component complete. Some nuances but they look good
