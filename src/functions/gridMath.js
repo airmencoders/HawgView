@@ -36,6 +36,7 @@ var gridMath = {
   LLtoUTM: LLtoUTM,
   UTMtoLL: UTMtoLL,
   lineIntersect: lineIntersect,
+  getGARSCellLabel: getGARSCellLabel,
 };
 /**
  * Conversion of lat/lon to MGRS.
@@ -796,6 +797,11 @@ function lineIntersect(line1, line2) {
   } else {
     return false; // segments do not intersect
   }
+}
+
+function getGARSCellLabel(point) {
+
+  return ''
 }
 
 export default gridMath

@@ -58,6 +58,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import { airspace } from '../constants/airspace'
 import Ellipse from './Ellipse'
 import MGRSGrids from './MGRSGrids'
+import GARSCells from './GARSCells'
 
 //----------------------------------------------------------------//
 // React-Leaflet Layers
@@ -268,6 +269,12 @@ export default (props) => {
       </BaseLayer>
       <Overlay name='MGRS Lines'>
         <MGRSGrids
+          map={props.map}
+          zoom={props.mapZoom}
+        />
+      </Overlay>
+      <Overlay name='GARS Cells'>
+        <GARSCells
           map={props.map}
           zoom={props.mapZoom}
         />

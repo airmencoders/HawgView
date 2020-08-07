@@ -90,6 +90,7 @@ export default (props) => {
       const newPoint = {
         point: props.latlng,
         hdg: hdg,
+        mils: hdg * 17.78,
         nm: totalMiles + miles,
         m: totalMeters + meters,
         declination: declination
@@ -178,6 +179,7 @@ export default (props) => {
         mouseCoords={props.mouseCoords}
         meters={meters}
         miles={miles}
+        mils={hdg * 17.78}
         points={points}
         totalMeters={totalMeters}
         totalMiles={totalMiles}

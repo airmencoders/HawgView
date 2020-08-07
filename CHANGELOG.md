@@ -1,3 +1,18 @@
+## 2.30.0-alpha
+### Changes
+* Line and Polygon tool now have circle markers the user clicks to finish the shape
+* Line and Polygon tool now exit when user presses the `Escape` key
+* Line and Polygon tool now do nothing when user presses the `Enter` key
+* Line and Polygon tool now include `NM` and `meter` distances
+* Analysis tool now includes mil measurements
+* Created GARS Cells
+
+### Fixes
+* MGRS line optimization (Using `northBound` and `southBound` when able to shorten the line being drawn)
+
+### Tasks
+- [ ] Finish the GARS Labels (Cell and quadrant only?)
+
 ## 2.29.2-alpha
 ### Fixes
 * Fixed crashes when zooming out too far caused by the MGRS grid generation

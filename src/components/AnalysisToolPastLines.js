@@ -81,7 +81,7 @@ export default (props) => {
                   className={classes.resultTooltip}
                   permanent={true}
                 >
-                  <b>{(point.declination === null) ? 'True:' : 'Mag:'} </b>{point.hdg.toFixed(2)}&deg;
+                  <b>{(point.declination === null) ? 'True:' : 'Mag:'} </b>{point.hdg.toFixed(2)}&deg; ({point.mils.toFixed(2)} mils)
                   <br />
                   <b>NM: </b>{point.nm.toFixed(2)}
                   <br />

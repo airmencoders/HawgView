@@ -90,7 +90,7 @@ export default (props) => {
                 className={classes.resultTooltip}
                 permanent={true}
               >
-                <b>{(point.declination === null) ? 'True:' : 'Mag:'} </b>{point.hdg.toFixed(2)}&deg;
+                <b>{(point.declination === null) ? 'True:' : 'Mag:'} </b>{point.hdg.toFixed(2)}&deg; ({point.mils.toFixed(2)} mils)
                 <br />
                 <b>NM: </b>{point.nm.toFixed(2)}
                 <br />
@@ -112,7 +112,7 @@ export default (props) => {
               permanent={true}
               sticky={true}
             >
-              <b>{(props.declination === null) ? 'True:' : 'Mag:'} </b>{props.hdg.toFixed(2)}&deg;
+              <b>{(props.declination === null) ? 'True:' : 'Mag:'} </b>{props.hdg.toFixed(2)}&deg; ({props.mils.toFixed(2)} mils)
               <br />
               <b>NM: </b>{(props.totalMiles + props.miles).toFixed(2)} {(props.totalMiles > 0) ? `(+${props.miles.toFixed(2)})` : undefined}
               <br />

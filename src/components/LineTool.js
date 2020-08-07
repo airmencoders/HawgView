@@ -34,10 +34,13 @@
 //----------------------------------------------------------------//
 import React from 'react'
 import {
+  CircleMarker,
   FeatureGroup,
   Polyline,
-  Polygon,
+  Tooltip
 } from 'react-leaflet'
+
+import { distanceAndHeading } from '../functions/mathFunctions'
 
 //----------------------------------------------------------------//
 // Analysis Tool Component
@@ -47,6 +50,7 @@ export default (props) => {
    * State variables
    */
   const [positions, setPositions] = React.useState([])
+  const [distances, setDistances] = React.useState(null)
 
   React.useEffect(() => {
     setPositions([])
@@ -76,38 +80,50 @@ export default (props) => {
     }
   }, [props.latlng])
 
+  React.useEffect(() => {
+    if(props.latlng !== null && props.mouseCoords !== null) {
+      setDistances(distanceAndHeading(props.latlng, props.mouseCoords, 0))
+    }
+  }, [props.latlng, props.mouseCoords])
+
   /**
    * Listen for the ESCAPE key to close the line or exit the tool
    * 
    * @param {Event} event Key press event
    */
   const handleKeyPress = event => {
-    if (props.active && event.key === 'Enter') {
-      if (positions.length > 1) {
-        if (props.tool === 'line') {
-          props.submit('create', {
-            color: '#4A90E2',
-            dashArray: null,
-            layer: 'line',
-            positions: positions,
-            title: 'Line',
-          })
-        } else if (props.tool === 'polygon') {
-          props.submit('create', {
-            color: '#4A90E2',
-            dashArray: null,
-            fillColor: null,
-            layer: 'polygon',
-            positions: positions,
-            title: 'Polygon',
-          })
-        } else {
-          console.error(`Invalid tool (${props.tool}) selected.`)
-        }
+    if (props.active && event.key === 'Escape') {
+      setPositions([])
+      setDistances(null)
+      props.toggle()
+    }
+  }
 
+  const handleSubmit = () => {
+    if (props.active && positions.length > 1) {
+      if (props.tool === 'line') {
+        props.submit('create', {
+          color: '#4A90E2',
+          dashArray: null,
+          layer: 'line',
+          positions: positions,
+          title: 'Line',
+        })
+      } else if (props.tool === 'polygon') {
+        props.submit('create', {
+          color: '#4A90E2',
+          dashArray: null,
+          fillColor: null,
+          layer: 'polygon',
+          positions: positions,
+          title: 'Polygon',
+        })
+      } else {
+        console.error(`Invalid tool (${props.tool}) selected.`)
       }
 
       setPositions([])
+      setDistances(null)
       props.toggle()
     }
   }
@@ -120,6 +136,36 @@ export default (props) => {
           positions={[...positions, props.mouseCoords]}
           weight={4}
         />
+        <CircleMarker
+          center={props.mouseCoords}
+          fill='false'
+          opacity='0'
+        >
+          <Tooltip
+            direction='top'
+            offset={[0, -10]}
+            permanent={true}
+          >
+            {`NM: ${distances !== null ? distances.nm.toFixed(2) : ''}`}
+            <br/>
+            {`meters: ${distances !== null ? distances.meters.toFixed(2) : ''}`}
+            <br/>
+            {`Click ${props.tool === 'line' ? 'last' : 'first'} point to finish ${props.tool}`}
+          </Tooltip>
+        </CircleMarker>
+        {(positions.length > (props.tool === 'line' ? 1 : 2)) ?
+          <CircleMarker
+            center={props.tool === 'line' ? positions[positions.length - 1] : positions[0]}
+            color='white'
+            fill={true}
+            fillColor='white'
+            fillOpacity='1'
+            onClick={handleSubmit}
+            radius='5'
+          />
+          : null
+        }
+
       </FeatureGroup>
       : null
   )

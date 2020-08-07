@@ -40,7 +40,7 @@ export default (props) => {
             <SquareFootIcon className={classes.icon} />
           </Button>
         </Tooltip>
-        <Tooltip placement='left' title='Draw line: Press Enter to finish'>
+        <Tooltip placement='left' title='Draw line: Press ESC to exit'>
           <Button
             color={props.activeTool === 'line' ? 'primary' : undefined}
             onClick={() => props.toggle('line')}
@@ -64,7 +64,7 @@ export default (props) => {
             <StopIcon className={classes.icon} />
           </Button>
         </Tooltip>
-        <Tooltip placement='left' title='Draw polygon: Press Enter to finish'>
+        <Tooltip placement='left' title='Draw polygon: Press ESC to exit'>
           <Button
             color={props.activeTool === 'polygon' ? 'primary' : undefined}
             onClick={() => props.toggle('polygon')}

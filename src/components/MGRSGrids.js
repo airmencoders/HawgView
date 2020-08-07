@@ -199,8 +199,8 @@ export default (props) => {
       if (zoneBreaks[i] <= 0 || zoneBreaks[i] >= 42) {
         tempLines.push({
           positions: [
-            [84, zoneBreaks[i]],
-            [-80, zoneBreaks[i]]
+            [Math.min(northBound, 84), zoneBreaks[i]],
+            [Math.max(southBound, -80), zoneBreaks[i]]
           ]
         })
         lngMGRS.push(zoneBreaks[i - 1] + 3)
