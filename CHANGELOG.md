@@ -1,3 +1,7 @@
+## 2.29.2-alpha
+### Fixes
+* Fixed crashes when zooming out too far caused by the MGRS grid generation
+
 ## 2.29.1-alpha
 ### Changes
 * Gridlines are white now

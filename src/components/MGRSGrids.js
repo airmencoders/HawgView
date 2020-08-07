@@ -320,8 +320,11 @@ export default (props) => {
         const leftLabel = gridMath.UTMtoLL(leftUTM)
         const rightLabel = gridMath.UTMtoLL(rightUTM)
 
-        tempLines.push({ positions: generateHorizontalLine(leftLL, rightLL, zoneBreaks[i], zoneBreaks[i + 1]) })
-        horizontalLabelLines.push({ positions: generateHorizontalLine(leftLabel, rightLabel, zoneBreaks[i], zoneBreaks[i + 1]) })
+        if (leftLL !== null && rightLL !== null && leftLabel !== null && rightLabel !== null) {
+          tempLines.push({ positions: generateHorizontalLine(leftLL, rightLL, zoneBreaks[i], zoneBreaks[i + 1]) })
+          horizontalLabelLines.push({ positions: generateHorizontalLine(leftLabel, rightLabel, zoneBreaks[i], zoneBreaks[i + 1]) })
+        }
+
         lat += gridSpacing()
       }
 
@@ -352,8 +355,11 @@ export default (props) => {
         const bottomLabel = gridMath.UTMtoLL(bottomUTM)
         const topLabel = gridMath.UTMtoLL(topUTM)
 
-        tempLines.push({ positions: generateVerticalLine(bottomLL, topLL, zoneBreaks[i], zoneBreaks[i + 1]) })
-        verticalLabelLines.push({ positions: generateVerticalLine(bottomLabel, topLabel, zoneBreaks[i], zoneBreaks[i + 1]) })
+        if (topLL !== null && bottomLL !== null && topLabel !== null && bottomLabel !== null) {
+          tempLines.push({ positions: generateVerticalLine(bottomLL, topLL, zoneBreaks[i], zoneBreaks[i + 1]) })
+          verticalLabelLines.push({ positions: generateVerticalLine(bottomLabel, topLabel, zoneBreaks[i], zoneBreaks[i + 1]) })
+        }
+
         lng += gridSpacing()
       }
 
