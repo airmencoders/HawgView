@@ -23,8 +23,6 @@ const useStyles = makeStyles(theme => ({
 export default (props) => {
   const classes = useStyles()
 
-  let tempLines, tempLabels
-
   // To-do: use props and user settings?
   const cellStyle = {
     color: 'orange',
@@ -293,7 +291,7 @@ export default (props) => {
           icon={L.divIcon({
             className: classes.cellLabel,
             html: label.text,
-            iconSize: [30, 20]
+            iconSize: [50, 20]
           })}
           key={`gars-cell-label-${index}`}
           position={label.position}

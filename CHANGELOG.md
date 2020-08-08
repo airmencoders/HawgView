@@ -1,3 +1,8 @@
+## 2.31.0-alpha
+### Changes
+* Added labels to GARS Cells
+* Increased GARS label size to accomodate appropriately
+
 ## 2.30.0-alpha
 ### Changes
 * Line and Polygon tool now have circle markers the user clicks to finish the shape
