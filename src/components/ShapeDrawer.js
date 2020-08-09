@@ -38,13 +38,19 @@ import { SketchPicker as ColorPicker } from 'react-color'
 //----------------------------------------------------------------//
 import Button from '@material-ui/core/Button'
 import Drawer from '@material-ui/core/Drawer'
+import FormControl from '@material-ui/core/FormControl'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import FormGroup from '@material-ui/core/FormGroup'
 import Grid from '@material-ui/core/Grid'
+import InputLabel from '@material-ui/core/InputLabel'
 import { makeStyles } from '@material-ui/core/styles'
+import MenuItem from '@material-ui/core/MenuItem'
+import Select from '@material-ui/core/Select'
 import Switch from '@material-ui/core/Switch'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
+
+import { units } from '../constants/threats'
 
 //----------------------------------------------------------------//
 // Custom Class Styling
@@ -52,6 +58,12 @@ import Typography from '@material-ui/core/Typography'
 const drawerWidth = 240
 
 const useStyles = makeStyles(theme => ({
+  flex: {
+    display: 'flex',
+  },
+  grow: {
+    flexGrow: 1,
+  },
   marginsMd: {
     margin: theme.spacing(2),
   },
@@ -84,6 +96,8 @@ export default (props) => {
   const [length, setLength] = React.useState(10)
   const [width, setWidth] = React.useState(2)
   const [tilt, setTilt] = React.useState(0)
+  const [radius, setRadius] = React.useState(0)
+  const [unit, setUnit] = React.useState('m')
 
   const container = props.window !== undefined ? () => window().document.body : undefined
 
@@ -101,8 +115,42 @@ export default (props) => {
         setWidth(props.marker.width / 926)
         setTilt(props.marker.tilt - 90)
       }
+
+      if (props.marker.layer === 'circle') {
+        setRadius(Number.parseFloat(props.marker.radius).toFixed(2))
+        setUnit(props.marker.unit)
+      }
     }
   }, [props.marker])
+
+  const handleUnitChange = newUnit => {
+    switch (unit) {
+      case 'm':
+        if (newUnit === 'km') {
+          setRadius((radius / 1000).toFixed(2))
+        } else if (newUnit === 'NM') {
+          setRadius((radius / 1852).toFixed(2))
+        }
+        break
+      case 'km':
+        if (newUnit === 'm') {
+          setRadius((radius * 1000).toFixed(2))
+        } else if (newUnit === 'NM') {
+          setRadius((radius / 1.852).toFixed(2))
+        }
+        break
+      case 'NM':
+        if (newUnit === 'm') {
+          setRadius((radius * 1852).toFixed(2))
+        } else if (newUnit === 'km') {
+          setRadius((radius * 1.852).toFixed(2))
+        }
+        break
+      default:
+        break
+    }
+    setUnit(newUnit)
+  }
 
   const handleSubmit = () => {
     let payload = {
@@ -119,6 +167,14 @@ export default (props) => {
         length: length * 926,
         width: width * 926,
         tilt: Number.parseInt(tilt) + 90
+      }
+    }
+
+    if (props.marker.layer === 'circle') {
+      payload = {
+        ...payload,
+        radius: radius,
+        unit: unit,
       }
     }
 
@@ -160,6 +216,39 @@ export default (props) => {
             variant='outlined'
             value={title}
           />
+          {(props.marker !== null && props.marker.layer === 'circle') ?
+            <React.Fragment>
+              <TextField
+                className={classes.marginsMd}
+                label='Radius'
+                onChange={event => setRadius(event.target.value)}
+                variant='outlined'
+                value={radius}
+              />
+              <FormControl
+                className={classes.marginsMd}
+                fullWidth={true}
+                variant='outlined'
+              >
+                <InputLabel>Radius Unit</InputLabel>
+                <Select
+                  label='Radius Unit'
+                  onChange={event => handleUnitChange(event.target.value)}
+                  value={unit}
+                >
+                  {units.map(unit => (
+                    <MenuItem
+                      key={unit}
+                      value={unit}
+                    >
+                      {unit}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </React.Fragment>
+            : null
+          }
           {(props.marker !== null && props.marker.layer === 'ellipse') ?
             <React.Fragment>
               <TextField

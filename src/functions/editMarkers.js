@@ -502,6 +502,8 @@ const editMarker = (history, step, payload) => {
         fillColor: payload.fillColor,
         title: payload.title,
         dashArray: payload.dashArray,
+        radius: payload.radius,
+        unit: payload.unit,
       }
 
       return {

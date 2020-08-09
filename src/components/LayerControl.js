@@ -968,7 +968,7 @@ export default (props) => {
               fill={circle.fillColor === null ? false : true}
               fillColor={circle.fillColor === null ? undefined : circle.fillColor}
               key={`circle-${circle.id}-${circle.title}`}
-              radius={circle.radius}
+              radius={circle.unit === 'm' ? circle.radius : circle.unit === 'km' ? circle.radius * 1000 : circle.radius * 1852}
               weight={4}
             >
               <Popup

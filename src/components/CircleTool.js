@@ -33,13 +33,16 @@
 import React from 'react'
 import {
   Circle,
-  FeatureGroup
+  CircleMarker,
+  FeatureGroup,
+  Tooltip,
 } from 'react-leaflet'
 
 //----------------------------------------------------------------//
 // Functions
 //----------------------------------------------------------------//
 import { distanceAndHeading } from '../functions/mathFunctions'
+//import { CircleMarker, Tooltip } from 'leaflet'
 
 //----------------------------------------------------------------//
 // Circle Tool Component
@@ -48,6 +51,7 @@ export default (props) => {
 
   const [radius, setRadius] = React.useState(0)
   const [center, setCenter] = React.useState(null)
+  const [distance, setDistance] = React.useState(null)
 
   React.useEffect(() => {
     document.addEventListener('keydown', handleEsc, false)
@@ -64,6 +68,7 @@ export default (props) => {
   React.useEffect(() => {
     if (props.active && props.latlng !== null && props.mouseCoords !== null) {
       setRadius(distanceAndHeading(props.latlng, props.mouseCoords, 0).meters)
+      setDistance(distanceAndHeading(props.latlng, props.mouseCoords, 0))
     }
   }, [props.active, props.latlng, props.mouseCoords])
 
@@ -81,6 +86,7 @@ export default (props) => {
         layer: 'circle',
         radius: radius,
         title: 'Circle',
+        unit: 'm',
       })
     }
   }, [props.active, props.latlng])
@@ -103,6 +109,25 @@ export default (props) => {
           radius={radius}
           weight={4}
         />
+        <CircleMarker
+          center={props.mouseCoords}
+          fill='false'
+          opacity='0'
+        >
+          <Tooltip
+            direction='top'
+            offset={[0, -10]}
+            permanent={true}
+          >
+            Radius
+            <hr/>
+            {`NM: ${distance !== null ? distance.nm.toFixed(2) : ''}`}
+            <br/>
+            {`meters: ${distance !== null ? distance.meters.toFixed(2) : ''}`}
+            <br/>
+            {`Click to finish circle`}
+          </Tooltip>
+        </CircleMarker>
       </FeatureGroup>
     )
   } else {

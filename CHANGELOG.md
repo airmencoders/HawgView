@@ -1,3 +1,9 @@
+## 2.32.0-alpha
+### Changes
+* `CircleTool` now shows a radius where the mouse is with NM and meters
+* `ShapeDrawer` now shows the radius and units for the circle and appropriately edits the shape
+* `editMarker` function now appropriately sets the properties for the radius/unit for Circles
+
 ## 2.31.0-alpha
 ### Changes
 * Added labels to GARS Cells
