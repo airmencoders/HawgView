@@ -1,3 +1,7 @@
+## 2.32.1-alpha
+### Fixes
+* Fixed math error when converting from True to Mag
+
 ## 2.32.0-alpha
 ### Changes
 * `CircleTool` now shows a radius where the mouse is with NM and meters
