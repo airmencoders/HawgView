@@ -140,6 +140,7 @@ export default ({ state }) => {
   //const [editCapDialogOpen, setEditCapDialogOpen] = React.useState(false)
   const [editMarkerDialogOpen, setEditMarkerDialogOpen] = React.useState(false)
   const [editThreatDialogOpen, setEditThreatDialogOpen] = React.useState(false)
+  const [elevation, setElevation] = React.useState('Pending')
   const [focusedMarker, setFocusedMarker] = React.useState(null)
   const [history, setHistory] = React.useState([{
     action: '',
@@ -262,14 +263,20 @@ export default ({ state }) => {
       // Parse MGRS
       const mgrs = latlngD.toUtm().toMgrs().toString()
 
+      // Get the elevation
+      fetch(`https://nationalmap.gov/epqs/pqs.php?x=${lng}&y=${lat}&units=Feet&output=json`)
+        .then(response => response.json())
+        .then(json => (Number.parseInt(json.USGS_Elevation_Point_Query_Service.Elevation_Query.Elevation) === -1000000) ? setElevation('Elevation not found') : Number.parseInt(setElevation(json.USGS_Elevation_Point_Query_Service.Elevation_Query.Elevation)))
+
       setMapPopup({
         latlng: latlngD.toString(),
         dm: `${latDM}, ${lngDM}`,
         dms: `${latDMS}, ${lngDMS}`,
-        mgrs
+        mgrs,
+        elevation: elevation
       })
     }
-  }, [clickedLatLng, activeTool, focusedMarker])
+  }, [clickedLatLng, activeTool, elevation, focusedMarker])
 
   /**
    * Helper function to do multiple things when closing the map Popup
@@ -280,6 +287,7 @@ export default ({ state }) => {
     setMapPopup(null)
     setShapeDrawerOpen(false)
     setMarkerDrawerOpen(false)
+    setElevation('Pending')
   }
 
   const toggleTools = tool => {
@@ -387,6 +395,7 @@ export default ({ state }) => {
       if (action === 'create') {
         updatedPayload = {
           ...updatedPayload,
+          elevation: elevation,
           id: markerId,
         }
 
@@ -670,6 +679,10 @@ export default ({ state }) => {
                     <td className={classes.popupCell}>D M S</td>
                     <td className={classes.popupCell}>{mapPopup.dms}</td>
                   </tr>
+                  <tr>
+                    <td className={classes.popupCell}>Elevation</td>
+                    <td className={classes.popupCell}>{`${mapPopup.elevation} ${(mapPopup.elevation === 'Pending' || mapPopup.elevation === 'Elevation not found') ? '' : 'feet'}`} </td>
+                  </tr>
                 </tbody>
               </table>
             </Popup> :
@@ -728,7 +741,7 @@ export default ({ state }) => {
       {
         (edit9LineDialogOpen) ?
           <Edit9LineDialog
-          onExited={handleMapReset}
+            onExited={handleMapReset}
             open={edit9LineDialogOpen}
             marker={focusedMarker}
             submit={payload => handleMarkerEdit('9line', payload)}

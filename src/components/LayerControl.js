@@ -391,6 +391,11 @@ export default (props) => {
                 <br />
                 {LatLon.parse(marker.latlng.lat, marker.latlng.lng).toUtm().toMgrs().toString()}
                 <br />
+                {(marker.elevation !== 'Pending' && marker.elevation !== 'Elevation not found') ?
+                  `${marker.elevation} feet`
+                  : 'No elevation'
+                }
+                <br />
                 <Button color='primary' onClick={() => handleEditMarker(marker)}>Edit</Button>
                 <Button color='secondary' onClick={() => props.handleDeleteMarker(marker)}>Delete</Button>
               </Popup>
@@ -462,6 +467,11 @@ export default (props) => {
                     {marker.title}
                     <br />
                     {LatLon.parse(marker.latlng.lat, marker.latlng.lng).toUtm().toMgrs().toString()}
+                    <br />
+                    {(marker.elevation !== 'Pending' && marker.elevation !== 'Elevation not found') ?
+                      `${marker.elevation} feet`
+                      : 'No elevation'
+                    }
                     <br />
                   </React.Fragment>
                 }
@@ -537,6 +547,11 @@ export default (props) => {
                       {marker.title}
                       <br />
                       {LatLon.parse(marker.latlng.lat, marker.latlng.lng).toUtm().toMgrs().toString()}
+                      <br />
+                      {(marker.elevation !== 'Pending' && marker.elevation !== 'Elevation not found') ?
+                        `${marker.elevation} feet`
+                        : 'No elevation'
+                      }
                       <br />
                     </React.Fragment>
                   }
@@ -646,9 +661,14 @@ export default (props) => {
                     :
                     <React.Fragment>
                       {marker.title}
-                      < br />
+                      <br />
                       {LatLon.parse(marker.latlng.lat, marker.latlng.lng).toUtm().toMgrs().toString()}
-                      < br />
+                      <br />
+                      {(marker.elevation !== 'Pending' && marker.elevation !== 'Elevation not found') ?
+                        `${marker.elevation} feet`
+                        : 'No elevation'
+                      }
+                      <br />
                     </React.Fragment>
                 }
                 <Button color='primary' onClick={() => handleEditMarker(marker)}>Edit</Button>
@@ -718,6 +738,11 @@ export default (props) => {
                 <br />
                 {LatLon.parse(marker.latlng.lat, marker.latlng.lng).toUtm().toMgrs().toString()}
                 <br />
+                {(marker.elevation !== 'Pending' && marker.elevation !== 'Elevation not found') ?
+                  `${marker.elevation} feet`
+                  : 'No elevation'
+                }
+                <br />
                 <Button color='primary' onClick={() => handleEditMarker(marker)}>Edit</Button>
                 <Button color='secondary' onClick={() => props.handleDeleteMarker(marker)}>Delete</Button>
               </Popup>
@@ -785,6 +810,11 @@ export default (props) => {
                 {label.title}
                 <br />
                 {LatLon.parse(label.latlng.lat, label.latlng.lng).toUtm().toMgrs().toString()}
+                <br />
+                {(label.elevation !== 'Pending' && label.elevation !== 'Elevation not found') ?
+                  `${label.elevation} feet`
+                  : 'No elevation'
+                }
                 <br />
                 <Button color='primary'>Edit</Button>
                 <Button color='secondary'>Delete</Button>

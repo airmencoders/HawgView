@@ -1,3 +1,8 @@
+## 2.33.0-alpha
+### Changes
+* Added elevation from the US National Map
+* Added `Pending` and `Elevation not found` states to allow for user notification of the status of the API call
+
 ## 2.32.1-alpha
 ### Fixes
 * Fixed math error when converting from True to Mag
