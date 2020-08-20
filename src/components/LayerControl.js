@@ -971,7 +971,7 @@ export default (props) => {
                   <br />
                 </React.Fragment>
                 <Button color='primary' onClick={() => handleEditShape(rectangle)}>Edit</Button>
-                <Button color='secondary' onclick={() => props.handleDeleteMarker(rectangle)}>Delete</Button>
+                <Button color='secondary' onClick={() => props.handleDeleteMarker(rectangle)}>Delete</Button>
               </Popup>
             </Rectangle>
           ))}

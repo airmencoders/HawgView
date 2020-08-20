@@ -1,3 +1,11 @@
+## 2.33.1-alpha
+### Changes
+* GARS Cells are now purple instead of orange
+* GARS Quadrants are now orange instead of purple
+
+### Fixes
+* Rectangles now properly delete when clicking `Delete`
+
 ## 2.33.0-alpha
 ### Changes
 * Added elevation from the US National Map
