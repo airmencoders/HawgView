@@ -93,6 +93,20 @@ export default (props) => {
             </Typography>
           </NavLink>
           {props.children}
+          <div className={classes.grow} />
+          <a
+            style={{ textDecoration: 'none ' }}
+            href='https://wiki.hawg-ops.com'
+            target='_blank'
+            rel='noopener noreferrer'
+          >
+            <Typography
+              style={{ color: 'white' }}
+              variant='h6'
+            >
+              Wiki
+            </Typography>
+          </a>
         </Toolbar>
       </AppBar>
     </div>

@@ -1,3 +1,7 @@
+## 2.34.0-alpha
+### Changes
+* Added wiki link to `Navigation`
+
 ## 2.33.1-alpha
 ### Changes
 * GARS Cells are now purple instead of orange

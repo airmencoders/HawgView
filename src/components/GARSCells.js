@@ -25,12 +25,12 @@ export default (props) => {
 
   // To-do: use props and user settings?
   const cellStyle = {
-    color: 'purple',
+    color: 'orange',
     opacity: 1,
   }
 
   const quadrantStyle = {
-    color: 'orange',
+    color: 'purple',
     opacity: 1,
   }
 
