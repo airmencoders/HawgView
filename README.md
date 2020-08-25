@@ -19,13 +19,27 @@ git clone https://github.com/airmencoders/hawgview.git
 
 Run the install script
 ```bash
-npm run install
+npm install
 ```
 
+NOTE: Depending on the last time of compiling code and updating dependencies, NPM may warn you of required fixes
+```bash
+npm audit fix
+```
+
+#### Linux
 `package.json` specifies the `PORT` as `3100`
 ```bash
 cd /projectLocation
-npm start
+npm run start
+```
+
+#### Windows
+Edit the start script in `package.json` to the following
+```json
+"scripts": {
+  "start": "set PORT=3100 && react-scripts start",
+}
 ```
 
 Navigate to `http://${SERVER_IP}:3100`
