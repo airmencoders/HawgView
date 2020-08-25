@@ -1,39 +1,18 @@
 import React from 'react'
 
-import Accordion from '@material-ui/core/Accordion'
-import AccordionDetails from '@material-ui/core/AccordionDetails'
-import AccordionSummary from '@material-ui/core/AccordionSummary'
 import Box from '@material-ui/core/Box'
 import Dialog from '@material-ui/core/Dialog'
-import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import Grid from '@material-ui/core/Grid'
 import IconButton from '@material-ui/core/IconButton'
 import Typography from '@material-ui/core/Typography'
 
-import AttachFileIcon from '@material-ui/icons/AttachFile'
 import PrintIcon from '@material-ui/icons/Print'
-
-import { makeStyles } from '@material-ui/core/styles'
 
 import MarkerListAccordion from './MarkerListAccordion'
 
-const useStyles = makeStyles(theme => ({
-  dialog: {
-    padding: theme.spacing(2),
-  },
-}))
-
 export default (props) => {
-
-  const classes = useStyles()
-
-  const [expanded, setExpanded] = React.useState(false)
-
-  const handleChange = panel=> (event, isExpanded) => {
-    setExpanded(isExpanded ? panel : false)
-  }
 
   return (
     <Dialog
@@ -43,18 +22,36 @@ export default (props) => {
       onClose={props.onClose}
     >
       <DialogTitle>
-        <Grid
-          container
-          direction='row'
-          justify='space-between'
+        <Box
+          displayPrint='none'
         >
-          <Typography variant='h5'>
-            Markers
-        </Typography>
-          <IconButton disabled>
-            <PrintIcon />
-          </IconButton>
-        </Grid>
+          <Grid
+            container
+            direction='row'
+            displayPrint='none'
+            justify='space-between'
+          >
+            <Grid
+              item
+            >
+              <Typography variant='h5'>
+                Markers
+              </Typography>
+            </Grid>
+            <Grid
+              item
+            >
+              <Grid
+                container
+                direction='row'
+              >
+                <IconButton onClick={() => window.print()}>
+                  <PrintIcon />
+                </IconButton>
+              </Grid>
+            </Grid>
+          </Grid>
+        </Box>
       </DialogTitle>
       <DialogContent>
         <Grid

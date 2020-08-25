@@ -576,7 +576,7 @@ export default ({ state }) => {
             toggleSaveScenarioDialog={() => setSaveScenarioDialogOpen(!saveScenarioDialogOpen)}
             toggleTooltips={() => setTooltipsActive(!tooltipsActive)}
             tooltipsActive={tooltipsActive}
-            //toggleMouseClick={() => setMouseClickActive(!mouseClickActive)}
+            toggleMarkerListDialog={() => setMarkerListDialogOpen(!markerListDialogOpen)}
             undoAction={(step === 0) ? '' : history[step].action}
             undoDisabled={(step === 0)}
           />

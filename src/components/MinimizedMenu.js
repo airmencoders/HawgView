@@ -120,6 +120,11 @@ export default (props) => {
     props.toggleTooltips()
   }
 
+  const handleToggleMarkerListClick = () => {
+    props.handleMinMenuClose()
+    props.toggleMarkerListDialog()
+  }
+
   return (
     <Menu
       anchorEl={props.minMenuAnchorElement}
@@ -167,7 +172,7 @@ export default (props) => {
         <DescriptionIcon className={classes.icon} />
         CONOP tools
       </MenuItem>
-      <MenuItem onClick={props.handleMinMenuClose} disabled>
+      <MenuItem onClick={handleToggleMarkerListClick}>
         <ViewListIcon className={classes.icon} />
         View marker list
       </MenuItem>
