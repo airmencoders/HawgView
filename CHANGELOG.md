@@ -1,3 +1,13 @@
+## 2.35.0-alpha
+### Changes
+* Created the marker list dialog and accordion components
+* Friendly markers, survivors, threats, and hostiles now populate the marker list
+* Markers with attached data (9-line / 15-line) will expand to display the data if the user clicks on the summary
+
+### Tasks
+- [ ] Enable the button in the `MinimizedMenu` component
+- [ ] Figure out a good print format for the printing button
+
 ## 2.34.0-alpha
 ### Changes
 * Added wiki link to `Navigation`

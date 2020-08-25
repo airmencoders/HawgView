@@ -134,15 +134,16 @@ export default (props) => {
         </span>
       </Tooltip>
       <Tooltip title='View marker list'>
-        <span>
-          <IconButton color='inherit' disabled>
-            <ViewListIcon />
-          </IconButton>
-        </span>
+        <IconButton
+          color='inherit'
+          onClick={props.toggleMarkerListDialog}
+        >
+          <ViewListIcon />
+        </IconButton>
       </Tooltip>
       <Tooltip title='Toggle marker labels'>
         <span>
-          <IconButton 
+          <IconButton
             color='inherit'
             onClick={props.toggleTooltips}
           >
@@ -159,12 +160,12 @@ export default (props) => {
         </IconButton>
       </Tooltip>
       <Tooltip title='Load scenario'>
-          <IconButton
-            color='inherit'
-            onClick={props.toggleLoadScenarioDialog}
-          >
-            <FolderOpenIcon />
-          </IconButton>
+        <IconButton
+          color='inherit'
+          onClick={props.toggleLoadScenarioDialog}
+        >
+          <FolderOpenIcon />
+        </IconButton>
       </Tooltip>
       <Tooltip title='Download products'>
         <span>

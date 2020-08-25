@@ -72,6 +72,7 @@ import { editMarkers } from './functions/editMarkers'
 import LayerControl from './components/LayerControl'
 import LineTool from './components/LineTool'
 import MarkerDrawer from './components/MarkerDrawer'
+import MarkerListDialog from './components/MarkerListDialog'
 import Map from './components/Map'
 import MinimizedMenu from './components/MinimizedMenu'
 //import UnauthenticatedUserMenu from './components/UnauthenticatedUserMenu'
@@ -165,6 +166,7 @@ export default ({ state }) => {
   const [markerDrawerOpen, setMarkerDrawerOpen] = React.useState(false)
   const [markerId, setMarkerId] = React.useState(0)
   const [markerLabel, setMarkerLabel] = React.useState('')
+  const [markerListDialogOpen, setMarkerListDialogOpen] = React.useState(false)
   const [markerSize, setMarkerSize] = React.useState(3)
   //const [menuAnchorElement, setMenuAnchorElement] = React.useState(null)
   const [minMenuAnchorElement, setMinMenuAnchorElement] = React.useState(null)
@@ -528,6 +530,7 @@ export default ({ state }) => {
               toggleLoadScenarioDialog={() => setLoadScenarioDialogOpen(!loadScenarioDialogOpen)}
               toggleSaveScenarioDialog={() => setSaveScenarioDialogOpen(!saveScenarioDialogOpen)}
               toggleTooltips={() => setTooltipsActive(!tooltipsActive)}
+              toggleMarkerListDialog={() => setMarkerListDialogOpen(true)}
               tooltipsActive={tooltipsActive}
               //toggleMouseClick={() => setMouseClickActive(!mouseClickActive)}
               undoAction={(step === 0) ? '' : history[step].action}
@@ -703,6 +706,14 @@ export default ({ state }) => {
         onClose={handleMapReset}
         open={shapeDrawerOpen}
         submit={(action, payload) => handleMarkerEdit(action, payload)}
+      />
+      <MarkerListDialog
+        friendlies={history[step].friendlyMarkers}
+        survivors={history[step].survivors}
+        hostiles={history[step].hostileMarkers}
+        threats={history[step].threatMarkers}
+        open={markerListDialogOpen}
+        onClose={() => setMarkerListDialogOpen(false)}
       />
       <Snackbar
         anchorOrigin={{
