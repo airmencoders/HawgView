@@ -321,7 +321,7 @@ export default (props) => {
               >
                 <Typography variant='body1'>
                   Fill Color
-          </Typography>
+                </Typography>
                 <ColorPicker
                   className={classes.marginsMd}
                   color={fillColor}
@@ -373,7 +373,8 @@ export default (props) => {
         <Grid
           container
           direction='row'
-          justify='center'>
+          justify='center'
+        >
           <Button
             className={classes.marginsMd}
             color='primary'

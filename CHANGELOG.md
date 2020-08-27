@@ -1,3 +1,24 @@
+## 2.38.0-alhpa
+### Changes
+* Continued work on `EditMarkerDrawer`
+
+### Fixes
+* Fixed bug where 15-Line OSC Freq value was based on PZ Description value
+
+## 2.37.0-alpha
+### Changes
+* Added printing ability to `MarkerListDialog`
+* Enabled the Marker List in the `MinimizedMenu`
+* Moved the `render9line` and `render15line` functions to a separate function `renderData` so that way both components that use it use the single point
+* Started working towards migrating from the marker dialogs to drawers
+
+## 2.36.0-alhpa
+### Changes
+* Added Windows instructions to `README.md`
+
+### Fixes
+* Fixed Linux instructions in `README.md`
+
 ## 2.35.0-alpha
 ### Changes
 * Created the marker list dialog and accordion components
@@ -5,8 +26,8 @@
 * Markers with attached data (9-line / 15-line) will expand to display the data if the user clicks on the summary
 
 ### Tasks
-- [ ] Enable the button in the `MinimizedMenu` component
-- [ ] Figure out a good print format for the printing button
+- [x] Enable the button in the `MinimizedMenu` component
+- [x] Figure out a good print format for the printing button
 
 ## 2.34.0-alpha
 ### Changes

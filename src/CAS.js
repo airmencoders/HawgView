@@ -67,6 +67,7 @@ import Edit9LineDialog from './components/Edit9LineDialog'
 import Edit15LineDialog from './components/Edit15LineDialog'
 import EditThreatDialog from './components/EditThreatDialog'
 import EditMarkerDialog from './components/EditMarkerDialog'
+import EditMarkerDrawer from './components/EditMarkerDrawer'
 import EllipseTool from './components/EllipseTool'
 import { editMarkers } from './functions/editMarkers'
 import LayerControl from './components/LayerControl'
@@ -140,6 +141,7 @@ export default ({ state }) => {
   const [edit15LineDialogOpen, setEdit15LineDialogOpen] = React.useState(false)
   //const [editCapDialogOpen, setEditCapDialogOpen] = React.useState(false)
   const [editMarkerDialogOpen, setEditMarkerDialogOpen] = React.useState(false)
+  const [editMarkerDrawerOpen, setEditMarkerDrawerOpen] = React.useState(false)
   const [editThreatDialogOpen, setEditThreatDialogOpen] = React.useState(false)
   const [elevation, setElevation] = React.useState('Pending')
   const [focusedMarker, setFocusedMarker] = React.useState(null)
@@ -432,6 +434,7 @@ export default ({ state }) => {
         }
         setFocusedMarker(null)
         setEditMarkerDialogOpen(false)
+        setEditMarkerDrawerOpen(false)
         setEditThreatDialogOpen(false)
         setEdit9LineDialogOpen(false)
         setEdit15LineDialogOpen(false)
@@ -600,7 +603,7 @@ export default ({ state }) => {
             setFocusedMarker={marker => setFocusedMarker(marker)}
             step={history[step]}
             setShapeDrawerOpen={setShapeDrawerOpen}
-            toggleEditMarkerDialog={() => setEditMarkerDialogOpen(!editMarkerDialogOpen)}
+            toggleEditMarkerDialog={() => setEditMarkerDrawerOpen(!editMarkerDrawerOpen)}//setEditMarkerDialogOpen(!editMarkerDialogOpen)}
             toggleEditThreatDialog={() => setEditThreatDialogOpen(!editThreatDialogOpen)}
             handleDeleteMarker={marker => handleMarkerEdit('delete', { marker: marker })}
             tooltipsActive={tooltipsActive}
@@ -700,6 +703,11 @@ export default ({ state }) => {
         handleMarkerDrawerToggle={() => setMarkerDrawerOpen(!markerDrawerOpen)}
         setMarkerLabel={setMarkerLabel}
         toggleEditThreatDialog={() => setEditThreatDialogOpen(!editThreatDialogOpen)}
+      />
+      <EditMarkerDrawer
+        marker={focusedMarker}
+        open={editMarkerDrawerOpen}
+        onClose={() => setEditMarkerDrawerOpen(false)}
       />
       <ShapeDrawer
         marker={focusedMarker}

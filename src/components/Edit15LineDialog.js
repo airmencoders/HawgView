@@ -239,7 +239,7 @@ export default (props) => {
             label='OSC/Freq'
             onChange={event => setOscFreq(event.target.value)}
             fullWidth
-            value={pzDescription}
+            value={oscFreq}
             variant='outlined'
           />
         </Box>

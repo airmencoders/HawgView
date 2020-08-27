@@ -102,7 +102,6 @@ export default (props) => {
           >
             <Typography
               style={{ color: 'white' }}
-              variant='h7'
             >
               Wiki
             </Typography>
