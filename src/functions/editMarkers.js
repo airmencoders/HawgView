@@ -41,10 +41,6 @@ export const editMarkers = (action, history, step, payload) => {
       return dragMarker(history, step, payload)
     case 'edit':
       return editMarker(history, step, payload)
-    case '9line':
-      return edit9Line(history, step, payload)
-    case '15line':
-      return edit15Line(history, step, payload)
     default:
       console.error(`Error: Invalid action ${action}`)
       return false
@@ -352,68 +348,6 @@ const dragMarker = (history, step, payload) => {
   }
 }
 
-const edit9Line = (history, step, payload) => {
-  let targetHistory, filteredMarkers
-  const marker = payload.marker
-
-  if (step === history.length - 1) {
-    targetHistory = history.slice()
-  } else {
-    targetHistory = history.slice(0, step + 1)
-  }
-
-  const newMarker = {
-    ...marker,
-    data: payload.data,
-  }
-
-  switch (marker.layer) {
-    case 'hostile':
-      filteredMarkers = targetHistory[step].hostileMarkers.filter(currentMarker => currentMarker.id !== marker.id)
-
-      return {
-        ...targetHistory[step],
-        action: `edit ${marker.title}`,
-        hostileMarkers: [...filteredMarkers, newMarker]
-      }
-    case 'threat':
-      filteredMarkers = targetHistory[step].threatMarkers.filter(currentMarker => currentMarker.id !== marker.id)
-
-      return {
-        ...targetHistory[step],
-        action: `edit ${marker.title}`,
-        threatMarkers: [...filteredMarkers, newMarker]
-      }
-    default:
-      console.error(`Error: Could not edit marker (${marker}). Invalid layer (${marker.layer})`)
-      return false
-  }
-}
-
-const edit15Line = (history, step, payload) => {
-  let targetHistory, filteredMarkers
-  const marker = payload.marker
-
-  if (step === history.length - 1) {
-    targetHistory = history.slice()
-  } else {
-    targetHistory = history.slice(0, step + 1)
-  }
-
-  const newMarker = {
-    ...marker,
-    data: payload.data,
-  }
-
-  filteredMarkers = targetHistory[step].survivors.filter(currentMarker => currentMarker.id !== marker.id)
-
-  return {
-    ...targetHistory[step],
-    action: `edit ${marker.title}`,
-    survivors: [...filteredMarkers, newMarker]
-  }
-}
-
 const editMarker = (history, step, payload) => {
   let targetHistory, filteredMarkers, newMarker
 
@@ -430,7 +364,9 @@ const editMarker = (history, step, payload) => {
       filteredMarkers = targetHistory[step].friendlyMarkers.filter(currentMarker => currentMarker.id !== marker.id)
       newMarker = {
         ...marker,
+        elevation: payload.elevation,
         title: payload.title,
+        latlng: payload.latlng,
       }
 
       return {
@@ -442,7 +378,10 @@ const editMarker = (history, step, payload) => {
       filteredMarkers = targetHistory[step].hostileMarkers.filter(currentMarker => currentMarker.id !== marker.id)
       newMarker = {
         ...marker,
+        data: payload.data,
+        elevation: payload.elevation,
         title: payload.title,
+        latlng: payload.latlng,
       }
 
       return {
@@ -454,7 +393,9 @@ const editMarker = (history, step, payload) => {
       filteredMarkers = targetHistory[step].initialPoints.filter(currentMarker => currentMarker.id !== marker.id)
       newMarker = {
         ...marker,
+        elevation: payload.elevation,
         title: payload.title,
+        latlng: payload.latlng,
       }
 
       return {
@@ -466,7 +407,10 @@ const editMarker = (history, step, payload) => {
       filteredMarkers = targetHistory[step].survivors.filter(currentMarker => currentMarker.id !== marker.id)
       newMarker = {
         ...marker,
+        data: payload.data,
+        elevation: payload.elevation,
         title: payload.title,
+        latlng: payload.latlng,
       }
 
       return {
@@ -479,8 +423,11 @@ const editMarker = (history, step, payload) => {
 
       newMarker = {
         ...marker,
+        data: payload.data,
+        elevation: payload.elevation,
         fill: payload.fill,
         label: payload.label,
+        latlng: payload.latlng,
         range: payload.range,
         sovereignty: payload.sovereignty,
         threatType: payload.threatType,
@@ -565,6 +512,8 @@ const editMarker = (history, step, payload) => {
         ...marker,
         color: payload.color,
         title: payload.title,
+        latlng: payload.latlng,
+        elevation: payload.elevation,
       }
 
       return {

@@ -69,7 +69,7 @@ export default (props) => {
   }
 
   const handleSubmit = () => {
-    if (props.marker === null || props.marker.layer === 'threat') {
+    if (props.marker === null) {
       props.submit('create', {
         data: null,
         elevation: 0,
@@ -94,6 +94,8 @@ export default (props) => {
         threatType: threats[threat],
         title: label,
         unit: unit,
+        latlng: props.marker.latlng,
+        elevation: props.marker.elevation,
       })
     }
 

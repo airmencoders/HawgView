@@ -228,19 +228,6 @@ export default ({ state }) => {
     }
   }
 
-  /*React.useEffect(() => {
-    activeTool === null ?
-      setMouseClickActive(true)
-      :
-      setMouseClickActive(false)
-  }, [activeTool])*/
-
-  /*React.useEffect(() => {
-    if (focusedMarker !== null) {
-      setClickedLatLng(focusedMarker.latlng)
-    }
-  }, [focusedMarker])*/
-
   /**
    * React hook that sets the popup whenever the clicked Lat/Lng changes
    * Using a hook instead of a function here allows us to use the search bar
@@ -270,7 +257,7 @@ export default ({ state }) => {
       // Get the elevation
       fetch(`https://nationalmap.gov/epqs/pqs.php?x=${lng}&y=${lat}&units=Feet&output=json`)
         .then(response => response.json())
-        .then(json => (Number.parseInt(json.USGS_Elevation_Point_Query_Service.Elevation_Query.Elevation) === -1000000) ? setElevation('Elevation not found') : Number.parseInt(setElevation(json.USGS_Elevation_Point_Query_Service.Elevation_Query.Elevation)))
+        .then(json => (Number.parseInt(json.USGS_Elevation_Point_Query_Service.Elevation_Query.Elevation) === -1000000) ? setElevation(0) : Number.parseInt(setElevation(json.USGS_Elevation_Point_Query_Service.Elevation_Query.Elevation)))
 
       setMapPopup({
         latlng: latlngD.toString(),
@@ -291,6 +278,7 @@ export default ({ state }) => {
     setMapPopup(null)
     setShapeDrawerOpen(false)
     setMarkerDrawerOpen(false)
+    setEditMarkerDrawerOpen(false)
     setElevation('Pending')
   }
 
@@ -707,7 +695,8 @@ export default ({ state }) => {
       <EditMarkerDrawer
         marker={focusedMarker}
         open={editMarkerDrawerOpen}
-        onClose={() => setEditMarkerDrawerOpen(false)}
+        onClose={handleMapReset}
+        submit={(action, payload) => handleMarkerEdit(action, payload)}
       />
       <ShapeDrawer
         marker={focusedMarker}
@@ -746,7 +735,6 @@ export default ({ state }) => {
       {
         (editMarkerDialogOpen) ?
           <EditMarkerDialog
-            //deleteData={marker => handleMarkerEdit('edit', {marker: marker, data: null})}
             onExited={handleMapReset}
             open={editMarkerDialogOpen}
             marker={focusedMarker}

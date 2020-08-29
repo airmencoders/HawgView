@@ -38,16 +38,13 @@ export const submitCoordInput = inputValue => {
 
     let letterCount = 0
     for (let i = 0; i < target.length; i++) {
-      if (target.charAt(i) !== ' ' && target.charAt(i) !== '.' && !Number.isInteger(parseInt(target.charAt(i)))) {
+      if (target.charAt(i) !== ' ' && target.charAt(i) !== '.' && target.charAt(i) !== ',' && !Number.isInteger(parseInt(target.charAt(i)))) {
         letterCount++
       }
     }
 
     // Determine if use input MGRS or Lat Lon and then fly to the location
-    /*if (letterCount < 2) {
-      console.error('Error: Invalid Lat/Lon, N/S and E/W are required.')
-      validInput = false
-    } else */if (letterCount < 3) {
+    if (letterCount < 3) {
 
       // Find the end of the latitude
       // Primary is N/S
@@ -68,7 +65,8 @@ export const submitCoordInput = inputValue => {
         }
       }
 
-      console.log('index', index)
+      // Remove commas
+      target = target.replace(',', '')
 
       // Try to parse lat and lng
       if (index !== -1) {
@@ -94,9 +92,6 @@ export const submitCoordInput = inputValue => {
             lng = lng + 'E'
           }
         }
-        //target = LatLon.parse(target.substr(0, index + 1).trim(), target.substr(index + 1).trim())
-        console.log('lat', lat)
-        console.log('lng', lng)
         target = LatLon.parse(lat, lng)
       } else {
         validInput = false

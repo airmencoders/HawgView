@@ -1,4 +1,15 @@
-## 2.38.0-alhpa
+## 2.39.0-alpha
+### Changes
+* Rolled out `EditMarkerDrawer`
+
+### Fixes
+* Fixed bug where a comma would break the coordinate input system
+* Fixed bug where editing a threat would add a new threat rather than editing the current threat
+
+### Tasks
+- [ ] Add threats to the `EditMarkerDrawer`
+
+## 2.38.0-alpha
 ### Changes
 * Continued work on `EditMarkerDrawer`
 
@@ -12,7 +23,7 @@
 * Moved the `render9line` and `render15line` functions to a separate function `renderData` so that way both components that use it use the single point
 * Started working towards migrating from the marker dialogs to drawers
 
-## 2.36.0-alhpa
+## 2.36.0-alpha
 ### Changes
 * Added Windows instructions to `README.md`
 
