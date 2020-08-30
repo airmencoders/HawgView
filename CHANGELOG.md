@@ -1,3 +1,11 @@
+## 2.39.1-alpha
+### Changes
+* Separated out `focusedMarker` and `focusedShape` to avoid issues with drawers
+
+### Fixes
+* Fix bug where app would crash when creating a rectangle
+* Thanks TRON!
+
 ## 2.39.0-alpha
 ### Changes
 * Rolled out `EditMarkerDrawer`

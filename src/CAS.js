@@ -145,6 +145,7 @@ export default ({ state }) => {
   const [editThreatDialogOpen, setEditThreatDialogOpen] = React.useState(false)
   const [elevation, setElevation] = React.useState('Pending')
   const [focusedMarker, setFocusedMarker] = React.useState(null)
+  const [focusedShape, setFocusedShape] = React.useState(null)
   const [history, setHistory] = React.useState([{
     action: '',
     buildingLabels: [],
@@ -275,6 +276,7 @@ export default ({ state }) => {
   const handleMapReset = () => {
     setClickedLatLng(null)
     setFocusedMarker(null)
+    setFocusedShape(null)
     setMapPopup(null)
     setShapeDrawerOpen(false)
     setMarkerDrawerOpen(false)
@@ -421,6 +423,7 @@ export default ({ state }) => {
           setMarkerLabel('')
         }
         setFocusedMarker(null)
+        setFocusedShape(null)
         setEditMarkerDialogOpen(false)
         setEditMarkerDrawerOpen(false)
         setEditThreatDialogOpen(false)
@@ -428,7 +431,7 @@ export default ({ state }) => {
         setEdit15LineDialogOpen(false)
 
         if (payload.layer === 'circle' || payload.layer === 'rectangle' || payload.layer === 'line' || payload.layer === 'polygon' || payload.layer === 'ellipse') {
-          setFocusedMarker(updatedPayload)
+          setFocusedShape(updatedPayload)
           setShapeDrawerOpen(true)
           setActiveTool(null)
         }
@@ -699,7 +702,7 @@ export default ({ state }) => {
         submit={(action, payload) => handleMarkerEdit(action, payload)}
       />
       <ShapeDrawer
-        marker={focusedMarker}
+        shape={focusedShape}
         onClose={handleMapReset}
         open={shapeDrawerOpen}
         submit={(action, payload) => handleMarkerEdit(action, payload)}

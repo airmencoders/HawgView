@@ -102,26 +102,26 @@ export default (props) => {
   const container = props.window !== undefined ? () => window().document.body : undefined
 
   React.useEffect(() => {
-    if (props.marker !== null) {
-      setDashed(props.marker.dashArray === null ? false : true)
-      setDashArray(props.marker.dashArray === null ? '12, 12' : props.marker.dashArray)
-      setFill(props.marker.fillColor === null ? false : true)
-      setFillColor(props.marker.fillColor === null ? '#4A90E2' : props.marker.fillColor)
-      setTitle(props.marker.title)
-      setColor(props.marker.color)
+    if (props.shape !== null) {
+      setDashed(props.shape.dashArray === null ? false : true)
+      setDashArray(props.shape.dashArray === null ? '12, 12' : props.shape.dashArray)
+      setFill(props.shape.fillColor === null ? false : true)
+      setFillColor(props.shape.fillColor === null ? '#4A90E2' : props.shape.fillColor)
+      setTitle(props.shape.title)
+      setColor(props.shape.color)
 
-      if (props.marker.layer === 'ellipse') {
-        setLength(props.marker.length / 926)
-        setWidth(props.marker.width / 926)
-        setTilt(props.marker.tilt - 90)
+      if (props.shape.layer === 'ellipse') {
+        setLength(props.shape.length / 926)
+        setWidth(props.shape.width / 926)
+        setTilt(props.shape.tilt - 90)
       }
 
-      if (props.marker.layer === 'circle') {
-        setRadius(Number.parseFloat(props.marker.radius).toFixed(2))
-        setUnit(props.marker.unit)
+      if (props.shape.layer === 'circle') {
+        setRadius(Number.parseFloat(props.shape.radius).toFixed(2))
+        setUnit(props.shape.unit)
       }
     }
-  }, [props.marker])
+  }, [props.shape])
 
   const handleUnitChange = newUnit => {
     switch (unit) {
@@ -154,14 +154,14 @@ export default (props) => {
 
   const handleSubmit = () => {
     let payload = {
-      marker: props.marker,
+      marker: props.shape,
       color: color,
       dashArray: dashed ? dashArray : null,
       fillColor: fill ? fillColor : null,
       title: title,
     }
 
-    if (props.marker.layer === 'ellipse') {
+    if (props.shape.layer === 'ellipse') {
       payload = {
         ...payload,
         length: length * 926,
@@ -170,7 +170,7 @@ export default (props) => {
       }
     }
 
-    if (props.marker.layer === 'circle') {
+    if (props.shape.layer === 'circle') {
       payload = {
         ...payload,
         radius: radius,
@@ -216,7 +216,7 @@ export default (props) => {
             variant='outlined'
             value={title}
           />
-          {(props.marker !== null && props.marker.layer === 'circle') ?
+          {(props.shape !== null && props.shape.layer === 'circle') ?
             <React.Fragment>
               <TextField
                 className={classes.marginsMd}
@@ -249,7 +249,7 @@ export default (props) => {
             </React.Fragment>
             : null
           }
-          {(props.marker !== null && props.marker.layer === 'ellipse') ?
+          {(props.shape !== null && props.shape.layer === 'ellipse') ?
             <React.Fragment>
               <TextField
                 className={classes.marginsMd}
@@ -294,7 +294,7 @@ export default (props) => {
             onChange={color => setColor(color.hex)}
           />
         </Grid>
-        {(props.marker !== null && props.marker.layer !== 'line') ?
+        {(props.shape !== null && props.shape.layer !== 'line') ?
           <Grid
             container
             direction='row'
