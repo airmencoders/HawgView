@@ -592,6 +592,7 @@ export default ({ state }) => {
             markerSize={markerSize}
             setClickedLatLng={latlng => setClickedLatLng(latlng)}
             setFocusedMarker={marker => setFocusedMarker(marker)}
+            setFocusedShape={shape => setFocusedShape(shape)}
             step={history[step]}
             setShapeDrawerOpen={setShapeDrawerOpen}
             toggleEditMarkerDialog={() => setEditMarkerDrawerOpen(!editMarkerDrawerOpen)}//setEditMarkerDialogOpen(!editMarkerDialogOpen)}

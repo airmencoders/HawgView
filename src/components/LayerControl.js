@@ -127,6 +127,7 @@ export default (props) => {
 
   const handlePopupClose = () => {
     props.setFocusedMarker(null)
+    props.setFocusedShape(null)
     props.setClickedLatLng(null)
   }
 
@@ -135,8 +136,8 @@ export default (props) => {
     props.toggleEditThreatDialog()
   }
 
-  const handleEditShape = marker => {
-    props.setFocusedMarker(marker)
+  const handleEditShape = shape => {
+    props.setFocusedShape(shape)
     props.setShapeDrawerOpen(true)
   }
 

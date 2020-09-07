@@ -1,3 +1,10 @@
+## 2.39.2-alpha
+### Changes
+* Changed `setFocusedMarker` to `setFocusedShape` in `CAS.js` and `LayerControl.js` components for shape editing
+
+### Fixes
+* Fixed crash when user edits a shape
+
 ## 2.39.1-alpha
 ### Changes
 * Separated out `focusedMarker` and `focusedShape` to avoid issues with drawers
