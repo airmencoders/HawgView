@@ -1,3 +1,10 @@
+## 2.39.3-alpha
+### Changes
+* Changed how the `EditMarkerDrawer` component saves lat/lng to the marker object
+
+### Fixes
+* Fixed crash that can occur when a user edits a marker and tries to load a subsequent scenario
+
 ## 2.39.2-alpha
 ### Changes
 * Changed `setFocusedMarker` to `setFocusedShape` in `CAS.js` and `LayerControl.js` components for shape editing

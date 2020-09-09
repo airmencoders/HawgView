@@ -190,7 +190,7 @@ export default (props) => {
       marker: props.marker,
       data: null,
       elevation: elevation,
-      latlng: target,
+      latlng: {lat: target.lat, lng: target.lon},
       title: title,
     }
 
