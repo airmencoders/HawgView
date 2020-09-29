@@ -1,3 +1,7 @@
+## 2.40.0-alhpa
+### Changes
+* Added Rose Hill, AL MOA (Requested by Tonto)
+
 ## 2.39.3-alpha
 ### Changes
 * Changed how the `EditMarkerDrawer` component saves lat/lng to the marker object
