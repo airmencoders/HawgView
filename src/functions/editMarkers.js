@@ -28,6 +28,30 @@
  * SOFTWARE.
  */
 //export const editMarkers = (action, history, step, iconType, color, src, title, sovereignty, threatSovereignty, id, latlng, marker, data) => {
+
+/*async function getDeclination(latlng) {
+  let response = await fetch(`https://www.ngdc.noaa.gov/geomag-web/calculators/calculateDeclination?lat1=${latlng.lat}&lon1=${latlng.lng}&resultFormat=json`)
+
+  let json = await response.json()
+  let declination = await json.result[0].declination
+
+  return declination
+}*/
+
+const getDeclination = latlng => {
+  let request = new XMLHttpRequest()
+  request.open('GET', `https://www.ngdc.noaa.gov/geomag-web/calculators/calculateDeclination?lat1=${latlng.lat}&lon1=${latlng.lng}&resultFormat=json`, false)
+  request.send(null)
+
+  /*let json = await response.json()
+  let declination = await json.result[0].declination
+
+  return declination*/
+  let json = JSON.parse(request.responseText)
+  let declination = json.result[0].declination
+  return declination
+}
+
 export const editMarkers = (action, history, step, payload) => {
 
   switch (action) {
@@ -54,6 +78,7 @@ export const editMarkers = (action, history, step, payload) => {
  */
 const clearMarkers = (history, step) => {
   if (history[step].buildingLabels.length > 0 ||
+    history[step].bullseyes.length > 0 ||
     history[step].circles.length > 0 ||
     history[step].ellipses.length > 0 ||
     history[step].friendlyMarkers.length > 0 ||
@@ -68,6 +93,7 @@ const clearMarkers = (history, step) => {
     return {
       action: 'Clear markers',
       buildingLabels: [],
+      bullseyes: [],
       circles: [],
       ellipses: [],
       friendlyMarkers: [],
@@ -164,6 +190,18 @@ const createMarker = (history, step, payload) => {
           action: `create building label`,
           buildingLabels: [...targetHistory[step].buildingLabels, payload]
         }
+      case 'bullseye':
+        let declination = getDeclination(payload.latlng)
+
+        payload = {
+          ...payload,
+          declination
+        }
+        return {
+          ...targetHistory[step],
+          action: `create bullseye`,
+          bullseyes: [...targetHistory[step].bullseyes, payload]
+        }
       case 'ellipse':
         return {
           ...targetHistory[step],
@@ -235,13 +273,19 @@ const deleteMarker = (history, step, payload) => {
       return {
         ...history[step],
         action: `delete polygon ${marker.title}`,
-        polygons: history[step].polygons.filter(pMarker => pMarker.id !== marker.id)  
+        polygons: history[step].polygons.filter(pMarker => pMarker.id !== marker.id)
       }
     case 'building':
       return {
         ...history[step],
         action: `delete building label ${marker.title}`,
         buildingLabels: history[step].buildingLabels.filter(lMarker => lMarker.id !== marker.id)
+      }
+    case 'bullseye':
+      return {
+        ...history[step],
+        action: `delete bullseye ${marker.title}`,
+        bullseyes: history[step].bullseyes.filter(bMarker => bMarker.id !== marker.id)
       }
     case 'ellipse':
       return {
@@ -272,9 +316,17 @@ const dragMarker = (history, step, payload) => {
     targetHistory = history.slice(0, step + 1)
   }
 
-  const newMarker = {
+  let newMarker = {
     ...marker,
     latlng: payload.latlng
+  }
+
+  if (newMarker.layer === 'bullseye') {
+    let declination = getDeclination(newMarker.latlng)
+    newMarker = {
+      ...newMarker,
+      declination,
+    }
   }
 
   switch (marker.layer) {
@@ -339,8 +391,16 @@ const dragMarker = (history, step, payload) => {
 
       return {
         ...targetHistory[step],
-        action: `move building label ${marker.id}`,
+        action: `move building label ${marker.title}`,
         buildingLabels: [...filteredMarkers, newMarker]
+      }
+    case 'bullseye':
+      filteredMarkers = targetHistory[step].bullseyes.filter(currentMarker => currentMarker.id !== marker.id)
+
+      return {
+        ...targetHistory[step],
+        action: `move bullseye ${marker.title}`,
+        bullseyes: [...filteredMarkers, newMarker]
       }
     default:
       console.error(`Error: Could not drag marker (${marker}). Invalid sovereignty (${marker.sovereignty})`)
@@ -520,6 +580,20 @@ const editMarker = (history, step, payload) => {
         ...targetHistory[step],
         action: `edit building label ${marker.title}`,
         buildingLabels: [...filteredMarkers, newMarker]
+      }
+    case 'bullseye':
+      filteredMarkers = targetHistory[step].bullseyes.filter(currentMarker => currentMarker.id !== marker.id)
+      let declination = getDeclination(payload.latlng)
+
+      newMarker = {
+        ...marker,
+        color: payload.color,
+        title: payload.title,
+        rings: payload.rings,
+        distance: payload.distance,
+        angle: payload.angle,
+        latlng: payload.latlng,
+        declination,
       }
     case 'ellipse':
       filteredMarkers = targetHistory[step].ellipses.filter(currentMarker => currentMarker.id !== marker.id)

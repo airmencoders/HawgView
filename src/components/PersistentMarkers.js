@@ -43,8 +43,12 @@ import Tooltip from '@material-ui/core/Tooltip'
 // Custom Marker Icons
 //----------------------------------------------------------------//
 import ada from '../markers/persistent/ada.svg'
+import blank from '../markers/persistent/blank.svg'
+import bullseye from '../markers/persistent/bullseye.svg'
+import cp from '../markers/persistent/cp.svg'
 import ip from '../markers/persistent/ip.svg'
 import missile from '../markers/persistent/missile.svg'
+import noStrike from '../markers/persistent/no-strike.svg'
 import survivor from '../markers/persistent/srv.svg'
 import target from '../markers/persistent/tgt.svg'
 import threat from '../markers/persistent/threat-ring.svg'
@@ -70,13 +74,30 @@ export default ({ handleAddMarker, handleMarkerDrawerToggle, toggleEditThreatDia
   const classes = useStyles()
 
   const handleMarkerClick = (iconUrl, iconType, title, layer) => {
+
     let payload = {
-      elevation: 0,   // TODO: Pull the elevation of the latlng from API
       iconType,
       iconUrl,
       layer,
       title,
     }
+
+    if (layer !== 'bullseye') {
+      payload = {
+        ...payload,
+        elevation: 0,   // TODO: Pull the elevation of the latlng from API
+      }
+    } else {
+      payload = {
+        ...payload,
+        rings: 5,
+        distance: 20,
+        angle: 45,
+        color: '#ff0000',
+        declination: 0,
+      }
+    }
+
 
     if (layer === 'building') {
       payload = {
@@ -136,6 +157,14 @@ export default ({ handleAddMarker, handleMarkerDrawerToggle, toggleEditThreatDia
             src={ip}
           />
         </Tooltip>
+        <Tooltip title='CP'>
+          <img
+            alt='CP'
+            className={classes.image}
+            onClick={event => handleMarkerClick(event.target.src, 'img', 'CP', 'ip')}
+            src={cp}
+          />
+        </Tooltip>
         <Tooltip title='Threat Ring'>
           <img
             alt='Threat Ring'
@@ -144,12 +173,28 @@ export default ({ handleAddMarker, handleMarkerDrawerToggle, toggleEditThreatDia
             src={threat}
           />
         </Tooltip>
+        <Tooltip title='No Strike'>
+          <img
+            alt='No Strike'
+            className={classes.image}
+            onClick={event => handleMarkerClick(event.target.src, 'img', 'No Strike', 'ip')}
+            src={noStrike}
+          />
+        </Tooltip>
         <Tooltip title='Survivor'>
           <img
             alt='Survivor'
             className={classes.image}
             onClick={event => handleMarkerClick(event.target.src, 'img', 'Survivor', 'survivor')}
             src={survivor}
+          />
+        </Tooltip>
+        <Tooltip title='Bullseye'>
+          <img
+            alt='Bullseye'
+            className={classes.image}
+            onClick={() => handleMarkerClick(blank, 'img', 'Bullseye', 'bullseye')}
+            src={bullseye}
           />
         </Tooltip>
       </div>
@@ -162,6 +207,7 @@ export default ({ handleAddMarker, handleMarkerDrawerToggle, toggleEditThreatDia
           BLDG LABEL
         </Button>
       </Tooltip>
+      
     </React.Fragment >
   )
 }

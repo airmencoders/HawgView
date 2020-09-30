@@ -49,17 +49,22 @@ import armor from '../markers/friendly/armor.svg'
 import artillery from '../markers/friendly/artillery.svg'
 import aviation from '../markers/friendly/aviation.svg'
 import cbrne from '../markers/friendly/cbrne.svg'
+import counterBatteryRadar from '../markers/friendly/counterbattery-radar.svg'
 import engineer from '../markers/friendly/engineer.svg'
 import infantry from '../markers/friendly/infantry.svg'
+import lightArmor from '../markers/friendly/light-armor.svg'
 import maintenance from '../markers/friendly/maintenance.svg'
 import mechInfantry from '../markers/friendly/mech-infantry.svg'
 import medical from '../markers/friendly/medical.svg'
 import missile from '../markers/friendly/missile.svg'
+import mlrs from '../markers/friendly/mlrs.svg'
 import recce from '../markers/friendly/recce.svg'
 import sparty from '../markers/friendly/self-propelled-artillery.svg'
 import signals from '../markers/friendly/signals.svg'
+import specialForces from '../markers/friendly/special-forces.svg'
 import supply from '../markers/friendly/supply.svg'
 import unit from '../markers/friendly/unit.svg'
+import wheeledArmor from '../markers/friendly/wheeled-armor.svg'
 
 //----------------------------------------------------------------//
 // Custom Class Styling
@@ -156,6 +161,14 @@ export default ({ handleAddMarker, handleMarkerDrawerToggle }) => {
           src={cbrne}
         />
       </Tooltip>
+      <Tooltip title='Counterbattery Radar'>
+        <img
+          alt='Friendly Counterbattery Radar'
+          className={classes.image}
+          onClick={event => handleMarkerClick(event.target.src, 'Counterbattery Radar')}
+          src={counterBatteryRadar}
+        />
+      </Tooltip>
       <Tooltip title='Engineer'>
         <img
           alt='Friendly Engineer'
@@ -170,6 +183,14 @@ export default ({ handleAddMarker, handleMarkerDrawerToggle }) => {
           className={classes.image}
           onClick={event => handleMarkerClick(event.target.src, 'Infantry')}
           src={infantry}
+        />
+      </Tooltip>
+      <Tooltip title='Light Armor'>
+        <img
+          alt='Friendly Light Armor'
+          className={classes.image}
+          onClick={event => handleMarkerClick(event.target.src, 'Light Armor')}
+          src={lightArmor}
         />
       </Tooltip>
       <Tooltip title='Maintenance'>
@@ -204,6 +225,14 @@ export default ({ handleAddMarker, handleMarkerDrawerToggle }) => {
           src={missile}
         />
       </Tooltip>
+      <Tooltip title='MLRS'>
+        <img
+          alt='Friendly MLRS'
+          className={classes.image}
+          onClick={event => handleMarkerClick(event.target.src, 'MLRS')}
+          src={mlrs}
+        />
+      </Tooltip>
       <Tooltip title='Recce'>
         <img
           alt='Friendly Recce'
@@ -228,6 +257,14 @@ export default ({ handleAddMarker, handleMarkerDrawerToggle }) => {
           src={signals}
         />
       </Tooltip>
+      <Tooltip title='Special Forces'>
+        <img
+          alt='Friendly Special Forces'
+          className={classes.image}
+          onClick={event => handleMarkerClick(event.target.src, 'Special Forces')}
+          src={specialForces}
+        />
+      </Tooltip>
       <Tooltip title='Supply'>
         <img
           alt='Friendly Supply'
@@ -242,6 +279,14 @@ export default ({ handleAddMarker, handleMarkerDrawerToggle }) => {
           className={classes.image}
           onClick={event => handleMarkerClick(event.target.src, 'Unit')}
           src={unit}
+        />
+      </Tooltip>
+      <Tooltip title='Wheeled Armor'>
+        <img
+          alt='Friendly Wheeled Armor'
+          className={classes.image}
+          onClick={event => handleMarkerClick(event.target.src, 'Wheeled Armor')}
+          src={wheeledArmor}
         />
       </Tooltip>
     </React.Fragment>

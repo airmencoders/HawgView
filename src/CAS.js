@@ -149,6 +149,7 @@ export default ({ state }) => {
   const [history, setHistory] = React.useState([{
     action: '',
     buildingLabels: [],
+    bullseyes: [],
     circles: [],
     ellipses: [],
     friendlyMarkers: [],
@@ -389,11 +390,17 @@ export default ({ state }) => {
       if (action === 'create') {
         updatedPayload = {
           ...updatedPayload,
-          elevation: elevation,
           id: markerId,
         }
 
-        if (payload.layer === 'friendly' || payload.layer === 'hostile' || payload.layer === 'threat' || payload.layer === 'survivor' || payload.layer === 'ip' || payload.layer === 'building')
+        if (payload.layer !== 'bullseye') {
+          updatedPayload = {
+            ...updatedPayload,
+            elevation: elevation,
+          }
+        }
+
+        if (payload.layer === 'friendly' || payload.layer === 'hostile' || payload.layer === 'threat' || payload.layer === 'survivor' || payload.layer === 'ip' || payload.layer === 'building' || payload.layer === 'bullseye')
           updatedPayload = {
             ...updatedPayload,
             latlng: clickedLatLng,
@@ -467,6 +474,7 @@ export default ({ state }) => {
       const newStep = {
         action: 'load scenario',
         buildingLabels: json.data.buildingLabels,
+        bullseyes: json.data.bullseyes,
         ellipses: json.data.ellipses,
         rectangles: json.data.rectangles,
         friendlyMarkers: json.data.friendlyMarkers,

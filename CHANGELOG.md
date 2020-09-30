@@ -1,3 +1,16 @@
+## 2.41.0-alpha
+### Changes
+* Added Bullseye marker (slight hang due to magnetic declination)
+* Added Bullseye array to the step array
+* Added Bullseye handlers to the edit function
+* Added additional markers to the friendly/hostile markers components (Requested by DePo and Boston Joe)
+* Changed MGRS Grid Zoom levels to show the next in grid one zoom layer out (Requested by PUMA)
+
+### Tasks
+- [ ] Add Bullseye handling to the shape drawer
+- [ ] Add radial/DME labels to the bullseye
+- [ ] See if people think that a separate layer for SARDOTs is necessary/useful
+
 ## 2.40.0-alhpa
 ### Changes
 * Added Rose Hill, AL MOA (Requested by Tonto)

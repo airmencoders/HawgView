@@ -58,11 +58,11 @@ export default (props) => {
   const gridSpacing = () => {
     if (props.zoom < 10) {
       return 100000
-    } else if (props.zoom < 14) {
+    } else if (props.zoom < 13) {
       return 10000
-    } else if (props.zoom < 17) {
+    } else if (props.zoom < 16) {
       return 1000
-    } else if (props.zoom <= 20) {
+    } else if (props.zoom <= 19) {
       return 100
     } else {
       return NaN
@@ -72,11 +72,11 @@ export default (props) => {
   const mgrsAccuracy = () => {
     if (props.zoom < 10) {
       return 0
-    } else if (props.zoom < 14) {
+    } else if (props.zoom < 13) {
       return 1
-    } else if (props.zoom < 17) {
+    } else if (props.zoom < 16) {
       return 2
-    } else if (props.zoom <= 20) {
+    } else if (props.zoom <= 19) {
       return 3
     } else {
       return NaN

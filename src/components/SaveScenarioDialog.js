@@ -36,6 +36,7 @@ export default (props) => {
     date: new Date(),
     data: {
       buildingLabels: props.data.buildingLabels,
+      bullseyes: props.data.bullseyes,
       circles: props.data.circles,
       ellipses: props.data.ellipses,      
       friendlyMarkers: props.data.friendlyMarkers,

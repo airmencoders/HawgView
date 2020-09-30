@@ -44,7 +44,8 @@ import {
   Tooltip,
 } from 'react-leaflet'
 import L from 'leaflet'
-import { LatLon } from 'geodesy/mgrs'
+import { LatLon as LL } from 'geodesy/mgrs'
+import LatLon, { Dms } from 'geodesy/latlon-spherical'
 
 //----------------------------------------------------------------//
 // Material-UI Components
@@ -139,6 +140,43 @@ export default (props) => {
   const handleEditShape = shape => {
     props.setFocusedShape(shape)
     props.setShapeDrawerOpen(true)
+  }
+
+  const generateBullCircles = bullseye => {
+    let array = new Array()
+
+    for (let i = 1; i <= bullseye.rings; i++) {
+      array.push(
+        <Circle
+          center={bullseye.latlng}
+          color={bullseye.color}
+          fill={false}
+          key={`bullseye-${bullseye.id}-${bullseye.title}-circle-${i}`}
+          radius={bullseye.distance * 1852 * i}
+        />
+      )
+    }
+    return array
+  }
+
+  const generateBullLines = bullseye => {
+    let array = new Array()
+    const length = bullseye.rings * bullseye.distance * 1852
+
+    for (let i = 0; i < 360; i += bullseye.angle) {
+      let p2 = LatLon.parse(bullseye.latlng.lat, bullseye.latlng.lng).destinationPoint(length, i + bullseye.declination)
+      let positions = [bullseye.latlng, p2]
+
+      array.push(
+        <Polyline
+          color={bullseye.color}
+          key={`bullseye-${bullseye.id}-${bullseye.title}-radial-${i}`}
+          positions={positions}
+        />
+      )
+    }
+
+    return array
   }
 
   return (
@@ -258,6 +296,87 @@ export default (props) => {
           weight={2}
         />
       </Overlay>
+      <Overlay checked name='Bullseyes'>
+        <LayerGroup>
+          {props.interactive && props.step.bullseyes.map(bullseye => (
+            <React.Fragment
+              key={`bullseye-${bullseye.id}-${bullseye.title}`}
+            >
+              {generateBullCircles(bullseye)}
+              {generateBullLines(bullseye)}
+              <Marker
+                autoPan={true}
+                draggable={true}
+                icon={L.icon({
+                  iconUrl: bullseye.iconUrl,
+                  iconSize: [props.markerSize * props.mapZoom, props.markerSize * props.mapZoom],
+                })}
+                id={bullseye.id}
+                // TODO!
+                //onClick={() => props.setFocusedShape(bullseye)}
+                onDragend={event => props.handleMarkerDrag(bullseye, event.target.getLatLng())}
+                position={bullseye.latlng}
+                riseOnHover={true}
+                title={bullseye.title}
+              >
+                <Popup
+                  onClose={handlePopupClose}
+                >
+                  {bullseye.title}
+                  <br />
+                  {LL.parse(bullseye.latlng.lat, bullseye.latlng.lng).toUtm().toMgrs().toString()}
+                  <br />
+                  <Button color='primary'>Edit</Button>
+                  <Button color='secondary' onClick={() => props.handleDeleteMarker(bullseye)}>Delete</Button>
+                </Popup>
+                {(props.tooltipsActive) ?
+                  <Tooltip
+                    direction='top'
+                    offset={L.point(0, -1 * props.markerSize * props.mapZoom)}
+                    opacity='1'
+                    permanent
+                  >
+                    {bullseye.title}
+                  </Tooltip>
+                  : undefined
+                }
+              </Marker>
+            </React.Fragment>
+          ))}
+          {!props.interactive && props.step.bullseyes.map(bullseye => (
+            <React.Fragment
+              key={`bullseye-${bullseye.id}-${bullseye.title}`}
+            >
+              {generateBullCircles(bullseye)}
+              {generateBullLines(bullseye)}
+              <Marker
+                autoPan={true}
+                draggable={true}
+                icon={L.icon({
+                  iconUrl: bullseye.iconUrl,
+                  iconSize: [props.markerSize * props.mapZoom, props.markerSize * props.mapZoom],
+                })}
+                id={bullseye.id}
+                position={bullseye.latlng}
+                riseOnHover={true}
+                title={bullseye.title}
+              >
+                {(props.tooltipsActive) ?
+                  <Tooltip
+                    direction='top'
+                    offset={L.point(0, -1 * props.markerSize * props.mapZoom)}
+                    opacity='1'
+                    permanent
+                  >
+                    {bullseye.title}
+                  </Tooltip>
+                  : undefined
+                }
+              </Marker>
+            </React.Fragment>
+          ))}
+        </LayerGroup>
+      </Overlay>
       <Overlay checked name='Friendly Markers'>
         <LayerGroup>
           {props.interactive && props.step.friendlyMarkers.map(marker => (
@@ -276,21 +395,6 @@ export default (props) => {
               riseOnHover={true}
               title={marker.title}
             >
-              <Popup
-                onClose={handlePopupClose}
-              >
-                {marker.title}
-                <br />
-                {LatLon.parse(marker.latlng.lat, marker.latlng.lng).toUtm().toMgrs().toString()}
-                <br />
-                {(marker.elevation !== 'Pending' && marker.elevation !== 'Elevation not found') ?
-                  `${marker.elevation} feet`
-                  : 'No elevation'
-                }
-                <br />
-                <Button color='primary' onClick={() => handleEditMarker(marker)}>Edit</Button>
-                <Button color='secondary' onClick={() => props.handleDeleteMarker(marker)}>Delete</Button>
-              </Popup>
               {(props.tooltipsActive) ?
                 <Tooltip
                   direction='top'
@@ -358,7 +462,7 @@ export default (props) => {
                   <React.Fragment>
                     {marker.title}
                     <br />
-                    {LatLon.parse(marker.latlng.lat, marker.latlng.lng).toUtm().toMgrs().toString()}
+                    {LL.parse(marker.latlng.lat, marker.latlng.lng).toUtm().toMgrs().toString()}
                     <br />
                     {(marker.elevation !== 'Pending' && marker.elevation !== 'Elevation not found') ?
                       `${marker.elevation} feet`
@@ -438,7 +542,7 @@ export default (props) => {
                     <React.Fragment>
                       {marker.title}
                       <br />
-                      {LatLon.parse(marker.latlng.lat, marker.latlng.lng).toUtm().toMgrs().toString()}
+                      {LL.parse(marker.latlng.lat, marker.latlng.lng).toUtm().toMgrs().toString()}
                       <br />
                       {(marker.elevation !== 'Pending' && marker.elevation !== 'Elevation not found') ?
                         `${marker.elevation} feet`
@@ -478,7 +582,7 @@ export default (props) => {
                     <React.Fragment>
                       {marker.title}
                       <br />
-                      {LatLon.parse(marker.latlng.lat, marker.latlng.lng).toUtm().toMgrs().toString()}
+                      {LL.parse(marker.latlng.lat, marker.latlng.lng).toUtm().toMgrs().toString()}
                       <br />
                     </React.Fragment>
                   }
@@ -554,7 +658,7 @@ export default (props) => {
                     <React.Fragment>
                       {marker.title}
                       <br />
-                      {LatLon.parse(marker.latlng.lat, marker.latlng.lng).toUtm().toMgrs().toString()}
+                      {LL.parse(marker.latlng.lat, marker.latlng.lng).toUtm().toMgrs().toString()}
                       <br />
                       {(marker.elevation !== 'Pending' && marker.elevation !== 'Elevation not found') ?
                         `${marker.elevation} feet`
@@ -605,7 +709,7 @@ export default (props) => {
           ))}
         </LayerGroup>
       </Overlay>
-      <Overlay checked name='IPs'>
+      <Overlay checked name='IPs/CPs'>
         <LayerGroup>
           {props.interactive && props.step.initialPoints.map(marker => (
             <Marker
@@ -628,7 +732,7 @@ export default (props) => {
               >
                 {marker.title}
                 <br />
-                {LatLon.parse(marker.latlng.lat, marker.latlng.lng).toUtm().toMgrs().toString()}
+                {LL.parse(marker.latlng.lat, marker.latlng.lng).toUtm().toMgrs().toString()}
                 <br />
                 {(marker.elevation !== 'Pending' && marker.elevation !== 'Elevation not found') ?
                   `${marker.elevation} feet`
@@ -701,7 +805,7 @@ export default (props) => {
               >
                 {label.title}
                 <br />
-                {LatLon.parse(label.latlng.lat, label.latlng.lng).toUtm().toMgrs().toString()}
+                {LL.parse(label.latlng.lat, label.latlng.lng).toUtm().toMgrs().toString()}
                 <br />
                 {(label.elevation !== 'Pending' && label.elevation !== 'Elevation not found') ?
                   `${label.elevation} feet`
@@ -899,7 +1003,7 @@ export default (props) => {
                 <React.Fragment>
                   {circle.title}
                   <br />
-                  {LatLon.parse(circle.latlng.lat, circle.latlng.lng).toUtm().toMgrs().toString()}
+                  {LL.parse(circle.latlng.lat, circle.latlng.lng).toUtm().toMgrs().toString()}
                   <br />
                 </React.Fragment>
                 <Button color='primary' onClick={() => handleEditShape(circle)}>Edit</Button>
