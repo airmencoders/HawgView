@@ -45,7 +45,7 @@ import {
 } from 'react-leaflet'
 import L from 'leaflet'
 import { LatLon as LL } from 'geodesy/mgrs'
-import LatLon, { Dms } from 'geodesy/latlon-spherical'
+import LatLon from 'geodesy/latlon-spherical'
 
 //----------------------------------------------------------------//
 // Material-UI Components
@@ -61,6 +61,7 @@ import Ellipse from './Ellipse'
 import MGRSGrids from './MGRSGrids'
 import GARSCells from './GARSCells'
 import { render9line, render15line } from '../functions/renderData'
+import { nominalTypeHack } from 'prop-types'
 
 //----------------------------------------------------------------//
 // React-Leaflet Layers
@@ -117,6 +118,14 @@ export default (props) => {
       lineHeight: `${props.markerSize * props.mapZoom}px`,
       wordWrap: 'break-word',
     },
+    tooltip: {
+      backgroundColor: '#000000',
+      color: '#ffffff',
+      border: 'none',
+      '&:before': {
+        border: 'none',
+      }
+    }
   }))
 
   const classes = useStyles()
@@ -144,6 +153,8 @@ export default (props) => {
 
   const generateBullCircles = bullseye => {
     let array = new Array()
+    const length = bullseye.rings * bullseye.distance * 1852
+    const center = LatLon.parse(bullseye.latlng.lat, bullseye.latlng.lng)
 
     for (let i = 1; i <= bullseye.rings; i++) {
       array.push(
@@ -156,15 +167,9 @@ export default (props) => {
         />
       )
     }
-    return array
-  }
-
-  const generateBullLines = bullseye => {
-    let array = new Array()
-    const length = bullseye.rings * bullseye.distance * 1852
 
     for (let i = 0; i < 360; i += bullseye.angle) {
-      let p2 = LatLon.parse(bullseye.latlng.lat, bullseye.latlng.lng).destinationPoint(length, i + bullseye.declination)
+      let p2 = center.destinationPoint(length, i + bullseye.declination)
       let positions = [bullseye.latlng, p2]
 
       array.push(
@@ -176,8 +181,43 @@ export default (props) => {
       )
     }
 
+    for (let i = 1; i <= bullseye.rings; i++) {
+      for (let j = 360; j >0; j -= 90) {
+        let position = center.destinationPoint(bullseye.distance * 1852 * i, j + bullseye.declination)
+
+        array.push(
+          <Marker
+            interactive={false}
+            key={`bullseye-${bullseye.id}-${bullseye.title}-circle-${i}-radial-${j}-marker`}
+            opacity={0}
+            position={position}
+          >
+            <Tooltip
+              className={classes.tooltip}
+              direction='top'
+              offset={L.point(0, 25)}
+              opacity={0.7}
+              permanent
+            >
+              {(i === 1) ? `R-${j.toString().padStart(3, '0')}/${bullseye.distance * i}` : `${bullseye.distance * i}`}
+            </Tooltip>
+          </Marker>
+        )
+      }
+    }
+
     return array
   }
+
+  /*const generateBullLines = bullseye => {
+    let array = new Array()
+    
+
+    
+    }
+
+    return array
+  }*/
 
   return (
     <LayersControl position='topright'>
@@ -303,7 +343,6 @@ export default (props) => {
               key={`bullseye-${bullseye.id}-${bullseye.title}`}
             >
               {generateBullCircles(bullseye)}
-              {generateBullLines(bullseye)}
               <Marker
                 autoPan={true}
                 draggable={true}
@@ -348,7 +387,6 @@ export default (props) => {
               key={`bullseye-${bullseye.id}-${bullseye.title}`}
             >
               {generateBullCircles(bullseye)}
-              {generateBullLines(bullseye)}
               <Marker
                 autoPan={true}
                 draggable={true}

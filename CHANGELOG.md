@@ -1,3 +1,8 @@
+## 2.42.0-alpha
+### Changes
+* Added radial/DME to bullseye
+* Added Birmingham 2 MOA and ROZs (Requested by RIP & Dath)
+
 ## 2.41.0-alpha
 ### Changes
 * Added Bullseye marker (slight hang due to magnetic declination)
@@ -8,7 +13,7 @@
 
 ### Tasks
 - [ ] Add Bullseye handling to the shape drawer
-- [ ] Add radial/DME labels to the bullseye
+- [x] Add radial/DME labels to the bullseye
 - [ ] See if people think that a separate layer for SARDOTs is necessary/useful
 
 ## 2.40.0-alhpa

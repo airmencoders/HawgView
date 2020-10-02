@@ -32,7 +32,7 @@
 //----------------------------------------------------------------//
 import React from 'react';
 import {
-  BrowserRouter as Router,
+  StaticRouter as Router,
   Route,
   Switch,
   //Redirect
@@ -80,7 +80,7 @@ class App extends React.Component {
     return (
       <div className='App'>
         <CssBaseline />
-        <Router>
+        <Router basepath='/v2'>
           <Switch>
             <Route exact path='/'>
               <CAS

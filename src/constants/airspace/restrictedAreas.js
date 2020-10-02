@@ -1,3 +1,4 @@
+import { alabama } from './restrictedAreas/alabama'
 import { alaska } from './restrictedAreas/alaska'
 import { arizona } from './restrictedAreas/arizona'
 import { arkansas } from './restrictedAreas/arkansas'
@@ -24,7 +25,8 @@ import { utah } from './restrictedAreas/utah'
 import { virginia } from './restrictedAreas/virginia'
 import { wisconsin } from './restrictedAreas/wisconsin'
 
-export const restrictedAreas = alaska.concat(
+export const restrictedAreas = alabama.concat(
+  alaska,
   arizona,
   arkansas,
   california,

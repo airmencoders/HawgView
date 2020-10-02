@@ -95,6 +95,18 @@ export default (props) => {
           {props.children}
           <div className={classes.grow} />
           <a
+            style={{ textDecoration: 'none', marginRight: '15px' }}
+            href='https://v1.hawg-ops.com/login'
+            target='_blank'
+            rel='noopener noreferrer'
+          >
+            <Typography
+              style={{ color: 'white' }}
+            >
+              Login
+            </Typography>
+          </a>
+          <a
             style={{ textDecoration: 'none ' }}
             href='https://wiki.hawg-ops.com'
             target='_blank'
