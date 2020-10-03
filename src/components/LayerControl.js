@@ -61,7 +61,6 @@ import Ellipse from './Ellipse'
 import MGRSGrids from './MGRSGrids'
 import GARSCells from './GARSCells'
 import { render9line, render15line } from '../functions/renderData'
-import { nominalTypeHack } from 'prop-types'
 
 //----------------------------------------------------------------//
 // React-Leaflet Layers
@@ -182,7 +181,7 @@ export default (props) => {
     }
 
     for (let i = 1; i <= bullseye.rings; i++) {
-      for (let j = 360; j >0; j -= 90) {
+      for (let j = 360; j > 0; j -= 90) {
         let position = center.destinationPoint(bullseye.distance * 1852 * i, j + bullseye.declination)
 
         array.push(
@@ -199,7 +198,7 @@ export default (props) => {
               opacity={0.7}
               permanent
             >
-              {(i === 1) ? `R-${j.toString().padStart(3, '0')}/${bullseye.distance * i}` : `${bullseye.distance * i}`}
+              {(i === 1) ? `R-${j.toString().padStart(3, '0')}/${(bullseye.distance * i).toFixed(1)}` : `${(bullseye.distance * i).toFixed(1)}`}
             </Tooltip>
           </Marker>
         )
@@ -351,8 +350,6 @@ export default (props) => {
                   iconSize: [props.markerSize * props.mapZoom, props.markerSize * props.mapZoom],
                 })}
                 id={bullseye.id}
-                // TODO!
-                //onClick={() => props.setFocusedShape(bullseye)}
                 onDragend={event => props.handleMarkerDrag(bullseye, event.target.getLatLng())}
                 position={bullseye.latlng}
                 riseOnHover={true}
@@ -365,7 +362,7 @@ export default (props) => {
                   <br />
                   {LL.parse(bullseye.latlng.lat, bullseye.latlng.lng).toUtm().toMgrs().toString()}
                   <br />
-                  <Button color='primary'>Edit</Button>
+                  <Button color='primary' onClick={() => handleEditShape(bullseye)}>Edit</Button>
                   <Button color='secondary' onClick={() => props.handleDeleteMarker(bullseye)}>Delete</Button>
                 </Popup>
                 {(props.tooltipsActive) ?

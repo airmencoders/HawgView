@@ -595,6 +595,12 @@ const editMarker = (history, step, payload) => {
         latlng: payload.latlng,
         declination,
       }
+
+      return {
+        ...targetHistory[step],
+        action: `edit bullseye ${marker.title}`,
+        bullseyes: [...filteredMarkers, newMarker]
+      }
     case 'ellipse':
       filteredMarkers = targetHistory[step].ellipses.filter(currentMarker => currentMarker.id !== marker.id)
 

@@ -1,3 +1,11 @@
+## 2.43.0-alpha
+### Changes
+* Added editing of bullseye
+* Added toast when bad inputs are submitted to the coord input container
+
+### Fixes
+* Added error correction to bullseye input
+
 ## 2.42.0-alpha
 ### Changes
 * Added radial/DME to bullseye

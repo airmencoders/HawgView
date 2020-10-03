@@ -330,6 +330,14 @@ export default ({ state }) => {
     setMapColor(!mapColor)
   }
 
+  const handleCoordInput = latlng => {
+    if(latlng === false) {
+      toast('Invalid coordinates', 'error')
+    } else {
+      setClickedLatLng(latlng)
+    }
+  }
+
   /**
    * Set the current step to the previous step (not less than 0)
    */
@@ -445,6 +453,7 @@ export default ({ state }) => {
       }
     } else {
       console.error(`Unsupported action ${action}. Could not modify Markers`)
+      toast('There was an error performing that action', 'error')
     }
   }
 
@@ -514,7 +523,7 @@ export default ({ state }) => {
         >
           <CoordInput
             map={map}
-            submit={latlng => setClickedLatLng(latlng)}
+            submit={latlng => handleCoordInput(latlng)}
           />
           <div className={classes.sectionDesktop}>
             <CASTools

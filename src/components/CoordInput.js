@@ -105,6 +105,7 @@ export default (props) => {
 
     if (latlng === false) {
       console.error(`Error: Invalid coordinates {${inputValue}}`)
+      props.submit(false)
     } else {
       props.map.flyTo([latlng.lat, latlng.lon], 10)
       props.submit({ lat: latlng.lat, lng: latlng.lon })
