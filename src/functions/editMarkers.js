@@ -594,6 +594,7 @@ const editMarker = (history, step, payload) => {
         angle: payload.angle,
         latlng: payload.latlng,
         declination,
+        showData: payload.showData,
       }
 
       return {

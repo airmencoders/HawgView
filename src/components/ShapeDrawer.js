@@ -97,7 +97,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 //----------------------------------------------------------------//
-// Marker Drawer Component
+// Shape Drawer Component
 //----------------------------------------------------------------//
 export default (props) => {
   const classes = useStyles()
@@ -120,8 +120,30 @@ export default (props) => {
   const [lng, setLng] = React.useState('')
   const [mgrs, setMgrs] = React.useState('')
   const [latlng, setLatlng] = React.useState(false)
+  const [showData, setShowData] = React.useState(true)
+  const [mgrsDisabled, setMgrsDisabled] = React.useState(false)
 
   const container = props.window !== undefined ? () => window().document.body : undefined
+
+  const getMgrs = () => {
+    let position
+
+    if (props.shape !== null) {
+      try {
+        position = LatLon.parse(props.shape.latlng.lat, props.shape.latlng.lng).toUtm().toMgrs().toString()
+      } catch (e) {
+        // Logging?
+      }
+
+      if (position !== undefined) {
+        setMgrs(position)
+        setMgrsDisabled(false)
+      } else {
+        setLatlng(true)
+        setMgrsDisabled(true)
+      }
+    }
+  }
 
   React.useEffect(() => {
     if (props.shape !== null) {
@@ -147,10 +169,17 @@ export default (props) => {
         setDistance(props.shape.distance)
         setRings(props.shape.rings)
         setAngle(props.shape.angle)
+        setShowData(props.shape.showData)
       }
 
-      if (props.shape.layer === 'ellipse' || props.shape.layer === 'circle' || props.shape.layer === 'bullseye') {
-        setMgrs(LatLon.parse(props.shape.latlng).toUtm().toMgrs().toString())
+      if (props.shape.layer === 'ellipse') {
+        getMgrs()
+        setLat(props.shape.center.lat.toFixed(4))
+        setLng(props.shape.center.lng.toFixed(4))
+      }
+
+      if (props.shape.layer === 'circle' || props.shape.layer === 'bullseye') {
+        getMgrs()
         setLat(props.shape.latlng.lat.toFixed(4))
         setLng(props.shape.latlng.lng.toFixed(4))
       }
@@ -244,6 +273,7 @@ export default (props) => {
         distance: isNaN(distance) ? props.shape.distance : Number.parseFloat(distance),
         rings: isNaN(rings) ? props.shape.rings : Number.parseInt(rings),
         angle: isNaN(angle) ? props.shape.angle : Math.round(Number.parseFloat(angle)),
+        showData: showData,
       }
     }
 
@@ -293,52 +323,56 @@ export default (props) => {
             value={title}
           />
           {(props.shape !== null && (props.shape.layer === 'circle' || props.shape.layer === 'ellipse' || props.shape.layer === 'bullseye')) ?
-            <Grid
-              container
-              direction='row'
-              justify='center'
-            >
-              <FormGroup>
-                <FormControlLabel
-                  control={
-                    <Switch
-                      checked={latlng}
-                      color='primary'
-                      name='Lat Long'
-                      onChange={() => setLatlng(!latlng)}
+            (
+              <React.Fragment>
+                <Grid
+                  container
+                  direction='row'
+                  justify='center'
+                >
+                  <FormGroup>
+                    <FormControlLabel
+                      control={
+                        <Switch
+                          checked={latlng}
+                          color='primary'
+                          disabled={mgrsDisabled}
+                          name='Lat Long'
+                          onChange={() => setLatlng(!latlng)}
+                        />
+                      }
+                      label='Lat Long'
                     />
-                  }
-                  label='Lat Long'
-                />
-              </FormGroup>
-            </Grid>
-            : null
-          }
-          {(props.shape !== null && latlng && (props.shape.layer === 'circle' || props.shape.layer === 'ellipse' || props.shape.layer === 'bullseye')) ?
-            <React.Fragment>
-              <TextField
-                className={classes.textField}
-                label='Latitude'
-                onChange={event => setLat(event.target.value)}
-                variant='outlined'
-                value={lat}
-              />
-              <TextField
-                className={classes.textField}
-                label='Longitude'
-                onChange={event => setLng(event.target.value)}
-                variant='outlined'
-                value={lng}
-              />
-            </React.Fragment>
-            :
-            <TextField
-              className={classes.textField}
-              label='MGRS'
-              onChange={event => setMgrs(event.target.value)}
-              variant='outlined'
-              value={mgrs}
-            />
+                  </FormGroup>
+                </Grid>
+                {latlng ?
+                  <React.Fragment>
+                    <TextField
+                      className={classes.textField}
+                      label='Latitude'
+                      onChange={event => setLat(event.target.value)}
+                      variant='outlined'
+                      value={lat}
+                    />
+                    <TextField
+                      className={classes.textField}
+                      label='Longitude'
+                      onChange={event => setLng(event.target.value)}
+                      variant='outlined'
+                      value={lng}
+                    />
+                  </React.Fragment>
+                  :
+                  <TextField
+                    className={classes.textField}
+                    label='MGRS'
+                    onChange={event => setMgrs(event.target.value)}
+                    variant='outlined'
+                    value={mgrs}
+                  />
+                }
+              </React.Fragment>
+            ) : null
           }
           {(props.shape !== null && props.shape.layer === 'bullseye') ?
             <React.Fragment>
@@ -363,6 +397,25 @@ export default (props) => {
                 variant='outlined'
                 value={angle}
               />
+              <Grid
+                container
+                direction='row'
+                justify='center'
+              >
+                <FormGroup>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={showData}
+                        color='primary'
+                        name='showData'
+                        onChange={() => setShowData(!showData)}
+                      />
+                    }
+                    label='Show Data'
+                  />
+                </FormGroup>
+              </Grid>
             </React.Fragment>
             : null
           }

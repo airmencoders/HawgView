@@ -128,7 +128,7 @@ const maxMarkerSize = 10
 //----------------------------------------------------------------//
 // CAS Planner Page
 //----------------------------------------------------------------//
-export default ({ state }) => {
+const Cas = ({ state }) => {
   const classes = useStyles()
 
   //----------------------------------------------------------------//
@@ -254,7 +254,12 @@ export default ({ state }) => {
       const lngDMS = Dms.toLon(lng, 'dms', 4)
 
       // Parse MGRS
-      const mgrs = latlngD.toUtm().toMgrs().toString()
+      let mgrs
+      try {
+        mgrs = latlngD.toUtm().toMgrs().toString()
+      } catch (e) {
+        
+      }
 
       // Get the elevation
       fetch(`https://nationalmap.gov/epqs/pqs.php?x=${lng}&y=${lat}&units=Feet&output=json`)
@@ -822,3 +827,5 @@ export default ({ state }) => {
     </Box>
   )
 }
+
+export default Cas

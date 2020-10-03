@@ -1,5 +1,42 @@
+/**
+ * ${SUMMARY}
+ * 
+ * ${DESCRIPTION}
+ * 
+ * @author  chris-m92
+ * 
+ * MIT License
+ * 
+ * Copyright (c) 2020 Airmen Coders
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+//----------------------------------------------------------------//
+// Top Level Modules
+//----------------------------------------------------------------//
 import React from 'react'
+import { SketchPicker as ColorPicker } from 'react-color'
+import { LatLon } from 'geodesy/mgrs'
 
+//----------------------------------------------------------------//
+// Material-UI Core Components
+//----------------------------------------------------------------//
 import Button from '@material-ui/core/Button'
 import Drawer from '@material-ui/core/Drawer'
 import FormGroup from '@material-ui/core/FormGroup'
@@ -7,15 +44,17 @@ import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Grid from '@material-ui/core/Grid'
 import Switch from '@material-ui/core/Switch'
 import TextField from '@material-ui/core/TextField'
+import Typography from '@material-ui/core/Typography'
 import { makeStyles } from '@material-ui/core/styles'
-
-import { LatLon } from 'geodesy/mgrs'
 
 //----------------------------------------------------------------//
 // Functions
 //----------------------------------------------------------------//
 import { submitCoordInput } from '../functions/submitCoordInput'
 
+//----------------------------------------------------------------//
+// Custom Class Styling
+//----------------------------------------------------------------//
 const drawerWidth = 240
 
 const useStyles = makeStyles(theme => ({
@@ -45,7 +84,10 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-export default (props) => {
+//----------------------------------------------------------------//
+// Edit Marker Drawer Component
+//----------------------------------------------------------------//
+const EditMarkerDrawer = (props) => {
   const classes = useStyles()
 
   const container = props.window !== undefined ? () => window().document.body : undefined
@@ -56,6 +98,10 @@ export default (props) => {
   const [lat, setLat] = React.useState('')
   const [lng, setLng] = React.useState('')
   const [elevation, setElevation] = React.useState('')
+  const [mgrsDisabled, setMgrsDisabled] = React.useState(false)
+
+  // Building Label Color
+  const [color, setColor] = React.useState('')
 
   // Control the switch for LatLng, 9-Lines, and 15-Lines, and threat fills
   const [latlng, setLatlng] = React.useState(false)
@@ -96,22 +142,54 @@ export default (props) => {
   const [csarSignal, setCsarSignal] = React.useState('')
   const [csarEgress, setCsarEgress] = React.useState('')
 
+  const getMgrs = () => {
+    let position
+
+    if (props.marker !== null) {
+      try {
+        position = LatLon.parse(props.marker.latlng.lat, props.marker.latlng.lng).toUtm().toMgrs().toString()
+      } catch (e) {
+        // Logging?
+      }
+
+      if (position !== undefined) {
+        setMgrs(position)
+        setMgrsDisabled(false)
+        if (props.marker.data === null) {
+          setCasLocation(position)
+          setCsarLocation(position)
+        }
+      } else {
+        setLatlng(true)
+        setMgrsDisabled(true)
+        if (props.marker.data === null) {
+          setCasLocation(`${props.marker.latlng.lat.toFixed(4)}, ${props.marker.latlng.lng.toFixed(4)}`)
+          setCsarLocation(`${props.marker.latlng.lat.toFixed(4)}, ${props.marker.latlng.lng.toFixed(4)}`)
+        }
+      }
+    }
+  }
+
   React.useEffect(() => {
     if (props.marker !== null) {
       setTitle(props.marker.title)
-      setMgrs(LatLon.parse(props.marker.latlng).toUtm().toMgrs().toString())
+      getMgrs()
       setLat(props.marker.latlng.lat.toFixed(4))
       setLng(props.marker.latlng.lng.toFixed(4))
       setElevation(props.marker.elevation)
       setCas(false)
       setCsar(false)
 
+      if (props.marker.layer === 'building') {
+        setColor(props.marker.color)
+      }
+
       if (props.marker.layer === 'hostile' || props.marker.layer === 'threat') {
         if (props.marker.data === null) {
           setCasIpHdgDistance('N/A')
           setCasElevation(props.marker.elevation)
           setCasDescription(props.marker.title)
-          setCasLocation(LatLon.parse(props.marker.latlng).toUtm().toMgrs().toString())
+          //setCasLocation(LatLon.parse(props.marker.latlng).toUtm().toMgrs().toString())
           setCasMark('None')
         } else {
           setCas(true)
@@ -131,7 +209,7 @@ export default (props) => {
           setCsarCallsign(props.marker.title)
           setCsarFrequency('A')
           setCsarNumObjectives('1')
-          setCsarLocation(LatLon.parse(props.marker.latlng).toUtm().toMgrs().toString())
+          //setCsarLocation(LatLon.parse(props.marker.latlng).toUtm().toMgrs().toString())
           setCsarElevation(props.marker.elevation)
           setCsarSource('CSEL')
           setCsarCondition('Ambulatory')
@@ -190,7 +268,7 @@ export default (props) => {
       marker: props.marker,
       data: null,
       elevation: elevation,
-      latlng: {lat: target.lat, lng: target.lon},
+      latlng: { lat: target.lat, lng: target.lon },
       title: title,
     }
 
@@ -233,6 +311,13 @@ export default (props) => {
       }
     }
 
+    if (props.marker.layer === 'building') {
+      payload = {
+        ...payload,
+        color: color,
+      }
+    }
+
     props.submit('edit', payload)
   }
 
@@ -267,6 +352,7 @@ export default (props) => {
                 <Switch
                   checked={latlng}
                   color='primary'
+                  disabled={mgrsDisabled}
                   name='Lat Long'
                   onChange={() => setLatlng(!latlng)}
                 />
@@ -314,6 +400,26 @@ export default (props) => {
           variant='outlined'
           value={elevation}
         />
+        {(props.marker !== null && props.marker.layer === 'building') ?
+          <Grid
+            container
+            direction='row'
+            justify='center'
+          >
+            <Typography
+              variant='body1'
+            >
+              Color
+          </Typography>
+            <ColorPicker
+              className={classes.marginsMd}
+              color={color}
+              disableAlpha={true}
+              onChange={color => setColor(color.hex)}
+            />
+          </Grid>
+          : null
+        }
         {(props.marker !== null && (props.marker.layer === 'hostile' || props.marker.layer === 'threat')) ?
           (
             <Grid
@@ -597,3 +703,5 @@ export default (props) => {
     </nav>
   )
 }
+
+export default EditMarkerDrawer

@@ -58,6 +58,7 @@ import { makeStyles } from '@material-ui/core/styles'
 //----------------------------------------------------------------//
 import { airspace } from '../constants/airspace'
 import Ellipse from './Ellipse'
+import LayerMarkers from './LayerMarkers'
 import MGRSGrids from './MGRSGrids'
 import GARSCells from './GARSCells'
 import { render9line, render15line } from '../functions/renderData'
@@ -151,7 +152,7 @@ export default (props) => {
   }
 
   const generateBullCircles = bullseye => {
-    let array = new Array()
+    let array = []
     const length = bullseye.rings * bullseye.distance * 1852
     const center = LatLon.parse(bullseye.latlng.lat, bullseye.latlng.lng)
 
@@ -180,43 +181,59 @@ export default (props) => {
       )
     }
 
-    for (let i = 1; i <= bullseye.rings; i++) {
-      for (let j = 360; j > 0; j -= 90) {
-        let position = center.destinationPoint(bullseye.distance * 1852 * i, j + bullseye.declination)
+    if (bullseye.showData) {
+      for (let i = 1; i <= bullseye.rings; i++) {
+        for (let j = 360; j > 0; j -= 90) {
+          let position = center.destinationPoint(bullseye.distance * 1852 * i, j + bullseye.declination)
 
-        array.push(
-          <Marker
-            interactive={false}
-            key={`bullseye-${bullseye.id}-${bullseye.title}-circle-${i}-radial-${j}-marker`}
-            opacity={0}
-            position={position}
-          >
-            <Tooltip
-              className={classes.tooltip}
-              direction='top'
-              offset={L.point(0, 25)}
-              opacity={0.7}
-              permanent
+          array.push(
+            <Marker
+              interactive={false}
+              key={`bullseye-${bullseye.id}-${bullseye.title}-circle-${i}-radial-${j}-marker`}
+              opacity={0}
+              position={position}
             >
-              {(i === 1) ? `R-${j.toString().padStart(3, '0')}/${(bullseye.distance * i).toFixed(1)}` : `${(bullseye.distance * i).toFixed(1)}`}
-            </Tooltip>
-          </Marker>
-        )
+              <Tooltip
+                className={classes.tooltip}
+                direction='top'
+                offset={L.point(0, 25)}
+                opacity={0.7}
+                permanent
+              >
+                {(i === 1) ? `R-${j.toString().padStart(3, '0')}/${(bullseye.distance * i).toFixed(1)}` : `${(bullseye.distance * i).toFixed(1)}`}
+              </Tooltip>
+            </Marker>
+          )
+        }
       }
     }
 
     return array
   }
 
-  /*const generateBullLines = bullseye => {
-    let array = new Array()
-    
+  // Only for Circle || Ellipse || Bullseye
+  const generateShapePopupText = shape => {
+    let position
+    let center
 
-    
+    if (shape.layer === 'ellipse') {
+      center = shape.center
+    } else {
+      center = shape.latlng
     }
-
-    return array
-  }*/
+    try {
+      position = LL.parse(center.lat, center.lng).toUtm().toMgrs().toString()
+    } catch (e) {
+      position = `${center.lat.toFixed(4)}, ${center.lng.toFixed(4)}`
+    }
+    return (
+      <React.Fragment>
+        {shape.title}
+        <br />
+        {position}
+      </React.Fragment>
+    )
+  }
 
   return (
     <LayersControl position='topright'>
@@ -358,9 +375,7 @@ export default (props) => {
                 <Popup
                   onClose={handlePopupClose}
                 >
-                  {bullseye.title}
-                  <br />
-                  {LL.parse(bullseye.latlng.lat, bullseye.latlng.lng).toUtm().toMgrs().toString()}
+                  {generateShapePopupText(bullseye)}
                   <br />
                   <Button color='primary' onClick={() => handleEditShape(bullseye)}>Edit</Button>
                   <Button color='secondary' onClick={() => props.handleDeleteMarker(bullseye)}>Delete</Button>
@@ -414,138 +429,39 @@ export default (props) => {
       </Overlay>
       <Overlay checked name='Friendly Markers'>
         <LayerGroup>
-          {props.interactive && props.step.friendlyMarkers.map(marker => (
-            <Marker
-              autoPan={true}
-              draggable={true}
-              icon={L.icon({
-                iconUrl: marker.iconUrl,
-                iconSize: [props.markerSize * props.mapZoom, props.markerSize * props.mapZoom],
-              })}
-              id={marker.id}
-              key={`friendly-${marker.id}-${marker.title}`}
-              onClick={() => props.setFocusedMarker(marker)}
-              onDragend={event => props.handleMarkerDrag(marker, event.target.getLatLng())}
-              position={marker.latlng}
-              riseOnHover={true}
-              title={marker.title}
-            >
-              {(props.tooltipsActive) ?
-                <Tooltip
-                  direction='top'
-                  offset={L.point(0, -1 * props.markerSize * props.mapZoom)}
-                  opacity='1'
-                  permanent
-                >
-                  {marker.title}
-                </Tooltip>
-                : undefined
-              }
-            </Marker>
-          ))}
-          {!props.interactive && props.step.friendlyMarkers.map(marker => (
-            <Marker
-              icon={L.icon({
-                iconUrl: marker.iconUrl,
-                iconSize: [props.markerSize * props.mapZoom, props.markerSize * props.mapZoom],
-              })}
-              id={marker.id}
-              interactive={false}
-              key={`friendly-${marker.id}-${marker.title}`}
-              position={marker.latlng}
-              title={marker.title}
-            >
-              {(props.tooltipsActive) ?
-                <Tooltip
-                  direction='top'
-                  offset={L.point(0, -1 * props.markerSize * props.mapZoom)}
-                  opacity='1'
-                  permanent
-                >
-                  {marker.title}
-                </Tooltip>
-                : undefined
-              }
-            </Marker>
+          {props.step.friendlyMarkers.map(marker => (
+            <LayerMarkers
+              interactive={props.interactive}
+              handleMarkerDrag={(marker, latlng) => props.handleMarkerDrag(marker, latlng)}
+              handleDeleteMarker={marker => props.handleDeleteMarker(marker)}
+              key={`${marker.layer}-${marker.title}-${marker.id}`}
+              markerSize={props.markerSize}
+              marker={marker}
+              mapZoom={props.mapZoom}
+              setClickedLatLng={latlng => props.setClickedLatLng(latlng)}
+              setFocusedMarker={marker => props.setFocusedMarker(marker)}
+              setFocusedShape={shape => props.setFocusedShape(shape)}
+              toggleEditMarkerDialog={() => props.toggleEditMarkerDialog()}
+            />
           ))}
         </LayerGroup>
       </Overlay>
       <Overlay checked name='Hostile Markers'>
         <LayerGroup>
-          {props.interactive && props.step.hostileMarkers.map(marker => (
-            <Marker
-              autoPan={true}
-              draggable={true}
-              icon={L.icon({
-                iconUrl: marker.iconUrl,
-                iconSize: [props.markerSize * props.mapZoom, props.markerSize * props.mapZoom]
-              })}
-              id={marker.id}
-              key={`hostile-${marker.id}-${marker.title}`}
-              onClick={() => props.setFocusedMarker(marker)}
-              onDragend={event => props.handleMarkerDrag(marker, event.target.getLatLng())}
-              position={marker.latlng}
-              riseOnHover={true}
-              title={marker.title}
-            >
-              <Popup
-                onClose={handlePopupClose}
-              >
-                {(marker.data !== null) ?
-                  render9line(marker.data)
-                  :
-                  <React.Fragment>
-                    {marker.title}
-                    <br />
-                    {LL.parse(marker.latlng.lat, marker.latlng.lng).toUtm().toMgrs().toString()}
-                    <br />
-                    {(marker.elevation !== 'Pending' && marker.elevation !== 'Elevation not found') ?
-                      `${marker.elevation} feet`
-                      : 'No elevation'
-                    }
-                    <br />
-                  </React.Fragment>
-                }
-                <Button color='primary' onClick={() => handleEditMarker(marker)}>Edit</Button>
-                <Button color='secondary' onClick={() => props.handleDeleteMarker(marker)}>Delete</Button>
-              </Popup>
-              {(props.tooltipsActive) ?
-                <Tooltip
-                  direction='top'
-                  offset={L.point(0, -1 * props.markerSize * props.mapZoom)}
-                  opacity='1'
-                  permanent
-                >
-                  {marker.title}
-                </Tooltip>
-                : undefined
-              }
-            </Marker>
-          ))}
-          {!props.interactive && props.step.hostileMarkers.map(marker => (
-            <Marker
-              icon={L.icon({
-                iconUrl: marker.iconUrl,
-                iconSize: [props.markerSize * props.mapZoom, props.markerSize * props.mapZoom]
-              })}
-              id={marker.id}
-              interactive={false}
-              key={`hostile-${marker.id}-${marker.title}`}
-              position={marker.latlng}
-              title={marker.title}
-            >
-              {(props.tooltipsActive) ?
-                <Tooltip
-                  direction='top'
-                  offset={L.point(0, -1 * props.markerSize * props.mapZoom)}
-                  opacity='1'
-                  permanent
-                >
-                  {marker.title}
-                </Tooltip>
-                : undefined
-              }
-            </Marker>
+          {props.step.hostileMarkers.map(marker => (
+            <LayerMarkers
+              interactive={props.interactive}
+              handleMarkerDrag={(marker, latlng) => props.handleMarkerDrag(marker, latlng)}
+              handleDeleteMarker={marker => props.handleDeleteMarker(marker)}
+              key={`${marker.layer}-${marker.title}-${marker.id}`}
+              markerSize={props.markerSize}
+              marker={marker}
+              mapZoom={props.mapZoom}
+              setClickedLatLng={latlng => props.setClickedLatLng(latlng)}
+              setFocusedMarker={marker => props.setFocusedMarker(marker)}
+              setFocusedShape={shape => props.setFocusedShape(shape)}
+              toggleEditMarkerDialog={() => props.toggleEditMarkerDialog()}
+            />
           ))}
         </LayerGroup>
       </Overlay>
@@ -665,204 +581,57 @@ export default (props) => {
       </Overlay>
       <Overlay checked name='Survivors'>
         <LayerGroup>
-          {props.interactive && props.step.survivors.map(marker => (
-            <Marker
-              autoPan={true}
-              draggable={true}
-              icon={L.icon({
-                iconUrl: marker.iconUrl,
-                iconSize: [props.markerSize * props.mapZoom, props.markerSize * props.mapZoom]
-              })}
-              id={marker.id}
-              key={`survivor-${marker.id}-${marker.title}`}
-              onClick={() => props.setFocusedMarker(marker)}
-              onDragend={event => props.handleMarkerDrag(marker, event.target.getLatLng())}
-              position={marker.latlng}
-              riseOnHover={true}
-              title={marker.title}
-            >
-              <Popup
-                maxWidth={1000}
-                onClose={handlePopupClose}
-              >
-
-                {
-                  (marker.data !== null) ?
-                    render15line(marker.data)
-                    :
-                    <React.Fragment>
-                      {marker.title}
-                      <br />
-                      {LL.parse(marker.latlng.lat, marker.latlng.lng).toUtm().toMgrs().toString()}
-                      <br />
-                      {(marker.elevation !== 'Pending' && marker.elevation !== 'Elevation not found') ?
-                        `${marker.elevation} feet`
-                        : 'No elevation'
-                      }
-                      <br />
-                    </React.Fragment>
-                }
-                <Button color='primary' onClick={() => handleEditMarker(marker)}>Edit</Button>
-                <Button color='secondary' onClick={() => props.handleDeleteMarker(marker)}>Delete</Button>
-              </Popup>
-              {(props.tooltipsActive) ?
-                <Tooltip
-                  direction='top'
-                  offset={L.point(0, -1 * props.markerSize * props.mapZoom)}
-                  opacity='1'
-                  permanent
-                >
-                  {marker.title}
-                </Tooltip>
-                : undefined
-              }
-            </Marker>
-          ))}
-          {!props.interactive && props.step.survivors.map(marker => (
-            <Marker
-              icon={L.icon({
-                iconUrl: marker.iconUrl,
-                iconSize: [props.markerSize * props.mapZoom, props.markerSize * props.mapZoom]
-              })}
-              id={marker.id}
-              key={`survivor-${marker.id}-${marker.title}`}
-              position={marker.latlng}
-              title={marker.title}
-            >
-              {(props.tooltipsActive) ?
-                <Tooltip
-                  direction='top'
-                  offset={L.point(0, -1 * props.markerSize * props.mapZoom)}
-                  opacity='1'
-                  permanent
-                >
-                  {marker.title}
-                </Tooltip>
-                : undefined
-              }
-            </Marker>
+          {props.step.survivors.map(marker => (
+            <LayerMarkers
+              interactive={props.interactive}
+              handleMarkerDrag={(marker, latlng) => props.handleMarkerDrag(marker, latlng)}
+              handleDeleteMarker={marker => props.handleDeleteMarker(marker)}
+              key={`${marker.layer}-${marker.title}-${marker.id}`}
+              markerSize={props.markerSize}
+              marker={marker}
+              mapZoom={props.mapZoom}
+              setClickedLatLng={latlng => props.setClickedLatLng(latlng)}
+              setFocusedMarker={marker => props.setFocusedMarker(marker)}
+              setFocusedShape={shape => props.setFocusedShape(shape)}
+              toggleEditMarkerDialog={() => props.toggleEditMarkerDialog()}
+            />
           ))}
         </LayerGroup>
       </Overlay>
       <Overlay checked name='IPs/CPs'>
         <LayerGroup>
-          {props.interactive && props.step.initialPoints.map(marker => (
-            <Marker
-              autoPan={true}
-              draggable={true}
-              icon={L.icon({
-                iconUrl: marker.iconUrl,
-                iconSize: [props.markerSize * props.mapZoom, props.markerSize * props.mapZoom]
-              })}
-              id={marker.id}
-              key={`ip-${marker.id}-${marker.title}`}
-              onClick={() => props.setFocusedMarker(marker)}
-              onDragend={event => props.handleMarkerDrag(marker, event.target.getLatLng())}
-              position={marker.latlng}
-              riseOnHover={true}
-              title={marker.title}
-            >
-              <Popup
-                onClose={handlePopupClose}
-              >
-                {marker.title}
-                <br />
-                {LL.parse(marker.latlng.lat, marker.latlng.lng).toUtm().toMgrs().toString()}
-                <br />
-                {(marker.elevation !== 'Pending' && marker.elevation !== 'Elevation not found') ?
-                  `${marker.elevation} feet`
-                  : 'No elevation'
-                }
-                <br />
-                <Button color='primary' onClick={() => handleEditMarker(marker)}>Edit</Button>
-                <Button color='secondary' onClick={() => props.handleDeleteMarker(marker)}>Delete</Button>
-              </Popup>
-              {(props.tooltipsActive) ?
-                <Tooltip
-                  direction='top'
-                  offset={L.point(0, -1 * props.markerSize * props.mapZoom)}
-                  opacity='1'
-                  permanent
-                >
-                  {marker.title}
-                </Tooltip>
-                : undefined
-              }
-            </Marker>
-          ))}
-          {!props.interactive && props.step.initialPoints.map(marker => (
-            <Marker
-              icon={L.icon({
-                iconUrl: marker.iconUrl,
-                iconSize: [props.markerSize * props.mapZoom, props.markerSize * props.mapZoom]
-              })}
-              id={marker.id}
-              key={`ip-${marker.id}-${marker.title}`}
-              position={marker.latlng}
-              title={marker.title}
-            >
-              {(props.tooltipsActive) ?
-                <Tooltip
-                  direction='top'
-                  offset={L.point(0, -1 * props.markerSize * props.mapZoom)}
-                  opacity='1'
-                  permanent
-                >
-                  {marker.title}
-                </Tooltip>
-                : undefined
-              }
-            </Marker>
+          {props.step.initialPoints.map(marker => (
+            <LayerMarkers
+              interactive={props.interactive}
+              handleMarkerDrag={(marker, latlng) => props.handleMarkerDrag(marker, latlng)}
+              handleDeleteMarker={marker => props.handleDeleteMarker(marker)}
+              key={`${marker.layer}-${marker.title}-${marker.id}`}
+              markerSize={props.markerSize}
+              marker={marker}
+              mapZoom={props.mapZoom}
+              setClickedLatLng={latlng => props.setClickedLatLng(latlng)}
+              setFocusedMarker={marker => props.setFocusedMarker(marker)}
+              setFocusedShape={shape => props.setFocusedShape(shape)}
+              toggleEditMarkerDialog={() => props.toggleEditMarkerDialog()}
+            />
           ))}
         </LayerGroup>
       </Overlay>
       <Overlay checked name='Building Labels'>
         <LayerGroup>
-          {props.step.buildingLabels.map(label => (
-            <Marker
-              autoPan={true}
-              draggable={true}
-              icon={L.divIcon({
-                className: '',
-                html: label.title,
-                iconSize: [props.markerSize * props.mapZoom, props.markerSize * props.mapZoom],
-              })}
-              id={label.id}
-              key={`building-label-${label.id}-${label.title}`}
-              onClick={() => props.setFocusedMarker(label)}
-              onDragend={event => props.handleMarkerDrag(label, event.target.getLatLng())}
-              position={label.latlng}
-              riseOnHover={true}
-              title={label.title}
-            >
-              <Popup
-                onClose={handlePopupClose}
-              >
-                {label.title}
-                <br />
-                {LL.parse(label.latlng.lat, label.latlng.lng).toUtm().toMgrs().toString()}
-                <br />
-                {(label.elevation !== 'Pending' && label.elevation !== 'Elevation not found') ?
-                  `${label.elevation} feet`
-                  : 'No elevation'
-                }
-                <br />
-                <Button color='primary'>Edit</Button>
-                <Button color='secondary'>Delete</Button>
-              </Popup>
-            </Marker>
-          ))}
-          {!props.step.buildingLabels.map(label => (
-            <Marker
-              icon={L.divIcon({
-                className: '',
-                html: label.title,
-                iconSize: [props.markerSize * props.mapZoom, props.markerSize * props.mapZoom],
-              })}
-              id={label.id}
-              key={`building-label-${label.id}-${label.title}`}
-              position={label.latlng}
-              title={label.title}
+          {props.step.buildingLabels.map(marker => (
+            <LayerMarkers
+              interactive={props.interactive}
+              handleMarkerDrag={(marker, latlng) => props.handleMarkerDrag(marker, latlng)}
+              handleDeleteMarker={marker => props.handleDeleteMarker(marker)}
+              key={`${marker.layer}-${marker.title}-${marker.id}`}
+              markerSize={props.markerSize}
+              marker={marker}
+              mapZoom={props.mapZoom}
+              setClickedLatLng={latlng => props.setClickedLatLng(latlng)}
+              setFocusedMarker={marker => props.setFocusedMarker(marker)}
+              setFocusedShape={shape => props.setFocusedShape(shape)}
+              toggleEditMarkerDialog={() => props.toggleEditMarkerDialog()}
             />
           ))}
         </LayerGroup>
@@ -887,7 +656,7 @@ export default (props) => {
               <Popup
                 onClose={handlePopupClose}
               >
-                {ellipse.title}
+                {generateShapePopupText(ellipse)}
                 <br />
                 <Button color='primary' onClick={() => handleEditShape(ellipse)}>Edit</Button>
                 <Button color='secondary' onClick={() => props.handleDeleteMarker(ellipse)}>Delete</Button>
@@ -1035,12 +804,8 @@ export default (props) => {
               <Popup
                 onClose={handlePopupClose}
               >
-                <React.Fragment>
-                  {circle.title}
-                  <br />
-                  {LL.parse(circle.latlng.lat, circle.latlng.lng).toUtm().toMgrs().toString()}
-                  <br />
-                </React.Fragment>
+                {generateShapePopupText(circle)}
+                <br/>
                 <Button color='primary' onClick={() => handleEditShape(circle)}>Edit</Button>
                 <Button color='secondary' onClick={() => props.handleDeleteMarker(circle)}>Delete</Button>
               </Popup>

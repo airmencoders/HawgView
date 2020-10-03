@@ -1,3 +1,15 @@
+## 2.44.0-alpha
+### Fixes
+* Error catching when clicking/navigating to a coordinate outside UTM/MGRS limits
+* Building Labels can now change color
+* If a marker is outside the UTM/MGRS limits, then the position is fixed to lat/lng
+* Now using the `LayerMarker` component to reduce some of the codebase in `LayerControl`
+
+### Tasks
+- [x] Add switch to the shape drawer to toggle bullseye show data
+- [ ] Make a `LayerShape` component to further reduce `LayerControl` codebase
+- [ ] Add a 2KM by 2KM dashed square around PAA/MLRS (Friendly and Hostile)
+
 ## 2.43.0-alpha
 ### Changes
 * Added editing of bullseye
@@ -20,7 +32,7 @@
 * Changed MGRS Grid Zoom levels to show the next in grid one zoom layer out (Requested by PUMA)
 
 ### Tasks
-- [ ] Add Bullseye handling to the shape drawer
+- [x] Add Bullseye handling to the shape drawer
 - [x] Add radial/DME labels to the bullseye
 - [ ] See if people think that a separate layer for SARDOTs is necessary/useful
 

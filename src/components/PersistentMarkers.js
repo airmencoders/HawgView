@@ -95,14 +95,16 @@ export default ({ handleAddMarker, handleMarkerDrawerToggle, toggleEditThreatDia
         angle: 45,
         color: '#ff0000',
         declination: 0,
+        showData: true,
       }
     }
-
 
     if (layer === 'building') {
       payload = {
         ...payload,
-        color: '#ff0000'
+        color: '#ff0000',
+        fontSize: '30',
+        lineHeight: '30px',
       }
     }
 
