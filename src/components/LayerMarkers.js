@@ -34,6 +34,7 @@ import React from 'react'
 import {
   Marker,
   Popup,
+  Rectangle,
   Tooltip,
 } from 'react-leaflet'
 import L from 'leaflet'
@@ -70,7 +71,7 @@ const LayerMarkers = props => {
       lineHeight: `${props.markerSize * props.mapZoom}px`,
       wordWrap: 'break-word',
     },
-  })  
+  })
 
   const classes = useStyles(props)
 
@@ -114,6 +115,29 @@ const LayerMarkers = props => {
     )
   }
 
+  const generatePAA = (latlng, layer) => {
+    // Get the four sides
+    const point = LatLon.parse(latlng.lat, latlng.lng)
+    const north = point.destinationPoint(2000, 0)
+    const south = point.destinationPoint(2000, 180)
+    const east = point.destinationPoint(2000, 90)
+    const west = point.destinationPoint(2000, 270)
+    
+    // Get the two corners
+    const northwest = [north.lat, west.lon]
+    const southeast = [south.lat, east.lon]
+
+    return (
+      <Rectangle
+        bounds={[northwest, southeast]}
+        color={layer === 'friendly' ? '#3388ff' : '#ff0000'}
+        dashArray='12,12'
+        fill={false}
+        weight={4}
+      />
+    )
+  }
+
   const handlePopupClose = () => {
     props.setFocusedMarker(null)
     props.setFocusedShape(null)
@@ -127,70 +151,81 @@ const LayerMarkers = props => {
 
   if (props.interactive) {
     return (
-      <Marker
-        autoPan
-        draggable
-        icon={props.marker.iconType === 'img' ?
-          L.icon({
-            iconUrl: props.marker.iconUrl,
-            iconSize: [props.markerSize * props.mapZoom, props.markerSize * props.mapZoom],
-          })
-          :
-          L.divIcon({
-            className: classes.divIcon,
-            color: props.marker.color,
-            html: props.marker.title,
-            iconSize: [20, 20],
-          })
-        }
-        id={props.marker.id}
-        onClick={() => props.setFocusedMarker(props.marker)}
-        onDragend={event => props.handleMarkerDrag(props.marker, event.target.getLatLng())}
-        position={props.marker.latlng}
-        riseOnHover
-        title={props.marker.title}
-      >
-        {generatePopup(props.marker)}
-        {(props.tooltipsActive) ?
-          <Tooltip
-            direction='top'
-            offset={L.point(0, -1 * props.markerSize * props.mapZoom)}
-            opacity={1}
-            permanent
-          />
-          : null}
-      </Marker>
+      <React.Fragment>
+        {props.marker.arty.display === true ? generatePAA(props.marker.latlng, props.marker.layer) : null}
+        <Marker
+          autoPan
+          draggable
+          icon={props.marker.iconType === 'img' ?
+            L.icon({
+              iconUrl: props.marker.iconUrl,
+              iconSize: [props.markerSize * props.mapZoom, props.markerSize * props.mapZoom],
+            })
+            :
+            L.divIcon({
+              className: classes.divIcon,
+              color: props.marker.color,
+              html: props.marker.title,
+              iconSize: [20, 20],
+            })
+          }
+          id={props.marker.id}
+          onClick={() => props.setFocusedMarker(props.marker)}
+          onDragend={event => props.handleMarkerDrag(props.marker, event.target.getLatLng())}
+          position={props.marker.latlng}
+          riseOnHover
+          title={props.marker.title}
+        >
+          {generatePopup(props.marker)}
+          {(props.tooltipsActive) ?
+            <Tooltip
+              direction='top'
+              offset={L.point(0, -1 * props.markerSize * props.mapZoom)}
+              opacity={1}
+              permanent
+            >
+              {props.marker.title}
+            </Tooltip>
+            : null}
+        </Marker>
+      </React.Fragment>
+
     )
   } else {
     return (
-      <Marker
-        icon={props.marker.iconType === 'img' ?
-          L.icon({
-            iconUrl: props.marker.iconUrl,
-            iconSize: [props.markerSize * props.mapZoom, props.markerSize * props.mapZoom],
-          })
-          :
-          L.divIcon({
-            className: classes.divIcon,
-            html: props.marker.title,
-            iconSize: [20, 20],
-          })
-        }
-        id={props.marker.id}
-        interactive={false}
-        position={props.marker.latlng}
-        riseOnHover
-        title={props.marker.title}
-      >
-        {(props.tooltipsActive) ?
-          <Tooltip
-            direction='top'
-            offset={L.point(0, -1 * props.markerSize * props.mapZoom)}
-            opacity={1}
-            permanent
-          />
-          : null}
-      </Marker>
+      <React.Fragment>
+        {props.marker.arty.display === true ? generatePAA(props.marker.latlng, props.marker.layer) : null}
+        <Marker
+          icon={props.marker.iconType === 'img' ?
+            L.icon({
+              iconUrl: props.marker.iconUrl,
+              iconSize: [props.markerSize * props.mapZoom, props.markerSize * props.mapZoom],
+            })
+            :
+            L.divIcon({
+              className: classes.divIcon,
+              html: props.marker.title,
+              iconSize: [20, 20],
+            })
+          }
+          id={props.marker.id}
+          interactive={false}
+          position={props.marker.latlng}
+          riseOnHover
+          title={props.marker.title}
+        >
+          {(props.tooltipsActive) ?
+            <Tooltip
+              direction='top'
+              offset={L.point(0, -1 * props.markerSize * props.mapZoom)}
+              opacity={1}
+              permanent
+            >
+              {props.marker.tooltip}
+            </Tooltip>
+            : null}
+        </Marker>
+      </React.Fragment>
     )
   }
 }

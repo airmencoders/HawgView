@@ -424,6 +424,7 @@ const editMarker = (history, step, payload) => {
       filteredMarkers = targetHistory[step].friendlyMarkers.filter(currentMarker => currentMarker.id !== marker.id)
       newMarker = {
         ...marker,
+        arty: payload.arty,
         elevation: payload.elevation,
         title: payload.title,
         latlng: payload.latlng,
@@ -438,6 +439,7 @@ const editMarker = (history, step, payload) => {
       filteredMarkers = targetHistory[step].hostileMarkers.filter(currentMarker => currentMarker.id !== marker.id)
       newMarker = {
         ...marker,
+        arty: payload.arty,
         data: payload.data,
         elevation: payload.elevation,
         title: payload.title,

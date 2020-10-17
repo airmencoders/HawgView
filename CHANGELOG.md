@@ -1,3 +1,14 @@
+## 2.45.0-alpha
+## Changes
+* Removed the `toUpperCase()` from the `onChange` method in the `InputCoord` component
+* Added `props.marker.title` to the empty `Tooltips` in the `LayerMarker` component
+* Added the `arty` object to markers
+* `LayerMarkers` now generates a 2KM by 2KM square around PAA/MLRS
+
+### Fixes
+* Fixed bug where cursor would jump to the end of the Input Coord when modifying
+* Fixed bug where tooltips would not display when selected
+
 ## 2.44.0-alpha
 ### Fixes
 * Error catching when clicking/navigating to a coordinate outside UTM/MGRS limits
@@ -8,7 +19,7 @@
 ### Tasks
 - [x] Add switch to the shape drawer to toggle bullseye show data
 - [ ] Make a `LayerShape` component to further reduce `LayerControl` codebase
-- [ ] Add a 2KM by 2KM dashed square around PAA/MLRS (Friendly and Hostile)
+- [x] Add a 2KM by 2KM dashed square around PAA/MLRS (Friendly and Hostile)
 
 ## 2.43.0-alpha
 ### Changes

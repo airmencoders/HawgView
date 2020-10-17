@@ -76,6 +76,10 @@ export default ({ handleAddMarker, handleMarkerDrawerToggle, toggleEditThreatDia
   const handleMarkerClick = (iconUrl, iconType, title, layer) => {
 
     let payload = {
+      arty: {
+        arty: false,
+        display: false,
+      },
       iconType,
       iconUrl,
       layer,
@@ -209,7 +213,7 @@ export default ({ handleAddMarker, handleMarkerDrawerToggle, toggleEditThreatDia
           BLDG LABEL
         </Button>
       </Tooltip>
-      
+
     </React.Fragment >
   )
 }

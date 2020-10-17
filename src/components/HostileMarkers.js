@@ -84,13 +84,27 @@ export default ({ handleAddMarker, handleMarkerDrawerToggle }) => {
   const classes = useStyles()
 
   const handleMarkerClick = (iconUrl, title) => {
-    const payload = {
+    let payload = {
+      arty: {
+        arty: false,
+        display: false,
+      },
       data: null,
       elevation: 0,   // TODO: Pull the elevation of the latlng from API
       iconType: 'img',
       iconUrl,
       layer: 'hostile',
       title,
+    }
+
+    if (title === 'Artillery' || title === 'MLRS') {
+      payload = {
+        ...payload,
+        arty: {
+          arty: true,
+          display: true,
+        }
+      }
     }
     handleMarkerDrawerToggle()
     handleAddMarker(payload)

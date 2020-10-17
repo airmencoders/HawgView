@@ -442,6 +442,7 @@ export default (props) => {
               setFocusedMarker={marker => props.setFocusedMarker(marker)}
               setFocusedShape={shape => props.setFocusedShape(shape)}
               toggleEditMarkerDialog={() => props.toggleEditMarkerDialog()}
+              tooltipsActive={props.tooltipsActive}
             />
           ))}
         </LayerGroup>
@@ -461,6 +462,7 @@ export default (props) => {
               setFocusedMarker={marker => props.setFocusedMarker(marker)}
               setFocusedShape={shape => props.setFocusedShape(shape)}
               toggleEditMarkerDialog={() => props.toggleEditMarkerDialog()}
+              tooltipsActive={props.tooltipsActive}
             />
           ))}
         </LayerGroup>
@@ -594,6 +596,7 @@ export default (props) => {
               setFocusedMarker={marker => props.setFocusedMarker(marker)}
               setFocusedShape={shape => props.setFocusedShape(shape)}
               toggleEditMarkerDialog={() => props.toggleEditMarkerDialog()}
+              tooltipsActive={props.tooltipsActive}
             />
           ))}
         </LayerGroup>
@@ -613,6 +616,7 @@ export default (props) => {
               setFocusedMarker={marker => props.setFocusedMarker(marker)}
               setFocusedShape={shape => props.setFocusedShape(shape)}
               toggleEditMarkerDialog={() => props.toggleEditMarkerDialog()}
+              tooltipsActive={props.tooltipsActive}
             />
           ))}
         </LayerGroup>
@@ -632,6 +636,7 @@ export default (props) => {
               setFocusedMarker={marker => props.setFocusedMarker(marker)}
               setFocusedShape={shape => props.setFocusedShape(shape)}
               toggleEditMarkerDialog={() => props.toggleEditMarkerDialog()}
+              tooltipsActive={props.tooltipsActive}
             />
           ))}
         </LayerGroup>

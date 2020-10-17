@@ -100,6 +100,9 @@ const EditMarkerDrawer = (props) => {
   const [elevation, setElevation] = React.useState('')
   const [mgrsDisabled, setMgrsDisabled] = React.useState(false)
 
+  // Arty data display
+  const [artyDisplay, setArtyDisplay] = React.useState(true)
+
   // Building Label Color
   const [color, setColor] = React.useState('')
 
@@ -179,6 +182,10 @@ const EditMarkerDrawer = (props) => {
       setElevation(props.marker.elevation)
       setCas(false)
       setCsar(false)
+
+      if (props.marker.arty.arty === true) {
+        setArtyDisplay(props.marker.arty.display)
+      }
 
       if (props.marker.layer === 'building') {
         setColor(props.marker.color)
@@ -311,6 +318,16 @@ const EditMarkerDrawer = (props) => {
       }
     }
 
+    if (props.marker.arty.arty === true) {
+      payload = {
+        ...payload,
+        arty: {
+          arty: true,
+          display: artyDisplay,
+        }
+      }
+    }
+
     if (props.marker.layer === 'building') {
       payload = {
         ...payload,
@@ -419,6 +436,31 @@ const EditMarkerDrawer = (props) => {
             />
           </Grid>
           : null
+        }
+        {(props.marker !== null && props.marker.arty.arty === true) ?
+          (
+            <Grid
+              container
+              direction='row'
+              justify='center'
+            >
+              <FormGroup>
+                <FormControlLabel
+                  control={
+                    <Switch
+                      checked={artyDisplay}
+                      color='primary'
+                      name='Display PAA'
+                      onChange={() => setArtyDisplay(!artyDisplay)}
+                    />
+                  }
+                  label='Display PAA'
+                />
+              </FormGroup>
+            </Grid>
+          )
+          : null
+
         }
         {(props.marker !== null && (props.marker.layer === 'hostile' || props.marker.layer === 'threat')) ?
           (

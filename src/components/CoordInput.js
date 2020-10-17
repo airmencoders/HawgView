@@ -101,7 +101,7 @@ export default (props) => {
 
   const handleSubmit = () => {
     inputRef.blur()
-    const latlng = submitCoordInput(inputValue)
+    const latlng = submitCoordInput(inputValue.toUpperCase())
 
     if (latlng === false) {
       console.error(`Error: Invalid coordinates {${inputValue}}`)
@@ -124,8 +124,8 @@ export default (props) => {
           root: classes.inputRoot,
         }}
         inputRef={input => inputRef = input}
-        onChange={input => setInputValue(input.target.value.toUpperCase())}
-        onKeyDown={event => (event.key === 'Enter') ? handleSubmit() : undefined}
+        onChange={input => setInputValue(input.target.value)}
+        onKeyDown={event => (event.key === 'Enter') ? handleSubmit() : null}
         placeholder='MGRS or Lat Long'
         value={inputValue}
       />
