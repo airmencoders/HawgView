@@ -277,6 +277,7 @@ const EditMarkerDrawer = (props) => {
       elevation: elevation,
       latlng: { lat: target.lat, lng: target.lon },
       title: title,
+      arty: props.marker.arty,
     }
 
     if ((props.marker.layer === 'threat' || props.marker.layer === 'hostile') && cas) {

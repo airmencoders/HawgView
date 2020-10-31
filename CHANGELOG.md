@@ -1,5 +1,13 @@
+## 2.45.1-alpha
+### Changes
+* Added `arty` property to the save function of `EditMarkerDrawer` component
+* Added check for both `props.marker.arty.arty` and `props.marker.arty.display` in `LayerMarkers` component
+
+### Fixes
+* Fixed crashing due to edited markers not saving the `arty` property and thus crashing rendering
+
 ## 2.45.0-alpha
-## Changes
+### Changes
 * Removed the `toUpperCase()` from the `onChange` method in the `InputCoord` component
 * Added `props.marker.title` to the empty `Tooltips` in the `LayerMarker` component
 * Added the `arty` object to markers

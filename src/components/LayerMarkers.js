@@ -152,7 +152,7 @@ const LayerMarkers = props => {
   if (props.interactive) {
     return (
       <React.Fragment>
-        {props.marker.arty.display === true ? generatePAA(props.marker.latlng, props.marker.layer) : null}
+        {(props.marker.arty.arty && props.marker.arty.display) ? generatePAA(props.marker.latlng, props.marker.layer) : null}
         <Marker
           autoPan
           draggable
@@ -194,7 +194,7 @@ const LayerMarkers = props => {
   } else {
     return (
       <React.Fragment>
-        {props.marker.arty.display === true ? generatePAA(props.marker.latlng, props.marker.layer) : null}
+        {(props.marker.arty.arty && props.marker.arty.display) ? generatePAA(props.marker.latlng, props.marker.layer) : null}
         <Marker
           icon={props.marker.iconType === 'img' ?
             L.icon({
