@@ -115,7 +115,9 @@ const EditMarkerDrawer = (props) => {
   // Control 9-Line TextFields
   const [casLabel, setCasLabel] = React.useState('')
   const [casTypeMethod, setCasTypeMethod] = React.useState('')
-  const [casIpHdgDistance, setCasIpHdgDistance] = React.useState('')
+  const [casIp, setCasIp] = React.useState('')
+  const [casHdg, setCasHdg] = React.useState('')
+  const [casDistance, setCasDistance] = React.useState('')
   const [casElevation, setCasElevation] = React.useState('')
   const [casDescription, setCasDescription] = React.useState('')
   const [casLocation, setCasLocation] = React.useState('')
@@ -123,6 +125,7 @@ const EditMarkerDrawer = (props) => {
   const [casFriendlies, setCasFriendlies] = React.useState('')
   const [casEgress, setCasEgress] = React.useState('')
   const [casRemarks, setCasRemarks] = React.useState('')
+  const [casF2F, setCasF2F] = React.useState('')
 
   // Control 15-Line TextFields
   const [csarCallsign, setCsarCallsign] = React.useState('')
@@ -193,7 +196,7 @@ const EditMarkerDrawer = (props) => {
 
       if (props.marker.layer === 'hostile' || props.marker.layer === 'threat') {
         if (props.marker.data === null) {
-          setCasIpHdgDistance('N/A')
+          //setCasIpHdgDistance('N/A')
           setCasElevation(props.marker.elevation)
           setCasDescription(props.marker.title)
           //setCasLocation(LatLon.parse(props.marker.latlng).toUtm().toMgrs().toString())
@@ -202,7 +205,9 @@ const EditMarkerDrawer = (props) => {
           setCas(true)
           setCasLabel(props.marker.data.label)
           setCasTypeMethod(props.marker.data.typeMethod)
-          setCasIpHdgDistance(props.marker.data.ipHdgDistance)
+          setCasIp(props.marker.data.ip)
+          setCasHdg(props.marker.data.hdg)
+          setCasDistance(props.marker.data.distance)
           setCasElevation(props.marker.data.elevation)
           setCasDescription(props.marker.data.description)
           setCasLocation(props.marker.data.location)
@@ -210,6 +215,7 @@ const EditMarkerDrawer = (props) => {
           setCasFriendlies(props.marker.data.friendlies)
           setCasEgress(props.marker.data.egress)
           setCasRemarks(props.marker.data.remarks)
+          setCasF2F(props.marker.data.f2f)
         }
       } else if (props.marker.layer === 'survivor') {
         if (props.marker.data === null) {
@@ -285,7 +291,9 @@ const EditMarkerDrawer = (props) => {
         type: '9line',
         label: casLabel,
         typeMethod: casTypeMethod,
-        ipHdgDistance: casIpHdgDistance,
+        ip: casIp,
+        hdg: casHdg,
+        distance: casDistance,
         elevation: casElevation,
         description: casDescription,
         location: casLocation,
@@ -293,6 +301,7 @@ const EditMarkerDrawer = (props) => {
         friendlies: casFriendlies,
         egress: casEgress,
         remarks: casRemarks,
+        f2f: casF2F,
       }
     } else if (props.marker.layer === 'survivor' && csar) {
       payload.data = {
@@ -530,10 +539,24 @@ const EditMarkerDrawer = (props) => {
               />
               <TextField
                 className={classes.textField}
-                label='IP / HDG / Distance'
-                onChange={event => setCasIpHdgDistance(event.target.value)}
+                label='IP'
+                onChange={event => setCasIp(event.target.value)}
                 variant='outlined'
-                value={casIpHdgDistance}
+                value={casIp}
+              />
+              <TextField
+                className={classes.textField}
+                label='HDG'
+                onChange={event => setCasHdg(event.target.value)}
+                variant='outlined'
+                value={casHdg}
+              />
+              <TextField
+                className={classes.textField}
+                label='Distance'
+                onChange={event => setCasDistance(event.target.value)}
+                variant='outlined'
+                value={casDistance}
               />
               <TextField
                 className={classes.textField}
@@ -583,6 +606,13 @@ const EditMarkerDrawer = (props) => {
                 onChange={event => setCasRemarks(event.target.value)}
                 variant='outlined'
                 value={casRemarks}
+              />
+              <TextField
+                className={classes.textField}
+                label='Fighter-to-Fighter'
+                onChange={event => setCasF2F(event.target.value)}
+                variant='outlined'
+                value={casF2F}
               />
             </React.Fragment>
           )

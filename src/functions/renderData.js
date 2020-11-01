@@ -13,7 +13,7 @@ const render9line = (data) => (
       </tr>
       <tr>
         <td>IP / Hdg / Distance</td>
-        <td>{data.ipHdgDistance}</td>
+        <td>{`${data.ip}/${data.hdg}/${data.distance}`}</td>
       </tr>
       <tr>
         <td>Elevation</td>
@@ -42,6 +42,10 @@ const render9line = (data) => (
       <tr>
         <td>Remarks/Restrictions</td>
         <td>{data.remarks}</td>
+      </tr>
+      <tr>
+        <td>Fighter-to-Fighter</td>
+        <td>{data.f2f}</td>
       </tr>
     </tbody>
   </table>
