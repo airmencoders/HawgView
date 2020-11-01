@@ -292,6 +292,7 @@ const Cas = ({ state }) => {
 
   const toggleTools = tool => {
 
+    setFocusedMarker(null)
     setClickedLatLng(null)
     setMouseCoords(null)
     setLineClosed(true)
