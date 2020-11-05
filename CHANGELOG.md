@@ -1,10 +1,17 @@
+## 2.46.2-alpha
+### Changes
+* `save` function in `ShapeDrawer` now parses the radius of a circle as an integer
+
+### Fixes
+* Fixed bug where creating a circle and immediately using the shape tools again would set the radius to `0` (Thanks PUMA for finding this)
+
 ## 2.46.1-alpha
 ### Changes
 * Added `setFocusedShape(null)` to the `toggleTools` method in `CAS`
 * Added parameter that `focusedShape` === `null` before app can work through processing clicks
 
 ### Fixes
-* Fixed bug where creating a circle and immediately using the shape tools again would set the radius to `0` (Thanks PUMA for finding this)
+~~* Fixed bug where creating a circle and immediately using the shape tools again would set the radius to `0` (Thanks PUMA for finding this)~~
 
 ## 2.46.0-alpha
 ### Changes

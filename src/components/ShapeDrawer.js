@@ -262,7 +262,7 @@ export default (props) => {
     if (props.shape.layer === 'circle') {
       payload = {
         ...payload,
-        radius: radius,
+        radius: Number.parseFloat(radius),
         unit: unit,
       }
     }

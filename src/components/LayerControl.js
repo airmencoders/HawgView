@@ -795,6 +795,8 @@ export default (props) => {
       </Overlay>
       <Overlay checked name='Circles'>
         <LayerGroup>
+          {props.interactive && props.step.circles.map(circle => console.log('circle int:', circle))}
+          {!props.interactive && props.step.circles.map(circle => console.log('circle non:', circle))}
           {props.interactive && props.step.circles.map(circle => (
             <Circle
               center={circle.latlng}
@@ -835,7 +837,7 @@ export default (props) => {
               fill={circle.fillColor === null ? false : true}
               fillColor={circle.fillColor === null ? undefined : circle.fillColor}
               key={`circle-${circle.id}-${circle.title}`}
-              radius={circle.radius}
+              radius={circle.unit === 'm' ? circle.radius : circle.unit === 'km' ? circle.radius * 1000 : circle.radius * 1852}
               weight={4}
             >
               {(props.tooltipsActive) ?
