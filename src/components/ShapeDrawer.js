@@ -279,6 +279,8 @@ export default (props) => {
 
     props.submit('edit', payload)
     props.onClose()
+    setRadius(0)
+    setUnit('m')
     setDashed(false)
     setDashArray('12, 12')
     setFill(false)

@@ -1,3 +1,23 @@
+## 2.46.1-alpha
+### Changes
+* Added `setFocusedShape(null)` to the `toggleTools` method in `CAS`
+* Added parameter that `focusedShape` === `null` before app can work through processing clicks
+
+### Fixes
+* Fixed bug where creating a circle and immediately using the shape tools again would set the radius to `0` (Thanks PUMA for finding this)
+
+## 2.46.0-alpha
+### Changes
+* Updated 9-Line information to separate out `IP`, `HDG`, and `Distance`
+* Added `Fighter-to-Fighter` to CAS 9-Line
+
+## 2.45.2-alpha
+### Changes
+* Selecting a tool now sets the `FocusedMarker` to `null`
+
+### Fixes
+* Fixed erroneous behavior when a user clicks a marker, setting `clickedLatLng` which would then interfere with shape tools
+
 ## 2.45.1-alpha
 ### Changes
 * Added `arty` property to the save function of `EditMarkerDrawer` component

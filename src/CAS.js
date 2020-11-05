@@ -237,7 +237,7 @@ const Cas = ({ state }) => {
   React.useEffect(() => {
     if (focusedMarker !== null) {
       setClickedLatLng(focusedMarker.latlng)
-    } else if (clickedLatLng !== null && activeTool === null && focusedMarker === null) {
+    } else if (clickedLatLng !== null && activeTool === null && focusedMarker === null && focusedShape === null) {
 
       const lat = Dms.parse(clickedLatLng.lat)
       const lng = Dms.parse(clickedLatLng.lng)
@@ -293,6 +293,7 @@ const Cas = ({ state }) => {
   const toggleTools = tool => {
 
     setFocusedMarker(null)
+    setFocusedShape(null)
     setClickedLatLng(null)
     setMouseCoords(null)
     setLineClosed(true)
