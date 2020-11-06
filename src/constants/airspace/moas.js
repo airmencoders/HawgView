@@ -20,6 +20,7 @@ import { ohio } from './moas/ohio'
 import { oregon } from './moas/oregon'
 import { pennsylvania } from './moas/pennsylvania'
 import { southKorea } from './moas/southKorea'
+import { texas } from './moas/texas'
 import { thailand } from './moas/thailand'
 import { utah } from './moas/utah'
 import { virginia } from './moas/virginia'
@@ -48,6 +49,7 @@ export const moas = alaska.concat(
   oregon,
   pennsylvania,
   southKorea,
+  texas,
   thailand,
   utah,
   virginia,

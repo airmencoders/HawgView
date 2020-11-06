@@ -21,6 +21,7 @@ import { newYork } from './restrictedAreas/newYork'
 import { northCarolina } from './restrictedAreas/northCarolina'
 import { pennsylvania } from './restrictedAreas/pennsylvania'
 import { southKorea } from './restrictedAreas/southKorea'
+import { texas } from './restrictedAreas/texas'
 import { thailand } from './restrictedAreas/thailand'
 import { utah } from './restrictedAreas/utah'
 import { virginia } from './restrictedAreas/virginia'
@@ -49,6 +50,7 @@ export const restrictedAreas = alabama.concat(
   northCarolina,
   pennsylvania,
   southKorea,
+  texas,
   thailand,
   utah,
   virginia,

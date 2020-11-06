@@ -1,3 +1,7 @@
+## 2.48.0-alpha
+### Changes
+* Added Brady MOAs and Yankee/Dixie Range (Requested by OBI/Demon)
+
 ## 2.47.0-alpha
 ### Changes
 * Added Germany airspace (Thanks Paul F)
