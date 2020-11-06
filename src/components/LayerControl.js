@@ -795,8 +795,6 @@ export default (props) => {
       </Overlay>
       <Overlay checked name='Circles'>
         <LayerGroup>
-          {props.interactive && props.step.circles.map(circle => console.log('circle int:', circle))}
-          {!props.interactive && props.step.circles.map(circle => console.log('circle non:', circle))}
           {props.interactive && props.step.circles.map(circle => (
             <Circle
               center={circle.latlng}

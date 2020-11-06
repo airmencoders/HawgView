@@ -1,3 +1,7 @@
+## 2.47.0-alpha
+### Changes
+* Added Germany airspace (Thanks Paul F)
+
 ## 2.46.2-alpha
 ### Changes
 * `save` function in `ShapeDrawer` now parses the radius of a circle as an integer

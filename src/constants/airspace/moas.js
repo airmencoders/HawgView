@@ -6,6 +6,7 @@ import { california } from './moas/california'
 import { colorado } from './moas/colorado'
 import { florida } from './moas/florida'
 import { georgia } from './moas/georgia'
+import { germany } from './moas/germany'
 import { idaho } from './moas/idaho'
 import { indiana } from './moas/indiana'
 import { kansas } from './moas/kansas'
@@ -33,6 +34,7 @@ export const moas = alaska.concat(
   colorado,
   florida,
   georgia,
+  germany,
   idaho,
   indiana,
   kansas,

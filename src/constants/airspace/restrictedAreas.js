@@ -6,6 +6,7 @@ import { california } from './restrictedAreas/california'
 import { colorado } from './restrictedAreas/colorado'
 import { florida } from './restrictedAreas/florida'
 import { georgia } from './restrictedAreas/georgia'
+import { germany } from './restrictedAreas/germany'
 import { idaho } from './restrictedAreas/idaho'
 import { indiana } from './restrictedAreas/indiana'
 import { kansas } from './restrictedAreas/kansas'
@@ -33,6 +34,7 @@ export const restrictedAreas = alabama.concat(
   colorado,
   florida,
   georgia,
+  germany,
   idaho,
   indiana,
   kansas,
