@@ -43,6 +43,7 @@ import {
 // Material-UI Core Components
 //----------------------------------------------------------------//
 import Box from '@material-ui/core/Box'
+import Button from '@material-ui/core/Button'
 import IconButton from '@material-ui/core/IconButton'
 import { makeStyles } from '@material-ui/core/styles'
 import Snackbar from '@material-ui/core/Snackbar'
@@ -707,6 +708,14 @@ const Cas = ({ state }) => {
                   </tr>
                 </tbody>
               </table>
+              <Button
+                color='primary'
+                href={`https://viperops.com/#/ArcGISMap?lat=${LatLon.parse(mapPopup.latlng).lat}&lng=${LatLon.parse(mapPopup.latlng).lng}`}
+                rel='noopener noreferrer'
+                target='_blank'
+              >
+                TGP View
+              </Button>
             </Popup> :
             null
           }

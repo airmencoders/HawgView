@@ -1,3 +1,7 @@
+## 2.49.0-alpha
+### Changes
+* Linked markers to ViperOps ArcGISMap TGP API (Huge shout out to TRON for making this a reality!!!)
+
 ## 2.48.0-alpha
 ### Changes
 * Added Brady MOAs and Yankee/Dixie Range (Requested by OBI/Demon)
