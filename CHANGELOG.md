@@ -1,3 +1,12 @@
+## 2.50.0-alpha
+### Changes
+* Renamed `Building Labels` to `Map Labels` with the same functions
+* Added `Building Labels` to the CAS tools which continue to add as the user clicks
+* Added `Kinetic Points` to the CAS tools which continue to add as the user clicks
+
+### Bugs
+* `Building Labels` only work while the tool is active, then crashes once the tool deactivates
+
 ## 2.49.0-alpha
 ### Changes
 * Linked markers to ViperOps ArcGISMap TGP API (Huge shout out to TRON for making this a reality!!!)

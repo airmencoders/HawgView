@@ -56,7 +56,7 @@ import { render9line, render15line } from '../functions/renderData'
 //----------------------------------------------------------------//
 // Layer Markers Component
 //----------------------------------------------------------------//
-const LayerMarkers = props => {
+const LayerShapes = props => {
 
   const useStyles = makeStyles({
     divIcon: {
@@ -196,4 +196,4 @@ const LayerMarkers = props => {
   }
 }
 
-export default LayerMarkers
+export default LayerShapes

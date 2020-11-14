@@ -99,7 +99,7 @@ const useStyles = makeStyles(theme => ({
 //----------------------------------------------------------------//
 // Shape Drawer Component
 //----------------------------------------------------------------//
-export default (props) => {
+const ShapeDrawer = (props) => {
   const classes = useStyles()
 
   const [dashed, setDashed] = React.useState(false)
@@ -596,3 +596,5 @@ export default (props) => {
     </nav>
   )
 }
+
+export default ShapeDrawer

@@ -60,7 +60,7 @@ import ViewListIcon from '@material-ui/icons/ViewList'
 //----------------------------------------------------------------//
 // CAS Tools Component
 //----------------------------------------------------------------//
-export default (props) => {
+const CASTools = (props) => {
 
   return (
     <React.Fragment>
@@ -177,3 +177,5 @@ export default (props) => {
     </React.Fragment>
   )
 }
+
+export default CASTools

@@ -16,7 +16,7 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-export default (props) => {
+const EditMarkerDialog = (props) => {
   const classes = useStyles()
 
   const [title, setTitle] = React.useState(props.marker.title)
@@ -97,3 +97,5 @@ export default (props) => {
     </Dialog>
   )
 }
+
+export default EditMarkerDialog

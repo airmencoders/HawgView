@@ -46,7 +46,7 @@ import AnalysisToolPastLines from './AnalysisToolPastLines'
 //----------------------------------------------------------------//
 // Analysis Tool Component
 //----------------------------------------------------------------//
-export default (props) => {
+const AnalysisTool = (props) => {
   const [hdg, setHdg] = React.useState(0)
   const [lines, setLines] = React.useState([])
   const [meters, setMeters] = React.useState(0)
@@ -191,3 +191,5 @@ export default (props) => {
     </FeatureGroup>
   )
 }
+
+export default AnalysisTool

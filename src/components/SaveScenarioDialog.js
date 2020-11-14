@@ -17,7 +17,7 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-export default (props) => {
+const SaveScenarioDialog = (props) => {
   const classes = useStyles()
   let scenarioRef = React.useRef(null)
 
@@ -42,7 +42,9 @@ export default (props) => {
       friendlyMarkers: props.data.friendlyMarkers,
       hostileMarkers: props.data.hostileMarkers,
       initialPoints: props.data.initialPoints,
+      kineticPoints: props.data.kineticPoints,
       lines: props.data.lines,
+      mapLabels: props.data.mapLabels,
       polygons: props.data.polygons,      
       rectangles: props.data.rectangles,
       survivors: props.data.survivors,
@@ -85,3 +87,5 @@ export default (props) => {
     </Dialog>
   )
 }
+
+export default SaveScenarioDialog

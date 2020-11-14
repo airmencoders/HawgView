@@ -93,7 +93,7 @@ const useStyles = makeStyles(theme => ({
 //----------------------------------------------------------------//
 // MGRS Input Component
 //----------------------------------------------------------------//
-export default (props) => {
+const CoordInput = (props) => {
   const classes = useStyles()
 
   let inputRef = React.useRef('')
@@ -132,3 +132,5 @@ export default (props) => {
     </div>
   )
 }
+
+export default CoordInput

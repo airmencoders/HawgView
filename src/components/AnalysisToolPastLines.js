@@ -54,7 +54,7 @@ const useStyles = makeStyles(theme => ({
 //----------------------------------------------------------------//
 // Analysis Tool Past Lines Component
 //----------------------------------------------------------------//
-export default (props) => {
+const AnalysisToolPastLines = (props) => {
   const classes = useStyles()
 
   return (
@@ -96,3 +96,5 @@ export default (props) => {
     </React.Fragment>
   )
 }
+
+export default AnalysisToolPastLines

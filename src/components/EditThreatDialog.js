@@ -43,7 +43,7 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-export default (props) => {
+const EditThreatDialog = (props) => {
   const classes = useStyles()
 
   const [custom, setCustom] = React.useState(props.marker !== null && props.marker.layer === 'threat' ? props.marker.threatType.title === 'Custom' ? true : false : true)
@@ -225,3 +225,5 @@ export default (props) => {
     </Dialog >
   )
 }
+
+export default EditThreatDialog

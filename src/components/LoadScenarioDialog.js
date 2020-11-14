@@ -16,7 +16,7 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-export default (props) => {
+const LoadScenarioDialog = (props) => {
   const classes = useStyles()
 
   const [scenario, setScenario] = React.useState('')
@@ -49,3 +49,5 @@ export default (props) => {
     </Dialog>
   )
 }
+
+export default LoadScenarioDialog

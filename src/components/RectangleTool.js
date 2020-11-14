@@ -4,7 +4,7 @@ import {
   Rectangle,
 } from 'react-leaflet'
 
-export default (props) => {
+const RectangleTool = (props) => {
 
   const [startLatlng, setStartLatlng] = React.useState(null)
 
@@ -57,3 +57,5 @@ export default (props) => {
     return null
   }
 }
+
+export default RectangleTool

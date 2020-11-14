@@ -17,7 +17,7 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-export default (props) => {
+const Edit9LineDialog = (props) => {
   const classes = useStyles()
 
   const [label, setLabel] = React.useState(props.marker.data === null ? '' : props.marker.data.label)
@@ -149,3 +149,5 @@ export default (props) => {
     </Dialog>
   )
 }
+
+export default Edit9LineDialog

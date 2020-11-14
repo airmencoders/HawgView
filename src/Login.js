@@ -85,7 +85,7 @@ const useStyles = makeStyles((theme) => ({
 //----------------------------------------------------------------//
 // Login Component
 //----------------------------------------------------------------//
-export default ({ handleLoginClick, state }) => {
+const Login = ({ handleLoginClick, state }) => {
   const classes = useStyles()
 
   //----------------------------------------------------------------//
@@ -197,3 +197,5 @@ export default ({ handleLoginClick, state }) => {
     </React.Fragment>
   )
 }
+
+export default Login

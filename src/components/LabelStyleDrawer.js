@@ -1,7 +1,9 @@
 /**
  * ${SUMMARY}
  * 
- * ${DESCRIPTION}
+ * Based on the leaflet.js plugin leaflet-ruler. A bearing and range analysis tool.
+ * Improvements include modularization for use with React and the ability to use
+ * magnetic declination for magnetic rather than true headings.
  * 
  * @author  chris-m92
  * 
@@ -35,21 +37,8 @@ import React from 'react'
 //----------------------------------------------------------------//
 // Material-UI Core Components
 //----------------------------------------------------------------//
-import Divider from '@material-ui/core/Divider'
 import Drawer from '@material-ui/core/Drawer'
-import FormControlLabel from '@material-ui/core/FormControlLabel'
-import FormGroup from '@material-ui/core/FormGroup'
-import Grid from '@material-ui/core/Grid'
 import { makeStyles } from '@material-ui/core/styles'
-import Switch from '@material-ui/core/Switch'
-import TextField from '@material-ui/core/TextField'
-
-//----------------------------------------------------------------//
-// Custom Components
-//----------------------------------------------------------------//
-import FriendlyMarkers from './FriendlyMarkers'
-import HostileMarkers from './HostileMarkers'
-import PersistentMarkers from './PersistentMarkers'
 
 //----------------------------------------------------------------//
 // Custom Class Styling
@@ -57,8 +46,17 @@ import PersistentMarkers from './PersistentMarkers'
 const drawerWidth = 240
 
 const useStyles = makeStyles(theme => ({
-  descriptionField: {
+  flex: {
+    display: 'flex',
+  },
+  grow: {
+    flexGrow: 1,
+  },
+  marginsMd: {
     margin: theme.spacing(2),
+  },
+  marginsSm: {
+    margin: theme.spacing(1),
   },
   drawer: {
     [theme.breakpoints.up('sm')]: {
@@ -69,17 +67,35 @@ const useStyles = makeStyles(theme => ({
   drawerPaper: {
     width: drawerWidth,
   },
+  firstTextField: {
+    marginLeft: theme.spacing(2),
+    marginRight: theme.spacing(2),
+    marginTop: theme.spacing(2),
+    marginBottom: theme.spacing(1),
+  },
+  textField: {
+    marginLeft: theme.spacing(2),
+    marginRight: theme.spacing(2),
+    marginTop: theme.spacing(1),
+    marginBottom: theme.spacing(1),
+  },
 }))
 
 //----------------------------------------------------------------//
-// Marker Drawer Component
+// Analysis Tool Component
 //----------------------------------------------------------------//
-const MarkerDrawer = (props) => {
+/**
+ * 
+ * @param {*} props 
+ */
+const LabelStyleDrawer = (props) => {
   const classes = useStyles()
 
-  const [hostile, setHostile] = React.useState(false)
+  const [index, setIndex] = React.useState('')
+  const [color, setColor] = React.useState('#ff0000')
 
   const container = props.window !== undefined ? () => window().document.body : undefined
+
 
   return (
     <nav
@@ -89,60 +105,15 @@ const MarkerDrawer = (props) => {
         container={container}
         variant='temporary'
         anchor='left'
-        open={props.markerDrawerOpen}
-        onClose={props.handleMarkerDrawerToggle}
+        open={props.open}
+        onClose={props.onClose}
         classes={{ paper: classes.drawerPaper, }}
-        ModalProps={{ keepMounted: true, }}
+        ModalProps={{ keepMounted: true }}
       >
-        <div>
-          <Grid
-            container
-            direction='row'
-            justify='center'
-          >
-            <FormGroup>
-              <FormControlLabel
-                control={
-                  <Switch
-                    checked={hostile}
-                    name='hostile'
-                    onChange={() => setHostile(!hostile)}
-                  />
-                }
-                label='Hostile'
-              />
-            </FormGroup>
-          </Grid>
-          <Divider />
-          <TextField
-            className={classes.descriptionField}
-            label='Marker Label'
-            onChange={event => props.setMarkerLabel(event.target.value)}
-            variant='outlined'
-            value={props.markerLabel}
-          />
-          <Divider />
-          <PersistentMarkers
-            handleAddMarker={payload => props.handleAddMarker(payload)}
-            handleMarkerDrawerToggle={props.handleMarkerDrawerToggle}
-            toggleEditThreatDialog={props.toggleEditThreatDialog}
-          />
-          <Divider />
-          {(hostile) ?
-            <HostileMarkers
-              handleAddMarker={payload => props.handleAddMarker(payload)}
-              handleMarkerDrawerToggle={props.handleMarkerDrawerToggle}
-            />
-            :
-            <FriendlyMarkers
-              handleAddMarker={payload => props.handleAddMarker(payload)}
-              handleMarkerDrawerToggle={props.handleMarkerDrawerToggle}
-            />
-          }
-        </div>
+        test
       </Drawer>
     </nav>
   )
 }
 
-export default MarkerDrawer
+export default LabelStyleDrawer

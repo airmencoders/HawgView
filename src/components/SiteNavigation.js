@@ -66,7 +66,7 @@ const useStyles = makeStyles(theme => ({
 //----------------------------------------------------------------//
 // Site Navigation Component
 //----------------------------------------------------------------//
-export default ({ state }) => {
+const SiteNavigation = ({ state }) => {
   const classes = useStyles()
 
   const [menuAnchorElement, setMenuAnchorElement] = React.useState(null)
@@ -118,3 +118,5 @@ export default ({ state }) => {
     </div>
   )
 }
+
+export default SiteNavigation

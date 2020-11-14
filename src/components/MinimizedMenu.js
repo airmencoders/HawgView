@@ -67,7 +67,7 @@ const useStyles = makeStyles(theme => ({
 //----------------------------------------------------------------//
 // Minimized Menu Component
 //----------------------------------------------------------------//
-export default (props) => {
+const MinimizedMenu = (props) => {
   const classes = useStyles()
 
   const handleAddMarkerClick = () => {
@@ -195,3 +195,5 @@ export default (props) => {
     </Menu>
   )
 }
+
+export default MinimizedMenu

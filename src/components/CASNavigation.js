@@ -67,7 +67,7 @@ const useStyles = makeStyles(theme => ({
 //----------------------------------------------------------------//
 // CAS Navigation Component
 //----------------------------------------------------------------//
-export default (props) => {
+const CASNavigation = (props) => {
   const classes = useStyles()
 
   return (
@@ -123,3 +123,5 @@ export default (props) => {
     </div>
   )
 }
+
+export default CASNavigation

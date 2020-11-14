@@ -23,7 +23,7 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-export default (props) => {
+const MGRSGrids = (props) => {
   const classes = useStyles()
 
   let tempLines, tempLabels
@@ -471,3 +471,5 @@ export default (props) => {
     </LayerGroup>
   )
 }
+
+export default MGRSGrids

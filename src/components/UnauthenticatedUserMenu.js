@@ -41,7 +41,7 @@ import Button from '@material-ui/core/Button'
 //----------------------------------------------------------------//
 // Unauthenticated User Menu Component
 //----------------------------------------------------------------//
-export default () => {
+const UnauthenticatedUserMenu = () => {
 
   return (
     <NavLink
@@ -56,3 +56,5 @@ export default () => {
     </NavLink>
   )
 }
+
+export default UnauthenticatedUserMenu

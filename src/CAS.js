@@ -59,6 +59,7 @@ import MoreVertIcon from '@material-ui/icons/MoreVert'
 //----------------------------------------------------------------//
 import AnalysisTool from './components/AnalysisTool'
 //import AuthenticatedUserMenu from './components/AuthenticatedUserMenu'
+import BuildingLabelTool from './components/BuildingLabelTool'
 import CASNavigation from './components/CASNavigation'
 import CASTools from './components/CASTools'
 import CircleTool from './components/CircleTool'
@@ -71,6 +72,7 @@ import EditMarkerDialog from './components/EditMarkerDialog'
 import EditMarkerDrawer from './components/EditMarkerDrawer'
 import EllipseTool from './components/EllipseTool'
 import { editMarkers } from './functions/editMarkers'
+import LabelStyleDrawer from './components/LabelStyleDrawer'
 import LayerControl from './components/LayerControl'
 import LineTool from './components/LineTool'
 import MarkerDrawer from './components/MarkerDrawer'
@@ -156,12 +158,15 @@ const Cas = ({ state }) => {
     friendlyMarkers: [],
     hostileMarkers: [],
     initialPoints: [],
+    kineticPoints: [],
     lines: [],
+    mapLabels: [],
     polygons: [],
     rectangles: [],
     survivors: [],
     threatMarkers: [],
   }])
+  const [labelStyleDrawerOpen, setLabelStyleDrawerOpen] = React.useState(false)
   const [lineClosed, setLineClosed] = React.useState(true)
   const [loadScenarioDialogOpen, setLoadScenarioDialogOpen] = React.useState(false)
   const [map, setMap] = React.useState(null)
@@ -282,10 +287,13 @@ const Cas = ({ state }) => {
    */
   const handleMapReset = () => {
     setClickedLatLng(null)
+    setMouseCoords(null)
+    setLineClosed(true)
     setFocusedMarker(null)
     setFocusedShape(null)
     setMapPopup(null)
     setShapeDrawerOpen(false)
+    setLabelStyleDrawerOpen(false)
     setMarkerDrawerOpen(false)
     setEditMarkerDrawerOpen(false)
     setElevation('Pending')
@@ -293,16 +301,19 @@ const Cas = ({ state }) => {
 
   const toggleTools = tool => {
 
-    setFocusedMarker(null)
-    setFocusedShape(null)
-    setClickedLatLng(null)
-    setMouseCoords(null)
-    setLineClosed(true)
-    setMapPopup(null)
+    handleMapReset()
 
     switch (tool) {
       case 'analysis':
         activeTool === 'analysis' ? setActiveTool(null) : setActiveTool('analysis')
+        break
+      case 'buildingLabel':
+        //activeTool !== 'buildingLabel' ? setLabelStyleDrawerOpen(true) : setLabelStyleDrawerOpen(false)
+        activeTool === 'buildingLabel' ? setActiveTool(null) : setActiveTool('buildingLabel')
+        break
+      case 'kineticPoint':
+        //activeTool !== 'kineticPoint' ? setLabelStyleDrawerOpen(true) : setLabelStyleDrawerOpen(false)
+        activeTool === 'kineticPoint' ? setActiveTool(null) : setActiveTool('kineticPoint')
         break
       case 'line':
         activeTool === 'line' ? setActiveTool(null) : setActiveTool('line')
@@ -416,7 +427,7 @@ const Cas = ({ state }) => {
           }
         }
 
-        if (payload.layer === 'friendly' || payload.layer === 'hostile' || payload.layer === 'threat' || payload.layer === 'survivor' || payload.layer === 'ip' || payload.layer === 'building' || payload.layer === 'bullseye')
+        if (payload.layer === 'friendly' || payload.layer === 'hostile' || payload.layer === 'threat' || payload.layer === 'survivor' || payload.layer === 'ip' || payload.layer === 'mapLabel' || payload.layer === 'bullseye')
           updatedPayload = {
             ...updatedPayload,
             latlng: clickedLatLng,
@@ -497,7 +508,9 @@ const Cas = ({ state }) => {
         friendlyMarkers: json.data.friendlyMarkers,
         hostileMarkers: json.data.hostileMarkers,
         initialPoints: json.data.initialPoints,
+        kineticPoints: json.data.kineticPoints,
         lines: json.data.lines,
+        mapLabels: json.data.mapLabels,
         polygons: json.data.polygons,
         circles: json.data.circles,
         survivors: json.data.survivors,
@@ -640,6 +653,13 @@ const Cas = ({ state }) => {
             toggle={() => toggleTools('analysis')}
             latlng={clickedLatLng}
           />
+          <BuildingLabelTool
+            active={activeTool === 'buildingLabel'}
+            clearLatlng={() => setClickedLatLng(null)}
+            latlng={clickedLatLng}
+            submit={(action, payload) => handleMarkerEdit(action, payload)}
+            toggle={() => toggleTools('buildingLabel')}
+          />
           <LineTool
             active={activeTool === 'line'}
             latlng={clickedLatLng}
@@ -721,6 +741,10 @@ const Cas = ({ state }) => {
           }
         </Map>
       </Box>
+      <LabelStyleDrawer
+        open={labelStyleDrawerOpen}
+        onClose={handleMapReset}
+      />
       <MarkerDrawer
         markerDrawerOpen={markerDrawerOpen}
         markerLabel={markerLabel}

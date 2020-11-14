@@ -54,7 +54,7 @@ const useStyles = makeStyles(() => ({
 //----------------------------------------------------------------//
 // Map Component
 //----------------------------------------------------------------//
-export default (props) => {
+const LeafletMap = (props) => {
   const classes = useStyles()
 
   let mapRef = React.useRef()
@@ -83,3 +83,5 @@ export default (props) => {
     </Map>
   )
 }
+
+export default LeafletMap

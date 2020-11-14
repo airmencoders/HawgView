@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default (props) => {
+const EllipseTool = (props) => {
 
   /**
    * Since the Leaflet Ellipse plugin isn't dynamic, we're kinda hacking it here.
@@ -24,3 +24,5 @@ export default (props) => {
 
   return null
 }
+
+export default EllipseTool

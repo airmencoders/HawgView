@@ -1,7 +1,9 @@
 /**
  * ${SUMMARY}
  * 
- * ${DESCRIPTION}
+ * Based on the leaflet.js plugin leaflet-ruler. A bearing and range analysis tool.
+ * Improvements include modularization for use with React and the ability to use
+ * magnetic declination for magnetic rather than true headings.
  * 
  * @author  chris-m92
  * 
@@ -31,45 +33,60 @@
 // Top Level Modules
 //----------------------------------------------------------------//
 import React from 'react'
-import 'fontsource-roboto'
 
 //----------------------------------------------------------------//
-// Material-UI Core Components
+// Analysis Tool Component
 //----------------------------------------------------------------//
-import AppBar from '@material-ui/core/AppBar'
-import Typography from '@material-ui/core/Typography'
+/**
+ * 
+ * @param {*} props 
+ */
+const BuildingLabelTool = (props) => {
 
-//----------------------------------------------------------------//
-// Classification Banner Component
-//----------------------------------------------------------------//
-const ClassificationBanner = ({ classification = 'unclassified' }) => {
+  const [index, setIndex] = React.useState(1)
+  const [color, setColor] = React.useState('#ff0000')
 
   /**
-   * SF-710 WHITE ON GREEN:     #007A33 / #FFFFFF
-   * SF-708 WHITE ON BLUE:      #0033A0 / #FFFFFF
-   * SF-707 WHITE ON RED:       #C8102E / #FFFFFF
-   * SF-706 WHITE ON ORANGE:    #FF671F / #FFFFFF
-   * SF-712 BLACK ON YELLOW:    #F7EA48 / #000000
-   * SF-709 BLACK ON LAVENDER:  #C1A7E2 / #000000 
+   * 
    */
+  React.useEffect(() => {
+    if (props.active) {
+      document.addEventListener('keydown', handleEscPress, false)
 
-  const [bannerColor, setBannerColor] = React.useState('green')
-  const [textColor, setTextColor] = React.useState('black')
+      return () => {
+        document.removeEventListener('keydown', handleEscPress, false)
+      }
+    }
+  }, [props.active])
 
-  return (
-    <AppBar
-      position='static'
-      style={{ backgroundColor: bannerColor }}
-    >
-      <Typography
-        align='center'
-        style={{ color: textColor }}
-        variant='subtitle2'
-      >
-        {`// ${classification.toUpperCase()} //`}
-      </Typography>
-    </AppBar>
-  )
+  React.useEffect(() => {
+    if (props.active && props.latlng !== null) {
+      props.submit('create', {
+        arty: {
+          arty: false,
+          display: false,
+        },
+        color: color,
+        latlng: props.latlng,
+        layer: 'buildingLabel',
+        title: index,
+      })
+
+      setIndex(index + 1)
+    }
+  }, [props.latlng])
+
+  /**
+   * 
+   * @param {*} event 
+   */
+  const handleEscPress = event => {
+    if (props.active && event.key === 'Escape') {
+      props.toggle()
+    }
+  }
+
+  return null
 }
 
-export default ClassificationBanner
+export default BuildingLabelTool

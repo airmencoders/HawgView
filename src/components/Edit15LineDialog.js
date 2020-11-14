@@ -31,7 +31,7 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-export default (props) => {
+const Edit15LineDialog = (props) => {
   const classes = useStyles()
 
   const [callsign, setCallsign] = React.useState(props.marker.data === null ? props.marker.title : props.marker.data.callsign)
@@ -302,3 +302,5 @@ export default (props) => {
     </Dialog>
   )
 }
+
+export default Edit15LineDialog

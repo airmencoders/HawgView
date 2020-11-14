@@ -47,7 +47,7 @@ import { distanceAndHeading } from '../functions/mathFunctions'
 //----------------------------------------------------------------//
 // Circle Tool Component
 //----------------------------------------------------------------//
-export default (props) => {
+const CircleTool = (props) => {
 
   const [radius, setRadius] = React.useState(0)
   const [center, setCenter] = React.useState(null)
@@ -134,3 +134,5 @@ export default (props) => {
     return null
   }
 }
+
+export default CircleTool

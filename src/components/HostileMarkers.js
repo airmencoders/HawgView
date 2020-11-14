@@ -80,7 +80,7 @@ const useStyles = makeStyles(theme => ({
 // Hostile Markers Component
 //----------------------------------------------------------------//
 // TODO Props here?
-export default ({ handleAddMarker, handleMarkerDrawerToggle }) => {
+const HostileMarkers = ({ handleAddMarker, handleMarkerDrawerToggle }) => {
   const classes = useStyles()
 
   const handleMarkerClick = (iconUrl, title) => {
@@ -307,3 +307,5 @@ export default ({ handleAddMarker, handleMarkerDrawerToggle }) => {
     </React.Fragment>
   )
 }
+
+export default HostileMarkers

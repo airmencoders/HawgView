@@ -12,7 +12,7 @@ import PrintIcon from '@material-ui/icons/Print'
 
 import MarkerListAccordion from './MarkerListAccordion'
 
-export default (props) => {
+const MarkerListDialog = (props) => {
 
   return (
     <Dialog
@@ -96,3 +96,5 @@ export default (props) => {
     </Dialog>
   )
 }
+
+export default MarkerListDialog

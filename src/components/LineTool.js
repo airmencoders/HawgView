@@ -45,7 +45,7 @@ import { distanceAndHeading } from '../functions/mathFunctions'
 //----------------------------------------------------------------//
 // Analysis Tool Component
 //----------------------------------------------------------------//
-export default (props) => {
+const LineTool = (props) => {
   /**
    * State variables
    */
@@ -170,3 +170,5 @@ export default (props) => {
       : null
   )
 }
+
+export default LineTool

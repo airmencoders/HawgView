@@ -70,7 +70,7 @@ const useStyles = makeStyles(theme => ({
 // Persistent Markers Component
 //----------------------------------------------------------------//
 // TODO Props here?
-export default ({ handleAddMarker, handleMarkerDrawerToggle, toggleEditThreatDialog }) => {
+const PersistentMarkers = ({ handleAddMarker, handleMarkerDrawerToggle, toggleEditThreatDialog }) => {
   const classes = useStyles()
 
   const handleMarkerClick = (iconUrl, iconType, title, layer) => {
@@ -103,7 +103,7 @@ export default ({ handleAddMarker, handleMarkerDrawerToggle, toggleEditThreatDia
       }
     }
 
-    if (layer === 'building') {
+    if (layer === 'mapLabel') {
       payload = {
         ...payload,
         color: '#ff0000',
@@ -204,16 +204,18 @@ export default ({ handleAddMarker, handleMarkerDrawerToggle, toggleEditThreatDia
           />
         </Tooltip>
       </div>
-      <Tooltip title='Building Label'>
+      <Tooltip title='Map Label'>
         <Button
           className={classes.button}
           color='primary'
-          onClick={() => handleMarkerClick(null, 'div', 'BLDG', 'building')}
+          onClick={() => handleMarkerClick(null, 'div', 'BLDG', 'mapLabel')}
         >
-          BLDG LABEL
+          MAP LABEL
         </Button>
       </Tooltip>
 
     </React.Fragment >
   )
 }
+
+export default PersistentMarkers

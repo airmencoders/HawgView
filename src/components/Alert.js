@@ -40,6 +40,8 @@ import MuiAlert from '@material-ui/lab/Alert'
 //----------------------------------------------------------------//
 // Alert Component
 //----------------------------------------------------------------//
-export default (props) => {
+const Alert = (props) => {
     return <MuiAlert elevation={6} variant='filled' {...props} />
 }
+
+export default Alert

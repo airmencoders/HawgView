@@ -71,7 +71,7 @@ const { BaseLayer, Overlay } = LayersControl
 //----------------------------------------------------------------//
 // Map Control Component
 //----------------------------------------------------------------//
-export default (props) => {
+const LayerControl = (props) => {
 
   const useStyles = makeStyles(() => ({
     hostileThreat: {
@@ -265,7 +265,7 @@ export default (props) => {
           zoom={props.mapZoom}
         />
       </Overlay>
-      <Overlay checked name='Map Labels'>
+      <Overlay checked name='Geo Labels'>
         <TileLayer
           url='https://services.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}'
         />
@@ -641,6 +641,26 @@ export default (props) => {
           ))}
         </LayerGroup>
       </Overlay>
+      <Overlay checked name='Map Labels'>
+        <LayerGroup>
+          {props.step.mapLabels.map(marker => (
+            <LayerMarkers
+              interactive={props.interactive}
+              handleMarkerDrag={(marker, latlng) => props.handleMarkerDrag(marker, latlng)}
+              handleDeleteMarker={marker => props.handleDeleteMarker(marker)}
+              key={`${marker.layer}-${marker.title}-${marker.id}`}
+              markerSize={props.markerSize}
+              marker={marker}
+              mapZoom={props.mapZoom}
+              setClickedLatLng={latlng => props.setClickedLatLng(latlng)}
+              setFocusedMarker={marker => props.setFocusedMarker(marker)}
+              setFocusedShape={shape => props.setFocusedShape(shape)}
+              toggleEditMarkerDialog={() => props.toggleEditMarkerDialog()}
+              tooltipsActive={props.tooltipsActive}
+            />
+          ))}
+        </LayerGroup>
+      </Overlay>
       <Overlay checked name='Ellipses'>
         <LayerGroup>
           {props.interactive && props.step.ellipses.map(ellipse => (
@@ -856,3 +876,5 @@ export default (props) => {
     </LayersControl>
   )
 }
+
+export default LayerControl

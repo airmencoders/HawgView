@@ -85,6 +85,7 @@ const clearMarkers = (history, step) => {
     history[step].hostileMarkers.length > 0 ||
     history[step].initialPoints.length > 0 ||
     history[step].lines.length > 0 ||
+    history[step].mapLabels.length > 0 ||
     history[step].polygons.length > 0 ||
     history[step].rectangles.length > 0 ||
     history[step].survivors.length > 0 ||
@@ -100,6 +101,7 @@ const clearMarkers = (history, step) => {
       hostileMarkers: [],
       initialPoints: [],
       lines: [],
+      mapLabels: [],
       polygons: [],
       rectangles: [],
       survivors: [],
@@ -184,11 +186,17 @@ const createMarker = (history, step, payload) => {
           action: `create polygon`,
           polygons: [...targetHistory[step].polygons, payload]
         }
-      case 'building':
+      case 'buildingLabel':
         return {
           ...targetHistory[step],
           action: `create building label`,
           buildingLabels: [...targetHistory[step].buildingLabels, payload]
+        }
+      case 'mapLabel':
+        return {
+          ...targetHistory[step],
+          action: `create map label`,
+          mapLabels: [...targetHistory[step].mapLabels, payload]
         }
       case 'bullseye':
         let declination = getDeclination(payload.latlng)
@@ -275,11 +283,17 @@ const deleteMarker = (history, step, payload) => {
         action: `delete polygon ${marker.title}`,
         polygons: history[step].polygons.filter(pMarker => pMarker.id !== marker.id)
       }
-    case 'building':
+    case 'buildingLabel':
       return {
         ...history[step],
         action: `delete building label ${marker.title}`,
         buildingLabels: history[step].buildingLabels.filter(lMarker => lMarker.id !== marker.id)
+      }
+    case 'mapLabel':
+      return {
+        ...history[step],
+        action: `delete map label ${marker.title}`,
+        mapLabels: history[step].mapLabels.filter(mMarker => mMarker.id !== marker.id)
       }
     case 'bullseye':
       return {
@@ -386,13 +400,21 @@ const dragMarker = (history, step, payload) => {
         action: `move rectangle ${marker.title}`,
         rectangles: [...filteredMarkers, newMarker]
       }
-    case 'building':
+    case 'buildingLabel':
       filteredMarkers = targetHistory[step].buildingLabels.filter(currentMarker => currentMarker.id !== marker.id)
 
       return {
         ...targetHistory[step],
         action: `move building label ${marker.title}`,
         buildingLabels: [...filteredMarkers, newMarker]
+      }
+    case 'mapLabel':
+      filteredMarkers = targetHistory[step].mapLabels.filter(currentMarker => currentMarker.id !== marker.id)
+
+      return {
+        ...targetHistory[step],
+        action: `move map label ${marker.title}`,
+        mapLabels: [...filteredMarkers, newMarker]
       }
     case 'bullseye':
       filteredMarkers = targetHistory[step].bullseyes.filter(currentMarker => currentMarker.id !== marker.id)
@@ -567,7 +589,7 @@ const editMarker = (history, step, payload) => {
         action: `edit polygon ${marker.title}`,
         polygons: [...filteredMarkers, newMarker]
       }
-    case 'building':
+    case 'buildingLabel':
       filteredMarkers = targetHistory[step].buildingLabels.filter(currentMarker => currentMarker.id !== marker.id)
 
       newMarker = {
@@ -582,6 +604,22 @@ const editMarker = (history, step, payload) => {
         ...targetHistory[step],
         action: `edit building label ${marker.title}`,
         buildingLabels: [...filteredMarkers, newMarker]
+      }
+    case 'mapLabel':
+      filteredMarkers = targetHistory[step].mapLabels.filter(currentMarker => currentMarker.id !== marker.id)
+
+      newMarker = {
+        ...marker,
+        color: payload.color,
+        title: payload.title,
+        latlng: payload.latlng,
+        elevation: payload.elevation,
+      }
+
+      return {
+        ...targetHistory[step],
+        action: `edit map label ${marker.title}`,
+        mapLabels: [...filteredMarkers, newMarker]
       }
     case 'bullseye':
       filteredMarkers = targetHistory[step].bullseyes.filter(currentMarker => currentMarker.id !== marker.id)

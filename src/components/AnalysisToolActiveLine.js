@@ -64,7 +64,7 @@ const useStyles = makeStyles(theme => ({
 //----------------------------------------------------------------//
 // Analysis Tool Active Line Component
 //----------------------------------------------------------------//
-export default (props) => {
+const AnalysisToolActiveLine = (props) => {
   const classes = useStyles()
 
   return (
@@ -124,3 +124,5 @@ export default (props) => {
     </React.Fragment>
   )
 }
+
+export default AnalysisToolActiveLine

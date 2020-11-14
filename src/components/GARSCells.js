@@ -20,7 +20,7 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-export default (props) => {
+const GARSCells = (props) => {
   const classes = useStyles()
 
   // To-do: use props and user settings?
@@ -320,3 +320,5 @@ export default (props) => {
     </LayerGroup>
   )
 }
+
+export default GARSCells

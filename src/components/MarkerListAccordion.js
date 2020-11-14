@@ -23,7 +23,7 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-export default (props) => {
+const MarkerListAccordion = (props) => {
 
   const classes = useStyles()
 
@@ -54,3 +54,5 @@ export default (props) => {
     </Accordion>
   )
 }
+
+export default MarkerListAccordion
