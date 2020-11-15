@@ -1,3 +1,8 @@
+## 2.52.0-alpha
+### Changes
+* Added `Styles` to the history step to save styles with the scenario
+* Added ability to style MGRS/GARS/Building labels globally with the styles palette
+
 ## 2.51.0-alpha
 ### Changes
 * Finished `Building Labels` and `Kinetic Points` Huge shoutout to TRON for helping me figure out some bugs and code cleanup (Requested by JT Simmons)

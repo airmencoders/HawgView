@@ -44,7 +44,6 @@ import React from 'react'
 const BuildingLabelTool = (props) => {
 
   const [index, setIndex] = React.useState(1)
-  const [color, setColor] = React.useState(props.color)
 
   /**
    * 
@@ -52,7 +51,6 @@ const BuildingLabelTool = (props) => {
   React.useEffect(() => {
     if (props.active) {
       document.addEventListener('keydown', handleEscPress, false)
-
       return () => {
         document.removeEventListener('keydown', handleEscPress, false)
       }
@@ -66,12 +64,13 @@ const BuildingLabelTool = (props) => {
           arty: false,
           display: false,
         },
-        color: color,
         iconType: 'div',
         latlng: props.latlng,
         layer: 'buildingLabel',
         title: index,
       }
+
+      console.log('buildingLabelData', newData)
 
       props.submit('create', newData)
 

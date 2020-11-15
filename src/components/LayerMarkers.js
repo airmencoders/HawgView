@@ -62,7 +62,7 @@ const LayerMarkers = props => {
   const useStyles = makeStyles({
     divIcon: {
       alignItems: 'center',
-      color: props.marker.color,
+      color: (props.color === undefined || props.color === null) ? props.marker.color : props.color,
       display: 'flex',
       fontSize: computedSize,
       fontWeight: 'bold',

@@ -48,6 +48,7 @@ const SaveScenarioDialog = (props) => {
       polygons: props.data.polygons,      
       rectangles: props.data.rectangles,
       survivors: props.data.survivors,
+      styles: props.data.styles,
       threatMarkers: props.data.threatMarkers
     }
   }

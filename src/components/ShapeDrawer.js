@@ -591,7 +591,6 @@ const ShapeDrawer = (props) => {
             Save Changes
           </Button>
         </Grid>
-
       </Drawer>
     </nav>
   )

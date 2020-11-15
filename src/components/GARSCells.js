@@ -10,32 +10,35 @@ import { makeStyles } from '@material-ui/core/styles'
 
 import gridMath from '../functions/gridMath' //{ gridMath.LLtoUTM, gridMath.UTMtoLL } from '../functions/gridMath'
 
-const useStyles = makeStyles(theme => ({
-  cellLabel: {
-    backgroundColor: 'black',
-    color: 'orange',
-    fontSize: '0.9rem',
-    lineHeight: '20px',
-    textAlign: 'center',
-  },
-}))
+
 
 const GARSCells = (props) => {
-  const classes = useStyles()
+
+  const useStyles = makeStyles(({
+    cellLabel: {
+      backgroundColor: 'black',
+      color: props.style.cellColor,
+      fontSize: '0.9rem',
+      lineHeight: '20px',
+      textAlign: 'center',
+    },
+  }))
+
+  const classes = useStyles(props)
 
   // To-do: use props and user settings?
   const cellStyle = {
-    color: 'orange',
+    color: props.style.cellColor,
     opacity: 1,
   }
 
   const quadrantStyle = {
-    color: 'purple',
+    color: props.style.quadrantColor,
     opacity: 1,
   }
 
   const keypadStyle = {
-    color: 'white',
+    color: props.style.keypadColor,
     opacity: 1,
     weight: 1,
   }

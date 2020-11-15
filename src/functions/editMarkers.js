@@ -107,6 +107,7 @@ const clearMarkers = (history, step) => {
       polygons: [],
       rectangles: [],
       survivors: [],
+      styles: history[step].styles,
       threatMarkers: [],
     }
   } else {
@@ -697,6 +698,38 @@ const editMarker = (history, step, payload) => {
         ...targetHistory[step],
         action: `edit ellipse ${marker.title}`,
         ellipses: [...filteredMarkers, newMarker]
+      }
+    case 'styles':
+      
+      const newStyles = {
+        mgrs: {
+          gridzoneColor: payload.mgrs.gridzoneColor,
+          lineColor: payload.mgrs.lineColor,
+          lineBehavior: {
+            auto: payload.mgrs.lineBehavior.auto,
+            gridZone: payload.mgrs.lineBehavior.gridZone,
+            hundredKm: payload.mgrs.lineBehavior.hundredKm,
+            tenKm: payload.mgrs.lineBehavior.tenKm,
+            oneKm: payload.mgrs.lineBehavior.oneKm,
+            hundredM: payload.mgrs.lineBehavior.hundredM,
+            tenM: payload.mgrs.lineBehavior.tenM,
+            oneM: payload.mgrs.lineBehavior.oneM,
+          }
+        },
+        gars: {
+          cellColor: payload.gars.cellColor,
+          quadrantColor: payload.gars.quadrantColor,
+          keypadColor: payload.gars.keypadColor,
+        },
+        buildingLabel: {
+          color: payload.buildingLabel.color,
+        },
+      }
+
+      return {
+        ...targetHistory[step],
+        action: `edit styles`,
+        styles: newStyles
       }
     default:
       console.error(`Error: Could not edit marker (${marker}). Invalid layer (${marker.layer})`)

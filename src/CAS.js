@@ -165,6 +165,30 @@ const Cas = ({ state }) => {
     polygons: [],
     rectangles: [],
     survivors: [],
+    styles: {
+      mgrs: {
+        gridzoneColor: '#ffa500',
+        lineColor: '#ffffff',
+        lineBehavior: {
+          auto: true,
+          gridZone: false,
+          hundredKm: false,
+          tenKm: false,
+          oneKm: false,
+          hundredM: false,
+          tenM: false,
+          oneM: false,
+        }
+      },
+      gars: {
+        cellColor: '#ffa500',
+        quadrantColor: '#800080',
+        keypadColor: '#ffffff'
+      },
+      buildingLabel: {
+        color: '#ffff00',
+      },
+    },
     threatMarkers: [],
   }])
   const [lineClosed, setLineClosed] = React.useState(true)
@@ -190,9 +214,6 @@ const Cas = ({ state }) => {
   const [tooltipsActive, setTooltipsActive] = React.useState(false)
   const [pageTitle, setPageTitle] = React.useState('CAS Planner')
 
-  // Global Styles
-  const [buildingLabelColor, setBuildingLabelColor] = React.useState('#ffff00')
-
   // const menuOpen = Boolean(menuAnchorElement)
   const minimizedMenuOpen = Boolean(minMenuAnchorElement)
 
@@ -203,6 +224,10 @@ const Cas = ({ state }) => {
   const handleMenuClose = () => {
     setMenuAnchorElement(null)
   }*/
+
+  React.useEffect(() => {
+    console.log('styles', history[step].styles)
+  }, [history, step])
 
   React.useEffect(() => {
     document.title = `Hawg View | ${pageTitle}`
@@ -518,6 +543,7 @@ const Cas = ({ state }) => {
         polygons: json.data.polygons,
         circles: json.data.circles,
         survivors: json.data.survivors,
+        styles: json.data.styles,
         threatMarkers: json.data.threatMarkers
       }
 
@@ -662,7 +688,6 @@ const Cas = ({ state }) => {
           <BuildingLabelTool
             active={activeTool === 'buildingLabel'}
             clearLatlng={() => setClickedLatLng(null)}
-            color={buildingLabelColor}
             latlng={clickedLatLng}
             submit={(action, payload) => handleMarkerEdit(action, payload)}
             toggle={() => toggleTools('buildingLabel')}
@@ -758,6 +783,7 @@ const Cas = ({ state }) => {
       <StyleDrawer
         open={styleDrawerOpen}
         onClose={handleMapReset}
+        submit={(action, payload) => handleMarkerEdit(action, payload)}
       />
       <MarkerDrawer
         markerDrawerOpen={markerDrawerOpen}

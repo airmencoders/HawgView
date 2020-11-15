@@ -256,12 +256,14 @@ const LayerControl = (props) => {
       <Overlay name='MGRS Lines'>
         <MGRSGrids
           map={props.map}
+          style={props.step.styles.mgrs}
           zoom={props.mapZoom}
         />
       </Overlay>
       <Overlay name='GARS Cells'>
         <GARSCells
           map={props.map}
+          style={props.step.styles.gars}
           zoom={props.mapZoom}
         />
       </Overlay>
@@ -625,6 +627,7 @@ const LayerControl = (props) => {
         <LayerGroup>
           {props.step.buildingLabels.map(marker => (
             <LayerMarkers
+              color={props.step.styles.buildingLabel.color}
               interactive={props.interactive}
               handleMarkerDrag={(marker, latlng) => props.handleMarkerDrag(marker, latlng)}
               handleDeleteMarker={marker => props.handleDeleteMarker(marker)}

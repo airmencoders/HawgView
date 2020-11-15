@@ -195,7 +195,7 @@ const MinimizedMenu = (props) => {
         Load scenario
       </MenuItem>
       <MenuItem onClick={handleStyleClick}>
-        <StyleIcon classname={classes.icon} />
+        <StyleIcon className={classes.icon} />
         Styles
       </MenuItem>
       <MenuItem onClick={props.handleMinMenuClose}>

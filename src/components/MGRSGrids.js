@@ -1,3 +1,35 @@
+/**
+ * ${SUMMARY}
+ * 
+ * ${DESCRIPTION}
+ * 
+ * @author  chris-m92
+ * 
+ * MIT License
+ * 
+ * Copyright (c) 2020 Airmen Coders
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+//----------------------------------------------------------------//
+// Top Level Modules
+//----------------------------------------------------------------//
 import React from 'react'
 import L from 'leaflet'
 import {
@@ -6,43 +38,54 @@ import {
   Polyline
 } from 'react-leaflet'
 
+//----------------------------------------------------------------//
+// Material-UI Components
+//----------------------------------------------------------------//
 import { makeStyles } from '@material-ui/core/styles'
 
-import gridMath from '../functions/gridMath' //{ gridMath.LLtoUTM, gridMath.UTMtoLL } from '../functions/gridMath'
+//----------------------------------------------------------------//
+// Functions
+//----------------------------------------------------------------//
+import gridMath from '../functions/gridMath'
 
-const useStyles = makeStyles(theme => ({
-  lineStyle: {
-
-  },
-  zoneLabel: {
-    backgroundColor: 'black',
-    color: 'orange',
-    fontSize: '0.9rem',
-    lineHeight: '20px',
-    textAlign: 'center',
-  },
-}))
-
+//----------------------------------------------------------------//
+// MGRS Grid Component
+//----------------------------------------------------------------//
 const MGRSGrids = (props) => {
-  const classes = useStyles()
 
-  let tempLines, tempLabels
+  //----------------------------------------------------------------//
+  // Custom Styling
+  //----------------------------------------------------------------//
+  const useStyles = makeStyles({
+    zoneLabel: {
+      backgroundColor: 'black',
+      color: props.style.gridzoneColor,
+      fontSize: '0.9rem',
+      lineHeight: '20px',
+      textAlign: 'center',
+    },
+  })
+  const classes = useStyles(props)
 
-  // To-do: use props and user settings?
   const zoneStyle = {
-    color: 'orange',
+    color: props.style.gridzoneColor,
     opacity: 0.6,
   }
 
   const lineStyle = {
-    color: 'white',
+    color: props.style.lineColor,
     opacity: 1,
     weight: 1,
   }
 
+  //----------------------------------------------------------------//
+  // State
+  //----------------------------------------------------------------//
   const [zoneLines, setZoneLines] = React.useState([])
   const [gridLines, setGridLines] = React.useState([])
   const [labels, setLabels] = React.useState([])
+
+  let tempLines, tempLabels
 
   React.useEffect(() => {
     generateGridZones()
