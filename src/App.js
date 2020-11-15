@@ -80,7 +80,7 @@ class App extends React.Component {
     return (
       <div className='App'>
         <CssBaseline />
-        <Router basepath='/v2'>
+        <Router>
           <Switch>
             <Route exact path='/'>
               <CAS

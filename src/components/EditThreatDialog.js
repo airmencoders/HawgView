@@ -1,5 +1,42 @@
+/**
+ * ${SUMMARY}
+ * 
+ * Based on the leaflet.js plugin leaflet-ruler. A bearing and range analysis tool.
+ * Improvements include modularization for use with React and the ability to use
+ * magnetic declination for magnetic rather than true headings.
+ * 
+ * @author  chris-m92
+ * 
+ * MIT License
+ * 
+ * Copyright (c) 2020 Airmen Coders
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+//----------------------------------------------------------------//
+// Top Level Modules
+//----------------------------------------------------------------//
 import React from 'react'
 
+//----------------------------------------------------------------//
+// Material-UI Core Components
+//----------------------------------------------------------------//
 import Box from '@material-ui/core/Box'
 import Button from '@material-ui/core/Button'
 import Dialog from '@material-ui/core/Dialog'
@@ -16,10 +53,16 @@ import Select from '@material-ui/core/Select'
 import Switch from '@material-ui/core/Switch'
 import TextField from '@material-ui/core/TextField'
 
+//----------------------------------------------------------------//
+// Constants
+//----------------------------------------------------------------//
 import { sovereignties } from '../constants/threats'
 import { threats } from '../constants/threats'
 import { units } from '../constants/threats'
 
+//----------------------------------------------------------------//
+// Custom Class Styling
+//----------------------------------------------------------------//
 const useStyles = makeStyles(theme => ({
   dialog: {
     padding: theme.spacing(2),
@@ -43,9 +86,15 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
+//----------------------------------------------------------------//
+// Edit Threat Dialog Component
+//----------------------------------------------------------------//
 const EditThreatDialog = (props) => {
   const classes = useStyles()
 
+  //----------------------------------------------------------------//
+  // State
+  //----------------------------------------------------------------//
   const [custom, setCustom] = React.useState(props.marker !== null && props.marker.layer === 'threat' ? props.marker.threatType.title === 'Custom' ? true : false : true)
   const [fill, setFill] = React.useState(props.marker !== null && props.marker.layer === 'threat' ? props.marker.fill : false)
   const [threat, setThreat] = React.useState(props.marker !== null && props.marker.layer === 'threat' ? threats.indexOf(props.marker.threatType) : 0)

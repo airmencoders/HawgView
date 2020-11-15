@@ -705,16 +705,6 @@ const editMarker = (history, step, payload) => {
         mgrs: {
           gridzoneColor: payload.mgrs.gridzoneColor,
           lineColor: payload.mgrs.lineColor,
-          lineBehavior: {
-            auto: payload.mgrs.lineBehavior.auto,
-            gridZone: payload.mgrs.lineBehavior.gridZone,
-            hundredKm: payload.mgrs.lineBehavior.hundredKm,
-            tenKm: payload.mgrs.lineBehavior.tenKm,
-            oneKm: payload.mgrs.lineBehavior.oneKm,
-            hundredM: payload.mgrs.lineBehavior.hundredM,
-            tenM: payload.mgrs.lineBehavior.tenM,
-            oneM: payload.mgrs.lineBehavior.oneM,
-          }
         },
         gars: {
           cellColor: payload.gars.cellColor,

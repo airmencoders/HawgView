@@ -37,9 +37,16 @@ import { NavLink } from 'react-router-dom'
 // Material-UI Core Components
 //----------------------------------------------------------------//
 import AppBar from '@material-ui/core/AppBar'
+import IconButton from '@material-ui/core/IconButton'
 import { makeStyles } from '@material-ui/core/styles'
 import Toolbar from '@material-ui/core/Toolbar'
+import Tooltip from '@material-ui/core/Tooltip'
 import Typography from '@material-ui/core/Typography'
+
+//----------------------------------------------------------------//
+// Material-UI Icons
+//----------------------------------------------------------------//
+import NotificationImportantIcon from '@material-ui/icons/NotificationImportant'
 
 //----------------------------------------------------------------//
 // Custom Components
@@ -94,6 +101,14 @@ const CASNavigation = (props) => {
           </NavLink>
           {props.children}
           <div className={classes.grow} />
+          <Tooltip title='Notifications'>
+            <IconButton
+              color='inherit'
+              onClick={props.toggleNotificationDialog}
+            >
+              <NotificationImportantIcon />
+            </IconButton>
+          </Tooltip>
           <a
             style={{ textDecoration: 'none', marginRight: '15px' }}
             href='https://v1.hawg-ops.com/login'
@@ -103,7 +118,7 @@ const CASNavigation = (props) => {
             <Typography
               style={{ color: 'white' }}
             >
-              Login
+              Version 1
             </Typography>
           </a>
           <a

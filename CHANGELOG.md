@@ -1,3 +1,14 @@
+## 2.0.0-beta
+### Changes
+* Added Notifications dialog
+* Shifted HawgView version 2 to be the primary with a notification to inform the user about the swap
+
+## 2.53.0-alpha
+### Changes
+* Completed the stles
+* Changed Save function to automatically save the file versus a copy/paste
+* Changed Load function to be a file upload
+
 ## 2.52.0-alpha
 ### Changes
 * Added `Styles` to the history step to save styles with the scenario

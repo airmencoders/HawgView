@@ -79,6 +79,7 @@ import MarkerDrawer from './components/MarkerDrawer'
 import MarkerListDialog from './components/MarkerListDialog'
 import Map from './components/Map'
 import MinimizedMenu from './components/MinimizedMenu'
+import NotificationsDialog from './components/NotificationsDialog'
 //import UnauthenticatedUserMenu from './components/UnauthenticatedUserMenu'
 import RectangleTool from './components/RectangleTool'
 import SaveScenarioDialog from './components/SaveScenarioDialog'
@@ -169,16 +170,6 @@ const Cas = ({ state }) => {
       mgrs: {
         gridzoneColor: '#ffa500',
         lineColor: '#ffffff',
-        lineBehavior: {
-          auto: true,
-          gridZone: false,
-          hundredKm: false,
-          tenKm: false,
-          oneKm: false,
-          hundredM: false,
-          tenM: false,
-          oneM: false,
-        }
       },
       gars: {
         cellColor: '#ffa500',
@@ -204,6 +195,7 @@ const Cas = ({ state }) => {
   const [markerSize, setMarkerSize] = React.useState(3)
   //const [menuAnchorElement, setMenuAnchorElement] = React.useState(null)
   const [minMenuAnchorElement, setMinMenuAnchorElement] = React.useState(null)
+  const [notificationsDialogOpen, setNotificationsDialogOpen] = React.useState(false)
   const [saveScenarioDialogOpen, setSaveScenarioDialogOpen] = React.useState(false)
   const [shapeDrawerOpen, setShapeDrawerOpen] = React.useState(false)
   const [snackbarMessage, setSnackbarMessage] = React.useState(undefined)
@@ -224,10 +216,6 @@ const Cas = ({ state }) => {
   const handleMenuClose = () => {
     setMenuAnchorElement(null)
   }*/
-
-  React.useEffect(() => {
-    console.log('styles', history[step].styles)
-  }, [history, step])
 
   React.useEffect(() => {
     document.title = `Hawg View | ${pageTitle}`
@@ -325,6 +313,7 @@ const Cas = ({ state }) => {
     setStyleDrawerOpen(false)
     setMarkerDrawerOpen(false)
     setEditMarkerDrawerOpen(false)
+    setNotificationsDialogOpen(false)
     setElevation('Pending')
   }
 
@@ -571,6 +560,7 @@ const Cas = ({ state }) => {
       <Box>
         <CASNavigation
           state={state}
+          toggleNotificationDialog={() => setNotificationsDialogOpen(!notificationsDialogOpen)}
         >
           <CoordInput
             map={map}
@@ -647,6 +637,10 @@ const Cas = ({ state }) => {
         </CASNavigation>
       </Box>
       <Box flex={1}>
+        <NotificationsDialog
+          open={notificationsDialogOpen}
+          onClose={() => handleMapReset()}
+        />
         <Map
           setMap={setMap}
           toolActive={activeTool !== null}

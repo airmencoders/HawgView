@@ -23,13 +23,6 @@ const SaveScenarioDialog = (props) => {
 
   const [name, setName] = React.useState('')
 
-  const copyScenario = () => {
-    scenarioRef.current.children[1].children[0].select()
-    document.execCommand('copy')
-    props.toggle()
-    props.toast('Scenario copied to clipboard', 'success')
-  }
-
   const scenario = {
     name: name,
     classification: 'UNCLASSIFIED',
@@ -38,19 +31,31 @@ const SaveScenarioDialog = (props) => {
       buildingLabels: props.data.buildingLabels,
       bullseyes: props.data.bullseyes,
       circles: props.data.circles,
-      ellipses: props.data.ellipses,      
+      ellipses: props.data.ellipses,
       friendlyMarkers: props.data.friendlyMarkers,
       hostileMarkers: props.data.hostileMarkers,
       initialPoints: props.data.initialPoints,
       kineticPoints: props.data.kineticPoints,
       lines: props.data.lines,
       mapLabels: props.data.mapLabels,
-      polygons: props.data.polygons,      
+      polygons: props.data.polygons,
       rectangles: props.data.rectangles,
       survivors: props.data.survivors,
       styles: props.data.styles,
       threatMarkers: props.data.threatMarkers
     }
+  }
+
+  const downloadScenario = () => {
+    const element = document.createElement('a')
+    const file = new Blob([scenarioRef.current.value], { type: 'text/plain' })
+    element.href = URL.createObjectURL(file)
+    element.download = `Hawg View Scenario ${name}.txt`
+    document.body.appendChild(element)
+    element.click()
+
+    props.toggle()
+    props.toast(`Scenario ${name} saved`)
   }
 
   return (
@@ -59,30 +64,26 @@ const SaveScenarioDialog = (props) => {
       fullWidth={true}
       open={props.open}
       onClose={props.toggle}
-      maxWidth='lg'
+      maxWidth='xs'
     >
       <DialogTitle>Save Scenario</DialogTitle>
       <DialogContent>
         <TextField
           fullWidth={true}
+          label='Scenario Name (Optional)'
           onChange={event => setName(event.target.value)}
           variant='outlined'
           value={name}
         />
-        <DialogContentText>Copy the data below</DialogContentText>
         <TextField
-          className={classes.form}
+          style={{display: 'none'}}
+          inputRef={scenarioRef}
           autoFocus={true}
-          fullWidth={true}
-          label='Scenario Data'
-          ref={scenarioRef}
           value={JSON.stringify(scenario)}
-          variant='outlined'
-          multiline={true}
         />
       </DialogContent>
       <DialogActions>
-        <Button onClick={copyScenario} color='primary'>Copy Scenario</Button>
+        <Button onClick={downloadScenario} color='primary'>Download Scenario</Button>
         <Button onClick={props.toggle}>Close</Button>
       </DialogActions>
     </Dialog>

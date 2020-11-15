@@ -40,6 +40,7 @@ import { SketchPicker as ColorPicker } from 'react-color'
 //----------------------------------------------------------------//
 import Button from '@material-ui/core/Button'
 import Drawer from '@material-ui/core/Drawer'
+import FormControl from '@material-ui/core/FormControl'
 import Grid from '@material-ui/core/Grid'
 import { makeStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
@@ -77,6 +78,10 @@ const useStyles = makeStyles(theme => ({
     marginTop: theme.spacing(2),
     marginBottom: theme.spacing(1),
   },
+  formControl: {
+    display: 'flex',
+    margin: theme.spacing(2),
+  },
   textField: {
     marginLeft: theme.spacing(2),
     marginRight: theme.spacing(2),
@@ -95,6 +100,9 @@ const useStyles = makeStyles(theme => ({
 const StyleDrawer = (props) => {
   const classes = useStyles()
 
+  //----------------------------------------------------------------//
+  // State
+  //----------------------------------------------------------------//
   const [mgrsGZColor, setMgrsGZColor] = React.useState('#ffa500')
   const [mgrsLineColor, setMgrsLineColor] = React.useState('#ffffff')
   const [garsCellColor, setGarsCellColor] = React.useState('#ffa500')
@@ -112,16 +120,6 @@ const StyleDrawer = (props) => {
       mgrs: {
         gridzoneColor: mgrsGZColor,
         lineColor: mgrsLineColor,
-        lineBehavior: {
-          auto: true,
-          gridZone: false,
-          hundredKm: false,
-          tenKm: false,
-          oneKm: false,
-          hundredM: false,
-          tenM: false,
-          oneM: false,
-        }
       },
       gars: {
         cellColor: garsCellColor,
@@ -203,12 +201,6 @@ const StyleDrawer = (props) => {
               item
               xs={4}
             >
-              <Typography
-                className={classes.marginsMd}
-                variant='body2'
-              >
-                Line Behavior
-              </Typography>
             </Grid>
           </Grid>
           <Typography
