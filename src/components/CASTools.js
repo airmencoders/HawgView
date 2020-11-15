@@ -54,6 +54,7 @@ import PhotoSizeSelectActualIcon from '@material-ui/icons/PhotoSizeSelectActual'
 import PhotoSizeSelectLargeIcon from '@material-ui/icons/PhotoSizeSelectLarge'
 import RedoIcon from '@material-ui/icons/Redo'
 import SaveIcon from '@material-ui/icons/Save'
+import StyleIcon from '@material-ui/icons/Style'
 import UndoIcon from '@material-ui/icons/Undo'
 import ViewListIcon from '@material-ui/icons/ViewList'
 
@@ -165,6 +166,14 @@ const CASTools = (props) => {
           onClick={props.toggleLoadScenarioDialog}
         >
           <FolderOpenIcon />
+        </IconButton>
+      </Tooltip>
+      <Tooltip title='Styles'>
+        <IconButton
+          color='inherit'
+          onClick={props.toggleStyleDrawer}
+        >
+          <StyleIcon />
         </IconButton>
       </Tooltip>
       <Tooltip title='Download products'>

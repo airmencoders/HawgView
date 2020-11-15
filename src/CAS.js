@@ -72,7 +72,7 @@ import EditMarkerDialog from './components/EditMarkerDialog'
 import EditMarkerDrawer from './components/EditMarkerDrawer'
 import EllipseTool from './components/EllipseTool'
 import { editMarkers } from './functions/editMarkers'
-import LabelStyleDrawer from './components/LabelStyleDrawer'
+import KineticPointTool from './components/KineticPointTool'
 import LayerControl from './components/LayerControl'
 import LineTool from './components/LineTool'
 import MarkerDrawer from './components/MarkerDrawer'
@@ -82,6 +82,7 @@ import MinimizedMenu from './components/MinimizedMenu'
 //import UnauthenticatedUserMenu from './components/UnauthenticatedUserMenu'
 import RectangleTool from './components/RectangleTool'
 import SaveScenarioDialog from './components/SaveScenarioDialog'
+import StyleDrawer from './components/StyleDrawer'
 import LoadScenarioDialog from './components/LoadScenarioDialog'
 import Alert from './components/Alert'
 import ToolControls from './components/ToolControls'
@@ -166,7 +167,6 @@ const Cas = ({ state }) => {
     survivors: [],
     threatMarkers: [],
   }])
-  const [labelStyleDrawerOpen, setLabelStyleDrawerOpen] = React.useState(false)
   const [lineClosed, setLineClosed] = React.useState(true)
   const [loadScenarioDialogOpen, setLoadScenarioDialogOpen] = React.useState(false)
   const [map, setMap] = React.useState(null)
@@ -186,8 +186,12 @@ const Cas = ({ state }) => {
   const [snackbarOpen, setSnackbarOpen] = React.useState(false)
   const [snackPack, setSnackPack] = React.useState([])
   const [step, setStep] = React.useState(0)
+  const [styleDrawerOpen, setStyleDrawerOpen] = React.useState(false)
   const [tooltipsActive, setTooltipsActive] = React.useState(false)
   const [pageTitle, setPageTitle] = React.useState('CAS Planner')
+
+  // Global Styles
+  const [buildingLabelColor, setBuildingLabelColor] = React.useState('#ffff00')
 
   // const menuOpen = Boolean(menuAnchorElement)
   const minimizedMenuOpen = Boolean(minMenuAnchorElement)
@@ -293,7 +297,7 @@ const Cas = ({ state }) => {
     setFocusedShape(null)
     setMapPopup(null)
     setShapeDrawerOpen(false)
-    setLabelStyleDrawerOpen(false)
+    setStyleDrawerOpen(false)
     setMarkerDrawerOpen(false)
     setEditMarkerDrawerOpen(false)
     setElevation('Pending')
@@ -561,6 +565,7 @@ const Cas = ({ state }) => {
               redoDisabled={(step === history.length - 1)}
               toggleLoadScenarioDialog={() => setLoadScenarioDialogOpen(!loadScenarioDialogOpen)}
               toggleSaveScenarioDialog={() => setSaveScenarioDialogOpen(!saveScenarioDialogOpen)}
+              toggleStyleDrawer={() => setStyleDrawerOpen(!styleDrawerOpen)}
               toggleTooltips={() => setTooltipsActive(!tooltipsActive)}
               toggleMarkerListDialog={() => setMarkerListDialogOpen(true)}
               tooltipsActive={tooltipsActive}
@@ -606,6 +611,7 @@ const Cas = ({ state }) => {
             redoDisabled={(step === history.length - 1)}
             toggleLoadScenarioDialog={() => setLoadScenarioDialogOpen(!loadScenarioDialogOpen)}
             toggleSaveScenarioDialog={() => setSaveScenarioDialogOpen(!saveScenarioDialogOpen)}
+            toggleStyleDrawer={() => setStyleDrawerOpen(!styleDrawerOpen)}
             toggleTooltips={() => setTooltipsActive(!tooltipsActive)}
             tooltipsActive={tooltipsActive}
             toggleMarkerListDialog={() => setMarkerListDialogOpen(!markerListDialogOpen)}
@@ -656,9 +662,17 @@ const Cas = ({ state }) => {
           <BuildingLabelTool
             active={activeTool === 'buildingLabel'}
             clearLatlng={() => setClickedLatLng(null)}
+            color={buildingLabelColor}
             latlng={clickedLatLng}
             submit={(action, payload) => handleMarkerEdit(action, payload)}
             toggle={() => toggleTools('buildingLabel')}
+          />
+          <KineticPointTool
+            active={activeTool === 'kineticPoint'}
+            clearLatlng={() => setClickedLatLng(null)}
+            latlng={clickedLatLng}
+            submit={(action, payload) => handleMarkerEdit(action, payload)}
+            toggle={() => toggleTools('kineticPoint')}
           />
           <LineTool
             active={activeTool === 'line'}
@@ -741,8 +755,8 @@ const Cas = ({ state }) => {
           }
         </Map>
       </Box>
-      <LabelStyleDrawer
-        open={labelStyleDrawerOpen}
+      <StyleDrawer
+        open={styleDrawerOpen}
         onClose={handleMapReset}
       />
       <MarkerDrawer

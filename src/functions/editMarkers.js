@@ -84,6 +84,7 @@ const clearMarkers = (history, step) => {
     history[step].friendlyMarkers.length > 0 ||
     history[step].hostileMarkers.length > 0 ||
     history[step].initialPoints.length > 0 ||
+    history[step].kineticPoints.length > 0 ||
     history[step].lines.length > 0 ||
     history[step].mapLabels.length > 0 ||
     history[step].polygons.length > 0 ||
@@ -100,6 +101,7 @@ const clearMarkers = (history, step) => {
       friendlyMarkers: [],
       hostileMarkers: [],
       initialPoints: [],
+      kineticPoints: [],
       lines: [],
       mapLabels: [],
       polygons: [],
@@ -191,6 +193,12 @@ const createMarker = (history, step, payload) => {
           ...targetHistory[step],
           action: `create building label`,
           buildingLabels: [...targetHistory[step].buildingLabels, payload]
+        }
+      case 'kineticPoint':
+        return {
+          ...targetHistory[step],
+          action: `create kinetic point`,
+          kineticPoints: [...targetHistory[step].kineticPoints, payload]
         }
       case 'mapLabel':
         return {
@@ -288,6 +296,12 @@ const deleteMarker = (history, step, payload) => {
         ...history[step],
         action: `delete building label ${marker.title}`,
         buildingLabels: history[step].buildingLabels.filter(lMarker => lMarker.id !== marker.id)
+      }
+    case 'kineticPoint':
+      return {
+        ...history[step],
+        action: `delete kinetic point ${marker.title}`,
+        kineticPoints: history[step].kineticPoints.filter(kMarker => kMarker.id !== marker.id)
       }
     case 'mapLabel':
       return {
@@ -407,6 +421,14 @@ const dragMarker = (history, step, payload) => {
         ...targetHistory[step],
         action: `move building label ${marker.title}`,
         buildingLabels: [...filteredMarkers, newMarker]
+      }
+    case 'kineticPoint':
+      filteredMarkers = targetHistory[step].kineticPoints.filter(currentMarker => currentMarker.id !== marker.id)
+
+      return {
+        ...targetHistory[step],
+        action: `move kinetic point ${marker.title}`,
+        kineticPoints: [...filteredMarkers, newMarker]
       }
     case 'mapLabel':
       filteredMarkers = targetHistory[step].mapLabels.filter(currentMarker => currentMarker.id !== marker.id)
@@ -604,6 +626,21 @@ const editMarker = (history, step, payload) => {
         ...targetHistory[step],
         action: `edit building label ${marker.title}`,
         buildingLabels: [...filteredMarkers, newMarker]
+      }
+    case 'kineticPoint':
+      filteredMarkers = targetHistory[step].kineticPoints.filter(currentMarker => currentMarker.id !== marker.id)
+
+      newMarker = {
+        ...marker,
+        title: payload.title,
+        latlng: payload.latlng,
+        elevation: payload.elevation,
+      }
+
+      return {
+        ...targetHistory[step],
+        action: `edit kinetic point ${marker.title}`,
+        kineticPoints: [...filteredMarkers, newMarker]
       }
     case 'mapLabel':
       filteredMarkers = targetHistory[step].mapLabels.filter(currentMarker => currentMarker.id !== marker.id)

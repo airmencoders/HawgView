@@ -55,6 +55,7 @@ import PhotoSizeSelectActualIcon from '@material-ui/icons/PhotoSizeSelectActual'
 import PhotoSizeSelectLargeIcon from '@material-ui/icons/PhotoSizeSelectLarge'
 import RedoIcon from '@material-ui/icons/Redo'
 import SaveIcon from '@material-ui/icons/Save'
+import StyleIcon from '@material-ui/icons/Style'
 import UndoIcon from '@material-ui/icons/Undo'
 import ViewListIcon from '@material-ui/icons/ViewList'
 
@@ -125,6 +126,11 @@ const MinimizedMenu = (props) => {
     props.toggleMarkerListDialog()
   }
 
+  const handleStyleClick = () => {
+    props.handleMinMenuClose()
+    props.toggleStyleDrawer()
+  }
+
   return (
     <Menu
       anchorEl={props.minMenuAnchorElement}
@@ -187,6 +193,10 @@ const MinimizedMenu = (props) => {
       <MenuItem onClick={handleLoadScenarioClick}>
         <FolderOpenIcon className={classes.icon} />
         Load scenario
+      </MenuItem>
+      <MenuItem onClick={handleStyleClick}>
+        <StyleIcon classname={classes.icon} />
+        Styles
       </MenuItem>
       <MenuItem onClick={props.handleMinMenuClose}>
         <GetAppIcon className={classes.icon} />

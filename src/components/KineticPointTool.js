@@ -41,10 +41,21 @@ import React from 'react'
  * 
  * @param {*} props 
  */
-const BuildingLabelTool = (props) => {
+const KineticPointTool = (props) => {
 
-  const [index, setIndex] = React.useState(1)
-  const [color, setColor] = React.useState(props.color)
+  // 65 through 90
+  const [firstLetter, setFirstLetter] = React.useState(65)
+  const [secondLetter, setSecondLetter] = React.useState(65)
+  const [color, setColor] = React.useState('#ff0000')
+
+  const increment = () => {
+    if (secondLetter === 90) {
+      setFirstLetter(firstLetter + 1)
+      setSecondLetter(65)
+    } else {
+      setSecondLetter(secondLetter + 1)
+    }
+  }
 
   /**
    * 
@@ -69,13 +80,13 @@ const BuildingLabelTool = (props) => {
         color: color,
         iconType: 'div',
         latlng: props.latlng,
-        layer: 'buildingLabel',
-        title: index,
+        layer: 'kineticPoint',
+        title: `${String.fromCharCode(firstLetter)}${String.fromCharCode(secondLetter)}`,
       }
 
       props.submit('create', newData)
 
-      setIndex(index + 1)
+      increment()
     }
   }, [props.latlng])
 
@@ -92,4 +103,4 @@ const BuildingLabelTool = (props) => {
   return null
 }
 
-export default BuildingLabelTool
+export default KineticPointTool

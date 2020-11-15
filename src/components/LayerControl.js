@@ -128,7 +128,7 @@ const LayerControl = (props) => {
     }
   }))
 
-  const classes = useStyles()
+  const classes = useStyles(props)
 
   const handleEditMarker = marker => {
     props.setFocusedMarker(marker)
@@ -624,6 +624,26 @@ const LayerControl = (props) => {
       <Overlay checked name='Building Labels'>
         <LayerGroup>
           {props.step.buildingLabels.map(marker => (
+            <LayerMarkers
+              interactive={props.interactive}
+              handleMarkerDrag={(marker, latlng) => props.handleMarkerDrag(marker, latlng)}
+              handleDeleteMarker={marker => props.handleDeleteMarker(marker)}
+              key={`${marker.layer}-${marker.title}-${marker.id}`}
+              markerSize={props.markerSize}
+              marker={marker}
+              mapZoom={props.mapZoom}
+              setClickedLatLng={latlng => props.setClickedLatLng(latlng)}
+              setFocusedMarker={marker => props.setFocusedMarker(marker)}
+              setFocusedShape={shape => props.setFocusedShape(shape)}
+              toggleEditMarkerDialog={() => props.toggleEditMarkerDialog()}
+              tooltipsActive={props.tooltipsActive}
+            />
+          ))}
+        </LayerGroup>
+      </Overlay>
+      <Overlay checked name='Kinetic Points'>
+        <LayerGroup>
+          {props.step.kineticPoints.map(marker => (
             <LayerMarkers
               interactive={props.interactive}
               handleMarkerDrag={(marker, latlng) => props.handleMarkerDrag(marker, latlng)}

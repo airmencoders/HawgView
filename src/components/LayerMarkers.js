@@ -52,29 +52,48 @@ import { makeStyles } from '@material-ui/core/styles'
 //----------------------------------------------------------------//
 import { render9line, render15line } from '../functions/renderData'
 
-
 //----------------------------------------------------------------//
 // Layer Markers Component
 //----------------------------------------------------------------//
 const LayerMarkers = props => {
+
+  const computedSize = props.markerSize * props.mapZoom
 
   const useStyles = makeStyles({
     divIcon: {
       alignItems: 'center',
       color: props.marker.color,
       display: 'flex',
-      fontSize: props.markerSize * props.mapZoom,
+      fontSize: computedSize,
       fontWeight: 'bold',
       justifyContent: 'center',
       margin: '0',
       textAlign: 'center',
-      lineHeight: `${props.markerSize * props.mapZoom}px`,
+      lineHeight: `${computedSize}px`,
       wordWrap: 'break-word',
     },
+    kineticPoint: {
+      alignItems: 'center',
+      backgroundColor: '#ffff00',
+      border: 'solid #000000 2px',
+      color: 'black',
+      display: 'flex',
+      fontSize: computedSize / 2,
+      fontWeight: 'bold',
+      justifyContent: 'center',
+      margin: '0',
+      textAlign: 'center',
+      lineHeight: `${computedSize / 2}px`,
+      wordWrap: 'break-word',
+    }
   })
 
   const classes = useStyles(props)
 
+  /**
+   * 
+   * @param {*} marker 
+   */
   const generatePopupText = marker => {
     let position
     try {
@@ -96,6 +115,10 @@ const LayerMarkers = props => {
     )
   }
 
+  /**
+   * 
+   * @param {*} marker 
+   */
   const generatePopup = marker => {
     return (
       <Popup
@@ -123,6 +146,11 @@ const LayerMarkers = props => {
     )
   }
 
+  /**
+   * 
+   * @param {*} latlng 
+   * @param {*} layer 
+   */
   const generatePAA = (latlng, layer) => {
     // Get the four sides
     const point = LatLon.parse(latlng.lat, latlng.lng)
@@ -130,7 +158,7 @@ const LayerMarkers = props => {
     const south = point.destinationPoint(2000, 180)
     const east = point.destinationPoint(2000, 90)
     const west = point.destinationPoint(2000, 270)
-    
+
     // Get the two corners
     const northwest = [north.lat, west.lon]
     const southeast = [south.lat, east.lon]
@@ -146,96 +174,64 @@ const LayerMarkers = props => {
     )
   }
 
+  /**
+   * 
+   */
   const handlePopupClose = () => {
     props.setFocusedMarker(null)
     props.setFocusedShape(null)
     props.setClickedLatLng(null)
   }
 
+  /**
+   * 
+   * @param {*} marker 
+   */
   const handleEditMarker = marker => {
     props.setFocusedMarker(marker)
     props.toggleEditMarkerDialog()
   }
 
-  if (props.interactive) {
-    return (
-      <React.Fragment>
-        {(props.marker.arty.arty && props.marker.arty.display) ? generatePAA(props.marker.latlng, props.marker.layer) : null}
-        <Marker
-          autoPan
-          draggable
-          icon={props.marker.iconType === 'img' ?
-            L.icon({
-              iconUrl: props.marker.iconUrl,
-              iconSize: [props.markerSize * props.mapZoom, props.markerSize * props.mapZoom],
-            })
-            :
-            L.divIcon({
-              className: classes.divIcon,
-              color: props.marker.color,
-              html: props.marker.title,
-              iconSize: [20, 20],
-            })
-          }
-          id={props.marker.id}
-          onClick={() => props.setFocusedMarker(props.marker)}
-          onDragend={event => props.handleMarkerDrag(props.marker, event.target.getLatLng())}
-          position={props.marker.latlng}
-          riseOnHover
-          title={props.marker.title}
-        >
-          {generatePopup(props.marker)}
-          {(props.tooltipsActive) ?
-            <Tooltip
-              direction='top'
-              offset={L.point(0, -1 * props.markerSize * props.mapZoom)}
-              opacity={1}
-              permanent
-            >
-              {props.marker.title}
-            </Tooltip>
-            : null}
-        </Marker>
-      </React.Fragment>
-
-    )
-  } else {
-    return (
-      <React.Fragment>
-        {(props.marker.arty.arty && props.marker.arty.display) ? generatePAA(props.marker.latlng, props.marker.layer) : null}
-        <Marker
-          icon={props.marker.iconType === 'img' ?
-            L.icon({
-              iconUrl: props.marker.iconUrl,
-              iconSize: [props.markerSize * props.mapZoom, props.markerSize * props.mapZoom],
-            })
-            :
-            L.divIcon({
-              className: classes.divIcon,
-              html: props.marker.title,
-              iconSize: [20, 20],
-            })
-          }
-          id={props.marker.id}
-          interactive={false}
-          position={props.marker.latlng}
-          riseOnHover
-          title={props.marker.title}
-        >
-          {(props.tooltipsActive) ?
-            <Tooltip
-              direction='top'
-              offset={L.point(0, -1 * props.markerSize * props.mapZoom)}
-              opacity={1}
-              permanent
-            >
-              {props.marker.tooltip}
-            </Tooltip>
-            : null}
-        </Marker>
-      </React.Fragment>
-    )
-  }
+  return (
+    <React.Fragment>
+      {(props.marker.arty.arty && props.marker.arty.display) ? generatePAA(props.marker.latlng, props.marker.layer) : null}
+      <Marker
+        autoPan={props.interactive}
+        draggable={props.interactive}
+        icon={props.marker.iconType === 'img' ?
+          L.icon({
+            iconUrl: props.marker.iconUrl,
+            iconSize: [computedSize, computedSize]
+          })
+          :
+          L.divIcon({
+            className: props.marker.layer === 'kineticPoint' ? classes.kineticPoint : classes.divIcon,
+            color: props.marker.color,
+            html: props.marker.title,
+            iconSize: props.marker.layer === 'kineticPoint' ? [computedSize, computedSize] : [20, 20],
+          })
+        }
+        id={props.marker.id}
+        onClick={props.interactive ? () => props.setFocusedMarker(props.marker) : undefined}
+        onDragend={props.interactive ? event => props.handleMarkerDrag(props.marker, event.target.getLatLng()) : undefined}
+        position={props.marker.latlng}
+        riseOnHover
+        title={props.marker.title}
+      >
+        {generatePopup(props.marker)}
+        {(props.tooltipsActive) ?
+          <Tooltip
+            direction='top'
+            offset={L.point(0, -1 * computedSize)}
+            opacity={1}
+            permanent
+          >
+            {props.marker.title}
+          </Tooltip>
+          : null}
+      </Marker>
+    </React.Fragment>
+  )
 }
 
 export default LayerMarkers

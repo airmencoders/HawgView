@@ -56,7 +56,7 @@ function forward(ll, accuracy) {
     lat: ll[1],
     lng: ll[0]
   }), accuracy);
-  if (accuracy == 0) {
+  if (accuracy === 0) {
     ret = ret.substring(0, 6);
   }
   return ret;

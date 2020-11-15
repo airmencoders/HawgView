@@ -1,3 +1,8 @@
+## 2.51.0-alpha
+### Changes
+* Finished `Building Labels` and `Kinetic Points` Huge shoutout to TRON for helping me figure out some bugs and code cleanup (Requested by JT Simmons)
+* Started work on a `Style` drawer to handle styles within the state of the scenario (MGRS line colors, GARS line colors, building labels)
+
 ## 2.50.0-alpha
 ### Changes
 * Renamed `Building Labels` to `Map Labels` with the same functions
