@@ -1,3 +1,8 @@
+## 2.1.0-beta
+### Changes
+* Made the load scenario dialog load the resulting parsed JSON by defualt
+* Made the notifications default (for about a week)
+
 ## 2.0.0-beta
 ### Changes
 * Added Notifications dialog

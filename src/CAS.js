@@ -195,7 +195,7 @@ const Cas = ({ state }) => {
   const [markerSize, setMarkerSize] = React.useState(3)
   //const [menuAnchorElement, setMenuAnchorElement] = React.useState(null)
   const [minMenuAnchorElement, setMinMenuAnchorElement] = React.useState(null)
-  const [notificationsDialogOpen, setNotificationsDialogOpen] = React.useState(false)
+  const [notificationsDialogOpen, setNotificationsDialogOpen] = React.useState(true)
   const [saveScenarioDialogOpen, setSaveScenarioDialogOpen] = React.useState(false)
   const [shapeDrawerOpen, setShapeDrawerOpen] = React.useState(false)
   const [snackbarMessage, setSnackbarMessage] = React.useState(undefined)

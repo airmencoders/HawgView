@@ -68,16 +68,12 @@ const LoadScenarioDialog = (props) => {
   //----------------------------------------------------------------//
   const [scenario, setScenario] = React.useState('')
 
-  React.useEffect(() => {
-    console.log('scenario', scenario)
-  }, [scenario])
-
   const handleChange = files => {
     const file = files.item(0)
     const reader = new FileReader()
 
     reader.onload = function (e) {
-      setScenario(reader.result)
+      props.submit(reader.result)
     }
 
     reader.readAsText(file)
@@ -113,7 +109,6 @@ const LoadScenarioDialog = (props) => {
         </label>
       </DialogContent>
       <DialogActions>
-        <Button onClick={() => props.submit(scenario)} color='primary'>Load Scenario</Button>
         <Button onClick={props.toggle}>Close</Button>
       </DialogActions>
     </Dialog>

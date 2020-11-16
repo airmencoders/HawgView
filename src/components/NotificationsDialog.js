@@ -55,13 +55,13 @@ const NotificationsDialog = props => {
       </DialogTitle>
       <DialogContent>
         <DialogContentText>
-          In order to continue expanding and improving Hawg Ops, I have been working to make Hawg View version 2. Please read the wiki if you have questions. 
+          In order to continue expanding and improving Hawg Ops, I have been working to make Hawg View version 2. Please read the <a href='https://wiki.hawg-ops.com' target='_blank' rel='noopener noreferrer'>wiki</a> if you have questions. 
         </DialogContentText>
         <DialogContentText>
           At this time, there are no accounts for Hawg View. If you want to utilize your account or saved scenarios, click on the Version 1 in the navigation or visit <a href='https://v1.hawg-ops.com'>https://v1.hawg-ops.com</a>
         </DialogContentText>
         <DialogContentText>
-          Please let me know at hawg.ops@gmail.com any feedback or requests you may have for Hawg View.
+          Please let me know at <a href='mailto:hawg.ops@gmail.com'>hawg.ops@gmail.com</a> any feedback or requests you may have for Hawg View.
         </DialogContentText>
         <DialogContentText>
           Porkins
