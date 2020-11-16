@@ -1,3 +1,10 @@
+## 2.1.1-beta
+### Changes
+* Building labels and kinetic point state data now saved within the scenario history
+
+### Fixes
+* Building labels and kinetic points now behave properly with undo/redo/clear
+
 ## 2.1.0-beta
 ### Changes
 * Made the load scenario dialog load the resulting parsed JSON by defualt
@@ -10,7 +17,7 @@
 
 ## 2.53.0-alpha
 ### Changes
-* Completed the stles
+* Completed the styles
 * Changed Save function to automatically save the file versus a copy/paste
 * Changed Load function to be a file upload
 

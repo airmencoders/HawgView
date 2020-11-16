@@ -82,7 +82,7 @@ class App extends React.Component {
         <CssBaseline />
         <Router>
           <Switch>
-            <Route exact path='/'>
+            <Route path='/'>
               <CAS
                 state={this.state}
               />

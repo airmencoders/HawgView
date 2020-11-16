@@ -156,6 +156,11 @@ const Cas = ({ state }) => {
     buildingLabels: [],
     bullseyes: [],
     circles: [],
+    data: {
+      buildingLabel: 1,
+      firstLetter: 65,
+      secondLetter: 65,
+    },
     ellipses: [],
     friendlyMarkers: [],
     hostileMarkers: [],
@@ -521,6 +526,7 @@ const Cas = ({ state }) => {
         action: 'load scenario',
         buildingLabels: json.data.buildingLabels,
         bullseyes: json.data.bullseyes,
+        data: json.data.data,
         ellipses: json.data.ellipses,
         rectangles: json.data.rectangles,
         friendlyMarkers: json.data.friendlyMarkers,
@@ -682,6 +688,7 @@ const Cas = ({ state }) => {
           <BuildingLabelTool
             active={activeTool === 'buildingLabel'}
             clearLatlng={() => setClickedLatLng(null)}
+            index={history[step].data.buildingLabel}
             latlng={clickedLatLng}
             submit={(action, payload) => handleMarkerEdit(action, payload)}
             toggle={() => toggleTools('buildingLabel')}
@@ -689,7 +696,9 @@ const Cas = ({ state }) => {
           <KineticPointTool
             active={activeTool === 'kineticPoint'}
             clearLatlng={() => setClickedLatLng(null)}
+            firstLetter={history[step].data.firstLetter}
             latlng={clickedLatLng}
+            secondLetter={history[step].data.secondLetter}
             submit={(action, payload) => handleMarkerEdit(action, payload)}
             toggle={() => toggleTools('kineticPoint')}
           />

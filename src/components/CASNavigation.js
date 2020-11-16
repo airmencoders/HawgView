@@ -77,6 +77,8 @@ const useStyles = makeStyles(theme => ({
 const CASNavigation = (props) => {
   const classes = useStyles()
 
+  let packageJson = require('../../package.json')
+
   return (
     <div className={classes.grow}>
       <AppBar
@@ -92,12 +94,14 @@ const CASNavigation = (props) => {
             style={{ textDecoration: 'none' }}
             to='/'
           >
-            <Typography
-              style={{ color: 'white' }}
-              variant='h6'
-            >
-              Hawg View
-            </Typography>
+            <Tooltip title={packageJson.version}>
+              <Typography
+                style={{ color: 'white' }}
+                variant='h6'
+              >
+                Hawg View
+              </Typography>
+            </Tooltip>
           </NavLink>
           {props.children}
           <div className={classes.grow} />
@@ -111,7 +115,7 @@ const CASNavigation = (props) => {
           </Tooltip>
           <a
             style={{ textDecoration: 'none', marginRight: '15px' }}
-            href='https://v1.hawg-ops.com/login'
+            href='https://v1.hawg-ops.com/'
             target='_blank'
             rel='noopener noreferrer'
           >

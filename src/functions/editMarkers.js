@@ -97,6 +97,11 @@ const clearMarkers = (history, step) => {
       buildingLabels: [],
       bullseyes: [],
       circles: [],
+      data: {
+        buildingLabel: 1,
+        firstLetter: 65,
+        secondLetter: 65,
+      },
       ellipses: [],
       friendlyMarkers: [],
       hostileMarkers: [],
@@ -193,13 +198,32 @@ const createMarker = (history, step, payload) => {
         return {
           ...targetHistory[step],
           action: `create building label`,
-          buildingLabels: [...targetHistory[step].buildingLabels, payload]
+          buildingLabels: [...targetHistory[step].buildingLabels, payload],
+          data: {
+            buildingLabel: targetHistory[step].data.buildingLabel + 1,
+            firstLetter: targetHistory[step].data.firstLetter,
+            secondLetter: targetHistory[step].data.secondLetter
+          }
         }
       case 'kineticPoint':
+        let _secondLetter = targetHistory[step].data.secondLetter
+        let _firstLetter = targetHistory[step].data.firstLetter
+
+        if (_secondLetter === 90) {
+          _firstLetter++
+          _secondLetter = 65
+        } else {
+          _secondLetter++
+        }
         return {
           ...targetHistory[step],
           action: `create kinetic point`,
-          kineticPoints: [...targetHistory[step].kineticPoints, payload]
+          kineticPoints: [...targetHistory[step].kineticPoints, payload],
+          data: {
+            buildingLabel: targetHistory[step].data.buildingLabel,
+            firstLetter: _firstLetter,
+            secondLetter: _secondLetter
+          }
         }
       case 'mapLabel':
         return {
@@ -617,7 +641,6 @@ const editMarker = (history, step, payload) => {
 
       newMarker = {
         ...marker,
-        color: payload.color,
         title: payload.title,
         latlng: payload.latlng,
         elevation: payload.elevation,

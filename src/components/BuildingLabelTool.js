@@ -43,7 +43,7 @@ import React from 'react'
  */
 const BuildingLabelTool = (props) => {
 
-  const [index, setIndex] = React.useState(1)
+  //const [index, setIndex] = React.useState(1)
 
   /**
    * 
@@ -67,14 +67,10 @@ const BuildingLabelTool = (props) => {
         iconType: 'div',
         latlng: props.latlng,
         layer: 'buildingLabel',
-        title: index,
+        title: props.index,
       }
 
-      console.log('buildingLabelData', newData)
-
       props.submit('create', newData)
-
-      setIndex(index + 1)
     }
   }, [props.latlng])
 

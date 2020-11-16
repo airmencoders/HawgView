@@ -43,20 +43,6 @@ import React from 'react'
  */
 const KineticPointTool = (props) => {
 
-  // 65 through 90
-  const [firstLetter, setFirstLetter] = React.useState(65)
-  const [secondLetter, setSecondLetter] = React.useState(65)
-  const [color, setColor] = React.useState('#ff0000')
-
-  const increment = () => {
-    if (secondLetter === 90) {
-      setFirstLetter(firstLetter + 1)
-      setSecondLetter(65)
-    } else {
-      setSecondLetter(secondLetter + 1)
-    }
-  }
-
   /**
    * 
    */
@@ -77,16 +63,13 @@ const KineticPointTool = (props) => {
           arty: false,
           display: false,
         },
-        color: color,
         iconType: 'div',
         latlng: props.latlng,
         layer: 'kineticPoint',
-        title: `${String.fromCharCode(firstLetter)}${String.fromCharCode(secondLetter)}`,
+        title: `${String.fromCharCode(props.firstLetter)}${String.fromCharCode(props.secondLetter)}`,
       }
 
       props.submit('create', newData)
-
-      increment()
     }
   }, [props.latlng])
 

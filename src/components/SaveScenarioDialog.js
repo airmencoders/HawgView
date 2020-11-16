@@ -31,6 +31,7 @@ const SaveScenarioDialog = (props) => {
       buildingLabels: props.data.buildingLabels,
       bullseyes: props.data.bullseyes,
       circles: props.data.circles,
+      data: props.data.data,
       ellipses: props.data.ellipses,
       friendlyMarkers: props.data.friendlyMarkers,
       hostileMarkers: props.data.hostileMarkers,
