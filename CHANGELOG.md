@@ -1,3 +1,8 @@
+## 2.1.3-beta
+### Fixes
+* Base path is now changed to `/*` to not cause 404 issues
+* Potential for this to change if app changes to a multi-page-app
+
 ## 2.1.2-beta
 ### Fixes
 * Fixed bug where shape drawer would not open when creating a line/polygon
