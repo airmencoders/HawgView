@@ -1,3 +1,7 @@
+## 2.1.2-beta
+### Fixes
+* Fixed bug where shape drawer would not open when creating a line/polygon
+
 ## 2.1.1-beta
 ### Changes
 * Building labels and kinetic point state data now saved within the scenario history

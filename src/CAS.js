@@ -324,18 +324,16 @@ const Cas = ({ state }) => {
 
   const toggleTools = tool => {
 
-    handleMapReset()
+    setClickedLatLng(null)
 
     switch (tool) {
       case 'analysis':
         activeTool === 'analysis' ? setActiveTool(null) : setActiveTool('analysis')
         break
       case 'buildingLabel':
-        //activeTool !== 'buildingLabel' ? setLabelStyleDrawerOpen(true) : setLabelStyleDrawerOpen(false)
         activeTool === 'buildingLabel' ? setActiveTool(null) : setActiveTool('buildingLabel')
         break
       case 'kineticPoint':
-        //activeTool !== 'kineticPoint' ? setLabelStyleDrawerOpen(true) : setLabelStyleDrawerOpen(false)
         activeTool === 'kineticPoint' ? setActiveTool(null) : setActiveTool('kineticPoint')
         break
       case 'line':
@@ -472,20 +470,13 @@ const Cas = ({ state }) => {
 
         setHistory([...targetHistory, newStep])
         setStep(step + 1)
-        setClickedLatLng(null)
-        setMouseCoords(null)
 
         if (action === 'create') {
           setMarkerId(markerId + 1)
           setMarkerLabel('')
         }
-        setFocusedMarker(null)
-        setFocusedShape(null)
-        setEditMarkerDialogOpen(false)
-        setEditMarkerDrawerOpen(false)
-        setEditThreatDialogOpen(false)
-        setEdit9LineDialogOpen(false)
-        setEdit15LineDialogOpen(false)
+
+        //handleMapReset()
 
         if (payload.layer === 'circle' || payload.layer === 'rectangle' || payload.layer === 'line' || payload.layer === 'polygon' || payload.layer === 'ellipse') {
           setFocusedShape(updatedPayload)
