@@ -120,6 +120,10 @@ const EditThreatDialog = (props) => {
   const handleSubmit = () => {
     if (props.marker === null) {
       props.submit('create', {
+        arty: {
+          arty: false,
+          display: false
+        },
         data: null,
         elevation: 0,
         fill: fill,
@@ -135,6 +139,7 @@ const EditThreatDialog = (props) => {
     } else {
       props.submit('edit', {
         marker: props.marker,
+        arty: props.marker.arty,
         data: props.marker.data,
         fill: fill,
         label: custom ? label : threats[threat].label,

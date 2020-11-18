@@ -59,6 +59,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import { airspace } from '../constants/airspace'
 import Ellipse from './Ellipse'
 import LayerMarkers from './LayerMarkers'
+import LayerThreats from './LayerThreats'
 import MGRSGrids from './MGRSGrids'
 import GARSCells from './GARSCells'
 import { render9line, render15line } from '../functions/renderData'
@@ -471,115 +472,21 @@ const LayerControl = (props) => {
       </Overlay>
       <Overlay checked name='Threat Markers'>
         <LayerGroup>
-          {props.interactive && props.step.threatMarkers.map(marker => (
-            <React.Fragment key={`threat-${marker.id}`}>
-              <Marker
-                autoPan={true}
-                draggable={true}
-                icon={L.divIcon({
-                  className: marker.sovereignty === 'Hostile' ? classes.hostileThreat : marker.sovereignty === 'Suspect' ? classes.suspectThreat : marker.sovereignty === 'Unknown' ? classes.unknownThreat : classes.friendlyThreat,
-                  html: marker.label,
-                  iconSize: [props.markerSize * props.mapZoom, props.markerSize * props.mapZoom],
-                })}
-                id={marker.id}
-                onClick={() => props.setFocusedMarker(marker)}
-                onDragend={event => props.handleMarkerDrag(marker, event.target.getLatLng())}
-                position={marker.latlng}
-                riseOnHover={true}
-                title={marker.title}
-              >
-                <Popup
-                  onClose={handlePopupClose}
-                >
-                  {(marker.data !== null) ?
-                    render9line(marker.data)
-                    :
-                    <React.Fragment>
-                      {marker.title}
-                      <br />
-                      {LL.parse(marker.latlng.lat, marker.latlng.lng).toUtm().toMgrs().toString()}
-                      <br />
-                      {(marker.elevation !== 'Pending' && marker.elevation !== 'Elevation not found') ?
-                        `${marker.elevation} feet`
-                        : 'No elevation'
-                      }
-                      <br />
-                    </React.Fragment>
-                  }
-                  <Button color='primary' onClick={() => handleEditThreat(marker)}>Edit</Button>
-                  <Button color='secondary' onClick={() => props.handleDeleteMarker(marker)}>Delete</Button>
-                </Popup>
-                {(props.tooltipsActive) ?
-                  <Tooltip
-                    direction='top'
-                    offset={L.point(0, -1 * props.markerSize * props.mapZoom)}
-                    opacity='1'
-                    permanent
-                  >
-                    {marker.title}
-                  </Tooltip>
-                  : undefined
-                }
-              </Marker>
-              <Circle
-                center={marker.latlng}
-                color={marker.sovereignty === 'Hostile' ? 'red' : marker.sovereignty === 'Suspect' ? 'yellow' : marker.sovereignty === 'Unknown' ? 'White' : 'Lime'}
-                dashArray='12, 12'
-                fill={marker.fill}
-                radius={marker.unit === 'm' ? Number.parseInt(marker.range) : marker.unit === 'km' ? marker.range * 1000 : marker.range * 1852}
-              >
-                <Popup
-                  maxWidth={1000}
-                >
-                  {(marker.data !== null) ?
-                    render9line(marker.data)
-                    :
-                    <React.Fragment>
-                      {marker.title}
-                      <br />
-                      {LL.parse(marker.latlng.lat, marker.latlng.lng).toUtm().toMgrs().toString()}
-                      <br />
-                    </React.Fragment>
-                  }
-                  <Button color='primary' onClick={() => handleEditThreat(marker)}>Edit</Button>
-                  <Button color='secondary' onClick={() => props.handleDeleteMarker(marker)}>Delete</Button>
-                </Popup>
-              </Circle>
-            </React.Fragment>
-          ))}
-          {!props.interactive && props.step.threatMarkers.map(marker => (
-            <React.Fragment key={`threat-${marker.id}`}>
-              <Marker
-                icon={L.divIcon({
-                  className: marker.sovereignty === 'Hostile' ? classes.hostileThreat : marker.sovereignty === 'Suspect' ? classes.suspectThreat : marker.sovereignty === 'Unknown' ? classes.unknownThreat : classes.friendlyThreat,
-                  html: marker.label,
-                  iconSize: [props.markerSize * props.mapZoom, props.markerSize * props.mapZoom],
-                })}
-                id={marker.id}
-                position={marker.latlng}
-                title={marker.title}
-              >
-                {(props.tooltipsActive) ?
-                  <Tooltip
-                    direction='top'
-                    offset={L.point(0, -1 * props.markerSize * props.mapZoom)}
-                    opacity='1'
-                    permanent
-                  >
-                    {marker.title}
-                  </Tooltip>
-                  : undefined
-                }
-              </Marker>
-              <Circle
-                center={marker.latlng}
-                color={marker.sovereignty === 'Hostile' ? 'red' : marker.sovereignty === 'Suspect' ? 'yellow' : marker.sovereignty === 'Unknown' ? 'White' : 'Lime'}
-                dashArray='12, 12'
-                fill={marker.fill}
-                radius={marker.unit === 'm' ? Number.parseInt(marker.range) : marker.unit === 'km' ? marker.range * 1000 : marker.range * 1852}
-              >
-              </Circle>
-            </React.Fragment>
+          {props.step.threatMarkers.map(marker => (
+            <LayerThreats
+              interactie={props.interactive}
+              handleMarkerDrag={(marker, latlng) => props.handleMarkerDrag(marker, latlng)}
+              handleDeleteMarker={marker => props.handleDeleteMarker(marker)}
+              key={`${marker.layer}-${marker.title}-${marker.id}`}
+              markerSize={props.markerSize}
+              marker={marker}
+              mapZoom={props.mapZoom}
+              setClickedLatLng={latlng => props.setClickedLatLng(latlng)}
+              setFocusedMarker={marker => props.setFocusedMarker(marker)}
+              setFocusedShape={shape => props.setFocusedShape(shape)}
+              toggleEditMarkerDialog={() => props.toggleEditMarkerDialog()}
+              tooltipsActive={props.tooltipsActive}
+            />
           ))}
         </LayerGroup>
       </Overlay>

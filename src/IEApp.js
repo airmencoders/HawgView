@@ -30,41 +30,72 @@
 //----------------------------------------------------------------//
 // Top Level Modules
 //----------------------------------------------------------------//
-import 'react-app-polyfill/ie11'
-import 'babel-polyfill'
 import React from 'react';
-import ReactDOM from 'react-dom';
+import {
+  StaticRouter as Router,
+  Route,
+  Switch,
+} from 'react-router-dom'
+
+//----------------------------------------------------------------//
+// Material-UI Core Components
+//----------------------------------------------------------------//
+import CssBaseline from '@material-ui/core/CssBaseline'
+import Grid from '@material-ui/core/Grid'
+import Typography from '@material-ui/core/Typography'
 
 //----------------------------------------------------------------//
 // Custom Components
 //----------------------------------------------------------------//
-import App from './App';
-import * as serviceWorker from './serviceWorker';
 
-import IEApp from './IEApp'
-
-const isIE = /*@cc_on!@*/false || !!document.documentMode
 
 //----------------------------------------------------------------//
-// Render the Application
+// Custom Pages
 //----------------------------------------------------------------//
+import IENavigation from './components/IENavigation'
 
+//----------------------------------------------------------------//
+// App Component
+//----------------------------------------------------------------//
+class App extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      classification: 'unclassified',
+      isAuthenticated: false,
+      user: null,
+    }
+  }
 
-
-if (isIE) {
-  ReactDOM.render(
-    <IEApp />,
-    document.getElementById('root')
-  );
-} else {
-  ReactDOM.render(
-    <App />,
-    document.getElementById('root')
-  );
+  //----------------------------------------------------------------//
+  // Render the Router
+  //----------------------------------------------------------------//
+  render() {
+    return (
+      <div className='App'>
+        <CssBaseline />
+        <Router>
+          <Switch>
+            <Route path='/'>
+              <IENavigation
+                state={this.state}
+              />
+              <Grid
+                container
+                direction='row'
+                justify='center'
+              >
+                <Typography variant='h4'>Internet Explorer is not supported. Please use Chrome, Firefox, or Microsoft Edge.</Typography>
+              </Grid>              
+            </Route>
+          </Switch>
+        </Router>
+      </div>
+    )
+  }
 }
 
+export default App
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
+
+

@@ -554,9 +554,11 @@ const editMarker = (history, step, payload) => {
 
       newMarker = {
         ...marker,
+        color: payload.color,
         data: payload.data,
         elevation: payload.elevation,
         fill: payload.fill,
+        fillColor: payload.fillColor,
         label: payload.label,
         latlng: payload.latlng,
         range: payload.range,

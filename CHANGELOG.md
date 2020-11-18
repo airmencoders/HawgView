@@ -1,3 +1,17 @@
+## 2.3.0-beta
+### Changes
+* Added IP/CP/No Strike, Bullseyes, Buildings, and Kinetic Points to the marker list
+* 15 Line data no longer forces a large width and is responsive
+* Deprecated `EditThreatDialog`
+* Added threat handling to `EditMarkerDrawer`
+* Added `babel-polyfill` and `react-app-polyfill` for IE11 support - Directs users to Chrome/Firefox/Edge
+* Created `LayerThreats` to handle rendering a threat with the specific colors
+* Updated `LayerControl` to utilize the new `LayerThreats` component
+
+### Fixes
+* Added `Arty` property to the `Threat` marker, fixing crash
+* Fixed bug in `EditMarkerDrawer` where color of Map Labels would not be saved
+
 ## 2.2.0-beta
 ### Changes
 * Added default dash arrays to the shape drawer

@@ -81,9 +81,15 @@ const PersistentMarkers = ({ handleAddMarker, handleMarkerDrawerToggle, toggleEd
         display: false,
       },
       iconType,
-      iconUrl,
       layer,
       title,
+    }
+
+    if (layer !== 'threat') {
+      payload = {
+        ...payload,
+        iconUrl,
+      }
     }
 
     if (layer !== 'bullseye') {
@@ -100,6 +106,24 @@ const PersistentMarkers = ({ handleAddMarker, handleMarkerDrawerToggle, toggleEd
         color: '#ff0000',
         declination: 0,
         showData: true,
+      }
+    }
+
+    if (layer === 'threat') {
+      payload = {
+        ...payload,
+        threatType: {
+          title: 'Custom',
+          label: '',
+          range: '3',
+        },
+        range: '3',
+        unit: 'NM',
+        sovereignty: 'Hostile',
+        color: '#ff0000',
+        fill: false,
+        fillColor: '#ff0000',
+        label: ''
       }
     }
 
@@ -175,7 +199,7 @@ const PersistentMarkers = ({ handleAddMarker, handleMarkerDrawerToggle, toggleEd
           <img
             alt='Threat Ring'
             className={classes.image}
-            onClick={toggleEditThreatDialogClick}
+            onClick={() => handleMarkerClick(null, 'div', '', 'threat')}
             src={threat}
           />
         </Tooltip>
@@ -208,7 +232,7 @@ const PersistentMarkers = ({ handleAddMarker, handleMarkerDrawerToggle, toggleEd
         <Button
           className={classes.button}
           color='primary'
-          onClick={() => handleMarkerClick(null, 'div', 'BLDG', 'mapLabel')}
+          onClick={() => handleMarkerClick(null, 'div', 'Label', 'mapLabel')}
         >
           MAP LABEL
         </Button>

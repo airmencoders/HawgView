@@ -32,9 +32,9 @@
 //----------------------------------------------------------------//
 import React from 'react'
 import {
+  Circle,
   Marker,
   Popup,
-  Rectangle,
   Tooltip,
 } from 'react-leaflet'
 import L from 'leaflet'
@@ -62,7 +62,7 @@ const LayerMarkers = props => {
   const useStyles = makeStyles({
     divIcon: {
       alignItems: 'center',
-      color: (props.color === undefined || props.color === null) ? props.marker.color : props.color,
+      color: props.marker.color,
       display: 'flex',
       fontSize: computedSize,
       fontWeight: 'bold',
@@ -72,20 +72,6 @@ const LayerMarkers = props => {
       lineHeight: `${computedSize}px`,
       wordWrap: 'break-word',
     },
-    kineticPoint: {
-      alignItems: 'center',
-      backgroundColor: '#ffff00',
-      border: 'solid #000000 2px',
-      color: 'black',
-      display: 'flex',
-      fontSize: computedSize / 2,
-      fontWeight: 'bold',
-      justifyContent: 'center',
-      margin: '0',
-      textAlign: 'center',
-      lineHeight: `${computedSize / 2}px`,
-      wordWrap: 'break-word',
-    }
   })
 
   const classes = useStyles(props)
@@ -148,34 +134,6 @@ const LayerMarkers = props => {
 
   /**
    * 
-   * @param {*} latlng 
-   * @param {*} layer 
-   */
-  const generatePAA = (latlng, layer) => {
-    // Get the four sides
-    const point = LatLon.parse(latlng.lat, latlng.lng)
-    const north = point.destinationPoint(2000, 0)
-    const south = point.destinationPoint(2000, 180)
-    const east = point.destinationPoint(2000, 90)
-    const west = point.destinationPoint(2000, 270)
-
-    // Get the two corners
-    const northwest = [north.lat, west.lon]
-    const southeast = [south.lat, east.lon]
-
-    return (
-      <Rectangle
-        bounds={[northwest, southeast]}
-        color={layer === 'friendly' ? '#3388ff' : '#ff0000'}
-        dashArray='12,12'
-        fill={false}
-        weight={4}
-      />
-    )
-  }
-
-  /**
-   * 
    */
   const handlePopupClose = () => {
     props.setFocusedMarker(null)
@@ -194,21 +152,15 @@ const LayerMarkers = props => {
 
   return (
     <React.Fragment>
-      {(props.marker.arty.arty && props.marker.arty.display) ? generatePAA(props.marker.latlng, props.marker.layer) : null}
       <Marker
         autoPan={props.interactive}
         draggable={props.interactive}
-        icon={props.marker.iconType === 'img' ?
-          L.icon({
-            iconUrl: props.marker.iconUrl,
-            iconSize: [computedSize, computedSize]
-          })
-          :
+        icon={
           L.divIcon({
-            className: props.marker.layer === 'kineticPoint' ? classes.kineticPoint : classes.divIcon,
+            className: classes.divIcon,
             color: props.marker.color,
             html: props.marker.title,
-            iconSize: props.marker.layer === 'kineticPoint' ? [computedSize, computedSize] : [20, 20],
+            iconSize: [computedSize, computedSize],
           })
         }
         id={props.marker.id}
@@ -230,6 +182,14 @@ const LayerMarkers = props => {
           </Tooltip>
           : null}
       </Marker>
+      <Circle
+        center={props.marker.latlng}
+        color={props.marker.color}
+        dashArray='12,12'
+        fill={props.marker.fill}
+        fillColor={props.marker.fillColor}
+        radius={props.marker.unit === 'm' ? Number.parseInt(props.marker.range) : props.marker.unit === 'km' ? props.marker.range * 1000 : props.marker.range * 1852}
+      />
     </React.Fragment>
   )
 }

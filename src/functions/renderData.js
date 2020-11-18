@@ -52,19 +52,39 @@ const render9line = (data) => (
 )
 
 const render15line = (data) => (
-  <table style={{ width: '500px' }}>
+  <table>
     <tbody>
       <tr>
-        <td>Callsign/Freq/PLS/HHRID</td>
-        <td>{data.callsign} / {data.frequency} / {data.plsHhrid}</td>
+        <td>Callsign</td>
+        <td>{data.callsign}</td>
+      </tr>
+      <tr>
+        <td>Frequency</td>
+        <td>{data.frequency}</td>
+      </tr>
+      <tr>
+        <td>PLS/HHRID</td>
+        <td>{data.plsHhrid}</td>
       </tr>
       <tr>
         <td>Number of Objectives</td>
         <td>{data.numObjectives}</td>
       </tr>
       <tr>
-        <td>Location/Elevation/Date/Time(z)/Source</td>
-        <td>{data.location} / {data.elevation} / {data.dateTime} / {data.source}</td>
+        <td>Location</td>
+        <td>{data.location}</td>
+      </tr>
+      <tr>
+        <td>Elevation</td>
+        <td>{data.elevation}</td>
+      </tr>
+      <tr>
+        <td>Date/Time(z)</td>
+        <td>{data.dateTime}</td>
+      </tr>
+      <tr>
+        <td>Source</td>
+        <td>{data.source}</td>
       </tr>
       <tr>
         <td>Condition</td>

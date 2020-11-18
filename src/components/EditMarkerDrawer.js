@@ -39,9 +39,13 @@ import { LatLon } from 'geodesy/mgrs'
 //----------------------------------------------------------------//
 import Button from '@material-ui/core/Button'
 import Drawer from '@material-ui/core/Drawer'
-import FormGroup from '@material-ui/core/FormGroup'
+import FormControl from '@material-ui/core/FormControl'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
+import FormGroup from '@material-ui/core/FormGroup'
 import Grid from '@material-ui/core/Grid'
+import InputLabel from '@material-ui/core/InputLabel'
+import MenuItem from '@material-ui/core/MenuItem'
+import Select from '@material-ui/core/Select'
 import Switch from '@material-ui/core/Switch'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
@@ -51,6 +55,11 @@ import { makeStyles } from '@material-ui/core/styles'
 // Functions
 //----------------------------------------------------------------//
 import { submitCoordInput } from '../functions/submitCoordInput'
+
+//----------------------------------------------------------------//
+// Constants
+//----------------------------------------------------------------//
+import { sovereignties, threats, units } from '../constants/threats'
 
 //----------------------------------------------------------------//
 // Custom Class Styling
@@ -100,17 +109,25 @@ const EditMarkerDrawer = (props) => {
   const [elevation, setElevation] = React.useState('')
   const [mgrsDisabled, setMgrsDisabled] = React.useState(false)
 
+  // Threats
+  const [threatType, setThreatType] = React.useState(0)
+  const [range, setRange] = React.useState('3')
+  const [unit, setUnit] = React.useState('NM')
+  const [sovereignty, setSovereignty] = React.useState('Hostile')
+
   // Arty data display
   const [artyDisplay, setArtyDisplay] = React.useState(true)
 
   // Building Label Color
   const [color, setColor] = React.useState('')
+  const [fillColor, setFillColor] = React.useState('')
 
   // Control the switch for LatLng, 9-Lines, and 15-Lines, and threat fills
   const [latlng, setLatlng] = React.useState(false)
   const [cas, setCas] = React.useState(false)
   const [csar, setCsar] = React.useState(false)
   const [fill, setFill] = React.useState(false)
+
 
   // Control 9-Line TextFields
   const [casLabel, setCasLabel] = React.useState('')
@@ -190,16 +207,24 @@ const EditMarkerDrawer = (props) => {
         setArtyDisplay(props.marker.arty.display)
       }
 
-      if (props.marker.layer === 'building') {
+      if (props.marker.layer === 'threat') {
+        const type = threats.indexOf(props.marker.threatType)
+        setThreatType(type === -1 ? 0 : type)
+        setRange(props.marker.range)
+        setUnit(props.marker.unit)
+        setSovereignty(props.marker.sovereignty)
+        setFill(props.marker.fill)
+        setFillColor(props.marker.fillColor)
+      }
+
+      if (props.marker.layer === 'building' || props.marker.layer === 'threat') {
         setColor(props.marker.color)
       }
 
       if (props.marker.layer === 'hostile' || props.marker.layer === 'threat') {
         if (props.marker.data === null) {
-          //setCasIpHdgDistance('N/A')
           setCasElevation(props.marker.elevation)
           setCasDescription(props.marker.title)
-          //setCasLocation(LatLon.parse(props.marker.latlng).toUtm().toMgrs().toString())
           setCasMark('None')
         } else {
           setCas(true)
@@ -222,7 +247,6 @@ const EditMarkerDrawer = (props) => {
           setCsarCallsign(props.marker.title)
           setCsarFrequency('A')
           setCsarNumObjectives('1')
-          //setCsarLocation(LatLon.parse(props.marker.latlng).toUtm().toMgrs().toString())
           setCsarElevation(props.marker.elevation)
           setCsarSource('CSEL')
           setCsarCondition('Ambulatory')
@@ -267,6 +291,36 @@ const EditMarkerDrawer = (props) => {
     fetch(`https://nationalmap.gov/epqs/pqs.php?x=${target.lng}&y=${target.lat}&units=Feet&output=json`)
       .then(response => response.json())
       .then(json => (Number.parseInt(json.USGS_Elevation_Point_Query_Service.Elevation_Query.Elevation) === -1000000) ? setElevation(0) : Number.parseInt(setElevation(json.USGS_Elevation_Point_Query_Service.Elevation_Query.Elevation)))
+  }
+
+  const handleThreatChange = event => {
+    setThreatType(event.target.value)
+    setRange(threats[event.target.value].range)
+    setUnit('NM')
+  }
+
+  const handleSovereigntyChange = event => {
+    setSovereignty(event.target.value)
+    switch (event.target.value) {
+      case 'Hostile':
+        setColor('#ff0000')
+        setFillColor('#ff0000')
+        break
+      case 'Suspect':
+        setColor('#ffff00')
+        setFillColor('#ffff00')
+        break
+      case 'Unknown':
+        setColor('#ffffff')
+        setFillColor('#ffffff')
+        break
+      case 'Friendly':
+        setColor('#00ff00')
+        setFillColor('#00ff00')
+        break
+      default:
+        console.error(`Error: Unknown sovereignty ${event.target.value}`)
+    }
   }
 
   const handleSubmit = () => {
@@ -338,7 +392,20 @@ const EditMarkerDrawer = (props) => {
       }
     }
 
-    if (props.marker.layer === 'building') {
+    if (props.marker.layer === 'threat') {
+      payload = {
+        ...payload,
+        threatType: threats[threatType],
+        range: range,
+        unit: unit,
+        sovereignty: sovereignty,
+        fill: fill,
+        fillColor: fillColor,
+        label: threatType === 0 ? title : threats[threatType].label
+      }
+    }
+
+    if (props.marker.layer === 'mapLabel' || props.marker.layer === 'threat') {
       payload = {
         ...payload,
         color: color,
@@ -368,6 +435,80 @@ const EditMarkerDrawer = (props) => {
           variant='outlined'
           value={title}
         />
+        {props.marker !== null && props.marker.layer === 'threat' ? (
+          <React.Fragment>
+            <FormControl
+              className={classes.marginsMd}
+              variant='outlined'
+            >
+              <InputLabel>Threat Type</InputLabel>
+              <Select
+                label='Threat Type'
+                onChange={handleThreatChange}
+                value={threatType}
+              >
+                {threats.map((threat, index) => (
+                  <MenuItem
+                    key={threat.title}
+                    value={index}
+                  >
+                    {threat.title}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            <TextField
+              className={classes.textField}
+              disabled={threatType !== 0}
+              label='Range'
+              onChange={event => setRange(event.target.value)}
+              value={range}
+              variant='outlined'
+            />
+            <FormControl
+              className={classes.marginsMd}
+              variant='outlined'
+            >
+              <InputLabel>Unit</InputLabel>
+              <Select
+                disabled={threatType !== 0}
+                label='Unit'
+                onChange={event => setUnit(event.target.value)}
+                value={unit}
+              >
+                {units.map(unit => (
+                  <MenuItem
+                    key={unit}
+                    value={unit}
+                  >
+                    {unit}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            <FormControl
+              className={classes.marginsMd}
+              variant='outlined'
+            >
+              <InputLabel>Sovereignty</InputLabel>
+              <Select
+                label='Sovereignty'
+                onChange={handleSovereigntyChange}
+                value={sovereignty}
+              >
+                {sovereignties.map(sovereignty => (
+                  <MenuItem
+                    key={sovereignty}
+                    value={sovereignty}
+                  >
+                    {sovereignty}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </React.Fragment>
+        )
+          : null}
         <Grid
           container
           direction='row'
@@ -427,7 +568,7 @@ const EditMarkerDrawer = (props) => {
           variant='outlined'
           value={elevation}
         />
-        {(props.marker !== null && props.marker.layer === 'building') ?
+        {(props.marker !== null && (props.marker.layer === 'mapLabel' || props.marker.layer === 'threat')) ?
           <Grid
             container
             direction='row'
@@ -437,7 +578,7 @@ const EditMarkerDrawer = (props) => {
               variant='body1'
             >
               Color
-          </Typography>
+            </Typography>
             <ColorPicker
               className={classes.marginsMd}
               color={color}
@@ -447,6 +588,48 @@ const EditMarkerDrawer = (props) => {
           </Grid>
           : null
         }
+        {props.marker !== null && props.marker.layer === 'threat' ? (
+          <React.Fragment>
+            <Grid
+              container
+              direction='row'
+              justify='center'
+            >
+              <FormControlLabel
+                control={
+                  <Switch
+                    checked={fill}
+                    onChange={event => setFill(event.target.checked)}
+                    color='primary'
+                  />
+                }
+                label='Fill'
+              />
+            </Grid>
+            {fill ?
+              <Grid
+                container
+                direction='row'
+                justify='center'
+              >
+                <Typography
+                  variant='body1'
+                >
+                  Fill Color
+                </Typography>
+                <ColorPicker
+                  className={classes.marginsMd}
+                  color={fillColor}
+                  disableAlpha={true}
+                  onChange={color => setFillColor(color.hex)}
+                />
+              </Grid>
+              : null
+            }
+          </React.Fragment>
+
+        )
+          : null}
         {(props.marker !== null && props.marker.arty.arty === true) ?
           (
             <Grid

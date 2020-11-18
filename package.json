@@ -1,6 +1,6 @@
 {
   "name": "hawgview",
-  "version": "2.2.0-beta",
+  "version": "2.3.0-beta",
   "private": true,
   "dependencies": {
     "@iconify/icons-mdi": "^1.0.150",
@@ -11,11 +11,13 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
+    "babel-polyfill": "^6.26.0",
     "fontsource-roboto": "^2.2.6",
     "geodesy": "^2.2.1",
     "leaflet": "^1.7.1",
     "leaflet-ellipse": "^0.9.1",
     "react": "^17.0.1",
+    "react-app-polyfill": "^2.0.0",
     "react-color": "^2.19.3",
     "react-dom": "^17.0.1",
     "react-leaflet": "^2.8.0",
@@ -44,7 +46,8 @@
     "development": [
       "last 1 chrome version",
       "last 1 firefox version",
-      "last 1 safari version"
+      "last 1 safari version",
+      "ie 11"
     ]
   }
 }

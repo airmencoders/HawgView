@@ -31,44 +31,67 @@
 // Top Level Modules
 //----------------------------------------------------------------//
 import React from 'react'
+import { NavLink } from 'react-router-dom'
 
 //----------------------------------------------------------------//
 // Material-UI Core Components
 //----------------------------------------------------------------//
-import Dialog from '@material-ui/core/Dialog'
-import DialogContent from '@material-ui/core/DialogContent'
-import DialogContentText from '@material-ui/core/DialogContentText'
-import DialogTitle from '@material-ui/core/DialogTitle'
+import AppBar from '@material-ui/core/AppBar'
+import { makeStyles } from '@material-ui/core/styles'
+import Toolbar from '@material-ui/core/Toolbar'
+import Typography from '@material-ui/core/Typography'
 
 //----------------------------------------------------------------//
-// Notifications Dialog Component
+// Custom Components
 //----------------------------------------------------------------//
-const NotificationsDialog = props => {
+import ClassificationBanner from './ClassificationBanner'
+
+//----------------------------------------------------------------//
+// Custom Class Styling
+//----------------------------------------------------------------//
+const useStyles = makeStyles(theme => ({
+  appBar: {
+    zIndex: theme.zIndex.drawer + 1,
+  },
+  grow: {
+    flexGrow: 1,
+  },
+  title: {
+    flexGrow: 1,
+  },
+}))
+
+//----------------------------------------------------------------//
+// IE Navigation Component
+//----------------------------------------------------------------//
+const IENavigation = ({ state }) => {
+  const classes = useStyles()
 
   return (
-    <Dialog
-      open={props.open}
-      onClose={props.onClose}
-    >
-      <DialogTitle>
-        Hawg View Version 2 Beta
-      </DialogTitle>
-      <DialogContent>
-        <DialogContentText>
-          In order to continue expanding and improving Hawg Ops, I have been working to make Hawg View version 2. Please read the <a href='https://wiki.hawg-ops.com' target='_blank' rel='noopener noreferrer'>wiki</a> if you have questions. 
-        </DialogContentText>
-        <DialogContentText>
-          At this time, there are no accounts for Hawg View. If you want to utilize your account or saved scenarios, click on the Version 1 in the navigation or visit <a href='https://v1.hawg-ops.com'>https://v1.hawg-ops.com</a>. It is greatly suggested to convert your scenarios to v2 and save the text files. If you require assistance or have a large number of complex scenarios, please contact me.
-        </DialogContentText>
-        <DialogContentText>
-          Please let me know at <a href='mailto:hawg.ops@gmail.com'>hawg.ops@gmail.com</a> any feedback or requests you may have for Hawg View.
-        </DialogContentText>
-        <DialogContentText>
-          Porkins
-        </DialogContentText>
-      </DialogContent>
-    </Dialog>
+    <div className={classes.grow}>
+      <AppBar
+        className={classes.appBar}
+        position='static'
+      >
+        <ClassificationBanner
+          classification={state.classification}
+        />
+        <Toolbar>
+          <NavLink
+            style={{ textDecoration: 'none' }}
+            to='/'
+          >
+            <Typography
+              style={{ color: 'white' }}
+              variant='h6'
+            >
+              Hawg View
+            </Typography>
+          </NavLink>
+        </Toolbar>
+      </AppBar>
+    </div>
   )
 }
 
-export default NotificationsDialog
+export default IENavigation

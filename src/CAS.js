@@ -66,9 +66,9 @@ import CircleTool from './components/CircleTool'
 import CoordInput from './components/CoordInput'
 import ShapeDrawer from './components/ShapeDrawer'
 import Edit9LineDialog from './components/Edit9LineDialog'
-import Edit15LineDialog from './components/Edit15LineDialog'
+//import Edit15LineDialog from './components/Edit15LineDialog'
 import EditThreatDialog from './components/EditThreatDialog'
-import EditMarkerDialog from './components/EditMarkerDialog'
+//import EditMarkerDialog from './components/EditMarkerDialog'
 import EditMarkerDrawer from './components/EditMarkerDrawer'
 import EllipseTool from './components/EllipseTool'
 import { editMarkers } from './functions/editMarkers'
@@ -476,7 +476,7 @@ const Cas = ({ state }) => {
           setMarkerLabel('')
         }
 
-        //handleMapReset()
+        handleMapReset()
 
         if (payload.layer === 'circle' || payload.layer === 'rectangle' || payload.layer === 'line' || payload.layer === 'polygon' || payload.layer === 'ellipse') {
           setFocusedShape(updatedPayload)
@@ -800,12 +800,9 @@ const Cas = ({ state }) => {
         submit={(action, payload) => handleMarkerEdit(action, payload)}
       />
       <MarkerListDialog
-        friendlies={history[step].friendlyMarkers}
-        survivors={history[step].survivors}
-        hostiles={history[step].hostileMarkers}
-        threats={history[step].threatMarkers}
         open={markerListDialogOpen}
         onClose={() => setMarkerListDialogOpen(false)}
+        step={history[step]}
       />
       <Snackbar
         anchorOrigin={{
@@ -828,19 +825,6 @@ const Cas = ({ state }) => {
         </Alert>
       </Snackbar>
       {
-        (editMarkerDialogOpen) ?
-          <EditMarkerDialog
-            onExited={handleMapReset}
-            open={editMarkerDialogOpen}
-            marker={focusedMarker}
-            submit={(action, payload) => handleMarkerEdit(action, payload)}
-            toggle={() => setEditMarkerDialogOpen(!editMarkerDialogOpen)}
-            toggle9LineDialog={() => setEdit9LineDialogOpen(!edit9LineDialogOpen)}
-            toggle15LineDialog={() => setEdit15LineDialogOpen(!edit15LineDialogOpen)}
-          />
-          : undefined
-      }
-      {
         (edit9LineDialogOpen) ?
           <Edit9LineDialog
             onExited={handleMapReset}
@@ -848,17 +832,6 @@ const Cas = ({ state }) => {
             marker={focusedMarker}
             submit={payload => handleMarkerEdit('9line', payload)}
             toggle={() => setEdit9LineDialogOpen(!edit9LineDialogOpen)}
-          />
-          : undefined
-      }
-      {
-        (edit15LineDialogOpen) ?
-          <Edit15LineDialog
-            onExited={handleMapReset}
-            open={edit15LineDialogOpen}
-            marker={focusedMarker}
-            submit={payload => handleMarkerEdit('15line', payload)}
-            toggle={() => setEdit15LineDialogOpen(!edit15LineDialogOpen)}
           />
           : undefined
       }
