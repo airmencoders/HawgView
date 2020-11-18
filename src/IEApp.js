@@ -32,7 +32,8 @@
 //----------------------------------------------------------------//
 import React from 'react';
 import {
-  StaticRouter as Router,
+  BrowserRouter as Router,
+  Redirect,
   Route,
   Switch,
 } from 'react-router-dom'
@@ -76,7 +77,7 @@ class App extends React.Component {
         <CssBaseline />
         <Router>
           <Switch>
-            <Route path='/'>
+            <Route exact path='/'>
               <IENavigation
                 state={this.state}
               />
@@ -87,6 +88,9 @@ class App extends React.Component {
               >
                 <Typography variant='h4'>Internet Explorer is not supported. Please use Chrome, Firefox, or Microsoft Edge.</Typography>
               </Grid>              
+            </Route>
+            <Route path='/*'>
+              <Redirect to='/' />
             </Route>
           </Switch>
         </Router>

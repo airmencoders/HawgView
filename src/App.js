@@ -32,7 +32,7 @@
 //----------------------------------------------------------------//
 import React from 'react';
 import {
-  StaticRouter as Router,
+  BrowserRouter as Router,
   Route,
   Switch,
   Redirect
@@ -82,10 +82,13 @@ class App extends React.Component {
         <CssBaseline />
         <Router>
           <Switch>
-            <Route path='/'>
+            <Route exact path='/'>
               <CAS
                 state={this.state}
               />
+            </Route>
+            <Route path='/*'>
+              <Redirect to='/' />
             </Route>
             {/*<Route path='/login' >
               <Login

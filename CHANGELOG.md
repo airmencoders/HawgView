@@ -1,3 +1,10 @@
+## 2.3.3-beta
+### Changes
+* Changed `StaticRouter` to `BrowserRouter`
+
+### Fixes
+* Fixed Redirect issues
+
 ## 2.3.2-beta
 ### Changes
 * Changing threat now also changes the title as appropriate
