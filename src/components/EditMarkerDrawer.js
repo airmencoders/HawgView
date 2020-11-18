@@ -294,6 +294,11 @@ const EditMarkerDrawer = (props) => {
   }
 
   const handleThreatChange = event => {
+    if (event.target.value === 0) {
+      setTitle('')
+    } else {
+      setTitle(threats[event.target.value].label)
+    }
     setThreatType(event.target.value)
     setRange(threats[event.target.value].range)
     setUnit('NM')

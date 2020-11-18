@@ -1,3 +1,8 @@
+## 2.3.2-beta
+### Changes
+* Changing threat now also changes the title as appropriate
+* Deprecated `Edit9LineDialog` and `EditThreatDialog`
+
 ## 2.3.1-beta
 ### Changes
 * Removed `babel-polyfill` due to deprectation and unnecessary

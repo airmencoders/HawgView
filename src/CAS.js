@@ -65,10 +65,6 @@ import CASTools from './components/CASTools'
 import CircleTool from './components/CircleTool'
 import CoordInput from './components/CoordInput'
 import ShapeDrawer from './components/ShapeDrawer'
-import Edit9LineDialog from './components/Edit9LineDialog'
-//import Edit15LineDialog from './components/Edit15LineDialog'
-import EditThreatDialog from './components/EditThreatDialog'
-//import EditMarkerDialog from './components/EditMarkerDialog'
 import EditMarkerDrawer from './components/EditMarkerDrawer'
 import EllipseTool from './components/EllipseTool'
 import { editMarkers } from './functions/editMarkers'
@@ -824,29 +820,6 @@ const Cas = ({ state }) => {
           {snackbarMessage ? snackbarMessage.message : undefined}
         </Alert>
       </Snackbar>
-      {
-        (edit9LineDialogOpen) ?
-          <Edit9LineDialog
-            onExited={handleMapReset}
-            open={edit9LineDialogOpen}
-            marker={focusedMarker}
-            submit={payload => handleMarkerEdit('9line', payload)}
-            toggle={() => setEdit9LineDialogOpen(!edit9LineDialogOpen)}
-          />
-          : undefined
-      }
-      {
-        (editThreatDialogOpen) ?
-          <EditThreatDialog
-            onExited={handleMapReset}
-            open={editThreatDialogOpen}
-            marker={focusedMarker}
-            submit={(action, payload) => handleMarkerEdit(action, payload)}
-            toggle={() => setEditThreatDialogOpen(!editThreatDialogOpen)}
-            toggle9LineDialog={() => setEdit9LineDialogOpen(!edit9LineDialogOpen)}
-          />
-          : undefined
-      }
       {
         (saveScenarioDialogOpen) ?
           <SaveScenarioDialog
