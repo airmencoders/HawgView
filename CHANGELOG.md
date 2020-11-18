@@ -1,3 +1,7 @@
+## 2.3.1-beta
+### Changes
+* Removed `babel-polyfill` due to deprectation and unnecessary
+
 ## 2.3.0-beta
 ### Changes
 * Added IP/CP/No Strike, Bullseyes, Buildings, and Kinetic Points to the marker list
