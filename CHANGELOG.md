@@ -1,3 +1,10 @@
+## 2.3.4-beta
+### Changes
+* Added .htaccess to the public folder
+
+### Fixes
+* Redirect issues
+
 ## 2.3.3-beta
 ### Changes
 * Changed `StaticRouter` to `BrowserRouter`

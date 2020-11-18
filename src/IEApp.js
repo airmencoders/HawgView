@@ -89,9 +89,7 @@ class App extends React.Component {
                 <Typography variant='h4'>Internet Explorer is not supported. Please use Chrome, Firefox, or Microsoft Edge.</Typography>
               </Grid>              
             </Route>
-            <Route path='/*'>
-              <Redirect to='/' />
-            </Route>
+            <Redirect from='*' to='/' />
           </Switch>
         </Router>
       </div>

@@ -87,9 +87,7 @@ class App extends React.Component {
                 state={this.state}
               />
             </Route>
-            <Route path='/*'>
-              <Redirect to='/' />
-            </Route>
+            <Redirect from='*' to='/' />
             {/*<Route path='/login' >
               <Login
                 state={this.state}
