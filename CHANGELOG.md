@@ -1,3 +1,7 @@
+## 2.2.0-beta
+### Changes
+* Added default dash arrays to the shape drawer
+
 ## 2.1.3-beta
 ### Fixes
 * Base path is now changed to `/*` to not cause 404 issues

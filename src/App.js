@@ -35,7 +35,7 @@ import {
   StaticRouter as Router,
   Route,
   Switch,
-  //Redirect
+  Redirect
 } from 'react-router-dom'
 
 //----------------------------------------------------------------//
@@ -82,7 +82,7 @@ class App extends React.Component {
         <CssBaseline />
         <Router>
           <Switch>
-            <Route path='/*'>
+            <Route path='/'>
               <CAS
                 state={this.state}
               />

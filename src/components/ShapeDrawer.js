@@ -38,6 +38,7 @@ import { LatLon } from 'geodesy/mgrs'
 // Material-UI Core Components
 //----------------------------------------------------------------//
 import Button from '@material-ui/core/Button'
+import CardMedia from '@material-ui/core/CardMedia'
 import Drawer from '@material-ui/core/Drawer'
 import FormControl from '@material-ui/core/FormControl'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
@@ -50,6 +51,14 @@ import Select from '@material-ui/core/Select'
 import Switch from '@material-ui/core/Switch'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
+
+//----------------------------------------------------------------//
+// Dash Array Images
+//----------------------------------------------------------------//
+import stroke1_10 from '../images/stroke-1-10.png'
+import stroke10_10 from '../images/stroke-10-10.png'
+import stroke1_10_5_10 from '../images/stroke-1-10-5-10.png'
+import stroke10_10_5_10_5_10 from '../images/stroke-10-10-5-10-5-10.png'
 
 import { units } from '../constants/threats'
 
@@ -148,7 +157,7 @@ const ShapeDrawer = (props) => {
   React.useEffect(() => {
     if (props.shape !== null) {
       setDashed(props.shape.dashArray === null ? false : true)
-      setDashArray(props.shape.dashArray === null ? '12, 12' : props.shape.dashArray)
+      setDashArray(props.shape.dashArray === null ? '10,10' : props.shape.dashArray)
       setFill(props.shape.fillColor === null ? false : true)
       setFillColor(props.shape.fillColor === null ? '#4A90E2' : props.shape.fillColor)
       setTitle(props.shape.title)
@@ -564,6 +573,60 @@ const ShapeDrawer = (props) => {
                 direction='row'
                 justify='center'
               >
+                <FormControl
+                  className={classes.marginsMd}
+                  fullWidth
+                  variant='outlined'
+                >
+                  <InputLabel>Dash Array</InputLabel>
+                  <Select
+                    label='Dash Array'
+                    //margin='dense'
+                    onChange={event => setDashArray(event.target.value)}
+                    value={dashArray}
+                  >
+                    <MenuItem
+                      value='1,10'
+                    >
+                      <CardMedia
+                        alt={'Stroke 1,10'}
+                        component='img'
+                        src={stroke1_10}
+                        title='Stroke 1,10'
+                      />
+                    </MenuItem>
+                    <MenuItem
+                      value='10,10'
+                    >
+                      <CardMedia
+                        alt={'Stroke 10,10'}
+                        component='img'
+                        src={stroke10_10}
+                        title='Stroke 10,10'
+                      />
+                    </MenuItem>
+                    <MenuItem
+                      value='1,10,5,10'
+                    >
+                      <CardMedia
+                        alt={'Stroke 1,10,5,10'}
+                        component='img'
+                        src={stroke1_10_5_10}
+                        title='Stroke 1,10,5,10'
+                      />
+                    </MenuItem>
+                    <MenuItem
+                      value='10,10,5,10,5,10'
+                    >
+                      <CardMedia
+                        alt={'Stroke 10,10,5,10,5,10'}
+                        component='img'
+                        src={stroke10_10_5_10_5_10}
+                        title='Stroke 10,10,5,10,5,10'
+                      />
+                    </MenuItem>
+                  </Select>
+                </FormControl>
                 <TextField
                   className={classes.textField}
                   helperText='Comma separated values, every other number is line to gap in pixels.'
