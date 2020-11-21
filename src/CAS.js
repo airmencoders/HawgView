@@ -186,6 +186,7 @@ const Cas = ({ state }) => {
   const [lineClosed, setLineClosed] = React.useState(true)
   const [loadScenarioDialogOpen, setLoadScenarioDialogOpen] = React.useState(false)
   const [map, setMap] = React.useState(null)
+  const [mapCenter, setMapCenter] = React.useState([35.77, -93.34])
   const [mapColor, setMapColor] = React.useState(true)
   const [mapPopup, setMapPopup] = React.useState(null)
   const [mapZoom, setMapZoom] = React.useState(5)
@@ -635,16 +636,20 @@ const Cas = ({ state }) => {
           onClose={() => handleMapReset()}
         />
         <Map
+          center={mapCenter}
           setMap={setMap}
           toolActive={activeTool !== null}
+          setMapCenter={latlng => setMapCenter([latlng.lat, latlng.lng])}
           setMapZoom={zoom => setMapZoom(zoom)}
           setClickedLatLng={latlng => setClickedLatLng(latlng)}
           handleMouseMove={latlng => handleMouseMove(latlng)}
+          zoom={mapZoom}
         >
           <LayerControl
             handleMarkerDrag={(marker, latlng) => handleMarkerEdit('drag', { marker: marker, latlng: latlng })}
             interactive={activeTool === null}
             map={map}
+            mapCenter={mapCenter}
             mapZoom={mapZoom}
             markerSize={markerSize}
             setClickedLatLng={latlng => setClickedLatLng(latlng)}

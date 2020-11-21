@@ -1,3 +1,13 @@
+## 2.4.0-beta
+### Changes
+* Added A-10 Favicon
+* Added `mapCenter` to CAS state
+* Added event listener to `map` to update `mapCenter` state
+* Removed callbacks from `MGRSLines` and `GARSCells`
+
+### Fixes
+* Fixed site stalling when user is zoomed in max zoom and then pans to another part of the map
+
 ## 2.3.4-beta
 ### Changes
 * Added .htaccess to the public folder

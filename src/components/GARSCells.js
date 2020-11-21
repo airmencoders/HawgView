@@ -50,14 +50,7 @@ const GARSCells = (props) => {
 
   React.useEffect(() => {
     generateGARS()
-    props.map.on('zoomend', generateGARS)
-    props.map.on('moveend', generateGARS)
-
-    return () => {
-      props.map.off('zoomend', generateGARS)
-      props.map.off('moveend', generateGARS)
-    }
-  }, [props.zoom])
+  }, [props.zoom, props.center])
 
   const snap = number => {
     //return Math.floor(number / gridSpacing()) * gridSpacing()

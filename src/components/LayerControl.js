@@ -256,6 +256,7 @@ const LayerControl = (props) => {
       </BaseLayer>
       <Overlay name='MGRS Lines'>
         <MGRSGrids
+          center={props.mapCenter}
           map={props.map}
           style={props.step.styles.mgrs}
           zoom={props.mapZoom}
@@ -263,6 +264,7 @@ const LayerControl = (props) => {
       </Overlay>
       <Overlay name='GARS Cells'>
         <GARSCells
+          center={props.mapCenter}
           map={props.map}
           style={props.step.styles.gars}
           zoom={props.mapZoom}

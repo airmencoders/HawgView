@@ -89,14 +89,7 @@ const MGRSGrids = (props) => {
 
   React.useEffect(() => {
     generateGridZones()
-    props.map.on('zoomend', generateGridZones)
-    props.map.on('moveend', generateGridZones)
-
-    return () => {
-      props.map.off('zoomend', generateGridZones)
-      props.map.off('moveend', generateGridZones)
-    }
-  }, [props.zoom])
+  }, [props.zoom, props.center])
 
   const gridSpacing = () => {
     if (props.zoom < 10) {
