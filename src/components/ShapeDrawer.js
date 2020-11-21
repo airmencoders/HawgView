@@ -136,10 +136,16 @@ const ShapeDrawer = (props) => {
 
   const getMgrs = () => {
     let position
+    let center
 
     if (props.shape !== null) {
+      if(props.shape.layer === 'ellipse') {
+        center = props.shape.center
+      } else {
+        center = props.shape.latlng
+      }
       try {
-        position = LatLon.parse(props.shape.latlng.lat, props.shape.latlng.lng).toUtm().toMgrs().toString()
+        position = LatLon.parse(center.lat, center.lng).toUtm().toMgrs().toString()
       } catch (e) {
         // Logging?
       }

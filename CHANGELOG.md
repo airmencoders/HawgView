@@ -1,3 +1,10 @@
+## 2.4.1-beta
+### Changes
+* Added condition in `ShapeDrawer` to properly parse ellipse center latlng
+
+### Fixes
+* Fixed issue where ellipse was forced into a latlng situation when editing in the drawer
+
 ## 2.4.0-beta
 ### Changes
 * Added A-10 Favicon
