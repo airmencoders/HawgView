@@ -112,18 +112,14 @@ const PersistentMarkers = ({ handleAddMarker, handleMarkerDrawerToggle, toggleEd
     if (layer === 'threat') {
       payload = {
         ...payload,
-        threatType: {
-          title: 'Custom',
-          label: '',
-          range: '3',
-        },
+        threatType: 0,
         range: '3',
         unit: 'NM',
         sovereignty: 'Hostile',
         color: '#ff0000',
         fill: false,
         fillColor: '#ff0000',
-        label: ''
+        label: 'Threat'
       }
     }
 

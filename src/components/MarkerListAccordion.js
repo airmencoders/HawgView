@@ -83,7 +83,7 @@ const MarkerListAccordion = (props) => {
       >
         <Typography className={classes.heading}>
           {props.marker.layer === 'threat' ?
-            `(${props.marker.sovereignty} ${props.marker.threatType.title}) ${props.marker.title}`
+            `(${props.marker.sovereignty} ${props.marker.label}) ${props.marker.title}`
             :
             props.marker.title
           }

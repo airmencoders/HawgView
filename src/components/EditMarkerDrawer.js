@@ -208,8 +208,7 @@ const EditMarkerDrawer = (props) => {
       }
 
       if (props.marker.layer === 'threat') {
-        const type = threats.indexOf(props.marker.threatType)
-        setThreatType(type === -1 ? 0 : type)
+        setThreatType(props.marker.threatType)
         setRange(props.marker.range)
         setUnit(props.marker.unit)
         setSovereignty(props.marker.sovereignty)
@@ -400,13 +399,13 @@ const EditMarkerDrawer = (props) => {
     if (props.marker.layer === 'threat') {
       payload = {
         ...payload,
-        threatType: threats[threatType],
+        threatType: threatType,
         range: range,
         unit: unit,
         sovereignty: sovereignty,
         fill: fill,
         fillColor: fillColor,
-        label: threatType === 0 ? title : threats[threatType].label
+        label: threatType === 0 ? 'Threat' : threats[threatType].title
       }
     }
 

@@ -1,3 +1,11 @@
+## 2.4.2-beta
+### Changes
+* Changed Save object format to utilize the index of the threat rather than the object
+* Started work on a verion 1 scenario translator
+
+### Fixes
+* Fixed bug where loading a scenario would default every threat, even pre-determined threats, to a custom threat
+
 ## 2.4.1-beta
 ### Changes
 * Added condition in `ShapeDrawer` to properly parse ellipse center latlng

@@ -57,6 +57,7 @@ import RedoIcon from '@material-ui/icons/Redo'
 import SaveIcon from '@material-ui/icons/Save'
 import StyleIcon from '@material-ui/icons/Style'
 import UndoIcon from '@material-ui/icons/Undo'
+import UpdateIcon from '@material-ui/icons/Update'
 import ViewListIcon from '@material-ui/icons/ViewList'
 
 const useStyles = makeStyles(theme => ({
@@ -131,6 +132,11 @@ const MinimizedMenu = (props) => {
     props.toggleStyleDrawer()
   }
 
+  const handleUpdateClick = () => {
+    props.handleMinMenuClose()
+    props.toggleUpdateScenarioDialog()
+  }
+
   return (
     <Menu
       anchorEl={props.minMenuAnchorElement}
@@ -194,11 +200,15 @@ const MinimizedMenu = (props) => {
         <FolderOpenIcon className={classes.icon} />
         Load scenario
       </MenuItem>
+      <MenuItem disabled onClick={handleUpdateClick}>
+        <UpdateIcon className={classes.icon} />
+        Update v1 scenario
+      </MenuItem>
       <MenuItem onClick={handleStyleClick}>
         <StyleIcon className={classes.icon} />
         Styles
       </MenuItem>
-      <MenuItem onClick={props.handleMinMenuClose}>
+      <MenuItem disabled onClick={props.handleMinMenuClose}>
         <GetAppIcon className={classes.icon} />
         Download products
       </MenuItem>

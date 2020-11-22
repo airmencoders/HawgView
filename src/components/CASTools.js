@@ -56,6 +56,7 @@ import RedoIcon from '@material-ui/icons/Redo'
 import SaveIcon from '@material-ui/icons/Save'
 import StyleIcon from '@material-ui/icons/Style'
 import UndoIcon from '@material-ui/icons/Undo'
+import UpdateIcon from '@material-ui/icons/Update'
 import ViewListIcon from '@material-ui/icons/ViewList'
 
 //----------------------------------------------------------------//
@@ -167,6 +168,17 @@ const CASTools = (props) => {
         >
           <FolderOpenIcon />
         </IconButton>
+      </Tooltip>
+      <Tooltip title='Update v1 scenario'>
+        <span>
+          <IconButton
+            color='inherit'
+            disabled
+            onClick={props.toggleUpdateScenarioDialog}
+          >
+            <UpdateIcon />
+          </IconButton>
+        </span>
       </Tooltip>
       <Tooltip title='Styles'>
         <IconButton
