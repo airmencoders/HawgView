@@ -8,6 +8,10 @@ const render9line = (data) => (
         <td>{data.label}</td>
       </tr>
       <tr>
+        <td>GFC Intent</td>
+        <td>{data.intent}</td>
+      </tr>
+      <tr>
         <td>Type/Method</td>
         <td>{data.typeMethod}</td>
       </tr>
@@ -42,6 +46,10 @@ const render9line = (data) => (
       <tr>
         <td>Remarks/Restrictions</td>
         <td>{data.remarks}</td>
+      </tr>
+      <tr>
+        <td>TOT</td>
+        <td>{data.tot}</td>
       </tr>
       <tr>
         <td>Fighter-to-Fighter</td>

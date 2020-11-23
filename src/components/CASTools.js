@@ -169,17 +169,16 @@ const CASTools = (props) => {
           <FolderOpenIcon />
         </IconButton>
       </Tooltip>
-      <Tooltip title='Update v1 scenario'>
+      {/*<Tooltip title='Update v1 scenario'>
         <span>
           <IconButton
             color='inherit'
-            disabled
             onClick={props.toggleUpdateScenarioDialog}
           >
             <UpdateIcon />
           </IconButton>
         </span>
-      </Tooltip>
+  </Tooltip>*/}
       <Tooltip title='Styles'>
         <IconButton
           color='inherit'

@@ -130,6 +130,7 @@ const EditMarkerDrawer = (props) => {
 
 
   // Control 9-Line TextFields
+  const [casIntent, setCasIntent] = React.useState('')
   const [casLabel, setCasLabel] = React.useState('')
   const [casTypeMethod, setCasTypeMethod] = React.useState('')
   const [casIp, setCasIp] = React.useState('')
@@ -142,6 +143,7 @@ const EditMarkerDrawer = (props) => {
   const [casFriendlies, setCasFriendlies] = React.useState('')
   const [casEgress, setCasEgress] = React.useState('')
   const [casRemarks, setCasRemarks] = React.useState('')
+  const [casTot, setCasTot] = React.useState('')
   const [casF2F, setCasF2F] = React.useState('')
 
   // Control 15-Line TextFields
@@ -228,6 +230,7 @@ const EditMarkerDrawer = (props) => {
         } else {
           setCas(true)
           setCasLabel(props.marker.data.label)
+          setCasIntent(props.marker.data.intent)
           setCasTypeMethod(props.marker.data.typeMethod)
           setCasIp(props.marker.data.ip)
           setCasHdg(props.marker.data.hdg)
@@ -239,6 +242,7 @@ const EditMarkerDrawer = (props) => {
           setCasFriendlies(props.marker.data.friendlies)
           setCasEgress(props.marker.data.egress)
           setCasRemarks(props.marker.data.remarks)
+          setCasTot(props.marker.data.tot)
           setCasF2F(props.marker.data.f2f)
         }
       } else if (props.marker.layer === 'survivor') {
@@ -348,6 +352,7 @@ const EditMarkerDrawer = (props) => {
       payload.data = {
         type: '9line',
         label: casLabel,
+        intent: casIntent,
         typeMethod: casTypeMethod,
         ip: casIp,
         hdg: casHdg,
@@ -359,6 +364,7 @@ const EditMarkerDrawer = (props) => {
         friendlies: casFriendlies,
         egress: casEgress,
         remarks: casRemarks,
+        tot: casTot,
         f2f: casF2F,
       }
     } else if (props.marker.layer === 'survivor' && csar) {
@@ -719,6 +725,13 @@ const EditMarkerDrawer = (props) => {
               />
               <TextField
                 className={classes.textField}
+                label='GFC Intent'
+                onChange={event => setCasIntent(event.target.value)}
+                variant='outlined'
+                value={casIntent}
+              />
+              <TextField
+                className={classes.textField}
                 label='Type / Method'
                 onChange={event => setCasTypeMethod(event.target.value)}
                 variant='outlined'
@@ -793,6 +806,13 @@ const EditMarkerDrawer = (props) => {
                 onChange={event => setCasRemarks(event.target.value)}
                 variant='outlined'
                 value={casRemarks}
+              />
+              <TextField
+                className={classes.textField}
+                label='TOT'
+                onChange={event => setCasTot(event.target.value)}
+                variant='outlined'
+                value={casTot}
               />
               <TextField
                 className={classes.textField}

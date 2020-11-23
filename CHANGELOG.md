@@ -1,3 +1,10 @@
+## 2.4.3-beta
+### Changes
+* Popups no longer auto pan the map
+
+### Fixes
+* Fixed crashing when user interacts with the map, firing a popup - causing excessive loop depth and crashes with `MGRSGrids`
+
 ## 2.4.2-beta
 ### Changes
 * Changed Save object format to utilize the index of the threat rather than the object

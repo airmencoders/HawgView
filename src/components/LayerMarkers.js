@@ -122,6 +122,7 @@ const LayerMarkers = props => {
   const generatePopup = marker => {
     return (
       <Popup
+      autoPan={false}
         maxWidth={1000}
         onClose={handlePopupClose}
       >
@@ -196,7 +197,6 @@ const LayerMarkers = props => {
     <React.Fragment>
       {(props.marker.arty.arty && props.marker.arty.display) ? generatePAA(props.marker.latlng, props.marker.layer) : null}
       <Marker
-        autoPan={props.interactive}
         draggable={props.interactive}
         icon={props.marker.iconType === 'img' ?
           L.icon({
@@ -215,7 +215,6 @@ const LayerMarkers = props => {
         onClick={props.interactive ? () => props.setFocusedMarker(props.marker) : undefined}
         onDragend={props.interactive ? event => props.handleMarkerDrag(props.marker, event.target.getLatLng()) : undefined}
         position={props.marker.latlng}
-        riseOnHover
         title={props.marker.title}
       >
         {generatePopup(props.marker)}

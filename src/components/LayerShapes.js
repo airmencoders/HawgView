@@ -99,6 +99,7 @@ const LayerShapes = props => {
   const generatePopup = marker => {
     return (
       <Popup
+      autoPan={false}
         maxWidth={1000}
         onClose={handlePopupClose}
       >
@@ -129,7 +130,6 @@ const LayerShapes = props => {
   if (props.interactive) {
     return (
       <Marker
-        autoPan
         draggable
         icon={props.marker.iconType === 'img' ?
           L.icon({

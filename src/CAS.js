@@ -54,6 +54,9 @@ import Snackbar from '@material-ui/core/Snackbar'
 import CloseIcon from '@material-ui/icons/Close'
 import MoreVertIcon from '@material-ui/icons/MoreVert'
 
+import getElevation from './functions/getElevation'
+//import handleUpdateScenario from './handlers/handleUpdateScenario'
+
 //----------------------------------------------------------------//
 // Custom Components
 //----------------------------------------------------------------//
@@ -139,10 +142,6 @@ const Cas = ({ state }) => {
   const [activeTool, setActiveTool] = React.useState(null)
   const [mouseCoords, setMouseCoords] = React.useState(null)
   const [clickedLatLng, setClickedLatLng] = React.useState(null)
-  const [edit9LineDialogOpen, setEdit9LineDialogOpen] = React.useState(false)
-  const [edit15LineDialogOpen, setEdit15LineDialogOpen] = React.useState(false)
-  //const [editCapDialogOpen, setEditCapDialogOpen] = React.useState(false)
-  const [editMarkerDialogOpen, setEditMarkerDialogOpen] = React.useState(false)
   const [editMarkerDrawerOpen, setEditMarkerDrawerOpen] = React.useState(false)
   const [editThreatDialogOpen, setEditThreatDialogOpen] = React.useState(false)
   const [elevation, setElevation] = React.useState('Pending')
@@ -497,130 +496,6 @@ const Cas = ({ state }) => {
     setSnackbarOpen(false)
   }
 
-  const handleUpdateScenario = data => {
-    setUpdateScenarioDialogOpen(false)
-
-    let scenario = {
-      action: 'Load scenario',
-      buildingLabels: [],
-      bullseyes: [],
-      circles: [],
-      data: {
-        buildingLabel: 1,
-        firstLetter: 65,
-        secondLetter: 65,
-      },
-      ellipses: [],
-      friendlyMarkers: [],
-      hostileMarkers: [],
-      initialPoints: [],
-      kineticPoints: [],
-      lines: [],
-      mapLabels: [],
-      polygons: [],
-      rectangles: [],
-      survivors: [],
-      styles: {
-        mgrs: {
-          gridzoneColor: '#ffa500',
-          lineColor: '#ffffff',
-        },
-        gars: {
-          cellColor: '#ffa500',
-          quadrantColor: '#800080',
-          keypadColor: '#ffffff'
-        },
-        buildingLabel: {
-          color: '#ffff00',
-        },
-      },
-      threatMarkers: [],
-    }
-
-    let json
-    try {
-      let object = JSON.parse(data)
-
-      if (object && typeof object === 'object') {
-        json = object
-      }
-    } catch (error) {
-      console.error(error)
-      toast('There was an error loading the scenario', 'error')
-    }
-
-    if (json !== undefined) {
-      // Get all the fields from the saved scenario
-      let name = '' // Todo - need to export with name from the database
-      let v1ThreatMarkers = json.threat_markers
-      let v1Markers = json.markers
-      let v1MapLabels = json.bldg_markers
-      let v1Friendlymarkers = json.friendly_markers
-      let v1HostileMarkers = json.hostile_markers
-      let v1SurvivorMarkers = json.survivor_markers
-      let v1Ellipses = json.ellipses
-      let v1Lines = json.lines
-      let v1Polygons = json.polygons
-      let v1Rectangles = json.eas
-      let v1Circles = json.rozs
-
-      // Parse through all the Threat Markers
-      v1ThreatMarkers.forEach((threat, index) => {
-        console.log(`threat ${index}:`, threat)
-      })
-
-      // Parse through all the markers
-      v1Markers.forEach((marker, index) => {
-        console.log(`marker ${index}:`, marker)
-      })
-
-      // Parse through all the building labels (map labels in v2)
-      v1MapLabels.forEach((label, index) => {
-        console.log(`map label ${index}:`, label)
-      })
-
-      // Parse through all the friendly markers
-      v1Friendlymarkers.forEach((marker, index) => {
-        console.log(`friendly marker ${index}:`, marker)
-      })
-
-      // Parse through all the hostile markers
-      v1HostileMarkers.forEach((marker, index) => {
-        console.log(`hostile marker ${index}:`, marker)
-      })
-
-      // Parse through all the survivor markers
-      v1SurvivorMarkers.forEach((marker, index) => {
-        console.log(`survivor marker ${index}:`, marker)
-      })
-
-      // Parse through all the ellipses
-      v1Ellipses.forEach((ellipse, index) => {
-        console.log(`ellipse ${index}:`, ellipse)
-      })
-
-      // Parse through all the lines
-      v1Lines.forEach((line, index) => {
-        console.log(`line ${index}:`, line)
-      })
-
-      // Parse through all the polygons
-      v1Polygons.forEach((polygon, index) => {
-        console.log(`polygon ${index}:`, polygon)
-      })
-
-      // Parse through all the rectangles
-      v1Rectangles.forEach((rectangle, index) => {
-        console.log(`rectangle ${index}:`, rectangle)
-      })
-
-      // Parse through all the circles
-      v1Circles.forEach((circle, index) => {
-        console.log(`circle ${index}:`, circle)
-      })
-    }
-  }
-
   const handleLoadScenario = data => {
     setLoadScenarioDialogOpen(!loadScenarioDialogOpen)
     let json
@@ -750,7 +625,6 @@ const Cas = ({ state }) => {
             toggleSaveScenarioDialog={() => setSaveScenarioDialogOpen(!saveScenarioDialogOpen)}
             toggleStyleDrawer={() => setStyleDrawerOpen(!styleDrawerOpen)}
             toggleTooltips={() => setTooltipsActive(!tooltipsActive)}
-            toggleUpdateScenarioDialog={() => setUpdateScenarioDialogOpen(!updateScenarioDialogOpen)}
             tooltipsActive={tooltipsActive}
             toggleMarkerListDialog={() => setMarkerListDialogOpen(!markerListDialogOpen)}
             undoAction={(step === 0) ? '' : history[step].action}
@@ -973,13 +847,13 @@ const Cas = ({ state }) => {
           : undefined
       }
       {
-        (updateScenarioDialogOpen) ?
+        /*(updateScenarioDialogOpen) ?
           <UpdateScenarioDialog
             open={updateScenarioDialogOpen}
             submit={data => handleUpdateScenario(data)}
             toggle={() => setUpdateScenarioDialogOpen(!updateScenarioDialogOpen)}
           />
-          : undefined
+          : undefined*/
       }
     </Box>
   )

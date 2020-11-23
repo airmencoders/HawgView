@@ -50,12 +50,12 @@ import { makeStyles } from '@material-ui/core/styles'
 //----------------------------------------------------------------//
 // Custom Components
 //----------------------------------------------------------------//
-import { render9line, render15line } from '../functions/renderData'
+import { render9line } from '../functions/renderData'
 
 //----------------------------------------------------------------//
-// Layer Markers Component
+// Layer Threats Component
 //----------------------------------------------------------------//
-const LayerMarkers = props => {
+const LayerThreats = props => {
 
   const computedSize = props.markerSize * props.mapZoom
 
@@ -108,15 +108,11 @@ const LayerMarkers = props => {
   const generatePopup = marker => {
     return (
       <Popup
+        autoPan={false}
         maxWidth={1000}
         onClose={handlePopupClose}
       >
-        {marker.layer === 'hostile' || marker.layer === 'threat' ?
-          marker.data !== null ? render9line(marker.data) : generatePopupText(marker)
-          : marker.layer === 'survivor' ?
-            marker.data !== null ? render15line(marker.data) : generatePopupText(marker)
-            : generatePopupText(marker)
-        }
+        {marker.data !== null ? render9line(marker.data) : generatePopupText(marker)}
         <br />
         <Button
           color='primary'
@@ -153,7 +149,6 @@ const LayerMarkers = props => {
   return (
     <React.Fragment>
       <Marker
-        autoPan={props.interactive}
         draggable={props.interactive}
         icon={
           L.divIcon({
@@ -194,4 +189,4 @@ const LayerMarkers = props => {
   )
 }
 
-export default LayerMarkers
+export default LayerThreats
