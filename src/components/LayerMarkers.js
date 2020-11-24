@@ -122,9 +122,8 @@ const LayerMarkers = props => {
   const generatePopup = marker => {
     return (
       <Popup
-      autoPan={false}
+        autoPan={false}
         maxWidth={1000}
-        onClose={handlePopupClose}
       >
         {marker.layer === 'hostile' || marker.layer === 'threat' ?
           marker.data !== null ? render9line(marker.data) : generatePopupText(marker)
@@ -136,11 +135,10 @@ const LayerMarkers = props => {
         <Button
           color='primary'
           href={`https://viperops.com/#/ArcGISMap?lat=${LatLon.parse(marker.latlng).lat}&lng=${LatLon.parse(marker.latlng).lng}${(marker.data !== null && marker.data !== undefined) ? `&hdg=${marker.data.hdg}&rng=${marker.data.distance}` : ''}`}
-          rel='noopener noreferrer'
           target='_blank'
         >
           TGP View
-        </Button>
+      </Button>
         <Button color='primary' onClick={() => handleEditMarker(marker)}>Edit</Button>
         <Button color='secondary' onClick={() => props.handleDeleteMarker(marker)}>Delete</Button>
       </Popup>

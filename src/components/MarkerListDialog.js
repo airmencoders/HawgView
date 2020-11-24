@@ -72,7 +72,6 @@ const MarkerListDialog = (props) => {
           <Grid
             container
             direction='row'
-            displayPrint='none'
             justify='space-between'
           >
             <Grid
@@ -98,80 +97,163 @@ const MarkerListDialog = (props) => {
         </Box>
       </DialogTitle>
       <DialogContent>
-        <Grid
-          container
-          spacing={2}
+        <Box
+          displayPrint='none'
         >
-          <Grid item xs>
-            <Typography variant='h6'>Friendlies</Typography>
-            {props.step.survivors.map(marker => (
-              <MarkerListAccordion
-                key={`survivor-marker-${marker.id}`}
-                marker={marker}
-              />
-            ))}
-            {props.step.friendlyMarkers.map(marker => (
-              <MarkerListAccordion
-                key={`friendly-marker-${marker.id}`}
-                marker={marker}
-              />
-            ))}
+          <Grid
+            container
+            spacing={2}
+          >
+            <Grid item xs>
+              <Typography variant='h6'>Friendlies</Typography>
+              {props.step.survivors.map(marker => (
+                <MarkerListAccordion
+                  key={`survivor-marker-${marker.id}`}
+                  marker={marker}
+                />
+              ))}
+              {props.step.friendlyMarkers.map(marker => (
+                <MarkerListAccordion
+                  key={`friendly-marker-${marker.id}`}
+                  marker={marker}
+                />
+              ))}
+            </Grid>
+            <Grid item xs>
+              <Typography variant='h6'>IP/CPs</Typography>
+              {props.step.initialPoints.map(marker => (
+                <MarkerListAccordion
+                  key={`initial-contact-point-${marker.id}`}
+                  marker={marker}
+                />
+              ))}
+            </Grid>
+            <Grid item xs>
+              <Typography variant='h6'>Bullseyes</Typography>
+              {props.step.bullseyes.map(marker => (
+                <MarkerListAccordion
+                  key={`bullseye-${marker.id}`}
+                  marker={marker}
+                />
+              ))}
+            </Grid>
+            <Grid item xs>
+              <Typography variant='h6'>Hostiles</Typography>
+              {props.step.hostileMarkers.map(marker => (
+                <MarkerListAccordion
+                  key={`hostile-marker-${marker.id}`}
+                  marker={marker}
+                />
+              ))}
+            </Grid>
+            <Grid item xs>
+              <Typography variant='h6'>Threats</Typography>
+              {props.step.threatMarkers.map(marker => (
+                <MarkerListAccordion
+                  key={`threat-marker-${marker.id}`}
+                  marker={marker}
+                />
+              ))}
+            </Grid>
+            <Grid item xs>
+              <Typography variant='h6'>Buildings</Typography>
+              {props.step.buildingLabels.map(marker => (
+                <MarkerListAccordion
+                  key={`building-label-${marker.id}`}
+                  marker={marker}
+                />
+              ))}
+            </Grid>
+            <Grid item xs>
+              <Typography variant='h6'>Kinetic Points</Typography>
+              {props.step.kineticPoints.map(marker => (
+                <MarkerListAccordion
+                  key={`kinetic-point-${marker.id}`}
+                  marker={marker}
+                />
+              ))}
+            </Grid>
           </Grid>
-          <Grid item xs>
-            <Typography variant='h6'>IP/CPs</Typography>
-            {props.step.initialPoints.map(marker => (
-              <MarkerListAccordion
-                key={`initial-contact-point-${marker.id}`}
-                marker={marker}
-              />
-            ))}
+        </Box>
+        <Box
+          display='none'
+          displayPrint='block'
+        >
+          <Grid
+            container
+            spacing={2}
+          >
+            <Grid item xs={12}>
+              <Typography variant='h6'>Friendlies</Typography>
+              {props.step.survivors.map(marker => (
+                <MarkerListAccordion
+                  key={`survivor-marker-${marker.id}`}
+                  marker={marker}
+                />
+              ))}
+              {props.step.friendlyMarkers.map(marker => (
+                <MarkerListAccordion
+                  key={`friendly-marker-${marker.id}`}
+                  marker={marker}
+                />
+              ))}
+            </Grid>
+            <Grid item xs={12}>
+              <Typography variant='h6'>IP/CPs</Typography>
+              {props.step.initialPoints.map(marker => (
+                <MarkerListAccordion
+                  key={`initial-contact-point-${marker.id}`}
+                  marker={marker}
+                />
+              ))}
+            </Grid>
+            <Grid item xs={12}>
+              <Typography variant='h6'>Bullseyes</Typography>
+              {props.step.bullseyes.map(marker => (
+                <MarkerListAccordion
+                  key={`bullseye-${marker.id}`}
+                  marker={marker}
+                />
+              ))}
+            </Grid>
+            <Grid item xs={12}>
+              <Typography variant='h6'>Hostiles</Typography>
+              {props.step.hostileMarkers.map(marker => (
+                <MarkerListAccordion
+                  key={`hostile-marker-${marker.id}`}
+                  marker={marker}
+                />
+              ))}
+            </Grid>
+            <Grid item xs={12}>
+              <Typography variant='h6'>Threats</Typography>
+              {props.step.threatMarkers.map(marker => (
+                <MarkerListAccordion
+                  key={`threat-marker-${marker.id}`}
+                  marker={marker}
+                />
+              ))}
+            </Grid>
+            <Grid item xs={12}>
+              <Typography variant='h6'>Buildings</Typography>
+              {props.step.buildingLabels.map(marker => (
+                <MarkerListAccordion
+                  key={`building-label-${marker.id}`}
+                  marker={marker}
+                />
+              ))}
+            </Grid>
+            <Grid item xs={12}>
+              <Typography variant='h6'>Kinetic Points</Typography>
+              {props.step.kineticPoints.map(marker => (
+                <MarkerListAccordion
+                  key={`kinetic-point-${marker.id}`}
+                  marker={marker}
+                />
+              ))}
+            </Grid>
           </Grid>
-          <Grid item xs>
-            <Typography variant='h6'>Bullseyes</Typography>
-            {props.step.bullseyes.map(marker => (
-              <MarkerListAccordion
-                key={`bullseye-${marker.id}`}
-                marker={marker}
-              />
-            ))}
-          </Grid>
-          <Grid item xs>
-            <Typography variant='h6'>Hostiles</Typography>
-            {props.step.hostileMarkers.map(marker => (
-              <MarkerListAccordion
-                key={`hostile-marker-${marker.id}`}
-                marker={marker}
-              />
-            ))}
-          </Grid>
-          <Grid item xs>
-            <Typography variant='h6'>Threats</Typography>
-            {props.step.threatMarkers.map(marker => (
-              <MarkerListAccordion
-                key={`threat-marker-${marker.id}`}
-                marker={marker}
-              />
-            ))}
-          </Grid>
-          <Grid item xs>
-            <Typography variant='h6'>Buildings</Typography>
-            {props.step.buildingLabels.map(marker => (
-              <MarkerListAccordion
-                key={`building-label-${marker.id}`}
-                marker={marker}
-              />
-            ))}
-          </Grid>
-          <Grid item xs>
-            <Typography variant='h6'>Kinetic Points</Typography>
-            {props.step.kineticPoints.map(marker => (
-              <MarkerListAccordion
-                key={`kinetic-point-${marker.id}`}
-                marker={marker}
-              />
-            ))}
-          </Grid>
-        </Grid>
+        </Box>
       </DialogContent>
     </Dialog>
   )

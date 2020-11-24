@@ -1,3 +1,11 @@
+## 2.5.0-beta
+### Changes
+* Removed `rel` from TronView links (Request from TRON)
+* Marker list now has a display for on screen (row) and print (columns)
+* Marker ID is now a part of the history step, assists with loading and avoiding ID conflicts
+* `handleLoadScenario` now updates the history's marker ID
+* Creating a marker now increments the history's marker ID
+
 ## 2.4.3-beta
 ### Changes
 * Popups no longer auto pan the map

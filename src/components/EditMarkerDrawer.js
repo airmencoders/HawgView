@@ -218,7 +218,7 @@ const EditMarkerDrawer = (props) => {
         setFillColor(props.marker.fillColor)
       }
 
-      if (props.marker.layer === 'building' || props.marker.layer === 'threat') {
+      if (props.marker.layer === 'mapLabel' || props.marker.layer === 'threat') {
         setColor(props.marker.color)
       }
 

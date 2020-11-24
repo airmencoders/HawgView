@@ -55,7 +55,7 @@ import CloseIcon from '@material-ui/icons/Close'
 import MoreVertIcon from '@material-ui/icons/MoreVert'
 
 import getElevation from './functions/getElevation'
-//import handleUpdateScenario from './handlers/handleUpdateScenario'
+import handleUpdateScenario from './handlers/handleUpdateScenario'
 
 //----------------------------------------------------------------//
 // Custom Components
@@ -155,6 +155,7 @@ const Cas = ({ state }) => {
     data: {
       buildingLabel: 1,
       firstLetter: 65,
+      markerId: 0,
       secondLetter: 65,
     },
     ellipses: [],
@@ -191,7 +192,7 @@ const Cas = ({ state }) => {
   const [mapPopup, setMapPopup] = React.useState(null)
   const [mapZoom, setMapZoom] = React.useState(5)
   const [markerDrawerOpen, setMarkerDrawerOpen] = React.useState(false)
-  const [markerId, setMarkerId] = React.useState(0)
+  //const [markerId, setMarkerId] = React.useState(0)
   const [markerLabel, setMarkerLabel] = React.useState('')
   const [markerListDialogOpen, setMarkerListDialogOpen] = React.useState(false)
   const [markerSize, setMarkerSize] = React.useState(3)
@@ -436,7 +437,7 @@ const Cas = ({ state }) => {
       if (action === 'create') {
         updatedPayload = {
           ...updatedPayload,
-          id: markerId,
+          id: history[step].data.markerId,
         }
 
         if (payload.layer !== 'bullseye') {
@@ -470,7 +471,7 @@ const Cas = ({ state }) => {
         setStep(step + 1)
 
         if (action === 'create') {
-          setMarkerId(markerId + 1)
+          //setMarkerId(markerId + 1)
           setMarkerLabel('')
         }
 
@@ -531,6 +532,100 @@ const Cas = ({ state }) => {
         threatMarkers: json.data.threatMarkers
       }
 
+      // Go through all the markers and IDs
+
+      let newId = 0
+
+      newStep.buildingLabels.forEach(element => {
+        if(element.id >= newId) {
+          newId = element.id + 1
+        }
+      })
+
+      newStep.bullseyes.forEach(element => {
+        if(element.id >= newId) {
+          newId = element.id + 1
+        }
+      })
+
+      newStep.buildingLabels.forEach(element => {
+        if(element.id >= newId) {
+          newId = element.id + 1
+        }
+      })
+
+      newStep.ellipses.forEach(element => {
+        if(element.id >= newId) {
+          newId = element.id + 1
+        }
+      })
+
+      newStep.rectangles.forEach(element => {
+        if(element.id >= newId) {
+          newId = element.id + 1
+        }
+      })
+
+      newStep.friendlyMarkers.forEach(element => {
+        if(element.id >= newId) {
+          newId = element.id + 1
+        }
+      })
+
+      newStep.hostileMarkers.forEach(element => {
+        if(element.id >= newId) {
+          newId = element.id + 1
+        }
+      })
+
+      newStep.initialPoints.forEach(element => {
+        if(element.id >= newId) {
+          newId = element.id + 1
+        }
+      })
+
+      newStep.kineticPoints.forEach(element => {
+        if(element.id >= newId) {
+          newId = element.id + 1
+        }
+      })
+
+      newStep.lines.forEach(element => {
+        if(element.id >= newId) {
+          newId = element.id + 1
+        }
+      })
+
+      newStep.mapLabels.forEach(element => {
+        if(element.id >= newId) {
+          newId = element.id + 1
+        }
+      })
+
+      newStep.polygons.forEach(element => {
+        if(element.id >= newId) {
+          newId = element.id + 1
+        }
+      })
+
+      newStep.circles.forEach(element => {
+        if(element.id >= newId) {
+          newId = element.id + 1
+        }
+      })
+
+      newStep.survivors.forEach(element => {
+        if(element.id >= newId) {
+          newId = element.id + 1
+        }
+      })
+
+      newStep.threatMarkers.forEach(element => {
+        if(element.id >= newId) {
+          newId = element.id + 1
+        }
+      })
+
       if (json.name === '') {
         setPageTitle('CAS Planner')
       } else {
@@ -539,6 +634,7 @@ const Cas = ({ state }) => {
 
       setHistory([...history, newStep])
       setStep(step + 1)
+      //setMarkerId(newId)
       toast('Scenario loaded to map', 'success')
     } else {
       toast('There was an error loading the scenario', 'error')
@@ -767,7 +863,6 @@ const Cas = ({ state }) => {
               <Button
                 color='primary'
                 href={`https://viperops.com/#/ArcGISMap?lat=${LatLon.parse(mapPopup.latlng).lat}&lng=${LatLon.parse(mapPopup.latlng).lng}`}
-                rel='noopener noreferrer'
                 target='_blank'
               >
                 TGP View
@@ -845,15 +940,6 @@ const Cas = ({ state }) => {
             toggle={() => setLoadScenarioDialogOpen(!loadScenarioDialogOpen)}
           />
           : undefined
-      }
-      {
-        /*(updateScenarioDialogOpen) ?
-          <UpdateScenarioDialog
-            open={updateScenarioDialogOpen}
-            submit={data => handleUpdateScenario(data)}
-            toggle={() => setUpdateScenarioDialogOpen(!updateScenarioDialogOpen)}
-          />
-          : undefined*/
       }
     </Box>
   )

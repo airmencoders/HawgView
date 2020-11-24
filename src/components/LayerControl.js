@@ -365,8 +365,8 @@ const LayerControl = (props) => {
             >
               {generateBullCircles(bullseye)}
               <Marker
-                autoPan={true}
-                draggable={true}
+                autoPan={false}
+                draggable
                 icon={L.icon({
                   iconUrl: bullseye.iconUrl,
                   iconSize: [props.markerSize * props.mapZoom, props.markerSize * props.mapZoom],
@@ -374,11 +374,11 @@ const LayerControl = (props) => {
                 id={bullseye.id}
                 onDragend={event => props.handleMarkerDrag(bullseye, event.target.getLatLng())}
                 position={bullseye.latlng}
-                riseOnHover={true}
+                riseOnHover
                 title={bullseye.title}
               >
                 <Popup
-                  onClose={handlePopupClose}
+                  autoPan={false}
                 >
                   {generateShapePopupText(bullseye)}
                   <br />
@@ -611,7 +611,7 @@ const LayerControl = (props) => {
               }}
             >
               <Popup
-                onClose={handlePopupClose}
+                autoPan={false}
               >
                 {generateShapePopupText(ellipse)}
                 <br />
@@ -649,7 +649,7 @@ const LayerControl = (props) => {
               weight={4}
             >
               <Popup
-                onClose={handlePopupClose}
+                autoPan={false}
               >
                 <React.Fragment>
                   {line.title}
@@ -684,7 +684,7 @@ const LayerControl = (props) => {
               weight={4}
             >
               <Popup
-                onClose={handlePopupClose}
+                autoPan={false}
               >
                 <React.Fragment>
                   {polygon.title}
@@ -721,7 +721,7 @@ const LayerControl = (props) => {
               weight={4}
             >
               <Popup
-                onClose={handlePopupClose}
+                autoPan={false}
               >
                 <React.Fragment>
                   {rectangle.title}
@@ -759,7 +759,7 @@ const LayerControl = (props) => {
               weight={4}
             >
               <Popup
-                onClose={handlePopupClose}
+                autoPan={false}
               >
                 {generateShapePopupText(circle)}
                 <br/>

@@ -100,6 +100,7 @@ const clearMarkers = (history, step) => {
       data: {
         buildingLabel: 1,
         firstLetter: 65,
+        markerId: 0,
         secondLetter: 65,
       },
       ellipses: [],
@@ -144,54 +145,108 @@ const createMarker = (history, step, payload) => {
         return {
           ...targetHistory[step],
           action: `create ${payload.title}`,
+          data: {
+            buildingLabel: targetHistory[step].data.buildingLabel,
+            firstLetter: targetHistory[step].data.firstLetter,
+            markerId: targetHistory[step].data.markerId + 1,
+            secondLetter: targetHistory[step].data.secondLetter,
+          },
           friendlyMarkers: [...targetHistory[step].friendlyMarkers, payload]
         }
       case 'hostile':
         return {
           ...targetHistory[step],
           action: `create ${payload.title}`,
+          data: {
+            buildingLabel: targetHistory[step].data.buildingLabel,
+            firstLetter: targetHistory[step].data.firstLetter,
+            markerId: targetHistory[step].data.markerId + 1,
+            secondLetter: targetHistory[step].data.secondLetter,
+          },
           hostileMarkers: [...targetHistory[step].hostileMarkers, payload]
         }
       case 'ip':
         return {
           ...targetHistory[step],
           action: `create ${payload.title}`,
+          data: {
+            buildingLabel: targetHistory[step].data.buildingLabel,
+            firstLetter: targetHistory[step].data.firstLetter,
+            markerId: targetHistory[step].data.markerId + 1,
+            secondLetter: targetHistory[step].data.secondLetter,
+          },
           initialPoints: [...targetHistory[step].initialPoints, payload]
         }
       case 'survivor':
         return {
           ...targetHistory[step],
           action: `create ${payload.title}`,
+          data: {
+            buildingLabel: targetHistory[step].data.buildingLabel,
+            firstLetter: targetHistory[step].data.firstLetter,
+            markerId: targetHistory[step].data.markerId + 1,
+            secondLetter: targetHistory[step].data.secondLetter,
+          },
           survivors: [...targetHistory[step].survivors, payload]
         }
       case 'threat':
         return {
           ...targetHistory[step],
           action: `create ${payload.title}`,
+          data: {
+            buildingLabel: targetHistory[step].data.buildingLabel,
+            firstLetter: targetHistory[step].data.firstLetter,
+            markerId: targetHistory[step].data.markerId + 1,
+            secondLetter: targetHistory[step].data.secondLetter,
+          },
           threatMarkers: [...targetHistory[step].threatMarkers, payload]
         }
       case 'circle':
         return {
           ...targetHistory[step],
           action: `create circle`,
+          data: {
+            buildingLabel: targetHistory[step].data.buildingLabel,
+            firstLetter: targetHistory[step].data.firstLetter,
+            markerId: targetHistory[step].data.markerId + 1,
+            secondLetter: targetHistory[step].data.secondLetter,
+          },
           circles: [...targetHistory[step].circles, payload]
         }
       case 'rectangle':
         return {
           ...targetHistory[step],
           action: `create rectangle`,
+          data: {
+            buildingLabel: targetHistory[step].data.buildingLabel,
+            firstLetter: targetHistory[step].data.firstLetter,
+            markerId: targetHistory[step].data.markerId + 1,
+            secondLetter: targetHistory[step].data.secondLetter,
+          },
           rectangles: [...targetHistory[step].rectangles, payload]
         }
       case 'line':
         return {
           ...targetHistory[step],
           action: `create line`,
+          data: {
+            buildingLabel: targetHistory[step].data.buildingLabel,
+            firstLetter: targetHistory[step].data.firstLetter,
+            markerId: targetHistory[step].data.markerId + 1,
+            secondLetter: targetHistory[step].data.secondLetter,
+          },
           lines: [...targetHistory[step].lines, payload]
         }
       case 'polygon':
         return {
           ...targetHistory[step],
           action: `create polygon`,
+          data: {
+            buildingLabel: targetHistory[step].data.buildingLabel,
+            firstLetter: targetHistory[step].data.firstLetter,
+            markerId: targetHistory[step].data.markerId + 1,
+            secondLetter: targetHistory[step].data.secondLetter,
+          },
           polygons: [...targetHistory[step].polygons, payload]
         }
       case 'buildingLabel':
@@ -202,6 +257,7 @@ const createMarker = (history, step, payload) => {
           data: {
             buildingLabel: targetHistory[step].data.buildingLabel + 1,
             firstLetter: targetHistory[step].data.firstLetter,
+            markerId: targetHistory[step].data.markerId + 1,
             secondLetter: targetHistory[step].data.secondLetter
           }
         }
@@ -222,6 +278,7 @@ const createMarker = (history, step, payload) => {
           data: {
             buildingLabel: targetHistory[step].data.buildingLabel,
             firstLetter: _firstLetter,
+            markerId: targetHistory[step].data.markerId + 1,
             secondLetter: _secondLetter
           }
         }
@@ -229,6 +286,12 @@ const createMarker = (history, step, payload) => {
         return {
           ...targetHistory[step],
           action: `create map label`,
+          data: {
+            buildingLabel: targetHistory[step].data.buildingLabel,
+            firstLetter: targetHistory[step].data.firstLetter,
+            markerId: targetHistory[step].data.markerId + 1,
+            secondLetter: targetHistory[step].data.secondLetter,
+          },
           mapLabels: [...targetHistory[step].mapLabels, payload]
         }
       case 'bullseye':
@@ -241,12 +304,24 @@ const createMarker = (history, step, payload) => {
         return {
           ...targetHistory[step],
           action: `create bullseye`,
+          data: {
+            buildingLabel: targetHistory[step].data.buildingLabel,
+            firstLetter: targetHistory[step].data.firstLetter,
+            markerId: targetHistory[step].data.markerId + 1,
+            secondLetter: targetHistory[step].data.secondLetter,
+          },
           bullseyes: [...targetHistory[step].bullseyes, payload]
         }
       case 'ellipse':
         return {
           ...targetHistory[step],
           action: `create ellipse`,
+          data: {
+            buildingLabel: targetHistory[step].data.buildingLabel,
+            firstLetter: targetHistory[step].data.firstLetter,
+            markerId: targetHistory[step].data.markerId + 1,
+            secondLetter: targetHistory[step].data.secondLetter,
+          },
           ellipses: [...targetHistory[step].ellipses, payload]
         }
       default:
