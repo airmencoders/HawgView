@@ -55,7 +55,6 @@ import CloseIcon from '@material-ui/icons/Close'
 import MoreVertIcon from '@material-ui/icons/MoreVert'
 
 import getElevation from './functions/getElevation'
-import handleUpdateScenario from './handlers/handleUpdateScenario'
 
 //----------------------------------------------------------------//
 // Custom Components

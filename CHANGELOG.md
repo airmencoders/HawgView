@@ -1,3 +1,7 @@
+## 2.5.1-beta
+### Changes
+* Removed `handleLoadScenario` import from `CAS`
+
 ## 2.5.0-beta
 ### Changes
 * Removed `rel` from TronView links (Request from TRON)
