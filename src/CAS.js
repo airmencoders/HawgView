@@ -322,6 +322,7 @@ const Cas = ({ state }) => {
 
   const toggleTools = tool => {
 
+    setFocusedMarker(null)
     setClickedLatLng(null)
 
     switch (tool) {

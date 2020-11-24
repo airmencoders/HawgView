@@ -1,3 +1,7 @@
+## 2.5.2-beta
+### Fixes
+* Fixed bug if a user has a selected marker and then selects a utility tool the tool would use the marker's lat/lng as the starting point
+
 ## 2.5.1-beta
 ### Changes
 * Removed `handleLoadScenario` import from `CAS`
