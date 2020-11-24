@@ -49,6 +49,7 @@ const NotificationsDialog = props => {
     <Dialog
       open={props.open}
       onClose={props.onClose}
+      maxWidth='lg'
     >
       <DialogTitle>
         Hawg View Version 2 Beta
@@ -58,7 +59,16 @@ const NotificationsDialog = props => {
           In order to continue expanding and improving Hawg Ops, I have been working to make Hawg View version 2. Please read the <a href='https://wiki.hawg-ops.com' target='_blank' rel='noopener noreferrer'>wiki</a> if you have questions. 
         </DialogContentText>
         <DialogContentText>
-          At this time, there are no accounts for Hawg View. If you want to utilize your account or saved scenarios, click on the Version 1 in the navigation or visit <a href='https://v1.hawg-ops.com'>https://v1.hawg-ops.com</a>. It is greatly suggested to convert your scenarios to v2 and save the text files. If you require assistance or have a large number of complex scenarios, please contact me.
+          Hawg View v2 will eventually replace <a href='https://v1.hawg-ops.com' target='_blank' rel='noopener noreferrer'>Hawg Ops v1</a>. What this means for current users is that accounts and saved scenarios will be removed. I appreciate the feedback and use over the past couple years. Hopefully this move will provide a better user experience for my users. If you have any questions regarding the transition, please contact me. Additionally, there is now a version 2 translator that will download your version 1 scenario as a file recognized by version 2.
+        </DialogContentText>
+        <DialogContentText>
+          Transition Timeline:
+          <br/>
+          01 December 2020 - Users will not be able to save version 1 scenarios
+          <br/>
+          14 December 2020 - Users will only be able to download scenarios as version 2
+          <br/>
+          01 January 2021 - Version 1 will be removed
         </DialogContentText>
         <DialogContentText>
           Please let me know at <a href='mailto:hawg.ops@gmail.com'>hawg.ops@gmail.com</a> any feedback or requests you may have for Hawg View.
