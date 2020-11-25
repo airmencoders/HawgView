@@ -64,7 +64,7 @@ const useStyles = makeStyles(theme => ({
 //----------------------------------------------------------------//
 // IE Navigation Component
 //----------------------------------------------------------------//
-const IENavigation = ({ state }) => {
+const IENavigation = () => {
   const classes = useStyles()
 
   return (
@@ -74,7 +74,7 @@ const IENavigation = ({ state }) => {
         position='static'
       >
         <ClassificationBanner
-          classification={state.classification}
+          classification='unclassified'
         />
         <Toolbar>
           <NavLink

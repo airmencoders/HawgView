@@ -57,6 +57,11 @@ import { render9line, render15line } from '../functions/renderData'
 //----------------------------------------------------------------//
 const LayerMarkers = props => {
 
+  const handleClose = () => {
+    props.setActiveDialog(null)
+    props.setFocusedMarker(null)
+  }
+
   const computedSize = props.markerSize * props.mapZoom
 
   const useStyles = makeStyles({
@@ -139,7 +144,7 @@ const LayerMarkers = props => {
         >
           TGP View
       </Button>
-        <Button color='primary' onClick={() => handleEditMarker(marker)}>Edit</Button>
+        <Button color='primary' onClick={() => props.setActiveDialog('editMarker')}>Edit</Button>
         <Button color='secondary' onClick={() => props.handleDeleteMarker(marker)}>Delete</Button>
       </Popup>
     )
@@ -179,7 +184,7 @@ const LayerMarkers = props => {
   const handlePopupClose = () => {
     props.setFocusedMarker(null)
     props.setFocusedShape(null)
-    props.setClickedLatLng(null)
+    props.setFocusedLatlng(null)
   }
 
   /**

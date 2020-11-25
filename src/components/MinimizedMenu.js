@@ -71,64 +71,39 @@ const useStyles = makeStyles(theme => ({
 const MinimizedMenu = (props) => {
   const classes = useStyles()
 
-  const handleAddMarkerClick = () => {
-    props.handleMinMenuClose()
-    props.handleMarkerDrawerToggle()
-  }
-
   const handleClearMarkersClick = () => {
-    props.handleMinMenuClose()
+    props.onClose()
     props.handleClearMarkers()
   }
 
   const handleColorToggleClick = () => {
-    props.handleMinMenuClose()
+    props.onClose()
     props.handleColorToggle()
   }
 
   const handleMarkerSizeDecreaseClick = () => {
-    props.handleMinMenuClose()
+    props.onClose()
     props.handleMarkerSizeDecrease()
   }
 
   const handleMarkerSizeIncreaseClick = () => {
-    props.handleMinMenuClose()
+    props.onClose()
     props.handleMarkerSizeIncrease()
   }
 
   const handleRedoClick = () => {
-    props.handleMinMenuClose()
+    props.onClose()
     props.handleRedo()
   }
 
   const handleUndoClick = () => {
-    props.handleMinMenuClose()
+    props.onClose()
     props.handleUndo()
   }
 
-  const handleSaveScenarioClick = () => {
-    props.handleMinMenuClose()
-    props.toggleSaveScenarioDialog()
-  }
-
-  const handleLoadScenarioClick = () => {
-    props.handleMinMenuClose()
-    props.toggleLoadScenarioDialog()
-  }
-
   const handleToggleTooltipsClick = () => {
-    props.handleMinMenuClose()
+    props.onClose()
     props.toggleTooltips()
-  }
-
-  const handleToggleMarkerListClick = () => {
-    props.handleMinMenuClose()
-    props.toggleMarkerListDialog()
-  }
-
-  const handleStyleClick = () => {
-    props.handleMinMenuClose()
-    props.toggleStyleDrawer()
   }
 
   return (
@@ -136,11 +111,11 @@ const MinimizedMenu = (props) => {
       anchorEl={props.minMenuAnchorElement}
       anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
       keepMounted
-      onClose={props.handleMinMenuClose}
-      open={props.minimizedMenuOpen}
+      onClose={() => props.onClose()}
+      open={props.open}
       transformOrigin={{ vertical: 'top', horizontal: 'right' }}
     >
-      <MenuItem onClick={handleAddMarkerClick}>
+      <MenuItem onClick={() => props.setActiveDialog('addMarker')}>
         <AddPhotoAlternateIcon className={classes.icon} />
         Add Marker
       </MenuItem>
@@ -178,7 +153,7 @@ const MinimizedMenu = (props) => {
         <DescriptionIcon className={classes.icon} />
         CONOP tools
       </MenuItem>
-      <MenuItem onClick={handleToggleMarkerListClick}>
+      <MenuItem onClick={() => props.setActiveDialog('markerList')}>
         <ViewListIcon className={classes.icon} />
         View marker list
       </MenuItem>
@@ -186,15 +161,15 @@ const MinimizedMenu = (props) => {
         {props.tooltipsActive ? <LabelOffIcon className={classes.icon} /> : <LabelIcon className={classes.icon} />}
         Toggle marker labels
       </MenuItem>
-      <MenuItem onClick={handleSaveScenarioClick}>
+      <MenuItem onClick={() => props.setActiveDialog('save')}>
         <SaveIcon className={classes.icon} />
         Save scenario
       </MenuItem>
-      <MenuItem onClick={handleLoadScenarioClick}>
+      <MenuItem onClick={() => props.setActiveDialog('load')}>
         <FolderOpenIcon className={classes.icon} />
         Load scenario
       </MenuItem>
-      <MenuItem onClick={handleStyleClick}>
+      <MenuItem onClick={() => props.setActiveDialog('style')}>
         <StyleIcon className={classes.icon} />
         Styles
       </MenuItem>

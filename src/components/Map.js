@@ -72,7 +72,7 @@ const LeafletMap = (props) => {
       doubleClickZoom={props.toolActive ? false : true}
       onMoveend={event => props.setMapCenter(event.target.getCenter())}
       onZoomend={event => props.setMapZoom(event.target.getZoom())}
-      onClick={event => props.setClickedLatLng(event.latlng)}
+      onClick={event => props.setFocusedLatlng(event.latlng)}
       onMouseMove={event => props.handleMouseMove(event.latlng)}
       ref={map => (map !== null) ? mapRef = map.leafletElement : undefined}
       style={props.toolActive ? { cursor: 'crosshair' } : undefined}

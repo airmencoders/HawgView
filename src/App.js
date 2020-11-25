@@ -1,7 +1,8 @@
 /**
- * ${SUMMARY}
+ * Renders the main portion of the app
  * 
- * ${DESCRIPTION}
+ * Renders and routes the application. React-Router allows for redirects from old
+ * bookmarked v1 links to the main application.
  * 
  * @author  chris-m92
  * 
@@ -30,7 +31,7 @@
 //----------------------------------------------------------------//
 // Top Level Modules
 //----------------------------------------------------------------//
-import React from 'react';
+import React from 'react'
 import {
   BrowserRouter as Router,
   Route,
@@ -44,70 +45,27 @@ import {
 import CssBaseline from '@material-ui/core/CssBaseline'
 
 //----------------------------------------------------------------//
-// Custom Components
-//----------------------------------------------------------------//
-
-
-//----------------------------------------------------------------//
-// Custom Pages
+// Hawg View Components
 //----------------------------------------------------------------//
 import CAS from './CAS'
-/*import Login from './pages/Login'
-
-const MyScenarios = () => {
-  return (
-    <h1>My Scenarios</h1>
-  )
-}*/
 
 //----------------------------------------------------------------//
 // App Component
 //----------------------------------------------------------------//
-class App extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      classification: 'unclassified',
-      isAuthenticated: false,
-      user: null,
-    }
-  }
-
-  //----------------------------------------------------------------//
-  // Render the Router
-  //----------------------------------------------------------------//
-  render() {
-    return (
-      <div className='App'>
-        <CssBaseline />
-        <Router>
-          <Switch>
-            <Route exact path='/'>
-              <CAS
-                state={this.state}
-              />
-            </Route>
-            <Redirect from='*' to='/' />
-            {/*<Route path='/login' >
-              <Login
-                state={this.state}
-              />
-            </Route >
-            <Route path='/my-scenarios'>
-              {(this.state.isAuthenticated) ?
-                <MyScenarios />
-                :
-                <Redirect to='/login?error=0x000001' />
-              }
-            </Route>*/}
-          </Switch>
-        </Router>
-      </div>
-    )
-  }
+const App = () => {
+  return (
+    <div className='App'>
+      <CssBaseline />
+      <Router>
+        <Switch>
+          <Route exact path='/'>
+            <CAS />
+          </Route>
+          <Redirect from='*' to='/' />
+        </Switch>
+      </Router>
+    </div>
+  )
 }
 
 export default App
-
-
-

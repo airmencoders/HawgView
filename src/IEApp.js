@@ -46,58 +46,34 @@ import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
 
 //----------------------------------------------------------------//
-// Custom Components
-//----------------------------------------------------------------//
-
-
-//----------------------------------------------------------------//
-// Custom Pages
+// Hawg View Components
 //----------------------------------------------------------------//
 import IENavigation from './components/IENavigation'
 
 //----------------------------------------------------------------//
 // App Component
 //----------------------------------------------------------------//
-class App extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      classification: 'unclassified',
-      isAuthenticated: false,
-      user: null,
-    }
-  }
-
-  //----------------------------------------------------------------//
-  // Render the Router
-  //----------------------------------------------------------------//
-  render() {
-    return (
-      <div className='App'>
-        <CssBaseline />
-        <Router>
-          <Switch>
-            <Route exact path='/'>
-              <IENavigation
-                state={this.state}
-              />
-              <Grid
-                container
-                direction='row'
-                justify='center'
-              >
-                <Typography variant='h4'>Internet Explorer is not supported. Please use Chrome, Firefox, or Microsoft Edge.</Typography>
-              </Grid>              
-            </Route>
-            <Redirect from='*' to='/' />
-          </Switch>
-        </Router>
-      </div>
-    )
-  }
+const App = () => {
+  return (
+    <div className='App'>
+      <CssBaseline />
+      <Router>
+        <Switch>
+          <Route exact path='/'>
+            <IENavigation />
+            <Grid
+              container
+              direction='row'
+              justify='center'
+            >
+              <Typography variant='h4'>Internet Explorer is not supported. Please use Chrome, Firefox, or Microsoft Edge.</Typography>
+            </Grid>              
+          </Route>
+          <Redirect from='*' to='/' />
+        </Switch>
+      </Router>
+    </div>
+  )
 }
 
 export default App
-
-
-

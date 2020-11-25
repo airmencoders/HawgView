@@ -84,7 +84,7 @@ const LoadScenarioDialog = (props) => {
       className={classes.dialog}
       fullWidth={true}
       open={props.open}
-      onClose={props.toggle}
+      onClose={props.onClose}
       maxWidth='xs'
     >
       <DialogTitle>Load Scenario</DialogTitle>
@@ -109,7 +109,7 @@ const LoadScenarioDialog = (props) => {
         </label>
       </DialogContent>
       <DialogActions>
-        <Button onClick={props.toggle}>Close</Button>
+        <Button onClick={props.onClose}>Close</Button>
       </DialogActions>
     </Dialog>
   )

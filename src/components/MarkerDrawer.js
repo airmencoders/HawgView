@@ -89,8 +89,8 @@ const MarkerDrawer = (props) => {
         container={container}
         variant='temporary'
         anchor='left'
-        open={props.markerDrawerOpen}
-        onClose={props.handleMarkerDrawerToggle}
+        open={props.open}
+        onClose={props.onClose}
         classes={{ paper: classes.drawerPaper, }}
         ModalProps={{ keepMounted: true, }}
       >
@@ -124,19 +124,19 @@ const MarkerDrawer = (props) => {
           <Divider />
           <PersistentMarkers
             handleAddMarker={payload => props.handleAddMarker(payload)}
-            handleMarkerDrawerToggle={props.handleMarkerDrawerToggle}
+            handleMarkerDrawerToggle={props.onClose}
             toggleEditThreatDialog={props.toggleEditThreatDialog}
           />
           <Divider />
           {(hostile) ?
             <HostileMarkers
               handleAddMarker={payload => props.handleAddMarker(payload)}
-              handleMarkerDrawerToggle={props.handleMarkerDrawerToggle}
+              handleMarkerDrawerToggle={props.onClose}
             />
             :
             <FriendlyMarkers
               handleAddMarker={payload => props.handleAddMarker(payload)}
-              handleMarkerDrawerToggle={props.handleMarkerDrawerToggle}
+              handleMarkerDrawerToggle={props.onClose}
             />
           }
         </div>

@@ -64,7 +64,7 @@ const SaveScenarioDialog = (props) => {
       className={classes.dialog}
       fullWidth={true}
       open={props.open}
-      onClose={props.toggle}
+      onClose={props.onClose}
       maxWidth='xs'
     >
       <DialogTitle>Save Scenario</DialogTitle>
@@ -85,7 +85,7 @@ const SaveScenarioDialog = (props) => {
       </DialogContent>
       <DialogActions>
         <Button onClick={downloadScenario} color='primary'>Download Scenario</Button>
-        <Button onClick={props.toggle}>Close</Button>
+        <Button onClick={props.onClose}>Close</Button>
       </DialogActions>
     </Dialog>
   )

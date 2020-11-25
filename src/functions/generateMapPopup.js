@@ -30,31 +30,43 @@
 //----------------------------------------------------------------//
 // Top Level Modules
 //----------------------------------------------------------------//
-import React from 'react'
-import { NavLink } from 'react-router-dom'
+import Dms from 'geodesy/dms'
+import { LatLon } from 'geodesy/mgrs'
 
 //----------------------------------------------------------------//
-// Material-UI Core Components
+// Generate Map Popup Functions
 //----------------------------------------------------------------//
-import Button from '@material-ui/core/Button'
+const generateMapPopup = latlng => {
+  const lat = Dms.parse(latlng.lat)
+  const lng = Dms.parse(latlng.lng)
+  //let elevation = null
 
-//----------------------------------------------------------------//
-// Unauthenticated User Menu Component
-//----------------------------------------------------------------//
-const UnauthenticatedUserMenu = () => {
+  // Transform to DD.DDDD
+  const latlngD = LatLon.parse(lat, lng)
 
-  return (
-    <NavLink
-      style={{ textDecoration: 'none' }}
-      to='/login'
-    >
-      <Button
-        style={{ color: 'white' }}
-      >
-        Log In
-      </Button>
-    </NavLink>
-  )
+  // Transform to DD MM.MMMM
+  const latDM = Dms.toLat(lat, 'dm', 4)
+  const lngDM = Dms.toLon(lng, 'dm', 4)
+
+  // Transform to DMS
+  const latDMS = Dms.toLat(lat, 'dms', 4)
+  const lngDMS = Dms.toLon(lng, 'dms', 4)
+
+  // Parse MGRS
+  let mgrs
+  try {
+    mgrs = latlngD.toUtm().toMgrs().toString()
+  } catch (e) {
+    console.error(`Unable to translate Lat/Lng ${latlngD} to MGRS - Outside MGRS Bounds`)
+  }
+
+  return {
+    latlng: latlngD.toString(),
+    dm: `${latDM}, ${lngDM}`,
+    dms: `${latDMS}, ${lngDMS}`,
+    mgrs,
+    elevation: 'Pending',
+  }
 }
 
-export default UnauthenticatedUserMenu
+export default generateMapPopup

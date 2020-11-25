@@ -34,10 +34,13 @@ import React from 'react'
 import Dms from 'geodesy/dms'
 import { LatLon } from 'geodesy/mgrs'
 import {
+  Marker,
   Popup,
   ScaleControl,
   ZoomControl
 } from 'react-leaflet'
+
+import L from 'leaflet'
 
 //----------------------------------------------------------------//
 // Material-UI Core Components
@@ -54,19 +57,22 @@ import Snackbar from '@material-ui/core/Snackbar'
 import CloseIcon from '@material-ui/icons/Close'
 import MoreVertIcon from '@material-ui/icons/MoreVert'
 
+//----------------------------------------------------------------//
+// Hawg View Functions
+//----------------------------------------------------------------//
 import getElevation from './functions/getElevation'
+import generateMapPopup from './functions/generateMapPopup'
 
 //----------------------------------------------------------------//
-// Custom Components
+// Hawg View Components
 //----------------------------------------------------------------//
 import AnalysisTool from './components/AnalysisTool'
-//import AuthenticatedUserMenu from './components/AuthenticatedUserMenu'
 import BuildingLabelTool from './components/BuildingLabelTool'
 import CASNavigation from './components/CASNavigation'
 import CASTools from './components/CASTools'
 import CircleTool from './components/CircleTool'
 import CoordInput from './components/CoordInput'
-import ShapeDrawer from './components/ShapeDrawer'
+import EditShapeDrawer from './components/EditShapeDrawer'
 import EditMarkerDrawer from './components/EditMarkerDrawer'
 import EllipseTool from './components/EllipseTool'
 import { editMarkers } from './functions/editMarkers'
@@ -78,11 +84,9 @@ import MarkerListDialog from './components/MarkerListDialog'
 import Map from './components/Map'
 import MinimizedMenu from './components/MinimizedMenu'
 import NotificationsDialog from './components/NotificationsDialog'
-//import UnauthenticatedUserMenu from './components/UnauthenticatedUserMenu'
 import RectangleTool from './components/RectangleTool'
 import SaveScenarioDialog from './components/SaveScenarioDialog'
 import StyleDrawer from './components/StyleDrawer'
-import UpdateScenarioDialog from './components/UpdateScenarioDialog'
 import LoadScenarioDialog from './components/LoadScenarioDialog'
 import Alert from './components/Alert'
 import ToolControls from './components/ToolControls'
@@ -130,19 +134,18 @@ const minMarkerSize = 1
 const maxMarkerSize = 10
 
 //----------------------------------------------------------------//
-// CAS Planner Page
+// CAS Component
 //----------------------------------------------------------------//
-const Cas = ({ state }) => {
+const Cas = () => {
   const classes = useStyles()
 
   //----------------------------------------------------------------//
   // State Variables
   //----------------------------------------------------------------//
+  const [activeDialog, setActiveDialog] = React.useState('notification')
   const [activeTool, setActiveTool] = React.useState(null)
   const [mouseCoords, setMouseCoords] = React.useState(null)
-  const [clickedLatLng, setClickedLatLng] = React.useState(null)
-  const [editMarkerDrawerOpen, setEditMarkerDrawerOpen] = React.useState(false)
-  const [editThreatDialogOpen, setEditThreatDialogOpen] = React.useState(false)
+  const [focusedLatlng, setFocusedLatlng] = React.useState(null)
   const [elevation, setElevation] = React.useState('Pending')
   const [focusedMarker, setFocusedMarker] = React.useState(null)
   const [focusedShape, setFocusedShape] = React.useState(null)
@@ -190,35 +193,35 @@ const Cas = ({ state }) => {
   const [mapColor, setMapColor] = React.useState(true)
   const [mapPopup, setMapPopup] = React.useState(null)
   const [mapZoom, setMapZoom] = React.useState(5)
-  const [markerDrawerOpen, setMarkerDrawerOpen] = React.useState(false)
-  //const [markerId, setMarkerId] = React.useState(0)
   const [markerLabel, setMarkerLabel] = React.useState('')
-  const [markerListDialogOpen, setMarkerListDialogOpen] = React.useState(false)
   const [markerSize, setMarkerSize] = React.useState(3)
-  //const [menuAnchorElement, setMenuAnchorElement] = React.useState(null)
   const [minMenuAnchorElement, setMinMenuAnchorElement] = React.useState(null)
-  const [notificationsDialogOpen, setNotificationsDialogOpen] = React.useState(true)
   const [saveScenarioDialogOpen, setSaveScenarioDialogOpen] = React.useState(false)
-  const [shapeDrawerOpen, setShapeDrawerOpen] = React.useState(false)
   const [snackbarMessage, setSnackbarMessage] = React.useState(undefined)
   const [snackbarOpen, setSnackbarOpen] = React.useState(false)
   const [snackPack, setSnackPack] = React.useState([])
   const [step, setStep] = React.useState(0)
-  const [styleDrawerOpen, setStyleDrawerOpen] = React.useState(false)
   const [tooltipsActive, setTooltipsActive] = React.useState(false)
-  const [updateScenarioDialogOpen, setUpdateScenarioDialogOpen] = React.useState(false)
   const [pageTitle, setPageTitle] = React.useState('CAS Planner')
 
-  // const menuOpen = Boolean(menuAnchorElement)
-  const minimizedMenuOpen = Boolean(minMenuAnchorElement)
+  //----------------------------------------------------------------//
+  // DEBUGGING AREA
+  //----------------------------------------------------------------//
+  /*React.useEffect(() => {
+    console.log('Focused Latlng:', focusedLatlng)
+  }, [focusedLatlng])
 
-  /*const handleMenuOpen = event => {
-    setMenuAnchorElement(event.currentTarget)
-  }
+  React.useEffect(() => {
+    console.log('Active Dialog:', activeDialog)
+  }, [activeDialog])
 
-  const handleMenuClose = () => {
-    setMenuAnchorElement(null)
-  }*/
+  React.useEffect(() => {
+    console.log('Map Popup:', mapPopup)
+  }, [mapPopup])*/
+
+  //----------------------------------------------------------------//
+  //----------------------------------------------------------------//
+  //----------------------------------------------------------------//
 
   React.useEffect(() => {
     document.title = `Hawg View | ${pageTitle}`
@@ -226,11 +229,19 @@ const Cas = ({ state }) => {
 
   const handleMinMenuOpen = event => {
     setMinMenuAnchorElement(event.currentTarget)
+    setActiveDialog('minimizedMenu')
   }
 
   const handleMinMenuClose = () => {
     setMinMenuAnchorElement(null)
+    setActiveDialog(null)
   }
+
+  React.useEffect(() => {
+    if (activeDialog === null) {
+      handleMapReset()
+    }
+  }, [activeDialog])
 
   /**
    * React hook that listens for the resize of the window and closes the minimized menu if it's open
@@ -261,69 +272,46 @@ const Cas = ({ state }) => {
    * Using a hook instead of a function here allows us to use the search bar
    */
   React.useEffect(() => {
-    if (focusedMarker !== null) {
-      setClickedLatLng(focusedMarker.latlng)
-    } else if (clickedLatLng !== null && activeTool === null && focusedMarker === null && focusedShape === null) {
+    /*if (focusedMarker !== null) {
+      setFocusedLatlng(focusedMarker.latlng)
+    }*/
+  }, [focusedMarker])
 
-      const lat = Dms.parse(clickedLatLng.lat)
-      const lng = Dms.parse(clickedLatLng.lng)
-
-      // Transform to DD.DDDD
-      const latlngD = LatLon.parse(lat, lng)
-
-      // Transform to DD MM.MMMM
-      const latDM = Dms.toLat(lat, 'dm', 4)
-      const lngDM = Dms.toLon(lng, 'dm', 4)
-
-      // Transform to DMS
-      const latDMS = Dms.toLat(lat, 'dms', 4)
-      const lngDMS = Dms.toLon(lng, 'dms', 4)
-
-      // Parse MGRS
-      let mgrs
-      try {
-        mgrs = latlngD.toUtm().toMgrs().toString()
-      } catch (e) {
-
-      }
-
-      // Get the elevation
-      fetch(`https://nationalmap.gov/epqs/pqs.php?x=${lng}&y=${lat}&units=Feet&output=json`)
-        .then(response => response.json())
-        .then(json => (Number.parseInt(json.USGS_Elevation_Point_Query_Service.Elevation_Query.Elevation) === -1000000) ? setElevation(0) : Number.parseInt(setElevation(json.USGS_Elevation_Point_Query_Service.Elevation_Query.Elevation)))
-
+  React.useEffect(() => {
+    if (activeTool === null && focusedLatlng !== null) {
+      setFocusedMarker(null)
       setMapPopup({
-        latlng: latlngD.toString(),
-        dm: `${latDM}, ${lngDM}`,
-        dms: `${latDMS}, ${lngDMS}`,
-        mgrs,
-        elevation: elevation
+        ...generateMapPopup(focusedLatlng),
+        elevation: elevation,
       })
     }
-  }, [clickedLatLng, activeTool, elevation, focusedMarker])
+  }, [focusedLatlng, activeTool, elevation])
+
+  React.useEffect(() => {
+    if (focusedLatlng !== null) {
+      (async () => setElevation(await getElevation(focusedLatlng.lat, focusedLatlng.lng)))()
+    }
+  }, [focusedLatlng])
 
   /**
    * Helper function to do multiple things when closing the map Popup
    */
   const handleMapReset = () => {
-    setClickedLatLng(null)
+    setActiveDialog(null)
+    setFocusedLatlng(null)
     setMouseCoords(null)
     setLineClosed(true)
     setFocusedMarker(null)
     setFocusedShape(null)
     setMapPopup(null)
-    setShapeDrawerOpen(false)
-    setStyleDrawerOpen(false)
-    setMarkerDrawerOpen(false)
-    setEditMarkerDrawerOpen(false)
-    setNotificationsDialogOpen(false)
     setElevation('Pending')
   }
 
   const toggleTools = tool => {
 
     setFocusedMarker(null)
-    setClickedLatLng(null)
+    setFocusedLatlng(null)
+    //handleMapReset()
 
     switch (tool) {
       case 'analysis':
@@ -373,7 +361,7 @@ const Cas = ({ state }) => {
     if (latlng === false) {
       toast('Invalid coordinates', 'error')
     } else {
-      setClickedLatLng(latlng)
+      setFocusedLatlng(latlng)
     }
   }
 
@@ -450,7 +438,7 @@ const Cas = ({ state }) => {
         if (payload.layer === 'friendly' || payload.layer === 'hostile' || payload.layer === 'threat' || payload.layer === 'survivor' || payload.layer === 'ip' || payload.layer === 'mapLabel' || payload.layer === 'bullseye')
           updatedPayload = {
             ...updatedPayload,
-            latlng: clickedLatLng,
+            latlng: focusedLatlng,
             title: updatedTitle,
           }
       }
@@ -477,9 +465,12 @@ const Cas = ({ state }) => {
 
         handleMapReset()
 
+        console.log('layer:', payload.layer)
+
         if (payload.layer === 'circle' || payload.layer === 'rectangle' || payload.layer === 'line' || payload.layer === 'polygon' || payload.layer === 'ellipse') {
+          console.log('here')
           setFocusedShape(updatedPayload)
-          setShapeDrawerOpen(true)
+          setActiveDialog('editShape')
           setActiveTool(null)
         }
       }
@@ -537,91 +528,91 @@ const Cas = ({ state }) => {
       let newId = 0
 
       newStep.buildingLabels.forEach(element => {
-        if(element.id >= newId) {
+        if (element.id >= newId) {
           newId = element.id + 1
         }
       })
 
       newStep.bullseyes.forEach(element => {
-        if(element.id >= newId) {
+        if (element.id >= newId) {
           newId = element.id + 1
         }
       })
 
       newStep.buildingLabels.forEach(element => {
-        if(element.id >= newId) {
+        if (element.id >= newId) {
           newId = element.id + 1
         }
       })
 
       newStep.ellipses.forEach(element => {
-        if(element.id >= newId) {
+        if (element.id >= newId) {
           newId = element.id + 1
         }
       })
 
       newStep.rectangles.forEach(element => {
-        if(element.id >= newId) {
+        if (element.id >= newId) {
           newId = element.id + 1
         }
       })
 
       newStep.friendlyMarkers.forEach(element => {
-        if(element.id >= newId) {
+        if (element.id >= newId) {
           newId = element.id + 1
         }
       })
 
       newStep.hostileMarkers.forEach(element => {
-        if(element.id >= newId) {
+        if (element.id >= newId) {
           newId = element.id + 1
         }
       })
 
       newStep.initialPoints.forEach(element => {
-        if(element.id >= newId) {
+        if (element.id >= newId) {
           newId = element.id + 1
         }
       })
 
       newStep.kineticPoints.forEach(element => {
-        if(element.id >= newId) {
+        if (element.id >= newId) {
           newId = element.id + 1
         }
       })
 
       newStep.lines.forEach(element => {
-        if(element.id >= newId) {
+        if (element.id >= newId) {
           newId = element.id + 1
         }
       })
 
       newStep.mapLabels.forEach(element => {
-        if(element.id >= newId) {
+        if (element.id >= newId) {
           newId = element.id + 1
         }
       })
 
       newStep.polygons.forEach(element => {
-        if(element.id >= newId) {
+        if (element.id >= newId) {
           newId = element.id + 1
         }
       })
 
       newStep.circles.forEach(element => {
-        if(element.id >= newId) {
+        if (element.id >= newId) {
           newId = element.id + 1
         }
       })
 
       newStep.survivors.forEach(element => {
-        if(element.id >= newId) {
+        if (element.id >= newId) {
           newId = element.id + 1
         }
       })
 
       newStep.threatMarkers.forEach(element => {
-        if(element.id >= newId) {
+        if (element.id >= newId) {
           newId = element.id + 1
         }
       })
@@ -650,8 +641,7 @@ const Cas = ({ state }) => {
     >
       <Box>
         <CASNavigation
-          state={state}
-          toggleNotificationDialog={() => setNotificationsDialogOpen(!notificationsDialogOpen)}
+          setActiveDialog={dialog => setActiveDialog(dialog)}
         >
           <CoordInput
             map={map}
@@ -659,7 +649,6 @@ const Cas = ({ state }) => {
           />
           <div className={classes.sectionDesktop}>
             <CASTools
-              handleMarkerDrawerToggle={() => setMarkerDrawerOpen(!markerDrawerOpen)}
               handleMarkerSizeDecrease={(markerSize > minMarkerSize) ? () => setMarkerSize(markerSize - 1) : undefined}
               handleMarkerSizeIncrease={(markerSize < maxMarkerSize) ? () => setMarkerSize(markerSize + 1) : undefined}
               handleClearMarkers={() => handleMarkerEdit('clear', {})}
@@ -667,17 +656,10 @@ const Cas = ({ state }) => {
               handleRedo={handleRedo}
               handleUndo={handleUndo}
               mapColor={mapColor}
-              //mouseClickActive={mouseClickActive}
               redoAction={(step === history.length - 1) ? '' : history[step + 1].action}
               redoDisabled={(step === history.length - 1)}
-              toggleLoadScenarioDialog={() => setLoadScenarioDialogOpen(!loadScenarioDialogOpen)}
-              toggleSaveScenarioDialog={() => setSaveScenarioDialogOpen(!saveScenarioDialogOpen)}
-              toggleStyleDrawer={() => setStyleDrawerOpen(!styleDrawerOpen)}
-              toggleTooltips={() => setTooltipsActive(!tooltipsActive)}
-              toggleUpdateScenarioDialog={() => setUpdateScenarioDialogOpen(!updateScenarioDialogOpen)}
-              toggleMarkerListDialog={() => setMarkerListDialogOpen(true)}
+              setActiveDialog={dialog => setActiveDialog(dialog)}
               tooltipsActive={tooltipsActive}
-              //toggleMouseClick={() => setMouseClickActive(!mouseClickActive)}
               undoAction={(step === 0) ? '' : history[step].action}
               undoDisabled={(step === 0)}
             />
@@ -690,39 +672,22 @@ const Cas = ({ state }) => {
               <MoreVertIcon />
             </IconButton>
           </div>
-          <div className={classes.grow} />
-          {/*state.isAuthenticated && (
-            <AuthenticatedUserMenu
-              handleMenuClose={handleMenuClose}
-              handleMenuOpen={handleMenuOpen}
-              menuAnchorElement={menuAnchorElement}
-              menuOpen={menuOpen}
-            />
-          )*/}
-          {/*!state.isAuthenticated && (
-            <UnauthenticatedUserMenu />
-          )*/}
           <MinimizedMenu
-            handleMarkerDrawerToggle={() => setMarkerDrawerOpen(!markerDrawerOpen)}
             handleMarkerSizeDecrease={(markerSize > minMarkerSize) ? () => setMarkerSize(markerSize - 1) : undefined}
             handleMarkerSizeIncrease={(markerSize < maxMarkerSize) ? () => setMarkerSize(markerSize + 1) : undefined}
             handleClearMarkers={() => handleMarkerEdit('clear', {})}
             handleColorToggle={handleColorToggle}
-            handleMinMenuClose={handleMinMenuClose}
             handleRedo={handleRedo}
             handleUndo={handleUndo}
             mapColor={mapColor}
-            minimizedMenuOpen={minimizedMenuOpen}
             minMenuAnchorElement={minMenuAnchorElement}
-            //mouseClickActive={mouseClickActive}
+            onClose={() => setActiveDialog(null)}
+            open={activeDialog === 'minimizedMenu'}
             redoAction={(step === history.length - 1) ? '' : history[step + 1].action}
             redoDisabled={(step === history.length - 1)}
-            toggleLoadScenarioDialog={() => setLoadScenarioDialogOpen(!loadScenarioDialogOpen)}
-            toggleSaveScenarioDialog={() => setSaveScenarioDialogOpen(!saveScenarioDialogOpen)}
-            toggleStyleDrawer={() => setStyleDrawerOpen(!styleDrawerOpen)}
+            setActiveDialog={dialog => setActiveDialog(dialog)}
             toggleTooltips={() => setTooltipsActive(!tooltipsActive)}
             tooltipsActive={tooltipsActive}
-            toggleMarkerListDialog={() => setMarkerListDialogOpen(!markerListDialogOpen)}
             undoAction={(step === 0) ? '' : history[step].action}
             undoDisabled={(step === 0)}
           />
@@ -730,7 +695,7 @@ const Cas = ({ state }) => {
       </Box>
       <Box flex={1}>
         <NotificationsDialog
-          open={notificationsDialogOpen}
+          open={activeDialog === 'notification'}
           onClose={() => handleMapReset()}
         />
         <Map
@@ -739,102 +704,17 @@ const Cas = ({ state }) => {
           toolActive={activeTool !== null}
           setMapCenter={latlng => setMapCenter([latlng.lat, latlng.lng])}
           setMapZoom={zoom => setMapZoom(zoom)}
-          setClickedLatLng={latlng => setClickedLatLng(latlng)}
+          setFocusedLatlng={latlng => setFocusedLatlng(latlng)}
           handleMouseMove={latlng => handleMouseMove(latlng)}
           zoom={mapZoom}
         >
-          <LayerControl
-            handleMarkerDrag={(marker, latlng) => handleMarkerEdit('drag', { marker: marker, latlng: latlng })}
-            interactive={activeTool === null}
-            map={map}
-            mapCenter={mapCenter}
-            mapZoom={mapZoom}
-            markerSize={markerSize}
-            setClickedLatLng={latlng => setClickedLatLng(latlng)}
-            setFocusedMarker={marker => setFocusedMarker(marker)}
-            setFocusedShape={shape => setFocusedShape(shape)}
-            step={history[step]}
-            setShapeDrawerOpen={setShapeDrawerOpen}
-            toggleEditMarkerDialog={() => setEditMarkerDrawerOpen(!editMarkerDrawerOpen)}//setEditMarkerDialogOpen(!editMarkerDialogOpen)}
-            toggleEditThreatDialog={() => setEditThreatDialogOpen(!editThreatDialogOpen)}
-            handleDeleteMarker={marker => handleMarkerEdit('delete', { marker: marker })}
-            tooltipsActive={tooltipsActive}
-          />
-          <ZoomControl position='topright' />
-          <ToolControls
-            activeTool={activeTool}
-            toggle={tool => toggleTools(tool)}
-          />
-          <AnalysisTool
-            active={activeTool === 'analysis'}
-            clearLatlng={() => setClickedLatLng(null)}
-            clearMouse={() => setMouseCoords(null)}
-            lineClosed={lineClosed}
-            mouseCoords={mouseCoords}
-            setLineClosed={setLineClosed}
-            toggle={() => toggleTools('analysis')}
-            latlng={clickedLatLng}
-          />
-          <BuildingLabelTool
-            active={activeTool === 'buildingLabel'}
-            clearLatlng={() => setClickedLatLng(null)}
-            index={history[step].data.buildingLabel}
-            latlng={clickedLatLng}
-            submit={(action, payload) => handleMarkerEdit(action, payload)}
-            toggle={() => toggleTools('buildingLabel')}
-          />
-          <KineticPointTool
-            active={activeTool === 'kineticPoint'}
-            clearLatlng={() => setClickedLatLng(null)}
-            firstLetter={history[step].data.firstLetter}
-            latlng={clickedLatLng}
-            secondLetter={history[step].data.secondLetter}
-            submit={(action, payload) => handleMarkerEdit(action, payload)}
-            toggle={() => toggleTools('kineticPoint')}
-          />
-          <LineTool
-            active={activeTool === 'line'}
-            latlng={clickedLatLng}
-            mouseCoords={mouseCoords}
-            submit={(action, payload) => handleMarkerEdit(action, payload)}
-            toggle={() => toggleTools('line')}
-            tool={activeTool}
-          />
-          <CircleTool
-            active={activeTool === 'circle'}
-            latlng={clickedLatLng}
-            mouseCoords={mouseCoords}
-            submit={(action, payload) => handleMarkerEdit(action, payload)}
-            toggle={() => toggleTools('circle')}
-          />
-          <RectangleTool
-            active={activeTool === 'rectangle'}
-            latlng={clickedLatLng}
-            mouseCoords={mouseCoords}
-            submit={(action, payload) => handleMarkerEdit(action, payload)}
-            toggle={() => toggleTools('rectangle')}
-          />
-          <LineTool
-            active={activeTool === 'polygon'}
-            latlng={clickedLatLng}
-            mouseCoords={mouseCoords}
-            submit={(action, payload) => handleMarkerEdit(action, payload)}
-            toggle={() => toggleTools('polygon')}
-            tool={activeTool}
-          />
-          <EllipseTool
-            active={activeTool === 'ellipse'}
-            latlng={clickedLatLng}
-            submit={(action, payload) => handleMarkerEdit(action, payload)}
-            toggle={() => toggleTools('ellipse')}
-          />
-          <ScaleControl />
-          {(clickedLatLng !== null && mapPopup !== null && activeTool === null && focusedMarker === null) ?
+          {(focusedLatlng !== null && focusedMarker === null && focusedShape === null && mapPopup !== null && activeTool === null) ? (
             <Popup
               autoPan={false}
               maxWidth={500}
-              position={clickedLatLng}
+              key={focusedLatlng}
               onClose={handleMapReset}
+              position={focusedLatlng}
             >
               <table className={classes.popupTable}>
                 <tbody>
@@ -867,39 +747,125 @@ const Cas = ({ state }) => {
               >
                 TGP View
               </Button>
-            </Popup> :
-            null
+            </Popup>
+          )
+            : null
           }
+
+          <LayerControl
+            handleMarkerDrag={(marker, latlng) => handleMarkerEdit('drag', { marker: marker, latlng: latlng })}
+            interactive={activeTool === null}
+            map={map}
+            mapCenter={mapCenter}
+            mapZoom={mapZoom}
+            markerSize={markerSize}
+            setActiveDialog={dialog => setActiveDialog(dialog)}
+            setFocusedLatlng={latlng => setFocusedLatlng(latlng)}
+            setFocusedMarker={marker => setFocusedMarker(marker)}
+            setFocusedShape={shape => setFocusedShape(shape)}
+            step={history[step]}
+            handleDeleteMarker={marker => handleMarkerEdit('delete', { marker: marker })}
+            tooltipsActive={tooltipsActive}
+          />
+          <ZoomControl position='topright' />
+          <ToolControls
+            activeTool={activeTool}
+            toggle={tool => toggleTools(tool)}
+          />
+          <AnalysisTool
+            active={activeTool === 'analysis'}
+            clearLatlng={() => setFocusedLatlng(null)}
+            clearMouse={() => setMouseCoords(null)}
+            lineClosed={lineClosed}
+            mouseCoords={mouseCoords}
+            setLineClosed={setLineClosed}
+            toggle={() => toggleTools('analysis')}
+            latlng={focusedLatlng}
+          />
+          <BuildingLabelTool
+            active={activeTool === 'buildingLabel'}
+            clearLatlng={() => setFocusedLatlng(null)}
+            index={history[step].data.buildingLabel}
+            latlng={focusedLatlng}
+            submit={(action, payload) => handleMarkerEdit(action, payload)}
+            toggle={() => toggleTools('buildingLabel')}
+          />
+          <KineticPointTool
+            active={activeTool === 'kineticPoint'}
+            clearLatlng={() => setFocusedLatlng(null)}
+            firstLetter={history[step].data.firstLetter}
+            latlng={focusedLatlng}
+            secondLetter={history[step].data.secondLetter}
+            submit={(action, payload) => handleMarkerEdit(action, payload)}
+            toggle={() => toggleTools('kineticPoint')}
+          />
+          <LineTool
+            active={activeTool === 'line'}
+            latlng={focusedLatlng}
+            mouseCoords={mouseCoords}
+            submit={(action, payload) => handleMarkerEdit(action, payload)}
+            toggle={() => toggleTools('line')}
+            tool={activeTool}
+          />
+          <CircleTool
+            active={activeTool === 'circle'}
+            latlng={focusedLatlng}
+            mouseCoords={mouseCoords}
+            submit={(action, payload) => handleMarkerEdit(action, payload)}
+            toggle={() => toggleTools('circle')}
+          />
+          <RectangleTool
+            active={activeTool === 'rectangle'}
+            latlng={focusedLatlng}
+            mouseCoords={mouseCoords}
+            submit={(action, payload) => handleMarkerEdit(action, payload)}
+            toggle={() => toggleTools('rectangle')}
+          />
+          <LineTool
+            active={activeTool === 'polygon'}
+            latlng={focusedLatlng}
+            mouseCoords={mouseCoords}
+            submit={(action, payload) => handleMarkerEdit(action, payload)}
+            toggle={() => toggleTools('polygon')}
+            tool={activeTool}
+          />
+          <EllipseTool
+            active={activeTool === 'ellipse'}
+            latlng={focusedLatlng}
+            submit={(action, payload) => handleMarkerEdit(action, payload)}
+            toggle={() => toggleTools('ellipse')}
+          />
+          <ScaleControl />
+
         </Map>
       </Box>
       <StyleDrawer
-        open={styleDrawerOpen}
-        onClose={handleMapReset}
+        open={activeDialog === 'style'}
+        onClose={() => setActiveDialog(null)}
         submit={(action, payload) => handleMarkerEdit(action, payload)}
       />
       <MarkerDrawer
-        markerDrawerOpen={markerDrawerOpen}
+        open={activeDialog === 'addMarker'}
         markerLabel={markerLabel}
+        onClose={() => setActiveDialog(null)}
         handleAddMarker={payload => handleMarkerEdit('create', payload)}
-        handleMarkerDrawerToggle={() => setMarkerDrawerOpen(!markerDrawerOpen)}
         setMarkerLabel={setMarkerLabel}
-        toggleEditThreatDialog={() => setEditThreatDialogOpen(!editThreatDialogOpen)}
       />
       <EditMarkerDrawer
         marker={focusedMarker}
-        open={editMarkerDrawerOpen}
-        onClose={handleMapReset}
+        open={activeDialog === 'editMarker'}
+        onClose={() => setActiveDialog(null)}
         submit={(action, payload) => handleMarkerEdit(action, payload)}
       />
-      <ShapeDrawer
+      <EditShapeDrawer
         shape={focusedShape}
-        onClose={handleMapReset}
-        open={shapeDrawerOpen}
+        onClose={() => setActiveDialog(null)}
+        open={activeDialog === 'editShape'}
         submit={(action, payload) => handleMarkerEdit(action, payload)}
       />
       <MarkerListDialog
-        open={markerListDialogOpen}
-        onClose={() => setMarkerListDialogOpen(false)}
+        open={activeDialog === 'markerList'}
+        onClose={() => setActiveDialog(false)}
         step={history[step]}
       />
       <Snackbar
@@ -922,25 +888,19 @@ const Cas = ({ state }) => {
           {snackbarMessage ? snackbarMessage.message : undefined}
         </Alert>
       </Snackbar>
-      {
-        (saveScenarioDialogOpen) ?
-          <SaveScenarioDialog
-            data={history[step]}
-            open={saveScenarioDialogOpen}
-            toast={(message, severity) => toast(message, severity)}
-            toggle={() => setSaveScenarioDialogOpen(!saveScenarioDialogOpen)}
-          />
-          : undefined
-      }
-      {
-        (loadScenarioDialogOpen) ?
-          <LoadScenarioDialog
-            open={loadScenarioDialogOpen}
-            submit={data => handleLoadScenario(data)}
-            toggle={() => setLoadScenarioDialogOpen(!loadScenarioDialogOpen)}
-          />
-          : undefined
-      }
+      <SaveScenarioDialog
+        data={history[step]}
+        onClose={() => setActiveDialog(null)}
+        open={activeDialog === 'save'}
+        toast={(message, severity) => toast(message, severity)}
+        toggle={() => setSaveScenarioDialogOpen(!saveScenarioDialogOpen)}
+      />
+      <LoadScenarioDialog
+        onClose={() => setActiveDialog(null)}
+        open={activeDialog === 'load'}
+        submit={data => handleLoadScenario(data)}
+        toggle={() => setLoadScenarioDialogOpen(!loadScenarioDialogOpen)}
+      />
     </Box>
   )
 }

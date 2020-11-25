@@ -1,3 +1,11 @@
+## 2.6.0-beta
+### Changes
+* Created `async` function `getElevation` to pull code out of `CAS.js`
+* Started work to simplify dialogs/drawers
+
+### Fixes
+* Fixed bug where once a user selects a marker, the map will no longer display a popup
+
 ## 2.5.3-beta
 ### Changes
 * Added additional information to the notification dialog

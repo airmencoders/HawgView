@@ -49,7 +49,7 @@ import Typography from '@material-ui/core/Typography'
 import NotificationImportantIcon from '@material-ui/icons/NotificationImportant'
 
 //----------------------------------------------------------------//
-// Custom Components
+// Hawg View Components
 //----------------------------------------------------------------//
 import ClassificationBanner from './ClassificationBanner'
 
@@ -86,7 +86,7 @@ const CASNavigation = (props) => {
         position='static'
       >
         <ClassificationBanner
-          classification={props.state.classification}
+          classification='unclassified'
         />
         <Toolbar>
           <NavLink
@@ -108,7 +108,7 @@ const CASNavigation = (props) => {
           <Tooltip title='Notifications'>
             <IconButton
               color='inherit'
-              onClick={props.toggleNotificationDialog}
+              onClick={() => props.setActiveDialog('notification')}
             >
               <NotificationImportantIcon />
             </IconButton>

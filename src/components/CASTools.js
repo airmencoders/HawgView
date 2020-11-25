@@ -69,7 +69,7 @@ const CASTools = (props) => {
       <Tooltip title='Add marker'>
         <IconButton
           color='inherit'
-          onClick={props.handleMarkerDrawerToggle}
+          onClick={() => props.setActiveDialog('addMarker')}
         >
           <AddPhotoAlternateIcon />
         </IconButton>
@@ -138,7 +138,7 @@ const CASTools = (props) => {
       <Tooltip title='View marker list'>
         <IconButton
           color='inherit'
-          onClick={props.toggleMarkerListDialog}
+          onClick={() => props.setActiveDialog('markerList')}
         >
           <ViewListIcon />
         </IconButton>
@@ -156,7 +156,7 @@ const CASTools = (props) => {
       <Tooltip title='Save scenario'>
         <IconButton
           color='inherit'
-          onClick={props.toggleSaveScenarioDialog}
+          onClick={() => props.setActiveDialog('save')}
         >
           <SaveIcon />
         </IconButton>
@@ -164,7 +164,7 @@ const CASTools = (props) => {
       <Tooltip title='Load scenario'>
         <IconButton
           color='inherit'
-          onClick={props.toggleLoadScenarioDialog}
+          onClick={() => props.setActiveDialog('load')}
         >
           <FolderOpenIcon />
         </IconButton>
@@ -172,7 +172,7 @@ const CASTools = (props) => {
       <Tooltip title='Styles'>
         <IconButton
           color='inherit'
-          onClick={props.toggleStyleDrawer}
+          onClick={() => props.setActiveDialog('style')}
         >
           <StyleIcon />
         </IconButton>
