@@ -27,9 +27,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-//----------------------------------------------------------------//
-// Top Level Modules
-//----------------------------------------------------------------//
 import React from 'react'
 
 //----------------------------------------------------------------//
@@ -39,11 +36,8 @@ import Button from '@material-ui/core/Button'
 import Dialog from '@material-ui/core/Dialog'
 import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
-import DialogContentText from '@material-ui/core/DialogContentText'
 import DialogTitle from '@material-ui/core/DialogTitle'
-import Divider from '@material-ui/core/Divider'
 import { makeStyles } from '@material-ui/core/styles'
-import TextField from '@material-ui/core/TextField'
 
 //----------------------------------------------------------------//
 // Custom Styles
@@ -63,16 +57,12 @@ const useStyles = makeStyles(theme => ({
 const LoadScenarioDialog = (props) => {
   const classes = useStyles()
 
-  //----------------------------------------------------------------//
-  // State
-  //----------------------------------------------------------------//
-  const [scenario, setScenario] = React.useState('')
-
   const handleChange = files => {
     const file = files.item(0)
     const reader = new FileReader()
 
-    reader.onload = function (e) {
+    reader.onload = () => {
+      props.setActiveDialog(null)
       props.submit(reader.result)
     }
 
@@ -84,7 +74,7 @@ const LoadScenarioDialog = (props) => {
       className={classes.dialog}
       fullWidth={true}
       open={props.open}
-      onClose={props.onClose}
+      onClose={() => props.setActiveDialog(null)}
       maxWidth='xs'
     >
       <DialogTitle>Load Scenario</DialogTitle>
@@ -109,7 +99,7 @@ const LoadScenarioDialog = (props) => {
         </label>
       </DialogContent>
       <DialogActions>
-        <Button onClick={props.onClose}>Close</Button>
+        <Button onClick={() => props.setActiveDialog(null)}>Close</Button>
       </DialogActions>
     </Dialog>
   )

@@ -27,9 +27,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-//----------------------------------------------------------------//
-// Top Level Modules
-//----------------------------------------------------------------//
 import React from 'react'
 
 //----------------------------------------------------------------//
@@ -56,8 +53,18 @@ import RedoIcon from '@material-ui/icons/Redo'
 import SaveIcon from '@material-ui/icons/Save'
 import StyleIcon from '@material-ui/icons/Style'
 import UndoIcon from '@material-ui/icons/Undo'
-import UpdateIcon from '@material-ui/icons/Update'
 import ViewListIcon from '@material-ui/icons/ViewList'
+
+//----------------------------------------------------------------//
+// Hawg View Handlers
+//----------------------------------------------------------------//
+import handleColorChange from '../handlers/handleColorChange'
+import {
+  handleMarkerSizeDecrease,
+  handleMarkerSizeIncrease,
+  minMarkerSize,
+  maxMarkerSize
+} from '../handlers/handleMarkerSizeChange'
 
 //----------------------------------------------------------------//
 // CAS Tools Component
@@ -74,22 +81,22 @@ const CASTools = (props) => {
           <AddPhotoAlternateIcon />
         </IconButton>
       </Tooltip>
-      <Tooltip title={`Undo ${props.undoAction}`}>
+      <Tooltip title={`Undo ${props.step === 0 ? '' : props.history[props.step].action}`}>
         <span>
           <IconButton
             color='inherit'
-            disabled={props.undoDisabled}
+            disabled={props.step === 0}
             onClick={props.handleUndo}
           >
             <UndoIcon />
           </IconButton>
         </span>
       </Tooltip>
-      <Tooltip title={`Redo ${props.redoAction}`}>
+      <Tooltip title={`Redo ${props.step === props.history.length - 1 ? '' : props.history[props.step + 1].action}`}>
         <span>
           <IconButton
             color='inherit'
-            disabled={props.redoDisabled}
+            disabled={props.step === props.history.length - 1}
             onClick={props.handleRedo}
           >
             <RedoIcon />
@@ -105,25 +112,31 @@ const CASTools = (props) => {
         </IconButton>
       </Tooltip>
       <Tooltip title='Increase marker size'>
-        <IconButton
-          color='inherit'
-          onClick={props.handleMarkerSizeIncrease}
-        >
-          <PhotoSizeSelectActualIcon />
-        </IconButton>
+        <span>
+          <IconButton
+            color='inherit'
+            disabled={props.markerSize === maxMarkerSize}
+            onClick={() => handleMarkerSizeIncrease(props.markerSize, props.setMarkerSize)}
+          >
+            <PhotoSizeSelectActualIcon />
+          </IconButton>
+        </span>
       </Tooltip>
       <Tooltip title='Decrease marker size'>
-        <IconButton
-          color='inherit'
-          onClick={props.handleMarkerSizeDecrease}
-        >
-          <PhotoSizeSelectLargeIcon />
-        </IconButton>
+        <span>
+          <IconButton
+            color='inherit'
+            disabled={props.markerSize === minMarkerSize}
+            onClick={() => handleMarkerSizeDecrease(props.markerSize, props.setMarkerSize)}
+          >
+            <PhotoSizeSelectLargeIcon />
+          </IconButton>
+        </span>
       </Tooltip>
       <Tooltip title='Toggle map color'>
         <IconButton
           color='inherit'
-          onClick={props.handleColorToggle}
+          onClick={() => handleColorChange(props.mapColor, props.setMapColor)}
         >
           {props.mapColor ? <InvertColorsIcon /> : <InvertColorsOffIcon />}
         </IconButton>

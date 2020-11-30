@@ -69,6 +69,9 @@ const AnalysisToolActiveLine = (props) => {
 
   return (
     <React.Fragment>
+      {/**
+       * Create a polyline that will go through all the points that are passed
+       */}
       {(props.points.length > 0 && props.mouseCoords !== null) ?
           <Polyline
             color='red'
@@ -78,6 +81,9 @@ const AnalysisToolActiveLine = (props) => {
           />
           : undefined
       }
+      {/**
+       * Create a circle marker at each of the vertices of the line with a popup of that point
+       */}
       {props.points.map((point, index) => (
           <CircleMarker
             center={point.point}
@@ -100,7 +106,11 @@ const AnalysisToolActiveLine = (props) => {
             }
           </CircleMarker>
         ))}
-      {(props.mouseCoords !== null && props.active) ?
+      {/**
+       * Create the circle marker at the mouse only if the mouse coordinates are not null, the tool is active, and there is at least
+       * one point in the array
+       */}
+      {(props.mouseCoords !== null && props.points.length > 0 && props.active) ?
           <CircleMarker
             center={props.mouseCoords}
             color='red'

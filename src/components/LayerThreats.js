@@ -110,7 +110,6 @@ const LayerThreats = props => {
       <Popup
         autoPan={false}
         maxWidth={1000}
-        onClose={handlePopupClose}
       >
         {marker.data !== null ? render9line(marker.data) : generatePopupText(marker)}
         <br />
@@ -131,11 +130,11 @@ const LayerThreats = props => {
   /**
    * 
    */
-  const handlePopupClose = () => {
+  /*const handlePopupClose = () => {
     props.setFocusedMarker(null)
     props.setFocusedShape(null)
     props.setClickedLatLng(null)
-  }
+  }*/
 
   /**
    * 

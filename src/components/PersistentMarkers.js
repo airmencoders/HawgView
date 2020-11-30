@@ -143,11 +143,6 @@ const PersistentMarkers = ({ handleAddMarker, handleMarkerDrawerToggle, toggleEd
     handleAddMarker(payload)
   }
 
-  const toggleEditThreatDialogClick = () => {
-    handleMarkerDrawerToggle()
-    toggleEditThreatDialog()
-  }
-
   return (
     <React.Fragment>
       <div>

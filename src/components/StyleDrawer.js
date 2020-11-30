@@ -29,9 +29,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-//----------------------------------------------------------------//
-// Top Level Modules
-//----------------------------------------------------------------//
 import React from 'react'
 import { SketchPicker as ColorPicker } from 'react-color'
 
@@ -40,13 +37,12 @@ import { SketchPicker as ColorPicker } from 'react-color'
 //----------------------------------------------------------------//
 import Button from '@material-ui/core/Button'
 import Drawer from '@material-ui/core/Drawer'
-import FormControl from '@material-ui/core/FormControl'
 import Grid from '@material-ui/core/Grid'
 import { makeStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
 
 //----------------------------------------------------------------//
-// Custom Class Styling
+// Class Styling
 //----------------------------------------------------------------//
 const drawerWidth = 750
 

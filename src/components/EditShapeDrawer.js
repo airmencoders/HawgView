@@ -60,8 +60,14 @@ import stroke10_10 from '../images/stroke-10-10.png'
 import stroke1_10_5_10 from '../images/stroke-1-10-5-10.png'
 import stroke10_10_5_10_5_10 from '../images/stroke-10-10-5-10-5-10.png'
 
+//----------------------------------------------------------------//
+// Hawg View Constants
+//----------------------------------------------------------------//
 import { units } from '../constants/threats'
 
+//----------------------------------------------------------------//
+// Hawg View Functions
+//----------------------------------------------------------------//
 import { submitCoordInput } from '../functions/submitCoordInput'
 
 //----------------------------------------------------------------//
@@ -254,15 +260,17 @@ const ShapeDrawer = (props) => {
     if (props.shape.layer === 'circle' || props.shape.layer === 'ellipse' || props.shape.layer === 'bullseye') {
       let target = false
       if (latlng) {
-        target = submitCoordInput(lat + ' ' + lng)
+        target = submitCoordInput(lat + ', ' + lng)
       } else {
-        target = submitCoordInput(mgrs)
+        target = submitCoordInput(mgrs.toUpperCase())
       }
 
       payload = {
         ...payload,
         latlng: { lat: target.lat, lng: target.lon },
       }
+
+      console.log('target', target)
     }
 
     if (props.shape.layer === 'ellipse') {

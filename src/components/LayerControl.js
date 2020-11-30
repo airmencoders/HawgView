@@ -131,22 +131,6 @@ const LayerControl = (props) => {
 
   const classes = useStyles(props)
 
-  /*const handleEditMarker = marker => {
-    props.setFocusedMarker(marker)
-    props.toggleEditMarkerDialog()
-  }
-
-  const handlePopupClose = () => {
-    props.setFocusedMarker(null)
-    props.setFocusedShape(null)
-    props.setFocusedLatlng(null)
-  }
-
-  const handleEditThreat = marker => {
-    props.setFocusedMarker(marker)
-    props.toggleEditThreatDialog()
-  }*/
-
   const handleEditShape = shape => {
     props.setFocusedShape(shape)
     props.setActiveDialog('editShape')
@@ -444,7 +428,6 @@ const LayerControl = (props) => {
               marker={marker}
               mapZoom={props.mapZoom}
               setActiveDialog={dialog => props.setActiveDialog(dialog)}
-              setFocusedLatlng={latlng => props.setFocusedLatlng(latlng)}
               setFocusedMarker={marker => props.setFocusedMarker(marker)}
               setFocusedShape={shape => props.setFocusedShape(shape)}
               //toggleEditMarkerDialog={() => props.toggleEditMarkerDialog()}
@@ -465,7 +448,6 @@ const LayerControl = (props) => {
               marker={marker}
               mapZoom={props.mapZoom}
               setActiveDialog={dialog => props.setActiveDialog(dialog)}
-              setFocusedLatlng={latlng => props.setFocusedLatlng(latlng)}
               setFocusedMarker={marker => props.setFocusedMarker(marker)}
               setFocusedShape={shape => props.setFocusedShape(shape)}
               //toggleEditMarkerDialog={() => props.toggleEditMarkerDialog()}
@@ -507,7 +489,6 @@ const LayerControl = (props) => {
               marker={marker}
               mapZoom={props.mapZoom}
               setActiveDialog={dialog => props.setActiveDialog(dialog)}
-              setFocusedLatlng={latlng => props.setFocusedLatlng(latlng)}
               setFocusedMarker={marker => props.setFocusedMarker(marker)}
               setFocusedShape={shape => props.setFocusedShape(shape)}
               //toggleEditMarkerDialog={() => props.toggleEditMarkerDialog()}
@@ -528,7 +509,6 @@ const LayerControl = (props) => {
               marker={marker}
               mapZoom={props.mapZoom}
               setActiveDialog={dialog => props.setActiveDialog(dialog)}
-              setFocusedLatlng={latlng => props.setFocusedLatlng(latlng)}
               setFocusedMarker={marker => props.setFocusedMarker(marker)}
               setFocusedShape={shape => props.setFocusedShape(shape)}
               //toggleEditMarkerDialog={() => props.toggleEditMarkerDialog()}
@@ -550,7 +530,6 @@ const LayerControl = (props) => {
               marker={marker}
               mapZoom={props.mapZoom}
               setActiveDialog={dialog => props.setActiveDialog(dialog)}
-              setFocusedLatlng={latlng => props.setFocusedLatlng(latlng)}
               setFocusedMarker={marker => props.setFocusedMarker(marker)}
               setFocusedShape={shape => props.setFocusedShape(shape)}
               //toggleEditMarkerDialog={() => props.toggleEditMarkerDialog()}
@@ -571,7 +550,6 @@ const LayerControl = (props) => {
               marker={marker}
               mapZoom={props.mapZoom}
               setActiveDialog={dialog => props.setActiveDialog(dialog)}
-              setFocusedLatlng={latlng => props.setFocusedLatlng(latlng)}
               setFocusedMarker={marker => props.setFocusedMarker(marker)}
               setFocusedShape={shape => props.setFocusedShape(shape)}
               //toggleEditMarkerDialog={() => props.toggleEditMarkerDialog()}
@@ -592,7 +570,6 @@ const LayerControl = (props) => {
               marker={marker}
               mapZoom={props.mapZoom}
               setActiveDialog={dialog => props.setActiveDialog(dialog)}
-              setFocusedLatlng={latlng => props.setFocusedLatlng(latlng)}
               setFocusedMarker={marker => props.setFocusedMarker(marker)}
               setFocusedShape={shape => props.setFocusedShape(shape)}
               //toggleEditMarkerDialog={() => props.toggleEditMarkerDialog()}

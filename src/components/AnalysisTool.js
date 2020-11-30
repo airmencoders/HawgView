@@ -83,7 +83,7 @@ const AnalysisTool = (props) => {
    */
   React.useEffect(() => {
     if (props.latlng !== null && props.active) {
-      props.setLineClosed(false)
+      //props.setLineClosed(false)
       setTotalMeters(totalMeters + meters)
       setTotalMiles(totalMiles + miles)
 
@@ -118,7 +118,6 @@ const AnalysisTool = (props) => {
    * Handle the Analysis Tool Toggle. Perform startup/cleanup actions
    */
   const toggle = () => {
-    closeLine()
     setLines([])
     setPoints([])
     props.toggle()
@@ -143,7 +142,7 @@ const AnalysisTool = (props) => {
    */
   const handleEscPress = event => {
     if (props.active && event.key === 'Escape') {
-      if (props.lineClosed) {
+      if (points.length === 0) {
         toggle()
       } else {
         closeLine()
@@ -156,9 +155,9 @@ const AnalysisTool = (props) => {
    * and resets the tool for another line
    */
   const closeLine = () => {
-    props.clearLatlng()
+    props.setFocusedLatlng({latlng: null, source: null})
     props.clearMouse()
-    props.setLineClosed(true)
+    //props.setLineClosed(true)
     if (points.length > 1) {
       setLines([...lines, [...points]])
     }

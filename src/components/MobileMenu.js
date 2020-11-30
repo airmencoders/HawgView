@@ -27,9 +27,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-//----------------------------------------------------------------//
-// Top Level Modules
-//----------------------------------------------------------------//
 import React from 'react'
 
 //----------------------------------------------------------------//
@@ -59,6 +56,20 @@ import StyleIcon from '@material-ui/icons/Style'
 import UndoIcon from '@material-ui/icons/Undo'
 import ViewListIcon from '@material-ui/icons/ViewList'
 
+//----------------------------------------------------------------//
+// Hawg View Handlers
+//----------------------------------------------------------------//
+import handleColorChange from '../handlers/handleColorChange'
+import {
+  handleMarkerSizeDecrease,
+  handleMarkerSizeIncrease,
+  maxMarkerSize,
+  minMarkerSize
+} from '../handlers/handleMarkerSizeChange'
+
+//----------------------------------------------------------------//
+// Custom Styles
+//----------------------------------------------------------------//
 const useStyles = makeStyles(theme => ({
   icon: {
     marginRight: theme.spacing(1),
@@ -68,50 +79,56 @@ const useStyles = makeStyles(theme => ({
 //----------------------------------------------------------------//
 // Minimized Menu Component
 //----------------------------------------------------------------//
-const MinimizedMenu = (props) => {
+const MobileMenu = (props) => {
   const classes = useStyles()
 
+  //----------------------------------------------------------------//
+  // Click Handlers
+  //----------------------------------------------------------------//
   const handleClearMarkersClick = () => {
-    props.onClose()
+    props.setActiveDialog(null)
     props.handleClearMarkers()
   }
 
   const handleColorToggleClick = () => {
-    props.onClose()
-    props.handleColorToggle()
+    props.setActiveDialog(null)
+    handleColorChange(props.mapColor, props.setMapColor)
   }
 
   const handleMarkerSizeDecreaseClick = () => {
-    props.onClose()
-    props.handleMarkerSizeDecrease()
+    props.setActiveDialog(null)
+    handleMarkerSizeDecrease(props.markerSize, props.setMarkerSize)
   }
 
   const handleMarkerSizeIncreaseClick = () => {
-    props.onClose()
-    props.handleMarkerSizeIncrease()
+    props.setActiveDialog(null)
+    handleMarkerSizeIncrease(props.markerSize, props.setMarkerSize)
   }
 
   const handleRedoClick = () => {
-    props.onClose()
+    props.setActiveDialog(null)
     props.handleRedo()
   }
 
   const handleUndoClick = () => {
-    props.onClose()
+    props.setActiveDialog(null)
     props.handleUndo()
   }
 
   const handleToggleTooltipsClick = () => {
-    props.onClose()
+    props.setActiveDialog(null)
     props.toggleTooltips()
   }
 
+  //----------------------------------------------------------------//
+  // Component
+  //----------------------------------------------------------------//
   return (
     <Menu
-      anchorEl={props.minMenuAnchorElement}
+      anchorEl={props.anchor}
       anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
       keepMounted
-      onClose={() => props.onClose()}
+      onClose={() => props.setActiveDialog(null)}
       open={props.open}
       transformOrigin={{ vertical: 'top', horizontal: 'right' }}
     >
@@ -120,28 +137,34 @@ const MinimizedMenu = (props) => {
         Add Marker
       </MenuItem>
       <MenuItem
-        disabled={props.undoDisabled}
-        onClick={!props.undoDisabled ? handleUndoClick : undefined}
+        disabled={props.step === 0}
+        onClick={props.step === 0 ? undefined : handleUndoClick}
       >
         <UndoIcon className={classes.icon} />
-        Undo {props.undoAction}
+        Undo {props.step === 0 ? '' : props.history[props.step].action}
       </MenuItem>
       <MenuItem
-        disabled={props.redoDisabled}
-        onClick={!props.redoDisabled ? handleRedoClick : undefined}
+        disabled={props.step === props.history.length - 1}
+        onClick={props.step === props.history.length - 1 ? undefined : handleRedoClick}
       >
         <RedoIcon className={classes.icon} />
-        Redo {props.redoAction}
+        Redo {props.step === props.history.length - 1 ? '' : props.history[props.step + 1].action}
       </MenuItem>
       <MenuItem onClick={handleClearMarkersClick}>
         <ClearIcon className={classes.icon} />
         Clear all markers
       </MenuItem>
-      <MenuItem onClick={handleMarkerSizeIncreaseClick}>
+      <MenuItem 
+        disabled={props.markerSize === maxMarkerSize}
+        onClick={handleMarkerSizeIncreaseClick}
+      >
         <PhotoSizeSelectActualIcon className={classes.icon} />
         Increase marker size
       </MenuItem>
-      <MenuItem onClick={handleMarkerSizeDecreaseClick}>
+      <MenuItem
+        disabled={props.markerSize === minMarkerSize}
+        onClick={handleMarkerSizeDecreaseClick}
+      >
         <PhotoSizeSelectLargeIcon className={classes.icon} />
         Decrease marker size
       </MenuItem>
@@ -181,4 +204,4 @@ const MinimizedMenu = (props) => {
   )
 }
 
-export default MinimizedMenu
+export default MobileMenu

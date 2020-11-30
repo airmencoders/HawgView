@@ -500,7 +500,7 @@ function getLetter100kID(column, row, parm) {
 function decode(mgrsString) {
 
   if (mgrsString && mgrsString.length === 0) {
-    throw ("MGRSPoint coverting from nothing");
+    throw new Error("MGRSPoint coverting from nothing");
   }
 
   var length = mgrsString.length;
@@ -513,7 +513,7 @@ function decode(mgrsString) {
   // get Zone number
   while (!(/[A-Z]/).test(testChar = mgrsString.charAt(i))) {
     if (i >= 2) {
-      throw ("MGRSPoint bad conversion from: " + mgrsString);
+      throw new Error("MGRSPoint bad conversion from: " + mgrsString);
     }
     sb += testChar;
     i++;
@@ -524,14 +524,14 @@ function decode(mgrsString) {
   if (i === 0 || i + 3 > length) {
     // A good MGRS string has to be 4-5 digits long,
     // ##AAA/#AAA at least.
-    throw ("MGRSPoint bad conversion from: " + mgrsString);
+    throw new Error("MGRSPoint bad conversion from: " + mgrsString);
   }
 
   var zoneLetter = mgrsString.charAt(i++);
 
   // Should we check the zone letter here? Why not.
   if (zoneLetter <= 'A' || zoneLetter === 'B' || zoneLetter === 'Y' || zoneLetter >= 'Z' || zoneLetter === 'I' || zoneLetter === 'O') {
-    throw ("MGRSPoint zone letter " + zoneLetter + " not handled: " + mgrsString);
+    throw new Error("MGRSPoint zone letter " + zoneLetter + " not handled: " + mgrsString);
   }
 
   hunK = mgrsString.substring(i, i += 2);
@@ -553,7 +553,7 @@ function decode(mgrsString) {
   var remainder = length - i;
 
   if (remainder % 2 !== 0) {
-    throw ("MGRSPoint has to have an even number \nof digits after the zone letter and two 100km letters - front \nhalf for easting meters, second half for \nnorthing meters" + mgrsString);
+    throw new Error("MGRSPoint has to have an even number \nof digits after the zone letter and two 100km letters - front \nhalf for easting meters, second half for \nnorthing meters" + mgrsString);
   }
 
   var sep = remainder / 2;
@@ -608,7 +608,7 @@ function getEastingFromChar(e, set) {
     }
     if (curCol > Z) {
       if (rewindMarker) {
-        throw ("Bad character: " + e);
+        throw new Error("Bad character: " + e);
       }
       curCol = A;
       rewindMarker = true;
@@ -638,7 +638,7 @@ function getEastingFromChar(e, set) {
 function getNorthingFromChar(n, set) {
 
   if (n > 'V') {
-    throw ("MGRSPoint given invalid Northing " + n);
+    throw new Error("MGRSPoint given invalid Northing " + n);
   }
 
   // rowOrigin is the letter at the origin of the set for the
@@ -659,7 +659,7 @@ function getNorthingFromChar(n, set) {
     // when 'n' is a wrong character
     if (curRow > V) {
       if (rewindMarker) { // making sure that this loop ends
-        throw ("Bad character: " + n);
+        throw new Error("Bad character: " + n);
       }
       curRow = A;
       rewindMarker = true;
@@ -750,7 +750,7 @@ function getMinNorthing(zoneLetter) {
     return northing;
   }
   else {
-    throw ("Invalid zone letter: " + zoneLetter);
+    throw new Error("Invalid zone letter: " + zoneLetter);
   }
 
 }
@@ -782,7 +782,7 @@ function lineIntersect(line1, line2) {
   var b2 = y3 - slope2 * x3;
 
   // Intersection point of 2 lines
-  if (slope1 != slope2) {
+  if (slope1 !== slope2) {
     var x = (b2 - b1) / (slope1 - slope2);
   } else {
     return false; // Lines are parallels

@@ -1,19 +1,64 @@
+/**
+ * ${SUMMARY}
+ * 
+ * Based on the leaflet.js plugin leaflet-ruler. A bearing and range analysis tool.
+ * Improvements include modularization for use with React and the ability to use
+ * magnetic declination for magnetic rather than true headings.
+ * 
+ * @author  chris-m92
+ * 
+ * MIT License
+ * 
+ * Copyright (c) 2020 Airmen Coders
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
 import React from 'react'
 import L from 'leaflet'
+
+//----------------------------------------------------------------//
+// React Leaflet Components
+//----------------------------------------------------------------//
 import {
   LayerGroup,
   Marker,
   Polyline
 } from 'react-leaflet'
 
+//----------------------------------------------------------------//
+// Material-UI Components
+//----------------------------------------------------------------//
 import { makeStyles } from '@material-ui/core/styles'
 
+//----------------------------------------------------------------//
+// Hawg View Functions
+//----------------------------------------------------------------//
 import gridMath from '../functions/gridMath' //{ gridMath.LLtoUTM, gridMath.UTMtoLL } from '../functions/gridMath'
 
-
-
+//----------------------------------------------------------------//
+// GARS Cells Component
+//----------------------------------------------------------------//
 const GARSCells = (props) => {
 
+  //----------------------------------------------------------------//
+  // Custom Styles
+  //----------------------------------------------------------------//
   const useStyles = makeStyles(({
     cellLabel: {
       backgroundColor: 'black',
@@ -27,7 +72,7 @@ const GARSCells = (props) => {
   const classes = useStyles(props)
 
   // To-do: use props and user settings?
-  const cellStyle = {
+  /*const cellStyle = {
     color: props.style.cellColor,
     opacity: 1,
   }
@@ -41,7 +86,7 @@ const GARSCells = (props) => {
     color: props.style.keypadColor,
     opacity: 1,
     weight: 1,
-  }
+  }*/
 
   const [cells, setCells] = React.useState([])
   const [quadrants, setQuandrants] = React.useState([])
@@ -52,15 +97,15 @@ const GARSCells = (props) => {
     generateGARS()
   }, [props.zoom, props.center])
 
-  const snap = number => {
+  /*const snap = number => {
     //return Math.floor(number / gridSpacing()) * gridSpacing()
-  }
+  }*/
 
   const snapTo = (number, snap) => {
     return Math.floor(number / snap) * snap
   }
 
-  const generateHorizontalLine = (point1, point2, west, east) => {
+  /*const generateHorizontalLine = (point1, point2, west, east) => {
     const slope = (point1.lat - point2.lat) / (point1.lng - point2.lng)
     const b = point1.lat - slope * point1.lng
 
@@ -68,9 +113,9 @@ const GARSCells = (props) => {
     const newEast = slope * east + b
 
     return [L.latLng(newWest, west), L.latLng(newEast, east)]
-  }
+  }*/
 
-  const generateVerticalLine = (point1, point2, west, east) => {
+  /*const generateVerticalLine = (point1, point2, west, east) => {
     const slope = (point1.lat - point2.lat) / (point1.lng - point2.lng)
 
     if (point2.lng > east) {
@@ -84,7 +129,7 @@ const GARSCells = (props) => {
     }
 
     return [point1, point2]
-  }
+  }*/
 
   const generateGARS = () => {
     //===============================================================================
@@ -137,7 +182,7 @@ const GARSCells = (props) => {
       cellLat += 0.5
     }
     while (quadrantLat <= northBound && quadrantLat <= 84) {
-      if(cellLatCoords.indexOf(quadrantLat) === -1) {
+      if (cellLatCoords.indexOf(quadrantLat) === -1) {
         quadrantLatCoords.push(quadrantLat)
       }
       quadrantLat += 0.25
@@ -157,7 +202,7 @@ const GARSCells = (props) => {
       cellLng += 0.5
     }
     while (quadrantLng <= eastBound && quadrantLng <= 180) {
-      if(cellLngCoords.indexOf(quadrantLng) === -1) {
+      if (cellLngCoords.indexOf(quadrantLng) === -1) {
         quadrantLngCoords.push(quadrantLng)
       }
       quadrantLng += 0.25
@@ -185,23 +230,23 @@ const GARSCells = (props) => {
 
     for (let y in quadrantLatCoords) {
       //if (cellLatCoords.indexOf(quadrantLatCoords[y]) === -1) {
-        quadrantLines.push({
-          positions: [
-            [quadrantLatCoords[y], Math.max(westBound, -180)],
-            [quadrantLatCoords[y], Math.min(eastBound, 180)]
-          ]
-        })
+      quadrantLines.push({
+        positions: [
+          [quadrantLatCoords[y], Math.max(westBound, -180)],
+          [quadrantLatCoords[y], Math.min(eastBound, 180)]
+        ]
+      })
       //}
     }
 
     for (let y = 0; y < keypadLatCoords.length; y++) {
       //if (y % 3 !== 0) {
-        keypadLines.push({
-          positions: [
-            [keypadLatCoords[y], Math.max(westBound, -180)],
-            [keypadLatCoords[y], Math.min(eastBound, 180)]
-          ]
-        })
+      keypadLines.push({
+        positions: [
+          [keypadLatCoords[y], Math.max(westBound, -180)],
+          [keypadLatCoords[y], Math.min(eastBound, 180)]
+        ]
+      })
       //}
 
     }
@@ -217,23 +262,23 @@ const GARSCells = (props) => {
 
     for (let x in quadrantLngCoords) {
       //if (cellLngCoords.indexOf(quadrantLngCoords[x]) === -1) {
-        quadrantLines.push({
-          positions: [
-            [Math.max(southBound, -84), quadrantLngCoords[x]],
-            [Math.min(northBound, 80), quadrantLngCoords[x]]
-          ]
-        })
+      quadrantLines.push({
+        positions: [
+          [Math.max(southBound, -84), quadrantLngCoords[x]],
+          [Math.min(northBound, 80), quadrantLngCoords[x]]
+        ]
+      })
       //}
     }
 
     for (let x = 0; x < keypadLngCoords.length; x++) {
       //if (x % 3 !== 0) {
-        keypadLines.push({
-          positions: [
-            [Math.max(southBound, -84), keypadLngCoords[x]],
-            [Math.min(northBound, 80), keypadLngCoords[x]]
-          ]
-        })
+      keypadLines.push({
+        positions: [
+          [Math.max(southBound, -84), keypadLngCoords[x]],
+          [Math.min(northBound, 80), keypadLngCoords[x]]
+        ]
+      })
       //}
     }
 
@@ -259,27 +304,27 @@ const GARSCells = (props) => {
     <LayerGroup>
       {props.zoom > 6 && cells.map((cell, index) => (
         <Polyline
-          color={cellStyle.color}
+          color={props.style.cellColor}
           key={`gars-cell-line-${index}`}
-          opacity={cellStyle.opacity}
+          opacity={1}
           positions={cell.positions}
         />
       ))}
       {props.zoom > 8 && quadrants.map((quadrant, index) => (
         <Polyline
-          color={quadrantStyle.color}
+          color={props.style.quadrantColor}
           key={`gars-quadrant-line-${index}`}
-          opacity={quadrantStyle.opacity}
+          opacity={1}
           positions={quadrant.positions}
         />
       ))}
       {props.zoom > 10 && keypads.map((keypad, index) => (
         <Polyline
-          color={keypadStyle.color}
+          color={props.style.keypadColor}
           key={`gars-keypad-line-${index}`}
-          opacity={keypadStyle.opacity}
+          opacity={1}
           positions={keypad.positions}
-          weight={keypadStyle.weight}
+          weight={1}
         />
       ))}
       {props.zoom > 8 && labels.map((label, index) => (

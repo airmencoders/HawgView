@@ -178,23 +178,16 @@ const LayerMarkers = props => {
     )
   }
 
-  /**
-   * 
-   */
-  const handlePopupClose = () => {
+  /*const handlePopupClose = () => {
     props.setFocusedMarker(null)
     props.setFocusedShape(null)
-    props.setFocusedLatlng(null)
-  }
+    props.setFocusedLatlng({latlng: null, source: null})
+  }*/
 
-  /**
-   * 
-   * @param {*} marker 
-   */
-  const handleEditMarker = marker => {
+  /*const handleEditMarker = marker => {
     props.setFocusedMarker(marker)
     props.toggleEditMarkerDialog()
-  }
+  }*/
 
   return (
     <React.Fragment>

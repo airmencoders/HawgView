@@ -55,7 +55,7 @@ const SaveScenarioDialog = (props) => {
     document.body.appendChild(element)
     element.click()
 
-    props.toggle()
+    props.setActiveDialog(null)
     props.toast(`Scenario ${name} saved`)
   }
 
@@ -64,7 +64,7 @@ const SaveScenarioDialog = (props) => {
       className={classes.dialog}
       fullWidth={true}
       open={props.open}
-      onClose={props.onClose}
+      onClose={() => props.setActiveDialog(null)}
       maxWidth='xs'
     >
       <DialogTitle>Save Scenario</DialogTitle>
@@ -85,7 +85,7 @@ const SaveScenarioDialog = (props) => {
       </DialogContent>
       <DialogActions>
         <Button onClick={downloadScenario} color='primary'>Download Scenario</Button>
-        <Button onClick={props.onClose}>Close</Button>
+        <Button onClick={() => props.setActiveDialog(null)}>Close</Button>
       </DialogActions>
     </Dialog>
   )

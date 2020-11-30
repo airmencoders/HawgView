@@ -654,6 +654,7 @@ const editMarker = (history, step, payload) => {
       newMarker = {
         ...marker,
         color: payload.color,
+        latlng: payload.latlng,
         fillColor: payload.fillColor,
         title: payload.title,
         dashArray: payload.dashArray,
@@ -785,6 +786,7 @@ const editMarker = (history, step, payload) => {
 
       newMarker = {
         ...marker,
+        center: payload.latlng,
         color: payload.color,
         dashArray: payload.dashArray,
         fillColor: payload.fillColor,

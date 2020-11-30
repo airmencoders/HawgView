@@ -53,17 +53,17 @@ const ClassificationBanner = ({ classification = 'unclassified' }) => {
    * SF-709 BLACK ON LAVENDER:  #C1A7E2 / #000000 
    */
 
-  const [bannerColor, setBannerColor] = React.useState('green')
-  const [textColor, setTextColor] = React.useState('black')
+  /*const [bannerColor, setBannerColor] = React.useState('green')
+  const [textColor, setTextColor] = React.useState('black')*/
 
   return (
     <AppBar
       position='static'
-      style={{ backgroundColor: bannerColor }}
+      style={{ backgroundColor: 'green' }}
     >
       <Typography
         align='center'
-        style={{ color: textColor }}
+        style={{ color: 'black' }}
         variant='subtitle2'
       >
         {`// ${classification.toUpperCase()} //`}

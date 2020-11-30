@@ -27,18 +27,19 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-//----------------------------------------------------------------//
-// Top Level Modules
-//----------------------------------------------------------------//
 import React from 'react'
-import {
-  Map,
-} from 'react-leaflet'
 
 //----------------------------------------------------------------//
 // Material-UI Core Components
 //----------------------------------------------------------------//
 import { makeStyles } from '@material-ui/core/styles'
+
+//----------------------------------------------------------------//
+// React Leaflet Components
+//----------------------------------------------------------------//
+import {
+  Map,
+} from 'react-leaflet'
 
 //----------------------------------------------------------------//
 // Custom Class Styling
@@ -72,7 +73,7 @@ const LeafletMap = (props) => {
       doubleClickZoom={props.toolActive ? false : true}
       onMoveend={event => props.setMapCenter(event.target.getCenter())}
       onZoomend={event => props.setMapZoom(event.target.getZoom())}
-      onClick={event => props.setFocusedLatlng(event.latlng)}
+      onClick={event => props.setFocusedLatlng({latlng: event.latlng, source: 'map'})}
       onMouseMove={event => props.handleMouseMove(event.latlng)}
       ref={map => (map !== null) ? mapRef = map.leafletElement : undefined}
       style={props.toolActive ? { cursor: 'crosshair' } : undefined}

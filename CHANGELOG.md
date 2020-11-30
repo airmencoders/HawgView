@@ -1,3 +1,15 @@
+## 2.7.0-beta
+### Changes
+* Significant Code Cleanup
+* Now only one state for active dialog versus several
+* Removed `lineClosed` state and instead uses the length of the `points` array in `AnalysisTool`
+* Fixed linting rules in `gridMath`
+* Removed several declared functions/variables that were not used
+* Fixed various dependency issues for `useEffect`
+
+### Fixes
+* Fixed bug where center of circle / ellipse would not properly update
+
 ## 2.6.0-beta
 ### Changes
 * Created `async` function `getElevation` to pull code out of `CAS.js`
