@@ -39,10 +39,12 @@ import Tooltip from '@material-ui/core/Tooltip'
 // Material-UI Icons
 //----------------------------------------------------------------//
 import AddPhotoAlternateIcon from '@material-ui/icons/AddPhotoAlternate'
+import BrightnessHighIcon from '@material-ui/icons/BrightnessHigh'
+import BrightnessLowIcon from '@material-ui/icons/BrightnessLow'
 import ClearIcon from '@material-ui/icons/Clear'
-import DescriptionIcon from '@material-ui/icons/Description'
+//import DescriptionIcon from '@material-ui/icons/Description'
 import FolderOpenIcon from '@material-ui/icons/FolderOpen'
-import GetAppIcon from '@material-ui/icons/GetApp'
+//import GetAppIcon from '@material-ui/icons/GetApp'
 import InvertColorsIcon from '@material-ui/icons/InvertColors'
 import InvertColorsOffIcon from '@material-ui/icons/InvertColorsOff'
 import LabelIcon from '@material-ui/icons/Label'
@@ -59,6 +61,12 @@ import ViewListIcon from '@material-ui/icons/ViewList'
 // Hawg View Handlers
 //----------------------------------------------------------------//
 import handleColorChange from '../handlers/handleColorChange'
+import {
+  handleBrightnessDecrease,
+  handleBrightnessIncrease,
+  maxBrightness,
+  minBrightness
+} from '../handlers/handleBrightnessChange'
 import {
   handleMarkerSizeDecrease,
   handleMarkerSizeIncrease,
@@ -133,6 +141,28 @@ const CASTools = (props) => {
           </IconButton>
         </span>
       </Tooltip>
+      <Tooltip title='Decrease brightness'>
+        <span>
+          <IconButton
+            color='inherit'
+            disabled={props.brightness === minBrightness}
+            onClick={() => handleBrightnessDecrease(props.brightness, props.setBrightness)}
+          >
+            <BrightnessLowIcon />
+          </IconButton>
+        </span>
+      </Tooltip>
+      <Tooltip title='Increase brightness'>
+        <span>
+          <IconButton
+            color='inherit'
+            disabled={props.brightness === maxBrightness}
+            onClick={() => handleBrightnessIncrease(props.brightness, props.setBrightness)}
+          >
+            <BrightnessHighIcon />
+          </IconButton>
+        </span>
+      </Tooltip>
       <Tooltip title='Toggle map color'>
         <IconButton
           color='inherit'
@@ -141,13 +171,13 @@ const CASTools = (props) => {
           {props.mapColor ? <InvertColorsIcon /> : <InvertColorsOffIcon />}
         </IconButton>
       </Tooltip>
-      <Tooltip title='CONOP tools'>
+      {/*<Tooltip title='CONOP tools'>
         <span>
           <IconButton color='inherit' disabled>
             <DescriptionIcon />
           </IconButton>
         </span>
-      </Tooltip>
+  </Tooltip>*/}
       <Tooltip title='View marker list'>
         <IconButton
           color='inherit'
@@ -190,13 +220,13 @@ const CASTools = (props) => {
           <StyleIcon />
         </IconButton>
       </Tooltip>
-      <Tooltip title='Download products'>
+      {/*<Tooltip title='Download products'>
         <span>
           <IconButton color='inherit' disabled>
             <GetAppIcon />
           </IconButton>
         </span>
-      </Tooltip>
+</Tooltip>*/}
     </React.Fragment>
   )
 }

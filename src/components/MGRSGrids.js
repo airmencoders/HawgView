@@ -150,12 +150,17 @@ const MGRSGrids = (props) => {
 
   const generateHorizontalLine = (point1, point2, west, east) => {
     const slope = (point1.lat - point2.lat) / (point1.lng - point2.lng)
-    const b = point1.lat - slope * point1.lng
 
-    const newWest = slope * west + b
-    const newEast = slope * east + b
+    if (isNaN(slope)) {
+      return null
+    } else {
+      const b = point1.lat - slope * point1.lng
 
-    return [L.latLng(newWest, west), L.latLng(newEast, east)]
+      const newWest = slope * west + b
+      const newEast = slope * east + b
+
+      return [L.latLng(newWest, west), L.latLng(newEast, east)]
+    }
   }
 
   const generateVerticalLine = (point1, point2, west, east) => {
@@ -356,9 +361,16 @@ const MGRSGrids = (props) => {
         const leftLabel = gridMath.UTMtoLL(leftUTM)
         const rightLabel = gridMath.UTMtoLL(rightUTM)
 
-        if (leftLL !== null && rightLL !== null && leftLabel !== null && rightLabel !== null) {
-          tempLines.push({ positions: generateHorizontalLine(leftLL, rightLL, zoneBreaks[i], zoneBreaks[i + 1]) })
-          horizontalLabelLines.push({ positions: generateHorizontalLine(leftLabel, rightLabel, zoneBreaks[i], zoneBreaks[i + 1]) })
+        if (leftLL !== null && rightLL !== null && leftLabel !== null && rightLabel !== null && zoneBreaks[i] !== null && zoneBreaks[i + 1] !== null) {
+          let newLine = generateHorizontalLine(leftLL, rightLL, zoneBreaks[i], zoneBreaks[i + 1])
+          let newLabel = generateHorizontalLine(leftLabel, rightLabel, zoneBreaks[i], zoneBreaks[i + 1])
+
+          // generateHorizontalLine can return null if the slope is NaN or some other error due to weird lat/lng issues
+          // So omit it if the return is null
+          if (newLine !== null && newLabel !== null) {
+            tempLines.push({ positions: newLine })
+            horizontalLabelLines.push({ positions: newLabel })
+          }
         }
 
         lat += gridSpacing()
@@ -392,8 +404,16 @@ const MGRSGrids = (props) => {
         const topLabel = gridMath.UTMtoLL(topUTM)
 
         if (topLL !== null && bottomLL !== null && topLabel !== null && bottomLabel !== null) {
-          tempLines.push({ positions: generateVerticalLine(bottomLL, topLL, zoneBreaks[i], zoneBreaks[i + 1]) })
-          verticalLabelLines.push({ positions: generateVerticalLine(bottomLabel, topLabel, zoneBreaks[i], zoneBreaks[i + 1]) })
+          let newLine = generateVerticalLine(bottomLL, topLL, zoneBreaks[i], zoneBreaks[i + 1])
+          let newLabel = generateVerticalLine(bottomLabel, topLabel, zoneBreaks[i], zoneBreaks[i + 1])
+
+          // generateVerticalLine can return null if the slope is NaN or some other error due to weird lat/lng issues
+          // So omit it if the return is null
+          if (newLine !== null && newLabel !== null) {
+            tempLines.push({ positions: newLine })
+            verticalLabelLines.push({ positions: newLabel })
+          }
+
         }
 
         lng += gridSpacing()
@@ -477,21 +497,33 @@ const MGRSGrids = (props) => {
   return (
     <LayerGroup>
       {props.zoom > 3 && zoneLines.map((line, index) => (
-        <Polyline
-          color={zoneStyle.color}
+        <React.Fragment
           key={`mgrs-zone-line-${index}`}
-          opacity={zoneStyle.opacity}
-          positions={line.positions}
-        />
+        >
+          {line.positions !== null ? (
+            <Polyline
+              color={zoneStyle.color}
+              opacity={zoneStyle.opacity}
+              positions={line.positions}
+            />
+          )
+            : null}
+        </React.Fragment>
       ))}
       {props.zoom >= 9 && gridLines.map((line, index) => (
-        <Polyline
-          color={lineStyle.color}
+        <React.Fragment
           key={`mgrs-grid-line-${index}`}
-          opacity={lineStyle.opacity}
-          positions={line.positions}
-          weight={lineStyle.weight}
-        />
+        >
+          {line.positions !== null ? (
+            <Polyline
+              color={lineStyle.color}
+              opacity={lineStyle.opacity}
+              positions={line.positions}
+              weight={lineStyle.weight}
+            />
+          )
+            : null}
+        </React.Fragment>
       ))}
       {props.zoom > 3 && labels.map((label, index) => (
         <Marker

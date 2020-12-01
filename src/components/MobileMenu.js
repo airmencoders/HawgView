@@ -40,10 +40,12 @@ import MenuItem from '@material-ui/core/MenuItem'
 // Material-UI Icons
 //----------------------------------------------------------------//
 import AddPhotoAlternateIcon from '@material-ui/icons/AddPhotoAlternate'
+import BrightnessHighIcon from '@material-ui/icons/BrightnessHigh'
+import BrightnessLowIcon from '@material-ui/icons/BrightnessLow'
 import ClearIcon from '@material-ui/icons/Clear'
-import DescriptionIcon from '@material-ui/icons/Description'
+//import DescriptionIcon from '@material-ui/icons/Description'
 import FolderOpenIcon from '@material-ui/icons/FolderOpen'
-import GetAppIcon from '@material-ui/icons/GetApp'
+//import GetAppIcon from '@material-ui/icons/GetApp'
 import InvertColorsIcon from '@material-ui/icons/InvertColors'
 import InvertColorsOffIcon from '@material-ui/icons/InvertColorsOff'
 import LabelIcon from '@material-ui/icons/Label'
@@ -60,6 +62,12 @@ import ViewListIcon from '@material-ui/icons/ViewList'
 // Hawg View Handlers
 //----------------------------------------------------------------//
 import handleColorChange from '../handlers/handleColorChange'
+import {
+  handleBrightnessDecrease,
+  handleBrightnessIncrease,
+  maxBrightness,
+  minBrightness
+} from '../handlers/handleBrightnessChange'
 import {
   handleMarkerSizeDecrease,
   handleMarkerSizeIncrease,
@@ -96,28 +104,38 @@ const MobileMenu = (props) => {
   }
 
   const handleMarkerSizeDecreaseClick = () => {
-    props.setActiveDialog(null)
+    //props.setActiveDialog(null)
     handleMarkerSizeDecrease(props.markerSize, props.setMarkerSize)
   }
 
   const handleMarkerSizeIncreaseClick = () => {
-    props.setActiveDialog(null)
+    //props.setActiveDialog(null)
     handleMarkerSizeIncrease(props.markerSize, props.setMarkerSize)
   }
 
   const handleRedoClick = () => {
-    props.setActiveDialog(null)
+    //props.setActiveDialog(null)
     props.handleRedo()
   }
 
   const handleUndoClick = () => {
-    props.setActiveDialog(null)
+    //props.setActiveDialog(null)
     props.handleUndo()
   }
 
   const handleToggleTooltipsClick = () => {
     props.setActiveDialog(null)
     props.toggleTooltips()
+  }
+
+  const handleBrightnessIncreaseClick = () => {
+    //props.setActiveDialog(null)
+    handleBrightnessIncrease(props.brightness, props.setBrightness)
+  }
+
+  const handleBrightnessDecreaseClick = () => {
+    //props.setActiveDialog(null)
+    handleBrightnessDecrease(props.brightness, props.setBrightness)
   }
 
   //----------------------------------------------------------------//
@@ -168,14 +186,28 @@ const MobileMenu = (props) => {
         <PhotoSizeSelectLargeIcon className={classes.icon} />
         Decrease marker size
       </MenuItem>
+      <MenuItem
+        disabled={props.brightness === minBrightness}
+        onClick={handleBrightnessDecreaseClick}
+      >
+        <BrightnessLowIcon className={classes.icon} />
+        Decrease brightness
+      </MenuItem>
+      <MenuItem 
+        disabled={props.brightness === maxBrightness}
+        onClick={handleBrightnessIncreaseClick}
+      >
+        <BrightnessHighIcon className={classes.icon} />
+        Increase brightness
+      </MenuItem>
       <MenuItem onClick={handleColorToggleClick}>
         {props.mapColor ? <InvertColorsIcon className={classes.icon} /> : <InvertColorsOffIcon className={classes.icon} />}
         Toggle map color
       </MenuItem>
-      <MenuItem onClick={props.handleMinMenuClose} disabled>
+      {/*<MenuItem onClick={props.handleMinMenuClose} disabled>
         <DescriptionIcon className={classes.icon} />
         CONOP tools
-      </MenuItem>
+  </MenuItem>*/}
       <MenuItem onClick={() => props.setActiveDialog('markerList')}>
         <ViewListIcon className={classes.icon} />
         View marker list
@@ -196,10 +228,10 @@ const MobileMenu = (props) => {
         <StyleIcon className={classes.icon} />
         Styles
       </MenuItem>
-      <MenuItem disabled onClick={props.handleMinMenuClose}>
+      {/*<MenuItem disabled onClick={props.handleMinMenuClose}>
         <GetAppIcon className={classes.icon} />
         Download products
-      </MenuItem>
+  </MenuItem>*/}
     </Menu>
   )
 }

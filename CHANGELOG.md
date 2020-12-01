@@ -1,3 +1,13 @@
+## 2.8.0-beta
+### Changes
+* Removed `CONOP Tools` and `Download Products` from the navigation for now until it is implemented
+* Added `brightness` and handlers to map state. Imagery layer now has opacity based on the brightness
+* Added badge dot to the notifications icon as an additional way to notify user of the notification
+* IAW V2 rollout workflow, notifications dialog is no longer defaulted open
+
+### Fixes
+* Fixed crashes in certain parts of the world where lat/lng issues would arise, breaking the math functions for the MGRS grids
+
 ## 2.7.0-beta
 ### Changes
 * Significant Code Cleanup

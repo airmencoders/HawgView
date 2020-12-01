@@ -121,8 +121,9 @@ const Cas = () => {
   //----------------------------------------------------------------//
   // State
   //----------------------------------------------------------------//
-  const [activeDialog, setActiveDialog] = React.useState('notification')
+  const [activeDialog, setActiveDialog] = React.useState()
   const [activeTool, setActiveTool] = React.useState(null)
+  const [brightness, setBrightness] = React.useState(1)   // Actually just sets the opacity of the map. When decreasing brightness (<1) also ensures the map background is black, Increasing the brightness (>= 1) ensures the map background is white
   const [mouseCoords, setMouseCoords] = React.useState(null)
   const [focusedLatlng, setFocusedLatlng] = React.useState({ latlng: null, source: null })
   const [elevation, setElevation] = React.useState('Pending')
@@ -183,15 +184,90 @@ const Cas = () => {
   // DEBUGGING AREA
   //----------------------------------------------------------------//
 
-
   //----------------------------------------------------------------//
   //----------------------------------------------------------------//
   //----------------------------------------------------------------//
 
+  //----------------------------------------------------------------//
+  // React Effects
+  //----------------------------------------------------------------//
+
+  /**
+   * Listens for window resize to close the mobile menu
+   */
+  React.useEffect(() => {
+    window.addEventListener('resize', handleMobileMenuClose, false)
+
+    return () => {
+      window.removeEventListener('resize', handleMobileMenuClose, false)
+    }
+  }, [])
+
+  /**
+   * Changes the Page Title depending on the name of the loaded scenario
+   */
   React.useEffect(() => {
     document.title = `Hawg View | ${pageTitle}`
   }, [pageTitle])
 
+  /**
+   * Any time the active dialog changes, reset the map
+   */
+  React.useEffect(() => {
+    if (activeDialog === null) {
+      handleMapReset()
+    }
+  }, [activeDialog])
+
+   /**
+   * Any time the focusd marker changes, set elevation to its default state 'Pending'
+   * and set the focused lat/lng to the marker's latlng (If it's not null)
+   */
+  React.useEffect(() => {
+    setElevation('Pending')
+    if (focusedMarker !== null) {
+      setFocusedLatlng({ latlng: focusedMarker.latlng, source: 'marker' })
+    }
+  }, [focusedMarker])
+
+  /**
+   * Whenever the focused lat/lng changes, as long as it has a valid lat/lng object, get the elevation
+   */
+  React.useEffect(() => {
+    if (focusedLatlng.latlng !== null) {
+      (async () => setElevation(await getElevation(focusedLatlng.latlng.lat, focusedLatlng.latlng.lng)))()
+    }
+  }, [focusedLatlng])
+
+  /**
+   * Whenever any changes occur to the snackbar, handle various changes to the package
+   */
+  React.useEffect(() => {
+    if (snackPack.length && !snackbarMessage) {
+      setSnackbarMessage({ ...snackPack[0] })
+      setSnackPack(prev => prev.slice(1))
+      setSnackbarOpen(true)
+    } else if (snackPack.length && snackbarMessage && snackbarOpen) {
+      setSnackbarOpen(false)
+    }
+  }, [snackPack, snackbarMessage, snackbarOpen])
+
+  /**
+   * Whenever the brightness, zoom, or center of the map changes, set the background color of the leaflet container 
+   * to the appropriate color. This is needed because the mpa style is reset every time there is a change in the map state
+   * Also change the opacity of the 
+   */
+  React.useEffect(() => {
+    if (brightness >= 1) {
+      document.getElementsByClassName('leaflet-container')[0].style.backgroundColor = 'white'
+    } else {
+      document.getElementsByClassName('leaflet-container')[0].style.backgroundColor = 'black'
+    }
+  }, [brightness])
+
+  //----------------------------------------------------------------//
+  // Private Handlers
+  //----------------------------------------------------------------//
   const handleMobileMenuOpen = event => {
     setMobileMenuAnchor(event.currentTarget)
     setActiveDialog('mobileMenu')
@@ -201,23 +277,6 @@ const Cas = () => {
     setMobileMenuAnchor(null)
     setActiveDialog(null)
   }
-
-  React.useEffect(() => {
-    if (activeDialog === null) {
-      handleMapReset()
-    }
-  }, [activeDialog])
-
-  /**
-   * React hook that listens for the resize of the window and closes the minimized menu if it's open
-   */
-  React.useEffect(() => {
-    window.addEventListener('resize', handleMobileMenuClose, false)
-
-    return () => {
-      window.removeEventListener('resize', handleMobileMenuClose, false)
-    }
-  }, [])
 
   /**
    * Handler function for the mouse movement across the map
@@ -231,23 +290,6 @@ const Cas = () => {
       setMouseCoords(latlng)
     }
   }
-
-  /**
-   * React hook that sets the popup whenever the clicked Lat/Lng changes
-   * Using a hook instead of a function here allows us to use the search bar
-   */
-  React.useEffect(() => {
-    setElevation('Pending')
-    if (focusedMarker !== null) {
-      setFocusedLatlng({ latlng: focusedMarker.latlng, source: 'marker' })
-    }
-  }, [focusedMarker])
-
-  React.useEffect(() => {
-    if (focusedLatlng.latlng !== null) {
-      (async () => setElevation(await getElevation(focusedLatlng.latlng.lat, focusedLatlng.latlng.lng)))()
-    }
-  }, [focusedLatlng])
 
   /**
    * Helper function to do multiple things when closing the map Popup
@@ -307,17 +349,6 @@ const Cas = () => {
   const toast = (message, severity) => {
     setSnackPack(prev => [...prev, { message, key: new Date().getTime(), severity }])
   }
-
-  React.useEffect(() => {
-    if (snackPack.length && !snackbarMessage) {
-      setSnackbarMessage({ ...snackPack[0] })
-      setSnackPack(prev => prev.slice(1))
-      setSnackbarOpen(true)
-    } else if (snackPack.length && snackbarMessage && snackbarOpen) {
-      setSnackbarOpen(false)
-    }
-
-  }, [snackPack, snackbarMessage, snackbarOpen])
 
   /**
    * 
@@ -475,6 +506,7 @@ const Cas = () => {
           />
           <div className={classes.sectionDesktop}>
             <CASTools
+              brightness={brightness}
               handleClearMarkers={() => handleMarkerEdit('clear', {})}
               handleRedo={handleRedo}
               handleUndo={handleUndo}
@@ -482,6 +514,7 @@ const Cas = () => {
               mapColor={mapColor}
               markerSize={markerSize}
               setActiveDialog={setActiveDialog}
+              setBrightness={setBrightness}
               setMapColor={setMapColor}
               setMarkerSize={setMarkerSize}
               step={step}
@@ -497,6 +530,7 @@ const Cas = () => {
             </IconButton>
           </div>
           <MobileMenu
+            brightness={brightness}
             handleClearMarkers={() => handleMarkerEdit('clear', {})}
             handleRedo={handleRedo}
             handleUndo={handleUndo}
@@ -506,6 +540,7 @@ const Cas = () => {
             anchor={mobileMenuAnchor}
             open={activeDialog === 'mobileMenu'}
             setActiveDialog={dialog => setActiveDialog(dialog)}
+            setBrightness={setBrightness}
             setMapColor={setMapColor}
             setMarkerSize={setMarkerSize}
             step={step}
@@ -514,9 +549,11 @@ const Cas = () => {
           />
         </CASNavigation>
       </Box>
-      <Box flex={1}>
+      <Box 
+        flex={1}
+      >
         <NotificationsDialog
-          open={activeDialog === 'notification'}
+          open={activeDialog === 'notifications'}
           onClose={() => handleMapReset()}
         />
         <Map
@@ -539,6 +576,7 @@ const Cas = () => {
             setFocusedMarker={setFocusedMarker}
           />
           <LayerControl
+            brightness={brightness}
             handleMarkerDrag={(marker, latlng) => handleMarkerEdit('drag', { marker: marker, latlng: latlng })}
             interactive={activeTool === null}
             map={map}

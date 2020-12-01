@@ -37,6 +37,7 @@ import { NavLink } from 'react-router-dom'
 // Material-UI Core Components
 //----------------------------------------------------------------//
 import AppBar from '@material-ui/core/AppBar'
+import Badge from '@material-ui/core/Badge'
 import IconButton from '@material-ui/core/IconButton'
 import { makeStyles } from '@material-ui/core/styles'
 import Toolbar from '@material-ui/core/Toolbar'
@@ -47,6 +48,7 @@ import Typography from '@material-ui/core/Typography'
 // Material-UI Icons
 //----------------------------------------------------------------//
 import NotificationImportantIcon from '@material-ui/icons/NotificationImportant'
+//import NotificationsIcon from '@material-ui/icons/Notifications'
 
 //----------------------------------------------------------------//
 // Hawg View Components
@@ -79,6 +81,13 @@ const CASNavigation = (props) => {
 
   let packageJson = require('../../package.json')
 
+  const [invisible, setInvisible] = React.useState(false)
+
+  const handleNotificationClick = () => {
+    setInvisible(true)
+    props.setActiveDialog('notifications')
+  }
+
   return (
     <div className={classes.grow}>
       <AppBar
@@ -108,9 +117,15 @@ const CASNavigation = (props) => {
           <Tooltip title='Notifications'>
             <IconButton
               color='inherit'
-              onClick={() => props.setActiveDialog('notification')}
+              onClick={handleNotificationClick}
             >
-              <NotificationImportantIcon />
+              <Badge
+                color='secondary'
+                variant='dot'
+                invisible={invisible}
+              >
+                <NotificationImportantIcon />
+              </Badge>
             </IconButton>
           </Tooltip>
           <a
