@@ -28,63 +28,76 @@
  * SOFTWARE.
  */
 import React from 'react'
+import Control from 'react-leaflet-control'
 
 //----------------------------------------------------------------//
-// Material-UI Core Components
+// Material-UI Components
 //----------------------------------------------------------------//
 import { makeStyles } from '@material-ui/core/styles'
 
 //----------------------------------------------------------------//
-// React Leaflet Components
+// Hawg View Functions
 //----------------------------------------------------------------//
-import {
-  Map,
-} from 'react-leaflet'
+import generateMapPopup from '../functions/generateMapPopup'
 
 //----------------------------------------------------------------//
-// Custom Class Styling
+// Custom Styles
 //----------------------------------------------------------------//
-const useStyles = makeStyles(() => ({
-  leafletMap: {
-    backgroundColor: 'black',
-    height: '100%',
-    width: '100%',
-  },
+const useStyles = makeStyles(theme => ({
+  root: {
+    backgroundColor: '#000000',
+    color: '#ffffff',
+    fontSize: '15px',
+    opacity: 0.5,
+    textAlign: 'right',
+  }
 }))
 
 //----------------------------------------------------------------//
-// Map Component
+// Mouse Coordinates Control Component
 //----------------------------------------------------------------//
-const LeafletMap = (props) => {
+const MouseCoordinatesControl = props => {
+
   const classes = useStyles()
 
-  let mapRef = React.useRef()
+  const [data, setData] = React.useState(null)
 
+  //----------------------------------------------------------------//
+  // React Effects
+  //----------------------------------------------------------------//
   React.useEffect(() => {
-    if (mapRef !== null) {
-      props.setMap(mapRef)
+    if (props.mouseCoords !== null) {
+      setData(generateMapPopup(props.mouseCoords, props.anchor))
     }
-  }, [mapRef])
+
+  }, [props])
 
   return (
-    <Map
-      center={props.center}
-      className={classes.leafletMap}
-      doubleClickZoom={props.toolActive ? false : true}
-      maxZoom={19}
-      onMoveend={event => props.setMapCenter(event.target.getCenter())}
-      onZoomend={event => props.setMapZoom(event.target.getZoom())}
-      onClick={event => props.setFocusedLatlng({latlng: event.latlng, source: 'map'})}
-      onMouseMove={event => props.setMouseCoords(event.latlng)}
-      ref={map => (map !== null) ? mapRef = map.leafletElement : undefined}
-      style={props.toolActive ? { cursor: 'crosshair' } : undefined}
-      worldCopyJump={true}
-      zoom={props.zoom}
-      zoomControl={false}
+    <Control
+      position='bottomright'
     >
-      {props.children}
-    </Map>
+      <table className={classes.root}>
+        <tbody>
+          <tr>
+            <td>{data !== null ? data.dm : ''}</td>
+          </tr>
+          <tr>
+            <td>{data !== null ? data.mgrs : ''}</td>
+          </tr>
+          <tr>
+            {data !== null && props.anchor.id !== null && data.fromBE !== null ? (
+              <td>
+                {props.anchor.name} {Number.parseInt(data.fromBE.heading)}&deg; / {data.fromBE.nm.toFixed(2)} NM
+              </td>
+            )
+              : null
+            }
+          </tr>
+        </tbody>
+
+      </table>
+    </Control>
   )
 }
 
-export default LeafletMap
+export default MouseCoordinatesControl

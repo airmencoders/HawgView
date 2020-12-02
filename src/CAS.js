@@ -28,6 +28,7 @@
  * SOFTWARE.
  */
 import React from 'react'
+import L from 'leaflet'
 
 //----------------------------------------------------------------//
 // Material-UI Core Components
@@ -72,6 +73,7 @@ import MarkerListDialog from './components/MarkerListDialog'
 import Map from './components/Map'
 import MapPopup from './components/MapPopup'
 import MobileMenu from './components/MobileMenu'
+import MouseCoordinatesControl from './components/MouseCoordinatesControl'
 import NotificationsDialog from './components/NotificationsDialog'
 import RectangleTool from './components/RectangleTool'
 import SaveScenarioDialog from './components/SaveScenarioDialog'
@@ -131,11 +133,11 @@ const Cas = () => {
   const [focusedShape, setFocusedShape] = React.useState(null)
   const [history, setHistory] = React.useState([{
     action: '',
-    anchor: { 
+    anchor: {
       declination: null,
-      id: null, 
+      id: null,
       latlng: null,
-      name: null, 
+      name: null,
     },
     buildingLabels: [],
     bullseyes: [],
@@ -458,11 +460,11 @@ const Cas = () => {
 
       const newStep = {
         action: 'load scenario',
-        anchor: json.data.anchor !== undefined ? json.data.anchor : { 
-          declination: null, 
-          id: null, 
-          latlng: null, 
-          name: null 
+        anchor: json.data.anchor !== undefined ? json.data.anchor : {
+          declination: null,
+          id: null,
+          latlng: null,
+          name: null
         },
         buildingLabels: json.data.buildingLabels !== undefined ? json.data.buildingLabels : [],
         bullseyes: json.data.bullseyes !== undefined ? json.data.bullseyes : [],
@@ -588,6 +590,7 @@ const Cas = () => {
           toolActive={activeTool !== null}
           setMapCenter={latlng => setMapCenter([latlng.lat, latlng.lng])}
           setMapZoom={zoom => setMapZoom(zoom)}
+          setMouseCoords={setMouseCoords}
           setFocusedLatlng={latlng => setFocusedLatlng(latlng)}
           handleMouseMove={latlng => handleMouseMove(latlng)}
           zoom={mapZoom}
@@ -622,6 +625,10 @@ const Cas = () => {
           <ToolControls
             activeTool={activeTool}
             toggle={tool => toggleTools(tool)}
+          />
+          <MouseCoordinatesControl
+            anchor={history[step].anchor}
+            mouseCoords={mouseCoords}
           />
           <AnalysisTool
             active={activeTool === 'analysis'}

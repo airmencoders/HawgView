@@ -1,3 +1,7 @@
+## 2.11.0-beta
+### Changes
+* Added control to bottom right of the screen for mouse coordinates (D M.M, MGRS, BULLSEYE)
+
 ## 2.10.0-beta
 ### Changes
 * Background color of website defaults to `black` (If zoom in too far, black screen is nicer on eyes over white screen)
