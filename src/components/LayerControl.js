@@ -230,6 +230,7 @@ const LayerControl = props => {
           className='leaflet-layer-imagery'
           url='https://fly.maptiles.arcgis.com/arcgis/rest/services/World_Imagery_Firefly/MapServer/tile/{z}/{y}/{x}'
           attribution={`Esri, DigitalGlobe, GeoEye, Earthstar Geographics, CNES/Airbus DS, USDA, USGS, AeroGRID, IGN, and the GIS User Community`}
+          maxNativeZoom={19}
           opacity={props.brightness > 1 ? 2 - props.brightness : props.brightness}
           keepMounted
         />
@@ -239,6 +240,7 @@ const LayerControl = props => {
           className='leaflet-layer-imagery'
           url='https://clarity.maptiles.arcgis.com/arcgis/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'
           attribution={`Esri, DigitalGlobe, GeoEye, Earthstar Geographics, CNES/Airbus DS, USDA, USGS, AeroGRID, IGN, and the GIS User Community`}
+          maxNativeZoom={19}
           keepMounted
           opacity={props.brightness > 1 ? 2 - props.brightness : props.brightness}
         />
@@ -262,11 +264,13 @@ const LayerControl = props => {
       <Overlay checked name='Geo Labels'>
         <TileLayer
           url='https://services.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}'
+          maxNativeZoom={19}
         />
       </Overlay>
       <Overlay name='Road Labels'>
         <TileLayer
           url='https://services.arcgisonline.com/ArcGIS/rest/services/Reference/World_Transportation/MapServer/tile/{z}/{y}/{x}'
+          maxNativeZoom={19}
         />
       </Overlay>
       <Overlay checked name='Airspace'>

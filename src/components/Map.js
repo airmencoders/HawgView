@@ -71,6 +71,7 @@ const LeafletMap = (props) => {
       center={props.center}
       className={classes.leafletMap}
       doubleClickZoom={props.toolActive ? false : true}
+      maxZoom={19}
       onMoveend={event => props.setMapCenter(event.target.getCenter())}
       onZoomend={event => props.setMapZoom(event.target.getZoom())}
       onClick={event => props.setFocusedLatlng({latlng: event.latlng, source: 'map'})}

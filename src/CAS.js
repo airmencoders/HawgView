@@ -264,7 +264,7 @@ const Cas = () => {
    * Also change the opacity of the 
    */
   React.useEffect(() => {
-    if (brightness >= 1) {
+    if (brightness > 1) {
       document.getElementsByClassName('leaflet-container')[0].style.backgroundColor = 'white'
     } else {
       document.getElementsByClassName('leaflet-container')[0].style.backgroundColor = 'black'

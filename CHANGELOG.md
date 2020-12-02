@@ -1,3 +1,8 @@
+## 2.10.0-beta
+### Changes
+* Background color of website defaults to `black` (If zoom in too far, black screen is nicer on eyes over white screen)
+* Added `maxZoom` to Leaflet Map and `maxNativeZoom` to tile layers for quality of life
+
 ## 2.9.0-beta
 ### Changes
 * Added undefined checking to load scenario

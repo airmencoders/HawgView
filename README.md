@@ -5,7 +5,7 @@ In order to take advantage of emerging technology as well as have greater tools 
 
 Ultimately, Hawg View is an in depth CAS Scenario Mission Planner for use for the CAF. Pilots, Intel, and Tactical Air Control Parties can create scenarios, Grid Reference Graphics (GRGs), Concept of Operations (CONOPs), IP Run cards, and more. Additionally, users can easily share and collaborate on mission planning, greatly shortening the amount of time needed to plan out any sortie, from CT to a full increased threat upgrade.
 
-View the Wiki (Incomplete) for instructions and tips on how to navigate and use the application.
+View the [Wiki at https://wiki.hawg-ops.com](https://wiki.hawg-ops.com) for instructions and tips on how to navigate and use the application.
 
 ## Building and Running development environment
 ### Requirements
@@ -43,27 +43,6 @@ Edit the start script in `package.json` to the following
 ```
 
 Navigate to `http://${SERVER_IP}:3100`
-
-## Dependencies
-|Package|Min. Version|Usage|
-|:--|:--|:--|
-|`@iconify/icons-mdi`|`1.0.115`|Iconify Icons|
-|`@iconify/react`|`1.1.3`|Iconify React Engine|
-|`@material-ui/core`|`4.11.0`|Material UI Stylized Components|
-|`@material-ui/icons`|`4.9.1`|Material UI Icons|
-|`@material-ui/lab`|`4.0.0-alpha.56`|Material UI Components (Under Development)|
-|`@testing-library/jest-dom`|`4.2.4`|Testing Library (Create React App)|
-|`@testing-library/react`|`9.5.0`|Testing Library (Create React App)|
-|`@testing-library/user-event`|`7.2.1`|Testing Library (Create React App)|
-|`fontsource-roboto`|`2.1.4`|Google Roboto Fonts|
-|`geodesy`|`2.2.1`|Geographic Coordination Math Functions|
-|`leaflet`|`1.6.0`|Core Map Controls|
-|`react`|`16.13.1`|Core Site Engine|
-|`react-dom`|`16.13.1`|Core Site Engine|
-|`react-leaflet`|`2.7.0`|Core Map Controls|
-|`react-leaflet-control`|`2.1.2`|Custom control component for `react-leaflet`|
-|`react-router-dom`|`5.2.0`|Site Navigation|
-|`react-scripts`|`3.4.1`|Core Site Engine|
 
 ## License
 MIT
