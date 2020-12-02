@@ -4,9 +4,7 @@ import Button from '@material-ui/core/Button'
 import Dialog from '@material-ui/core/Dialog'
 import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
-import DialogContentText from '@material-ui/core/DialogContentText'
 import DialogTitle from '@material-ui/core/DialogTitle'
-import Divider from '@material-ui/core/Divider'
 import { makeStyles } from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
 
@@ -28,6 +26,7 @@ const SaveScenarioDialog = (props) => {
     classification: 'UNCLASSIFIED',
     date: new Date(),
     data: {
+      anchor: props.data.anchor,
       buildingLabels: props.data.buildingLabels,
       bullseyes: props.data.bullseyes,
       circles: props.data.circles,
@@ -47,6 +46,11 @@ const SaveScenarioDialog = (props) => {
     }
   }
 
+  const resetDialog = () => {
+    setName('')
+    props.setActiveDialog(null)
+  }
+
   const downloadScenario = () => {
     const element = document.createElement('a')
     const file = new Blob([scenarioRef.current.value], { type: 'text/plain' })
@@ -55,6 +59,7 @@ const SaveScenarioDialog = (props) => {
     document.body.appendChild(element)
     element.click()
 
+    setName('')
     props.setActiveDialog(null)
     props.toast(`Scenario ${name} saved`)
   }
@@ -64,7 +69,7 @@ const SaveScenarioDialog = (props) => {
       className={classes.dialog}
       fullWidth={true}
       open={props.open}
-      onClose={() => props.setActiveDialog(null)}
+      onClose={resetDialog}
       maxWidth='xs'
     >
       <DialogTitle>Save Scenario</DialogTitle>
@@ -85,7 +90,7 @@ const SaveScenarioDialog = (props) => {
       </DialogContent>
       <DialogActions>
         <Button onClick={downloadScenario} color='primary'>Download Scenario</Button>
-        <Button onClick={() => props.setActiveDialog(null)}>Close</Button>
+        <Button onClick={resetDialog}>Close</Button>
       </DialogActions>
     </Dialog>
   )

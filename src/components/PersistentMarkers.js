@@ -70,7 +70,7 @@ const useStyles = makeStyles(theme => ({
 // Persistent Markers Component
 //----------------------------------------------------------------//
 // TODO Props here?
-const PersistentMarkers = ({ handleAddMarker, handleMarkerDrawerToggle, toggleEditThreatDialog }) => {
+const PersistentMarkers = props => { //{ handleAddMarker, handleMarkerDrawerToggle}) => {
   const classes = useStyles()
 
   const handleMarkerClick = (iconUrl, iconType, title, layer) => {
@@ -100,6 +100,7 @@ const PersistentMarkers = ({ handleAddMarker, handleMarkerDrawerToggle, toggleEd
     } else {
       payload = {
         ...payload,
+        anchor: props.anchor.id === null ? true : false,
         rings: 5,
         distance: 20,
         angle: 45,
@@ -139,8 +140,8 @@ const PersistentMarkers = ({ handleAddMarker, handleMarkerDrawerToggle, toggleEd
       }
     }
 
-    handleMarkerDrawerToggle()
-    handleAddMarker(payload)
+    props.handleMarkerDrawerToggle()
+    props.handleAddMarker(payload)
   }
 
   return (

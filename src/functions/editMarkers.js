@@ -78,7 +78,9 @@ export const editMarkers = (action, history, step, payload) => {
  */
 const clearMarkers = (history, step) => {
   if (history[step].buildingLabels.length > 0 ||
+    history[step].anchor.id !== null ||
     history[step].bullseyes.length > 0 ||
+    history[step].buildingLabels.length > 0 ||
     history[step].circles.length > 0 ||
     history[step].ellipses.length > 0 ||
     history[step].friendlyMarkers.length > 0 ||
@@ -94,6 +96,12 @@ const clearMarkers = (history, step) => {
 
     return {
       action: 'Clear markers',
+      anchor: { 
+        declination: null,
+        id: null, 
+        latlng: null,
+        name: null,
+      },
       buildingLabels: [],
       bullseyes: [],
       circles: [],
@@ -297,6 +305,8 @@ const createMarker = (history, step, payload) => {
       case 'bullseye':
         let declination = getDeclination(payload.latlng)
 
+        let anchor = payload.anchor ? { declination, id: payload.id, latlng: payload.latlng, name: payload.title } : targetHistory[step].anchor
+
         payload = {
           ...payload,
           declination
@@ -304,6 +314,7 @@ const createMarker = (history, step, payload) => {
         return {
           ...targetHistory[step],
           action: `create bullseye`,
+          anchor: anchor,
           data: {
             buildingLabel: targetHistory[step].data.buildingLabel,
             firstLetter: targetHistory[step].data.firstLetter,
@@ -413,6 +424,7 @@ const deleteMarker = (history, step, payload) => {
       return {
         ...history[step],
         action: `delete bullseye ${marker.title}`,
+        anchor: marker.anchor ? { declination: null, id: null, latlng: null, name: null } : history[step].anchor,
         bullseyes: history[step].bullseyes.filter(bMarker => bMarker.id !== marker.id)
       }
     case 'ellipse':
@@ -544,6 +556,7 @@ const dragMarker = (history, step, payload) => {
       return {
         ...targetHistory[step],
         action: `move bullseye ${marker.title}`,
+        anchor: marker.anchor ? { declination: newMarker.declination, id: newMarker.id, latlng: newMarker.latlng, name: newMarker.title } : targetHistory[step].anchor,
         bullseyes: [...filteredMarkers, newMarker]
       }
     default:
@@ -764,8 +777,26 @@ const editMarker = (history, step, payload) => {
       filteredMarkers = targetHistory[step].bullseyes.filter(currentMarker => currentMarker.id !== marker.id)
       let declination = getDeclination(payload.latlng)
 
+      // This can be a weird one
+      // There is a chance that this is the anchor point and if the user then turns off the anchor point
+      // Then we set it to null
+
+      let newAnchor = null
+
+      // This bullseye WAS the anchor
+      if (marker.anchor) {
+        // If the marker still is the anchor, update it, otherwise, null it out
+        newAnchor = payload.anchor ? { declination, id: marker.id, latlng: payload.latlng, name: payload.title } : { declination: null, id: null, latlng: null, name: null }
+      }
+      // This bullseye was NOT the anchor
+      else {
+        // If the marker is now the anchor, set the anchor to the bullseye, otherwise keep it the same
+        newAnchor = payload.anchor ? { declination, id: marker.id, latlng: payload.latlng, name: payload.title } : targetHistory[step].anchor
+      }
+
       newMarker = {
         ...marker,
+        anchor: payload.anchor,
         color: payload.color,
         title: payload.title,
         rings: payload.rings,
@@ -776,10 +807,31 @@ const editMarker = (history, step, payload) => {
         showData: payload.showData,
       }
 
+      // If the user sets a non-anchor bullseye to the anchor bullseye, then we need to modify the old bullseye object
+
+      let newBullseyes
+      // If marker wasn't an anchor, but now is, and there already is an anchor...
+      if (!marker.anchor && payload.anchor && targetHistory[step].anchor.id !== null) {
+        // Get the old anchor
+        let oldAnchor = targetHistory[step].bullseyes.filter(currentMarker => currentMarker.id === targetHistory[step].anchor.id)
+        // Remove the old anchor
+        filteredMarkers = filteredMarkers.filter(currentMarker => currentMarker.id !== targetHistory[step].anchor.id)
+
+        oldAnchor = {
+          ...oldAnchor[0],
+          anchor: false,
+        }
+
+        newBullseyes = [newMarker, oldAnchor]
+      } else {
+        newBullseyes = [newMarker]
+      }
+
       return {
         ...targetHistory[step],
         action: `edit bullseye ${marker.title}`,
-        bullseyes: [...filteredMarkers, newMarker]
+        anchor: newAnchor,
+        bullseyes: [...filteredMarkers, ...newBullseyes]
       }
     case 'ellipse':
       filteredMarkers = targetHistory[step].ellipses.filter(currentMarker => currentMarker.id !== marker.id)
@@ -802,7 +854,7 @@ const editMarker = (history, step, payload) => {
         ellipses: [...filteredMarkers, newMarker]
       }
     case 'styles':
-      
+
       const newStyles = {
         mgrs: {
           gridzoneColor: payload.mgrs.gridzoneColor,

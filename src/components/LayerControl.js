@@ -62,7 +62,7 @@ import LayerMarkers from './LayerMarkers'
 import LayerThreats from './LayerThreats'
 import MGRSGrids from './MGRSGrids'
 import GARSCells from './GARSCells'
-import { render9line, render15line } from '../functions/renderData'
+//import { render9line, render15line } from '../functions/renderData'
 
 //----------------------------------------------------------------//
 // React-Leaflet Layers
@@ -72,7 +72,7 @@ const { BaseLayer, Overlay } = LayersControl
 //----------------------------------------------------------------//
 // Map Control Component
 //----------------------------------------------------------------//
-const LayerControl = (props) => {
+const LayerControl = props => {
 
   const useStyles = makeStyles(() => ({
     hostileThreat: {
@@ -355,7 +355,7 @@ const LayerControl = (props) => {
               {generateBullCircles(bullseye)}
               <Marker
                 autoPan={false}
-                draggable
+                draggable={true}
                 icon={L.icon({
                   iconUrl: bullseye.iconUrl,
                   iconSize: [props.markerSize * props.mapZoom, props.markerSize * props.mapZoom],
@@ -395,7 +395,7 @@ const LayerControl = (props) => {
               {generateBullCircles(bullseye)}
               <Marker
                 autoPan={true}
-                draggable={true}
+                draggable={false}
                 icon={L.icon({
                   iconUrl: bullseye.iconUrl,
                   iconSize: [props.markerSize * props.mapZoom, props.markerSize * props.mapZoom],
@@ -425,6 +425,7 @@ const LayerControl = (props) => {
         <LayerGroup>
           {props.step.friendlyMarkers.map(marker => (
             <LayerMarkers
+              anchor={props.anchor}
               interactive={props.interactive}
               handleMarkerDrag={(marker, latlng) => props.handleMarkerDrag(marker, latlng)}
               handleDeleteMarker={marker => props.handleDeleteMarker(marker)}
@@ -445,6 +446,7 @@ const LayerControl = (props) => {
         <LayerGroup>
           {props.step.hostileMarkers.map(marker => (
             <LayerMarkers
+              anchor={props.anchor}
               interactive={props.interactive}
               handleMarkerDrag={(marker, latlng) => props.handleMarkerDrag(marker, latlng)}
               handleDeleteMarker={marker => props.handleDeleteMarker(marker)}
@@ -465,6 +467,7 @@ const LayerControl = (props) => {
         <LayerGroup>
           {props.step.threatMarkers.map(marker => (
             <LayerThreats
+              anchor={props.anchor}
               interactie={props.interactive}
               handleMarkerDrag={(marker, latlng) => props.handleMarkerDrag(marker, latlng)}
               handleDeleteMarker={marker => props.handleDeleteMarker(marker)}
@@ -486,6 +489,7 @@ const LayerControl = (props) => {
         <LayerGroup>
           {props.step.survivors.map(marker => (
             <LayerMarkers
+              anchor={props.anchor}
               interactive={props.interactive}
               handleMarkerDrag={(marker, latlng) => props.handleMarkerDrag(marker, latlng)}
               handleDeleteMarker={marker => props.handleDeleteMarker(marker)}
@@ -506,6 +510,7 @@ const LayerControl = (props) => {
         <LayerGroup>
           {props.step.initialPoints.map(marker => (
             <LayerMarkers
+              anchor={props.anchor}
               interactive={props.interactive}
               handleMarkerDrag={(marker, latlng) => props.handleMarkerDrag(marker, latlng)}
               handleDeleteMarker={marker => props.handleDeleteMarker(marker)}
@@ -526,6 +531,7 @@ const LayerControl = (props) => {
         <LayerGroup>
           {props.step.buildingLabels.map(marker => (
             <LayerMarkers
+              anchor={props.anchor}
               color={props.step.styles.buildingLabel.color}
               interactive={props.interactive}
               handleMarkerDrag={(marker, latlng) => props.handleMarkerDrag(marker, latlng)}
@@ -547,6 +553,7 @@ const LayerControl = (props) => {
         <LayerGroup>
           {props.step.kineticPoints.map(marker => (
             <LayerMarkers
+              anchor={props.anchor}
               interactive={props.interactive}
               handleMarkerDrag={(marker, latlng) => props.handleMarkerDrag(marker, latlng)}
               handleDeleteMarker={marker => props.handleDeleteMarker(marker)}
@@ -567,6 +574,7 @@ const LayerControl = (props) => {
         <LayerGroup>
           {props.step.mapLabels.map(marker => (
             <LayerMarkers
+              anchor={props.anchor}
               interactive={props.interactive}
               handleMarkerDrag={(marker, latlng) => props.handleMarkerDrag(marker, latlng)}
               handleDeleteMarker={marker => props.handleDeleteMarker(marker)}
@@ -752,7 +760,7 @@ const LayerControl = (props) => {
                 autoPan={false}
               >
                 {generateShapePopupText(circle)}
-                <br/>
+                <br />
                 <Button color='primary' onClick={() => handleEditShape(circle)}>Edit</Button>
                 <Button color='secondary' onClick={() => props.handleDeleteMarker(circle)}>Delete</Button>
               </Popup>

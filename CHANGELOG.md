@@ -1,3 +1,24 @@
+## 2.9.0-beta
+### Changes
+* Added undefined checking to load scenario
+* Added error checking to lat/lng coord input
+* `Save Scenario Dialog` now resets the name to `''` whenever closing
+* Added an `Anchor` to the scenario
+* The first `Bullseye` marker to be added to the scenario defaults as the anchor
+* User's can change the anchor point which also de-selects the previous anchor as the anchor
+* Map popup and marker popups now also provide an anchor readout
+* Threat popup now includes Bullseye readout (as applicable) as well as the sovereignty and label of the threat
+
+### Tasks
+* Add a mouse coordinates container in the bottom right for a readout of L/L, MGRS, and B/E
+* Shorten the attribution down to a link which opens a dialog?
+
+### Fixes
+* Fixed crashes when attempting to load a scenario with something undefined
+* Fixed crashes when attempting to fly to an invalid lat/lng
+* Fixed bug where bullseyes would not drag
+* Fixed crashes when attempting to edit a threat
+
 ## 2.8.0-beta
 ### Changes
 * Removed `CONOP Tools` and `Download Products` from the navigation for now until it is implemented

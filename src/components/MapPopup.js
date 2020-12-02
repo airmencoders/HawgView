@@ -83,7 +83,7 @@ const MapPopup = props => {
     if (props.activeTool === null && props.focusedLatlng.latlng !== null && (props.focusedLatlng.source === 'map' || props.focusedLatlng.source === 'input')) {
       props.setFocusedMarker(null)
       setPopup({
-        ...generateMapPopup(props.focusedLatlng.latlng),
+        ...generateMapPopup(props.focusedLatlng.latlng, props.anchor),
         elevation: props.elevation
       })
     }
@@ -126,6 +126,14 @@ const MapPopup = props => {
               <td className={classes.popupCell}>D M S</td>
               <td className={classes.popupCell}>{popup.dms}</td>
             </tr>
+            {popup.fromBE !== null ? (
+              <tr>
+                <td className={classes.popupCell}>{props.anchor.name}</td>
+                <td className={classes.popupCell}>{Number.parseInt(popup.fromBE.heading)}&deg; / {popup.fromBE.nm.toFixed(2)} NM</td>
+              </tr>
+            )
+              :
+              null}
             <tr>
               <td className={classes.popupCell}>Elevation</td>
               <td className={classes.popupCell}>{`${popup.elevation} ${(popup.elevation === 'Pending' || popup.elevation === 'Elevation not found') ? '' : 'feet'}`} </td>

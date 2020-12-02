@@ -67,7 +67,7 @@ import { editMarkers } from './functions/editMarkers'
 import KineticPointTool from './components/KineticPointTool'
 import LayerControl from './components/LayerControl'
 import LineTool from './components/LineTool'
-import MarkerDrawer from './components/MarkerDrawer'
+import AddMarkerDrawer from './components/AddMarkerDrawer'
 import MarkerListDialog from './components/MarkerListDialog'
 import Map from './components/Map'
 import MapPopup from './components/MapPopup'
@@ -131,6 +131,12 @@ const Cas = () => {
   const [focusedShape, setFocusedShape] = React.useState(null)
   const [history, setHistory] = React.useState([{
     action: '',
+    anchor: { 
+      declination: null,
+      id: null, 
+      latlng: null,
+      name: null, 
+    },
     buildingLabels: [],
     bullseyes: [],
     circles: [],
@@ -219,10 +225,10 @@ const Cas = () => {
     }
   }, [activeDialog])
 
-   /**
-   * Any time the focusd marker changes, set elevation to its default state 'Pending'
-   * and set the focused lat/lng to the marker's latlng (If it's not null)
-   */
+  /**
+  * Any time the focusd marker changes, set elevation to its default state 'Pending'
+  * and set the focused lat/lng to the marker's latlng (If it's not null)
+  */
   React.useEffect(() => {
     setElevation('Pending')
     if (focusedMarker !== null) {
@@ -317,8 +323,6 @@ const Cas = () => {
       setActiveTool(tool)
     }
   }
-
-
 
   const handleCoordInput = latlng => {
     if (latlng === false) {
@@ -417,10 +421,7 @@ const Cas = () => {
 
         handleMapReset()
 
-        console.log('layer:', payload.layer)
-
         if (payload.layer === 'circle' || payload.layer === 'rectangle' || payload.layer === 'line' || payload.layer === 'polygon' || payload.layer === 'ellipse') {
-          console.log('here')
           setFocusedShape(updatedPayload)
           setActiveDialog('editShape')
           setActiveTool(null)
@@ -454,27 +455,52 @@ const Cas = () => {
     }
 
     if (json !== undefined) {
+
       const newStep = {
         action: 'load scenario',
-        buildingLabels: json.data.buildingLabels,
-        bullseyes: json.data.bullseyes,
-        data: json.data.data,
-        ellipses: json.data.ellipses,
-        rectangles: json.data.rectangles,
-        friendlyMarkers: json.data.friendlyMarkers,
-        hostileMarkers: json.data.hostileMarkers,
-        initialPoints: json.data.initialPoints,
-        kineticPoints: json.data.kineticPoints,
-        lines: json.data.lines,
-        mapLabels: json.data.mapLabels,
-        polygons: json.data.polygons,
-        circles: json.data.circles,
-        survivors: json.data.survivors,
-        styles: json.data.styles,
-        threatMarkers: json.data.threatMarkers
+        anchor: json.data.anchor !== undefined ? json.data.anchor : { 
+          declination: null, 
+          id: null, 
+          latlng: null, 
+          name: null 
+        },
+        buildingLabels: json.data.buildingLabels !== undefined ? json.data.buildingLabels : [],
+        bullseyes: json.data.bullseyes !== undefined ? json.data.bullseyes : [],
+        circles: json.data.circles !== undefined ? json.data.circles : [],
+        data: json.data.data !== undefined ? json.data.data : {
+          buildingLabel: 1,
+          firstLetter: 65,
+          markerId: 0,
+          secondLetter: 65,
+        },
+        ellipses: json.data.ellipses !== undefined ? json.data.ellipses : [],
+        rectangles: json.data.rectangles !== undefined ? json.data.rectangles : [],
+        friendlyMarkers: json.data.friendlyMarkers !== undefined ? json.data.friendlyMarkers : [],
+        hostileMarkers: json.data.hostileMarkers !== undefined ? json.data.hostileMarkers : [],
+        initialPoints: json.data.initialPoints !== undefined ? json.data.initialPoints : [],
+        kineticPoints: json.data.kineticPoints !== undefined ? json.data.kineticPoints : [],
+        lines: json.data.lines !== undefined ? json.data.lines : [],
+        mapLabels: json.data.mapLabels !== undefined ? json.data.mapLabels : [],
+        polygons: json.data.polygons !== undefined ? json.data.polygons : [],
+        survivors: json.data.survivors !== undefined ? json.data.survivors : [],
+        styles: json.data.styles !== undefined ? json.data.styles : {
+          mgrs: {
+            gridzoneColor: '#ffa500',
+            lineColor: '#ffffff',
+          },
+          gars: {
+            cellColor: '#ffa500',
+            quadrantColor: '#800080',
+            keypadColor: '#ffffff'
+          },
+          buildingLabel: {
+            color: '#ffff00',
+          },
+        },
+        threatMarkers: json.data.threatMarkers !== undefined ? json.data.threatMarkers : []
       }
 
-      if (json.name === '') {
+      if (json.name === undefined || json.name === '') {
         setPageTitle('CAS Planner')
       } else {
         setPageTitle(json.name)
@@ -549,7 +575,7 @@ const Cas = () => {
           />
         </CASNavigation>
       </Box>
-      <Box 
+      <Box
         flex={1}
       >
         <NotificationsDialog
@@ -568,6 +594,7 @@ const Cas = () => {
         >
           <MapPopup
             activeTool={activeTool}
+            anchor={history[step].anchor}
             elevation={elevation}
             focusedLatlng={focusedLatlng}
             focusedMarker={focusedMarker}
@@ -576,6 +603,7 @@ const Cas = () => {
             setFocusedMarker={setFocusedMarker}
           />
           <LayerControl
+            anchor={history[step].anchor}
             brightness={brightness}
             handleMarkerDrag={(marker, latlng) => handleMarkerEdit('drag', { marker: marker, latlng: latlng })}
             interactive={activeTool === null}
@@ -664,7 +692,8 @@ const Cas = () => {
         onClose={() => setActiveDialog(null)}
         submit={(action, payload) => handleMarkerEdit(action, payload)}
       />
-      <MarkerDrawer
+      <AddMarkerDrawer
+        anchor={history[step].anchor}
         open={activeDialog === 'addMarker'}
         markerLabel={markerLabel}
         onClose={() => setActiveDialog(null)}

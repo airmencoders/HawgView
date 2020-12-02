@@ -137,6 +137,7 @@ const ShapeDrawer = (props) => {
   const [latlng, setLatlng] = React.useState(false)
   const [showData, setShowData] = React.useState(true)
   const [mgrsDisabled, setMgrsDisabled] = React.useState(false)
+  const [isAnchor, setIsAnchor] = React.useState(false)
 
   const container = props.window !== undefined ? () => window().document.body : undefined
 
@@ -152,8 +153,8 @@ const ShapeDrawer = (props) => {
       }
       try {
         position = LatLon.parse(center.lat, center.lng).toUtm().toMgrs().toString()
-      } catch (e) {
-        // Logging?
+      } catch (error) {
+        console.log(`Unable to parse MGRS coordinates from coordinates (${center.lat}, ${center.lng})`)
       }
 
       if (position !== undefined) {
@@ -191,6 +192,7 @@ const ShapeDrawer = (props) => {
         setRings(props.shape.rings)
         setAngle(props.shape.angle)
         setShowData(props.shape.showData)
+        setIsAnchor(props.shape.anchor)
       }
 
       if (props.shape.layer === 'ellipse') {
@@ -269,8 +271,6 @@ const ShapeDrawer = (props) => {
         ...payload,
         latlng: { lat: target.lat, lng: target.lon },
       }
-
-      console.log('target', target)
     }
 
     if (props.shape.layer === 'ellipse') {
@@ -293,6 +293,7 @@ const ShapeDrawer = (props) => {
     if (props.shape.layer === 'bullseye') {
       payload = {
         ...payload,
+        anchor: isAnchor,
         distance: isNaN(distance) ? props.shape.distance : Number.parseFloat(distance),
         rings: isNaN(rings) ? props.shape.rings : Number.parseInt(rings),
         angle: isNaN(angle) ? props.shape.angle : Math.round(Number.parseFloat(angle)),
@@ -320,6 +321,7 @@ const ShapeDrawer = (props) => {
     setLat('')
     setLng('')
     setLatlng(false)
+    setIsAnchor(false)
   }
 
   return (
@@ -438,6 +440,25 @@ const ShapeDrawer = (props) => {
                       />
                     }
                     label='Show Data'
+                  />
+                </FormGroup>
+              </Grid>
+              <Grid
+                container
+                direction='row'
+                justify='center'
+              >
+                <FormGroup>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={isAnchor}
+                        color='primary'
+                        name='isAnchor'
+                        onChange={() => setIsAnchor(!isAnchor)}
+                      />
+                    }
+                    label='Use as Anchor'
                   />
                 </FormGroup>
               </Grid>

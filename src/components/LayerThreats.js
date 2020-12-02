@@ -27,9 +27,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-//----------------------------------------------------------------//
-// Top Level Modules
-//----------------------------------------------------------------//
 import React from 'react'
 import {
   Circle,
@@ -48,9 +45,10 @@ import Button from '@material-ui/core/Button'
 import { makeStyles } from '@material-ui/core/styles'
 
 //----------------------------------------------------------------//
-// Custom Components
+// Hawg View Functions
 //----------------------------------------------------------------//
 import { render9line } from '../functions/renderData'
+import { distanceAndHeading } from '../functions/mathFunctions'
 
 //----------------------------------------------------------------//
 // Layer Threats Component
@@ -87,17 +85,33 @@ const LayerThreats = props => {
     } catch (e) {
       position = `${marker.latlng.lat.toFixed(4)}, ${marker.latlng.lng.toFixed(4)}`
     }
+
+    let fromBE = null
+    if (props.anchor.id !== null) {
+      fromBE = distanceAndHeading(props.anchor.latlng, marker.latlng, props.anchor.declination)
+    }
+
     return (
-      <React.Fragment>
-        {marker.title}
-        <br />
-        {position}
-        <br />
-        {(marker.elevation !== 'Pending' && marker.elevation !== 'Elevation not found') ?
-          `${marker.elevation} feet`
-          : 'No elevation'
-        }
-      </React.Fragment>
+      <table>
+        <tbody>
+          <tr>
+            <td>{marker.title} ({marker.sovereignty} {marker.label})</td>
+          </tr>
+          <tr>
+            <td>{position}</td>
+          </tr>
+          {fromBE !== null ? (
+            <tr>
+              <td>{props.anchor.name} {Number.parseInt(fromBE.heading)}&deg; / {fromBE.nm.toFixed(2)} NM</td>
+            </tr>
+          )
+            :
+            null}
+          <tr>
+            <td>{marker.elevation !== 'Pending' && marker.elevation !== 'Elevation not found' ? `${marker.elevation} feet` : 'No elevation'} </td>
+          </tr>
+        </tbody>
+      </table>
     )
   }
 
@@ -142,7 +156,7 @@ const LayerThreats = props => {
    */
   const handleEditMarker = marker => {
     props.setFocusedMarker(marker)
-    props.toggleEditMarkerDialog()
+    props.setActiveDialog('editMarker')
   }
 
   return (

@@ -92,7 +92,13 @@ export const submitCoordInput = inputValue => {
             lng = lng + 'E'
           }
         }
-        target = LatLon.parse(lat, lng)
+        try {
+           target = LatLon.parse(lat, lng)
+        } catch (error) {
+          console.error(error)
+          validInput = false
+        }
+       
       } else {
         validInput = false
       }

@@ -28,15 +28,20 @@
  * SOFTWARE.
  */
 //----------------------------------------------------------------//
-// Top Level Modules
+// Geodesy Functions
 //----------------------------------------------------------------//
 import Dms from 'geodesy/dms'
 import { LatLon } from 'geodesy/mgrs'
 
 //----------------------------------------------------------------//
-// Generate Map Popup Functions
+// Hawg View Functions
 //----------------------------------------------------------------//
-const generateMapPopup = latlng => {
+import { distanceAndHeading } from './mathFunctions'
+
+//----------------------------------------------------------------//
+// Generate Map Popup Component
+//----------------------------------------------------------------//
+const generateMapPopup = (latlng, anchor) => {
   const lat = Dms.parse(latlng.lat)
   const lng = Dms.parse(latlng.lng)
   //let elevation = null
@@ -60,10 +65,19 @@ const generateMapPopup = latlng => {
     console.error(`Unable to translate Lat/Lng ${latlngD} to MGRS - Outside MGRS Bounds`)
   }
 
+  // Get the bearing and range from the bullseye
+  let fromBE = null
+  if (anchor.id !== null) {
+    fromBE = distanceAndHeading(anchor.latlng, latlng, anchor.declination)
+  }
+  
+
+
   return {
     latlng: latlngD.toString(),
     dm: `${latDM}, ${lngDM}`,
     dms: `${latDMS}, ${lngDMS}`,
+    fromBE,
     mgrs,
     elevation: 'Pending',
   }

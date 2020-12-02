@@ -72,9 +72,9 @@ const useStyles = makeStyles(theme => ({
 }))
 
 //----------------------------------------------------------------//
-// Marker Drawer Component
+// Add Marker Drawer Component
 //----------------------------------------------------------------//
-const MarkerDrawer = (props) => {
+const AddMarkerDrawer = props => {
   const classes = useStyles()
 
   const [hostile, setHostile] = React.useState(false)
@@ -123,6 +123,7 @@ const MarkerDrawer = (props) => {
           />
           <Divider />
           <PersistentMarkers
+            anchor={props.anchor}
             handleAddMarker={payload => props.handleAddMarker(payload)}
             handleMarkerDrawerToggle={props.onClose}
             toggleEditThreatDialog={props.toggleEditThreatDialog}
@@ -145,4 +146,4 @@ const MarkerDrawer = (props) => {
   )
 }
 
-export default MarkerDrawer
+export default AddMarkerDrawer
