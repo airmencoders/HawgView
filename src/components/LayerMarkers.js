@@ -120,7 +120,7 @@ const LayerMarkers = props => {
           </tr>
           {fromBE !== null ? (
             <tr>
-              <td>{props.anchor.name} {Number.parseInt(fromBE.heading)}&deg; / {fromBE.nm.toFixed(2)} NM</td>
+              <td>{props.anchor.name} {Number.parseInt(fromBE.heading)}&deg; / {Number.parseInt(fromBE.nm)} NM</td>
             </tr>
           )
             :

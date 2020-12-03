@@ -87,7 +87,7 @@ const MouseCoordinatesControl = props => {
           <tr>
             {data !== null && props.anchor.id !== null && data.fromBE !== null ? (
               <td>
-                {props.anchor.name} {Number.parseInt(data.fromBE.heading)}&deg; / {data.fromBE.nm.toFixed(2)} NM
+                {props.anchor.name} {Number.parseInt(data.fromBE.heading)}&deg; / {Number.parseInt(data.fromBE.nm)} NM
               </td>
             )
               : null

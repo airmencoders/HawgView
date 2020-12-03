@@ -1,3 +1,7 @@
+## 2.11.1-beta
+### Changes
+* Bullseyes are now integers rather than floats (Thanks TRON!)
+
 ## 2.11.0-beta
 ### Changes
 * Added control to bottom right of the screen for mouse coordinates (D M.M, MGRS, BULLSEYE)

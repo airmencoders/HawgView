@@ -129,7 +129,7 @@ const MapPopup = props => {
             {popup.fromBE !== null ? (
               <tr>
                 <td className={classes.popupCell}>{props.anchor.name}</td>
-                <td className={classes.popupCell}>{Number.parseInt(popup.fromBE.heading)}&deg; / {popup.fromBE.nm.toFixed(2)} NM</td>
+                <td className={classes.popupCell}>{Number.parseInt(popup.fromBE.heading)}&deg; / {Number.parseInt(popup.fromBE.nm)} NM</td>
               </tr>
             )
               :
