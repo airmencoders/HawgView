@@ -1,9 +1,9 @@
 # Hawg View
-Hawg View as written by Porkins and Airmen Coders is a personal project since 2018 to recreate and improve on the previous Hawg View as written by Neo.
-Since the previous Hawg View was taken down from the web, I have since created Hawg Ops (Written in a `LAMP` stack).
+<em>Hawg View</em> as written by Porkins and Airmen Coders has been a personal project since 2018 to recreate and improve on the previous Hawg View as written by Neo.
+Since the previous <em>Hawg View</em> was taken down from the web, I have since created Hawg Ops (Written in a `LAMP` stack).
 In order to take advantage of emerging technology as well as have greater tools for operators, it is being remade with a `MERN` stack for hosting by Platform One.
 
-Ultimately, Hawg View is an in depth CAS Scenario Mission Planner for use for the CAF. Pilots, Intel, and Tactical Air Control Parties can create scenarios, Grid Reference Graphics (GRGs), Concept of Operations (CONOPs), IP Run cards, and more. Additionally, users can easily share and collaborate on mission planning, greatly shortening the amount of time needed to plan out any sortie, from CT to a full increased threat upgrade.
+Ultimately, <em>Hawg View</em> is an in depth CAS Scenario Mission Planner for use for the CAF. Pilots, Intel, and Tactical Air Control Parties can create scenarios, Grid Reference Graphics (GRGs), Concept of Operations (CONOPs), IP Run cards, and more. Additionally, users can easily share and collaborate on mission planning, greatly shortening the amount of time needed to plan out any sortie, from CT to a full increased threat upgrade.
 
 View the [https://wiki.hawg-ops.com](https://wiki.hawg-ops.com) for instructions and tips on how to navigate and use the application.
 
