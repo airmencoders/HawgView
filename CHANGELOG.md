@@ -1,3 +1,13 @@
+## 2.11.2-beta
+### Changes
+* Removed the constant mouse coordinate tracking due to errors with marker dragging
+* Determined that Marker dragging is more important than mouse movement display
+
+### Tasks
+* Code cleanup
+* Mouse coordinates display
+* Mega State
+
 ## 2.11.1-beta
 ### Changes
 * Bullseyes are now integers rather than floats (Thanks TRON!)

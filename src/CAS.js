@@ -626,10 +626,10 @@ const Cas = () => {
             activeTool={activeTool}
             toggle={tool => toggleTools(tool)}
           />
-          <MouseCoordinatesControl
+          {/*<MouseCoordinatesControl
             anchor={history[step].anchor}
             mouseCoords={mouseCoords}
-          />
+          />*/}
           <AnalysisTool
             active={activeTool === 'analysis'}
             //clearLatlng={() => setFocusedLatlng(null)}

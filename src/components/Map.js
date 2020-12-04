@@ -75,7 +75,7 @@ const LeafletMap = (props) => {
       onMoveend={event => props.setMapCenter(event.target.getCenter())}
       onZoomend={event => props.setMapZoom(event.target.getZoom())}
       onClick={event => props.setFocusedLatlng({latlng: event.latlng, source: 'map'})}
-      onMouseMove={event => props.setMouseCoords(event.latlng)}
+      onMouseMove={event => props.handleMouseMove(event.latlng)}
       ref={map => (map !== null) ? mapRef = map.leafletElement : undefined}
       style={props.toolActive ? { cursor: 'crosshair' } : undefined}
       worldCopyJump={true}
