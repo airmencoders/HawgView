@@ -69,8 +69,8 @@ import {
   CASTools,
   CoordInput,
   Map,
+  MapPopup,
   MobileMenu,
-  Popup,
   SiteMenu,
 } from './components/core'
 import {
@@ -623,7 +623,7 @@ const Cas = () => {
           handleMouseMove={latlng => handleMouseMove(latlng)}
           zoom={mapZoom}
         >
-          <Popup
+          <MapPopup
             activeTool={activeTool}
             anchor={history[step].anchor}
             elevation={elevation}

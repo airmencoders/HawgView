@@ -43,7 +43,7 @@ import {
 // React-Leaflet Components
 //----------------------------------------------------------------//
 import { 
-  Popup,
+  Popup as RLPopup,
 } from 'react-leaflet'
 
 //----------------------------------------------------------------//
@@ -72,9 +72,9 @@ const useStyles = makeStyles(() => ({
 }))
 
 //----------------------------------------------------------------//
-// Map Popup Component
+// Popup Component
 //----------------------------------------------------------------//
-const MapPopup = props => {
+const Popup = props => {
   const classes = useStyles()
 
   //----------------------------------------------------------------//
@@ -107,7 +107,7 @@ const MapPopup = props => {
     props.activeTool === null
   ) {
     return (
-      <Popup
+      <RLPopup
         autoPan={false}
         maxWidth={500}
         key={props.focusedLatlng}
@@ -153,11 +153,11 @@ const MapPopup = props => {
         >
           TGP View
         </Button>
-      </Popup>
+      </RLPopup>
     )
   } else {
     return null
   }
 }
 
-export default MapPopup
+export default Popup

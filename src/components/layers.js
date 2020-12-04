@@ -28,6 +28,7 @@
  * SOFTWARE.
  */
 
+import Bullseye from './layers/Bullseye'
 import GARSCells from './layers/GARSCells'
 import Marker from './layers/Marker'
 import MGRSGrids from './layers/MGRSGrids'
@@ -35,6 +36,7 @@ import Shape from './layers/Shape'
 import Threat from './layers/Threat'
 
 export {
+  Bullseye,
   GARSCells,
   Marker,
   MGRSGrids,

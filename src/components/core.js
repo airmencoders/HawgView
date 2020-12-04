@@ -35,8 +35,8 @@ import ClassificationBanner from './core/ClassificationBanner'
 import CoordInput from './core/CoordInput'
 import IENavigation from './core/IENavigation'
 import Map from './core/Map'
+import MapPopup from './core/MapPopup'
 import MobileMenu from './core/MobileMenu'
-import Popup from './core/Popup'
 import SiteMenu from './core/SiteMenu'
 //import SiteNavigation from './core/SiteNavigation'
 
@@ -48,8 +48,8 @@ export {
   CoordInput,
   IENavigation,
   Map,
+  MapPopup,
   MobileMenu,
-  Popup,
   SiteMenu,
   //SiteNavigation,
 }

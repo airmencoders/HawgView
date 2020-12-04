@@ -1,3 +1,8 @@
+## 2.12.2-beta (Code Cleanup)
+### Changes
+* Pulled `generateShapePopup` to its own function (to be updated with mega state?)
+* Pulled `Bullseye` to its own component
+
 ## 2.12.1-beta (Code Cleanup)
 ### Changes
 * Created imports for Hawg View components to make importing modules easier

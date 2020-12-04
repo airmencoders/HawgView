@@ -58,6 +58,7 @@ import {
 // Hawg View Components
 //----------------------------------------------------------------//
 import {
+  Bullseye,
   Marker,
   MGRSGrids,
   GARSCells,
@@ -130,14 +131,7 @@ const LayerControl = props => {
       lineHeight: `${props.markerSize * props.mapZoom}px`,
       wordWrap: 'break-word',
     },
-    tooltip: {
-      backgroundColor: '#000000',
-      color: '#ffffff',
-      border: 'none',
-      '&:before': {
-        border: 'none',
-      }
-    }
+    
   }))
 
   const classes = useStyles(props)
@@ -147,65 +141,7 @@ const LayerControl = props => {
     props.setActiveDialog('editShape')
   }
 
-  const generateBullCircles = bullseye => {
-    let array = []
-    const length = bullseye.rings * bullseye.distance * 1852
-    const center = LatLon.parse(bullseye.latlng.lat, bullseye.latlng.lng)
-
-    for (let i = 1; i <= bullseye.rings; i++) {
-      array.push(
-        <Circle
-          center={bullseye.latlng}
-          color={bullseye.color}
-          fill={false}
-          key={`bullseye-${bullseye.id}-${bullseye.title}-circle-${i}`}
-          radius={bullseye.distance * 1852 * i}
-        />
-      )
-    }
-
-    for (let i = 0; i < 360; i += bullseye.angle) {
-      let p2 = center.destinationPoint(length, i + bullseye.declination)
-      let positions = [bullseye.latlng, p2]
-
-      array.push(
-        <Polyline
-          color={bullseye.color}
-          key={`bullseye-${bullseye.id}-${bullseye.title}-radial-${i}`}
-          positions={positions}
-        />
-      )
-    }
-
-    if (bullseye.showData) {
-      for (let i = 1; i <= bullseye.rings; i++) {
-        for (let j = 360; j > 0; j -= 90) {
-          let position = center.destinationPoint(bullseye.distance * 1852 * i, j + bullseye.declination)
-
-          array.push(
-            <RLMarker
-              interactive={false}
-              key={`bullseye-${bullseye.id}-${bullseye.title}-circle-${i}-radial-${j}-marker`}
-              opacity={0}
-              position={position}
-            >
-              <Tooltip
-                className={classes.tooltip}
-                direction='top'
-                offset={L.point(0, 25)}
-                opacity={0.7}
-                permanent
-              >
-                {(i === 1) ? `R-${j.toString().padStart(3, '0')}/${(bullseye.distance * i).toFixed(1)}` : `${(bullseye.distance * i).toFixed(1)}`}
-              </Tooltip>
-            </RLMarker>
-          )
-        }
-      }
-    }
-
-    return array
-  }
+  
 
   // Only for Circle || Ellipse || Bullseye
   const generateShapePopupText = shape => {
@@ -363,76 +299,19 @@ const LayerControl = props => {
       </Overlay>
       <Overlay checked name='Bullseyes'>
         <LayerGroup>
-          {props.interactive && props.step.bullseyes.map(bullseye => (
-            <React.Fragment
-              key={`bullseye-${bullseye.id}-${bullseye.title}`}
-            >
-              {generateBullCircles(bullseye)}
-              <RLMarker
-                autoPan={false}
-                draggable={true}
-                icon={L.icon({
-                  iconUrl: bullseye.iconUrl,
-                  iconSize: [props.markerSize * props.mapZoom, props.markerSize * props.mapZoom],
-                })}
-                id={bullseye.id}
-                onDragend={event => props.handleMarkerDrag(bullseye, event.target.getLatLng())}
-                position={bullseye.latlng}
-                riseOnHover
-                title={bullseye.title}
-              >
-                <Popup
-                  autoPan={false}
-                >
-                  {generateShapePopupText(bullseye)}
-                  <br />
-                  <Button color='primary' onClick={() => handleEditShape(bullseye)}>Edit</Button>
-                  <Button color='secondary' onClick={() => props.handleDeleteMarker(bullseye)}>Delete</Button>
-                </Popup>
-                {(props.tooltipsActive) ?
-                  <Tooltip
-                    direction='top'
-                    offset={L.point(0, -1 * props.markerSize * props.mapZoom)}
-                    opacity='1'
-                    permanent
-                  >
-                    {bullseye.title}
-                  </Tooltip>
-                  : undefined
-                }
-              </RLMarker>
-            </React.Fragment>
-          ))}
-          {!props.interactive && props.step.bullseyes.map(bullseye => (
-            <React.Fragment
-              key={`bullseye-${bullseye.id}-${bullseye.title}`}
-            >
-              {generateBullCircles(bullseye)}
-              <RLMarker
-                autoPan={true}
-                draggable={false}
-                icon={L.icon({
-                  iconUrl: bullseye.iconUrl,
-                  iconSize: [props.markerSize * props.mapZoom, props.markerSize * props.mapZoom],
-                })}
-                id={bullseye.id}
-                position={bullseye.latlng}
-                riseOnHover={true}
-                title={bullseye.title}
-              >
-                {(props.tooltipsActive) ?
-                  <Tooltip
-                    direction='top'
-                    offset={L.point(0, -1 * props.markerSize * props.mapZoom)}
-                    opacity='1'
-                    permanent
-                  >
-                    {bullseye.title}
-                  </Tooltip>
-                  : undefined
-                }
-              </RLMarker>
-            </React.Fragment>
+          {props.step.bullseyes.map(bullseye => (
+            <Bullseye
+              bullseye={bullseye}  
+              handleDeleteMarker={marker => props.handleDeleteMarker(marker)}
+              handleMarkerDrag={(marker, latlng) => props.handleMarkerDrag(marker, latlng)}
+              interactive={props.interactive}
+              key={`${bullseye.layer}-${bullseye.title}-${bullseye.id}`}
+              markerSize={props.markerSize}
+              mapZoom={props.mapZoom}
+              setActiveDialog={dialog => props.setActiveDialog(dialog)}
+              setFocusedShape={shape => props.setFocusedShape(shape)}
+              tooltipsActive={props.tooltipsActive}
+            />
           ))}
         </LayerGroup>
       </Overlay>
