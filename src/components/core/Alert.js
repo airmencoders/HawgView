@@ -1,8 +1,7 @@
 /**
- * Renders the main portion of the app
+ * ${SUMMARY}
  * 
- * Renders and routes the application. React-Router allows for redirects from old
- * bookmarked v1 links to the main application.
+ * ${DESCRIPTION}
  * 
  * @author  chris-m92
  * 
@@ -29,42 +28,19 @@
  * SOFTWARE.
  */
 import React from 'react'
-import {
-  BrowserRouter as Router,
-  Route,
-  Switch,
-  Redirect
-} from 'react-router-dom'
 
 //----------------------------------------------------------------//
 // Material-UI Components
 //----------------------------------------------------------------//
 import {
-  CssBaseline
-} from '@material-ui/core'
+  Alert as MUIAlert,
+ } from '@material-ui/lab'
 
 //----------------------------------------------------------------//
-// Hawg View Components
+// Alert Component
 //----------------------------------------------------------------//
-import CAS from './CAS'
-
-//----------------------------------------------------------------//
-// App Component
-//----------------------------------------------------------------//
-const App = () => {
-  return (
-    <div className='App'>
-      <CssBaseline />
-      <Router>
-        <Switch>
-          <Route exact path='/'>
-            <CAS />
-          </Route>
-          <Redirect from='*' to='/' />
-        </Switch>
-      </Router>
-    </div>
-  )
+const Alert = (props) => {
+    return <MUIAlert elevation={6} variant='filled' {...props} />
 }
 
-export default App
+export default Alert

@@ -1,8 +1,9 @@
 /**
- * Renders the main portion of the app
+ * ${SUMMARY}
  * 
- * Renders and routes the application. React-Router allows for redirects from old
- * bookmarked v1 links to the main application.
+ * Based on the leaflet.js plugin leaflet-ruler. A bearing and range analysis tool.
+ * Improvements include modularization for use with React and the ability to use
+ * magnetic declination for magnetic rather than true headings.
  * 
  * @author  chris-m92
  * 
@@ -29,42 +30,58 @@
  * SOFTWARE.
  */
 import React from 'react'
-import {
-  BrowserRouter as Router,
-  Route,
-  Switch,
-  Redirect
-} from 'react-router-dom'
 
 //----------------------------------------------------------------//
-// Material-UI Components
+// Analysis Tool Component
 //----------------------------------------------------------------//
-import {
-  CssBaseline
-} from '@material-ui/core'
+/**
+ * 
+ * @param {*} props 
+ */
+const BuildingLabelTool = (props) => {
 
-//----------------------------------------------------------------//
-// Hawg View Components
-//----------------------------------------------------------------//
-import CAS from './CAS'
+  //const [index, setIndex] = React.useState(1)
 
-//----------------------------------------------------------------//
-// App Component
-//----------------------------------------------------------------//
-const App = () => {
-  return (
-    <div className='App'>
-      <CssBaseline />
-      <Router>
-        <Switch>
-          <Route exact path='/'>
-            <CAS />
-          </Route>
-          <Redirect from='*' to='/' />
-        </Switch>
-      </Router>
-    </div>
-  )
+  /**
+   * 
+   */
+  React.useEffect(() => {
+    if (props.active) {
+      document.addEventListener('keydown', handleEscPress, false)
+      return () => {
+        document.removeEventListener('keydown', handleEscPress, false)
+      }
+    }
+  }, [props.active])
+
+  React.useEffect(() => {
+    if (props.active && props.latlng !== null) {
+      const newData = {
+        arty: {
+          arty: false,
+          display: false,
+        },
+        iconType: 'div',
+        latlng: props.latlng,
+        layer: 'buildingLabel',
+        title: props.index,
+      }
+
+      props.submit('create', newData)
+    }
+  }, [props.latlng])
+
+  /**
+   * 
+   * @param {*} event 
+   */
+  const handleEscPress = event => {
+    if (props.active && event.key === 'Escape') {
+      props.toggle()
+    }
+  }
+
+  return null
 }
 
-export default App
+export default BuildingLabelTool

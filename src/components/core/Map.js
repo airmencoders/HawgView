@@ -1,8 +1,7 @@
 /**
- * Renders the main portion of the app
+ * ${SUMMARY}
  * 
- * Renders and routes the application. React-Router allows for redirects from old
- * bookmarked v1 links to the main application.
+ * ${DESCRIPTION}
  * 
  * @author  chris-m92
  * 
@@ -29,42 +28,65 @@
  * SOFTWARE.
  */
 import React from 'react'
-import {
-  BrowserRouter as Router,
-  Route,
-  Switch,
-  Redirect
-} from 'react-router-dom'
 
 //----------------------------------------------------------------//
 // Material-UI Components
 //----------------------------------------------------------------//
+import { 
+  makeStyles,
+} from '@material-ui/core/styles'
+
+//----------------------------------------------------------------//
+// React Leaflet Components
+//----------------------------------------------------------------//
 import {
-  CssBaseline
-} from '@material-ui/core'
+  Map,
+} from 'react-leaflet'
 
 //----------------------------------------------------------------//
-// Hawg View Components
+// Custom Styling
 //----------------------------------------------------------------//
-import CAS from './CAS'
+const useStyles = makeStyles(() => ({
+  leafletMap: {
+    backgroundColor: 'black',
+    height: '100%',
+    width: '100%',
+  },
+}))
 
 //----------------------------------------------------------------//
-// App Component
+// Map Component
 //----------------------------------------------------------------//
-const App = () => {
+const LeafletMap = (props) => {
+  const classes = useStyles()
+
+  let mapRef = React.useRef()
+
+  React.useEffect(() => {
+    if (mapRef !== null) {
+      props.setMap(mapRef)
+    }
+  }, [mapRef])
+
   return (
-    <div className='App'>
-      <CssBaseline />
-      <Router>
-        <Switch>
-          <Route exact path='/'>
-            <CAS />
-          </Route>
-          <Redirect from='*' to='/' />
-        </Switch>
-      </Router>
-    </div>
+    <Map
+      center={props.center}
+      className={classes.leafletMap}
+      doubleClickZoom={props.toolActive ? false : true}
+      maxZoom={19}
+      onMoveend={event => props.setMapCenter(event.target.getCenter())}
+      onZoomend={event => props.setMapZoom(event.target.getZoom())}
+      onClick={event => props.setFocusedLatlng({latlng: event.latlng, source: 'map'})}
+      onMouseMove={event => props.handleMouseMove(event.latlng)}
+      ref={map => (map !== null) ? mapRef = map.leafletElement : undefined}
+      style={props.toolActive ? { cursor: 'crosshair' } : undefined}
+      worldCopyJump={true}
+      zoom={props.zoom}
+      zoomControl={false}
+    >
+      {props.children}
+    </Map>
   )
 }
 
-export default App
+export default LeafletMap

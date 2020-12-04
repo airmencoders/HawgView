@@ -1,8 +1,7 @@
 /**
- * Renders the main portion of the app
+ * ${SUMMARY}
  * 
- * Renders and routes the application. React-Router allows for redirects from old
- * bookmarked v1 links to the main application.
+ * ${DESCRIPTION}
  * 
  * @author  chris-m92
  * 
@@ -29,42 +28,33 @@
  * SOFTWARE.
  */
 import React from 'react'
-import {
-  BrowserRouter as Router,
-  Route,
-  Switch,
-  Redirect
-} from 'react-router-dom'
 
 //----------------------------------------------------------------//
-// Material-UI Components
+// Ellipse Tool Component
 //----------------------------------------------------------------//
-import {
-  CssBaseline
-} from '@material-ui/core'
+const EllipseTool = props => {
 
-//----------------------------------------------------------------//
-// Hawg View Components
-//----------------------------------------------------------------//
-import CAS from './CAS'
+  /**
+   * Since the Leaflet Ellipse plugin isn't dynamic, we're kinda hacking it here.
+   * Create an ellipse with the default values that the user can then change through the drawer
+   */ 
+  React.useEffect(() => {
+    if(props.active && props.latlng !== null) {
+      props.submit('create', {
+        center: props.latlng,
+        color: '#4A90E2',
+        dashArray: null,
+        fillColor: null,
+        layer: 'ellipse',
+        length: 9260,
+        tilt: 90,
+        title: 'Ellipse',
+        width: 4630,
+      })
+    }
+  }, [props.active, props.latlng])
 
-//----------------------------------------------------------------//
-// App Component
-//----------------------------------------------------------------//
-const App = () => {
-  return (
-    <div className='App'>
-      <CssBaseline />
-      <Router>
-        <Switch>
-          <Route exact path='/'>
-            <CAS />
-          </Route>
-          <Redirect from='*' to='/' />
-        </Switch>
-      </Router>
-    </div>
-  )
+  return null
 }
 
-export default App
+export default EllipseTool

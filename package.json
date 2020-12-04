@@ -29,7 +29,7 @@
     "typescript": "^4.0.5"
   },
   "scripts": {
-    "start": "PORT=3100 react-scripts start",
+    "start": "PORT=3101 react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

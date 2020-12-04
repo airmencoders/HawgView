@@ -1,8 +1,7 @@
 /**
- * Renders the main portion of the app
+ * ${SUMMARY}
  * 
- * Renders and routes the application. React-Router allows for redirects from old
- * bookmarked v1 links to the main application.
+ * ${DESCRIPTION}
  * 
  * @author  chris-m92
  * 
@@ -29,42 +28,49 @@
  * SOFTWARE.
  */
 import React from 'react'
-import {
-  BrowserRouter as Router,
-  Route,
-  Switch,
-  Redirect
-} from 'react-router-dom'
+import 'fontsource-roboto'
 
 //----------------------------------------------------------------//
 // Material-UI Components
 //----------------------------------------------------------------//
 import {
-  CssBaseline
+  AppBar,
+  Typography,
 } from '@material-ui/core'
+/*import AppBar from '@material-ui/core/AppBar'
+import Typography from '@material-ui/core/Typography'*/
 
 //----------------------------------------------------------------//
-// Hawg View Components
+// Classification Banner Component
 //----------------------------------------------------------------//
-import CAS from './CAS'
+const ClassificationBanner = ({ classification = 'unclassified' }) => {
 
-//----------------------------------------------------------------//
-// App Component
-//----------------------------------------------------------------//
-const App = () => {
+  /**
+   * SF-710 WHITE ON GREEN:     #007A33 / #FFFFFF
+   * SF-708 WHITE ON BLUE:      #0033A0 / #FFFFFF
+   * SF-707 WHITE ON RED:       #C8102E / #FFFFFF
+   * SF-706 WHITE ON ORANGE:    #FF671F / #FFFFFF
+   * SF-712 BLACK ON YELLOW:    #F7EA48 / #000000
+   * SF-709 BLACK ON LAVENDER:  #C1A7E2 / #000000 
+   */
+
+  /*const [bannerColor, setBannerColor] = React.useState('green')
+  const [textColor, setTextColor] = React.useState('black')*/
+
   return (
-    <div className='App'>
-      <CssBaseline />
-      <Router>
-        <Switch>
-          <Route exact path='/'>
-            <CAS />
-          </Route>
-          <Redirect from='*' to='/' />
-        </Switch>
-      </Router>
-    </div>
+    <AppBar
+      position='static'
+      style={{ backgroundColor: 'green' }}
+    >
+      <Typography
+        align='center'
+        style={{ color: 'black' }}
+        variant='subtitle2'
+      >
+        {`// ${classification.toUpperCase()} //`}
+      </Typography>
+    </AppBar>
   )
 }
 
-export default App
+export default ClassificationBanner

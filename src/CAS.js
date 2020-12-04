@@ -28,67 +28,79 @@
  * SOFTWARE.
  */
 import React from 'react'
-import L from 'leaflet'
+//import L from 'leaflet'
 
 //----------------------------------------------------------------//
-// Material-UI Core Components
+// Material-UI Components
 //----------------------------------------------------------------//
-import Box from '@material-ui/core/Box'
-import IconButton from '@material-ui/core/IconButton'
-import { makeStyles } from '@material-ui/core/styles'
-import Snackbar from '@material-ui/core/Snackbar'
-
-//----------------------------------------------------------------//
-// Material-UI Icons
-//----------------------------------------------------------------//
-import CloseIcon from '@material-ui/icons/Close'
-import MoreVertIcon from '@material-ui/icons/MoreVert'
+import {
+  Box,
+  IconButton,
+  Snackbar,
+  Tooltip,
+} from '@material-ui/core'
+import {
+  makeStyles,
+} from '@material-ui/core/styles'
+import {
+  Close as CloseIcon,
+  Menu as MenuIcon,
+  MoreVert as MoreVertIcon,
+} from '@material-ui/icons'
 
 //----------------------------------------------------------------//
 // React-Leaflet Components
 //----------------------------------------------------------------//
 import {
   ScaleControl,
-  ZoomControl
+  ZoomControl,
 } from 'react-leaflet'
 
 //----------------------------------------------------------------//
 // Hawg View Components
 //----------------------------------------------------------------//
-import AnalysisTool from './components/AnalysisTool'
-import BuildingLabelTool from './components/BuildingLabelTool'
-import CASNavigation from './components/CASNavigation'
-import CASTools from './components/CASTools'
-import CircleTool from './components/CircleTool'
-import CoordInput from './components/CoordInput'
-import EditShapeDrawer from './components/EditShapeDrawer'
-import EditMarkerDrawer from './components/EditMarkerDrawer'
-import EllipseTool from './components/EllipseTool'
-import { editMarkers } from './functions/editMarkers'
-import KineticPointTool from './components/KineticPointTool'
-import LayerControl from './components/LayerControl'
-import LineTool from './components/LineTool'
-import AddMarkerDrawer from './components/AddMarkerDrawer'
-import MarkerListDialog from './components/MarkerListDialog'
-import Map from './components/Map'
-import MapPopup from './components/MapPopup'
-import MobileMenu from './components/MobileMenu'
-import MouseCoordinatesControl from './components/MouseCoordinatesControl'
-import NotificationsDialog from './components/NotificationsDialog'
-import RectangleTool from './components/RectangleTool'
-import SaveScenarioDialog from './components/SaveScenarioDialog'
-import StyleDrawer from './components/StyleDrawer'
-import LoadScenarioDialog from './components/LoadScenarioDialog'
-import Alert from './components/Alert'
-import ToolControls from './components/ToolControls'
+//---- Controls
+import LayerControl from './components/controls/LayerControl'
+//import MouseCoordinatesControl from './components/controls/MouseCoordinatesControl'
+import ToolControl from './components/controls/ToolControl'
+
+//---- Core
+import Alert from './components/core/Alert'
+import CASNavigation from './components/core/CASNavigation'
+import CASTools from './components/core/CASTools'
+import CoordInput from './components/core/CoordInput'
+import Map from './components/core/Map'
+import MobileMenu from './components/core/MobileMenu'
+import Popup from './components/core/Popup'
+import SiteMenu from './components/core/SiteMenu'
+
+//---- Drawers & Dialogs
+import AddMarkerDrawer from './components/dialogs/AddMarkerDrawer'
+import EditShapeDrawer from './components/dialogs/EditShapeDrawer'
+import EditMarkerDrawer from './components/dialogs/EditMarkerDrawer'
+import MarkerListDialog from './components/dialogs/MarkerListDialog'
+import NotificationsDialog from './components/dialogs/NotificationsDialog'
+import SaveScenarioDialog from './components/dialogs/SaveScenarioDialog'
+import StyleDrawer from './components/dialogs/StyleDrawer'
+import LoadScenarioDialog from './components/dialogs/LoadScenarioDialog'
+
+//---- Tools
+import AnalysisTool from './components/tools/AnalysisTool'
+import BuildingLabelTool from './components/tools/BuildingLabelTool'
+import CircleTool from './components/tools/CircleTool'
+import EllipseTool from './components/tools/EllipseTool'
+import KineticPointTool from './components/tools/KineticPointTool'
+import LineTool from './components/tools/LineTool'
+import RectangleTool from './components/tools/RectangleTool'
 
 //----------------------------------------------------------------//
 // Hawg View Functions
 //----------------------------------------------------------------//
 import getElevation from './functions/getElevation'
+import { editMarkers } from './functions/editMarkers'
 
 //----------------------------------------------------------------//
-// Class Styling
+// Styles
 //----------------------------------------------------------------//
 import 'leaflet/dist/leaflet.css'
 
@@ -276,9 +288,9 @@ const Cas = () => {
   //----------------------------------------------------------------//
   // Private Handlers
   //----------------------------------------------------------------//
-  const handleMobileMenuOpen = event => {
+  const handleMobileMenuOpen = (event, dialog) => {
     setMobileMenuAnchor(event.currentTarget)
-    setActiveDialog('mobileMenu')
+    setActiveDialog(dialog)
   }
 
   const handleMobileMenuClose = () => {
@@ -550,13 +562,24 @@ const Cas = () => {
             />
           </div>
           <div className={classes.sectionMobile}>
+            <Tooltip title='Tools'>
+              <IconButton
+                color='inherit'
+                onClick={event => handleMobileMenuOpen(event, 'mobileMenu')}
+              >
+                <MoreVertIcon />
+              </IconButton>
+            </Tooltip>
+          </div>
+          <div className={classes.grow} />
+          <Tooltip title='Menu'>
             <IconButton
               color='inherit'
-              onClick={handleMobileMenuOpen}
+              onClick={event => handleMobileMenuOpen(event, 'siteMenu')}
             >
-              <MoreVertIcon />
+              <MenuIcon />
             </IconButton>
-          </div>
+          </Tooltip>
           <MobileMenu
             brightness={brightness}
             handleClearMarkers={() => handleMarkerEdit('clear', {})}
@@ -574,6 +597,11 @@ const Cas = () => {
             step={step}
             toggleTooltips={() => setTooltipsActive(!tooltipsActive)}
             tooltipsActive={tooltipsActive}
+          />
+          <SiteMenu
+            anchor={mobileMenuAnchor}
+            open={activeDialog === 'siteMenu'}
+            setActiveDialog={setActiveDialog}
           />
         </CASNavigation>
       </Box>
@@ -595,7 +623,7 @@ const Cas = () => {
           handleMouseMove={latlng => handleMouseMove(latlng)}
           zoom={mapZoom}
         >
-          <MapPopup
+          <Popup
             activeTool={activeTool}
             anchor={history[step].anchor}
             elevation={elevation}
@@ -622,7 +650,7 @@ const Cas = () => {
             tooltipsActive={tooltipsActive}
           />
           <ZoomControl position='topright' />
-          <ToolControls
+          <ToolControl
             activeTool={activeTool}
             toggle={tool => toggleTools(tool)}
           />

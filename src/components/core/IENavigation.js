@@ -1,8 +1,7 @@
 /**
- * Renders the main portion of the app
+ * ${SUMMARY}
  * 
- * Renders and routes the application. React-Router allows for redirects from old
- * bookmarked v1 links to the main application.
+ * ${DESCRIPTION}
  * 
  * @author  chris-m92
  * 
@@ -30,41 +29,76 @@
  */
 import React from 'react'
 import {
-  BrowserRouter as Router,
-  Route,
-  Switch,
-  Redirect
+  NavLink 
 } from 'react-router-dom'
 
 //----------------------------------------------------------------//
 // Material-UI Components
 //----------------------------------------------------------------//
 import {
-  CssBaseline
+  AppBar,
+  Toolbar,
+  Typography,
 } from '@material-ui/core'
+import {
+  makeStyles,
+} from '@material-ui/core/styles'
+/*import AppBar from '@material-ui/core/AppBar'
+import { makeStyles } from '@material-ui/core/styles'
+import Toolbar from '@material-ui/core/Toolbar'
+import Typography from '@material-ui/core/Typography'*/
 
 //----------------------------------------------------------------//
-// Hawg View Components
+// Custom Components
 //----------------------------------------------------------------//
-import CAS from './CAS'
+import ClassificationBanner from './ClassificationBanner'
 
 //----------------------------------------------------------------//
-// App Component
+// Custom Styling
 //----------------------------------------------------------------//
-const App = () => {
+const useStyles = makeStyles(theme => ({
+  appBar: {
+    zIndex: theme.zIndex.drawer + 1,
+  },
+  grow: {
+    flexGrow: 1,
+  },
+  title: {
+    flexGrow: 1,
+  },
+}))
+
+//----------------------------------------------------------------//
+// IE Navigation Component
+//----------------------------------------------------------------//
+const IENavigation = () => {
+  const classes = useStyles()
+
   return (
-    <div className='App'>
-      <CssBaseline />
-      <Router>
-        <Switch>
-          <Route exact path='/'>
-            <CAS />
-          </Route>
-          <Redirect from='*' to='/' />
-        </Switch>
-      </Router>
+    <div className={classes.grow}>
+      <AppBar
+        className={classes.appBar}
+        position='static'
+      >
+        <ClassificationBanner
+          classification='unclassified'
+        />
+        <Toolbar>
+          <NavLink
+            style={{ textDecoration: 'none' }}
+            to='/'
+          >
+            <Typography
+              style={{ color: 'white' }}
+              variant='h6'
+            >
+              Hawg View
+            </Typography>
+          </NavLink>
+        </Toolbar>
+      </AppBar>
     </div>
   )
 }
 
-export default App
+export default IENavigation

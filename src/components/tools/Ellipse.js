@@ -1,8 +1,7 @@
 /**
- * Renders the main portion of the app
+ * ${SUMMARY}
  * 
- * Renders and routes the application. React-Router allows for redirects from old
- * bookmarked v1 links to the main application.
+ * ${DESCRIPTION}
  * 
  * @author  chris-m92
  * 
@@ -27,44 +26,47 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ * 
+ * References:
+ * https://www.manongdao.com/article-2180787.html - How to extend Leaflet-Ellipse in React
  */
-import React from 'react'
-import {
-  BrowserRouter as Router,
-  Route,
-  Switch,
-  Redirect
-} from 'react-router-dom'
+import L from 'leaflet'
+import 'leaflet-ellipse'
 
 //----------------------------------------------------------------//
-// Material-UI Components
+// React Leaflet Components
 //----------------------------------------------------------------//
 import {
-  CssBaseline
-} from '@material-ui/core'
+  Path,
+  withLeaflet,
+} from 'react-leaflet'
 
 //----------------------------------------------------------------//
-// Hawg View Components
+// Ellipse Component
 //----------------------------------------------------------------//
-import CAS from './CAS'
+class Ellipse extends Path {
 
-//----------------------------------------------------------------//
-// App Component
-//----------------------------------------------------------------//
-const App = () => {
-  return (
-    <div className='App'>
-      <CssBaseline />
-      <Router>
-        <Switch>
-          <Route exact path='/'>
-            <CAS />
-          </Route>
-          <Redirect from='*' to='/' />
-        </Switch>
-      </Router>
-    </div>
-  )
+  createLeafletElement(props) {
+    return new L.ellipse(props.center, [props.length, props.width], props.tilt, props.options)
+  }
+
+  updateLeafletElement(fromProps, toProps) {
+    if (toProps.center !== fromProps.center) {
+      this.leafletElement.setLatLng(toProps.center)
+    }
+
+    if (toProps.tilt !== fromProps.tilt) {
+      this.leafletElement.setTilt(toProps.tilt)
+    }
+
+    if (toProps.options !== fromProps.options) {
+      this.leafletElement.setStyle(toProps.options)
+    }
+
+    if (toProps.length !== fromProps.length || toProps.width !== fromProps.width) {
+      this.leafletElement.setRadius([toProps.length, toProps.width])
+    }
+  }
 }
 
-export default App
+export default withLeaflet(Ellipse);

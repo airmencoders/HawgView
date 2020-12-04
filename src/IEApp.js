@@ -27,9 +27,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-//----------------------------------------------------------------//
-// Top Level Modules
-//----------------------------------------------------------------//
 import React from 'react';
 import {
   BrowserRouter as Router,
@@ -39,16 +36,18 @@ import {
 } from 'react-router-dom'
 
 //----------------------------------------------------------------//
-// Material-UI Core Components
+// Material-UI Components
 //----------------------------------------------------------------//
-import CssBaseline from '@material-ui/core/CssBaseline'
-import Grid from '@material-ui/core/Grid'
-import Typography from '@material-ui/core/Typography'
+import {
+  CssBaseline,
+  Grid,
+  Typography,
+} from '@material-ui/core'
 
 //----------------------------------------------------------------//
 // Hawg View Components
 //----------------------------------------------------------------//
-import IENavigation from './components/IENavigation'
+import IENavigation from './components/core/IENavigation'
 
 //----------------------------------------------------------------//
 // App Component

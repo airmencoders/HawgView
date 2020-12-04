@@ -1,3 +1,8 @@
+## 2.12.0-beta (Code Cleanup)
+### Changes
+* Cleaned up imports
+* Moved Notifications, Wiki, and version 1 links to a menu visible in desktop and mobile modes
+
 ## 2.11.2-beta
 ### Changes
 * Removed the constant mouse coordinate tracking due to errors with marker dragging
