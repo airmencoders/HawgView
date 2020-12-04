@@ -50,9 +50,9 @@ import {
 import IENavigation from './components/core/IENavigation'
 
 //----------------------------------------------------------------//
-// App Component
+// IE App Component
 //----------------------------------------------------------------//
-const App = () => {
+const IEApp = () => {
   return (
     <div className='App'>
       <CssBaseline />
@@ -75,4 +75,4 @@ const App = () => {
   )
 }
 
-export default App
+export default IEApp

@@ -44,7 +44,7 @@ import {
 } from 'react-leaflet'
 
 //----------------------------------------------------------------//
-// Custom Styling
+// Styles
 //----------------------------------------------------------------//
 const useStyles = makeStyles(() => ({
   leafletMap: {

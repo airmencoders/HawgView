@@ -59,39 +59,39 @@ import {
 //----------------------------------------------------------------//
 // Hawg View Components
 //----------------------------------------------------------------//
-//---- Controls
-import LayerControl from './components/controls/LayerControl'
-//import MouseCoordinatesControl from './components/controls/MouseCoordinatesControl'
-import ToolControl from './components/controls/ToolControl'
-
-//---- Core
-import Alert from './components/core/Alert'
-import CASNavigation from './components/core/CASNavigation'
-import CASTools from './components/core/CASTools'
-import CoordInput from './components/core/CoordInput'
-import Map from './components/core/Map'
-import MobileMenu from './components/core/MobileMenu'
-import Popup from './components/core/Popup'
-import SiteMenu from './components/core/SiteMenu'
-
-//---- Drawers & Dialogs
-import AddMarkerDrawer from './components/dialogs/AddMarkerDrawer'
-import EditShapeDrawer from './components/dialogs/EditShapeDrawer'
-import EditMarkerDrawer from './components/dialogs/EditMarkerDrawer'
-import MarkerListDialog from './components/dialogs/MarkerListDialog'
-import NotificationsDialog from './components/dialogs/NotificationsDialog'
-import SaveScenarioDialog from './components/dialogs/SaveScenarioDialog'
-import StyleDrawer from './components/dialogs/StyleDrawer'
-import LoadScenarioDialog from './components/dialogs/LoadScenarioDialog'
-
-//---- Tools
-import AnalysisTool from './components/tools/AnalysisTool'
-import BuildingLabelTool from './components/tools/BuildingLabelTool'
-import CircleTool from './components/tools/CircleTool'
-import EllipseTool from './components/tools/EllipseTool'
-import KineticPointTool from './components/tools/KineticPointTool'
-import LineTool from './components/tools/LineTool'
-import RectangleTool from './components/tools/RectangleTool'
+import {
+  LayerControl,
+  ToolControl,
+} from './components/controls'
+import {
+  Alert,
+  CASNavigation,
+  CASTools,
+  CoordInput,
+  Map,
+  MobileMenu,
+  Popup,
+  SiteMenu,
+} from './components/core'
+import {
+  AddMarkerDrawer,
+  EditMarkerDrawer,
+  EditShapeDrawer,
+  MarkerListDialog,
+  NotificationsDialog,
+  SaveScenarioDialog,
+  StyleDrawer,
+  LoadScenarioDialog,
+} from './components/dialogs'
+import {
+  AnalysisTool,
+  BuildingLabelTool,
+  CircleTool,
+  EllipseTool,
+  KineticPointTool,
+  LineTool,
+  RectangleTool,
+} from './components/tools'
 
 //----------------------------------------------------------------//
 // Hawg View Functions

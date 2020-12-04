@@ -44,24 +44,18 @@ import {
 import {
   makeStyles,
 } from '@material-ui/core/styles'
-/*import Divider from '@material-ui/core/Divider'
-import Drawer from '@material-ui/core/Drawer'
-import FormControlLabel from '@material-ui/core/FormControlLabel'
-import FormGroup from '@material-ui/core/FormGroup'
-import Grid from '@material-ui/core/Grid'
-import { makeStyles } from '@material-ui/core/styles'
-import Switch from '@material-ui/core/Switch'
-import TextField from '@material-ui/core/TextField'*/
 
 //----------------------------------------------------------------//
 // Hawg View Components
 //----------------------------------------------------------------//
-import FriendlyMarkers from './FriendlyMarkers'
-import HostileMarkers from './HostileMarkers'
-import PersistentMarkers from './PersistentMarkers'
+import {
+  FriendlyMarkers,
+  HostileMarkers,
+  PersistentMarkers,
+} from '../dialogs'
 
 //----------------------------------------------------------------//
-// Styling
+// Styles
 //----------------------------------------------------------------//
 const drawerWidth = 240
 

@@ -38,7 +38,6 @@ import {
 import {
   makeStyles,
 } from '@material-ui/core/styles'
-//import Tooltip from '@material-ui/core/Tooltip'
 
 //----------------------------------------------------------------//
 // Hawg View Marker Icons
@@ -69,7 +68,7 @@ import unit from '../../markers/hostile/unit.svg'
 import wheeledArmor from '../../markers/hostile/wheeled-armor.svg'
 
 //----------------------------------------------------------------//
-// Styling
+// Styles
 //----------------------------------------------------------------//
 const useStyles = makeStyles(theme => ({
   image: {

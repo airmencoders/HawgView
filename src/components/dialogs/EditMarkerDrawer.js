@@ -52,19 +52,6 @@ import {
 import {
   makeStyles,
 } from '@material-ui/core/styles'
-/*import Button from '@material-ui/core/Button'
-import Drawer from '@material-ui/core/Drawer'
-import FormControl from '@material-ui/core/FormControl'
-import FormControlLabel from '@material-ui/core/FormControlLabel'
-import FormGroup from '@material-ui/core/FormGroup'
-import Grid from '@material-ui/core/Grid'
-import InputLabel from '@material-ui/core/InputLabel'
-import MenuItem from '@material-ui/core/MenuItem'
-import Select from '@material-ui/core/Select'
-import Switch from '@material-ui/core/Switch'
-import TextField from '@material-ui/core/TextField'
-import Typography from '@material-ui/core/Typography'
-import { makeStyles } from '@material-ui/core/styles'*/
 
 //----------------------------------------------------------------//
 // Geodesy Functions
@@ -88,7 +75,7 @@ import {
 } from '../../constants/threats'
 
 //----------------------------------------------------------------//
-// Styling
+// Styles
 //----------------------------------------------------------------//
 const drawerWidth = 240
 

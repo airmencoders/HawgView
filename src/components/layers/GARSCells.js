@@ -51,7 +51,7 @@ import {
 //----------------------------------------------------------------//
 // Hawg View Functions
 //----------------------------------------------------------------//
-import gridMath from '../../functions/gridMath' //{ gridMath.LLtoUTM, gridMath.UTMtoLL } from '../functions/gridMath'
+import gridMath from '../../functions/gridMath'
 
 //----------------------------------------------------------------//
 // GARS Cells Component

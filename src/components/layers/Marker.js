@@ -63,7 +63,6 @@ import {
   render9line,
   render15line,
 } from '../../functions/renderData'
-
 import { distanceAndHeading } from '../../functions/mathFunctions'
 
 //----------------------------------------------------------------//

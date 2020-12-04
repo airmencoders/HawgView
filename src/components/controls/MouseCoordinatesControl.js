@@ -43,7 +43,7 @@ import {
 import generateMapPopup from '../../functions/generateMapPopup'
 
 //----------------------------------------------------------------//
-// Custom Styles
+// Styles
 //----------------------------------------------------------------//
 const useStyles = makeStyles(theme => ({
   root: {

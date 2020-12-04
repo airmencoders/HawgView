@@ -1,3 +1,7 @@
+## 2.12.1-beta (Code Cleanup)
+### Changes
+* Created imports for Hawg View components to make importing modules easier
+
 ## 2.12.0-beta (Code Cleanup)
 ### Changes
 * Cleaned up imports

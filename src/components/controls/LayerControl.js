@@ -57,14 +57,15 @@ import {
 //----------------------------------------------------------------//
 // Hawg View Components
 //----------------------------------------------------------------//
-//---- Layers
-import Marker from '../layers/Marker'
-import Threat from '../layers/Threat'
-import MGRSGrids from '../layers/MGRSGrids'
-import GARSCells from '../layers/GARSCells'
-
-//---- Tools
-import Ellipse from '../tools/Ellipse'
+import {
+  Marker,
+  MGRSGrids,
+  GARSCells,
+  Threat,
+} from '../layers'
+import {
+  Ellipse,
+} from '../tools'
 
 //----------------------------------------------------------------//
 // Hawg View Constants

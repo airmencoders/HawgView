@@ -43,18 +43,16 @@ import {
 import {
   makeStyles,
 } from '@material-ui/core/styles'
-/*import AppBar from '@material-ui/core/AppBar'
-import { makeStyles } from '@material-ui/core/styles'
-import Toolbar from '@material-ui/core/Toolbar'
-import Typography from '@material-ui/core/Typography'*/
 
 //----------------------------------------------------------------//
-// Custom Components
+// Hawg View Components
 //----------------------------------------------------------------//
-import ClassificationBanner from './ClassificationBanner'
+import {
+  ClassificationBanner
+ } from '../core'
 
 //----------------------------------------------------------------//
-// Custom Styling
+// Styles
 //----------------------------------------------------------------//
 const useStyles = makeStyles(theme => ({
   appBar: {

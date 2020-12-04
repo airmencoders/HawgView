@@ -37,8 +37,6 @@ import {
 //----------------------------------------------------------------//
 import {
   AppBar,
-  Badge,
-  IconButton,
   Toolbar,
   Tooltip,
   Typography,
@@ -46,30 +44,16 @@ import {
 import {
   makeStyles,
 } from '@material-ui/core/styles'
-import {
-  NotificationImportant as NotificationImportantIcon,
-} from '@material-ui/icons'
-/*import AppBar from '@material-ui/core/AppBar'
-import Badge from '@material-ui/core/Badge'
-import IconButton from '@material-ui/core/IconButton'
-import { makeStyles } from '@material-ui/core/styles'
-import Toolbar from '@material-ui/core/Toolbar'
-import Tooltip from '@material-ui/core/Tooltip'
-import Typography from '@material-ui/core/Typography'*/
-
-//----------------------------------------------------------------//
-// Material-UI Icons
-//----------------------------------------------------------------//
-//import NotificationImportantIcon from '@material-ui/icons/NotificationImportant'
-//import NotificationsIcon from '@material-ui/icons/Notifications'
 
 //----------------------------------------------------------------//
 // Hawg View Components
 //----------------------------------------------------------------//
-import ClassificationBanner from './ClassificationBanner'
+import {
+  ClassificationBanner
+ } from '../core'
 
 //----------------------------------------------------------------//
-// Custom Class Styling
+// Styles
 //----------------------------------------------------------------//
 const useStyles = makeStyles(theme => ({
   appBar: {

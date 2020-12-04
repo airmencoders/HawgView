@@ -47,7 +47,7 @@ import {
 import { distanceAndHeading } from '../../functions/mathFunctions'
 
 //----------------------------------------------------------------//
-// Analysis Tool Component
+// Line Tool Component
 //----------------------------------------------------------------//
 const LineTool = props => {
   /**

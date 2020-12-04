@@ -45,23 +45,12 @@ import {
   Print as PrintIcon,
 } from '@material-ui/icons'
 
-/*import Box from '@material-ui/core/Box'
-import Dialog from '@material-ui/core/Dialog'
-import DialogContent from '@material-ui/core/DialogContent'
-import DialogTitle from '@material-ui/core/DialogTitle'
-import Grid from '@material-ui/core/Grid'
-import IconButton from '@material-ui/core/IconButton'
-import Typography from '@material-ui/core/Typography'*/
-
-//----------------------------------------------------------------//
-// Material-UI Icons
-//----------------------------------------------------------------//
-//import PrintIcon from '@material-ui/icons/Print'
-
 //----------------------------------------------------------------//
 // Hawg View Components
 //----------------------------------------------------------------//
-import MarkerListAccordion from './MarkerListAccordion'
+import {
+  MarkerListAccordion
+} from '../dialogs'
 
 //----------------------------------------------------------------//
 // Marker List Dialog Component

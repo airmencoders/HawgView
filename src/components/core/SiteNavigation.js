@@ -43,20 +43,16 @@ import {
 import {
   makeStyles,
 } from '@material-ui/core/styles'
-/*import AppBar from '@material-ui/core/AppBar'
-import { makeStyles } from '@material-ui/core/styles'
-import Toolbar from '@material-ui/core/Toolbar'
-import Typography from '@material-ui/core/Typography'*/
 
 //----------------------------------------------------------------//
 // Hawg View Components
 //----------------------------------------------------------------//
-//import AuthenticatedUserMenu from './AuthenticatedUserMenu'
-import ClassificationBanner from './ClassificationBanner'
-//import UnauthenticatedUserMenu from './UnauthenticatedUserMenu'
+import {
+  ClassificationBanner
+ } from '../core'
 
 //----------------------------------------------------------------//
-// Custom Class Styling
+// Styles
 //----------------------------------------------------------------//
 const useStyles = makeStyles(theme => ({
   appBar: {

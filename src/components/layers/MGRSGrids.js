@@ -47,7 +47,7 @@ import {
 } from '@material-ui/core/styles'
 
 //----------------------------------------------------------------//
-// Functions
+// Hawg View Functions
 //----------------------------------------------------------------//
 import gridMath from '../../functions/gridMath'
 

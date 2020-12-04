@@ -41,8 +41,10 @@ import {
 //----------------------------------------------------------------//
 // Hawg View Components
 //----------------------------------------------------------------//
-import AnalysisToolActiveLine from './AnalysisToolActiveLine'
-import AnalysisToolPastLines from './AnalysisToolPastLines'
+import {
+  AnalysisToolActiveLine,
+  AnalysisToolPastLines,
+} from '../tools'
 
 //----------------------------------------------------------------//
 // Hawg View Functions

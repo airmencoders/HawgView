@@ -60,7 +60,7 @@ import { LatLon as LL } from 'geodesy/mgrs'
 import {
   render9line,
   render15line,
-} from '../functions/renderData'
+} from '../../functions/renderData'
 
 //----------------------------------------------------------------//
 // Shape Component

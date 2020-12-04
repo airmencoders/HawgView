@@ -33,10 +33,8 @@ import React from 'react'
 // Material-UI Components
 //----------------------------------------------------------------//
 import {
-  Badge,
   IconButton,
   Tooltip,
-  Typography,
 } from '@material-ui/core'
 import {
   AddPhotoAlternate as AddPhotoAlternateIcon,
@@ -57,30 +55,6 @@ import {
   Undo as UndoIcon,
   ViewList as ViewListIcon,
 } from '@material-ui/icons'
-/*import IconButton from '@material-ui/core/IconButton'
-import Tooltip from '@material-ui/core/Tooltip'*/
-
-//----------------------------------------------------------------//
-// Material-UI Icons
-//----------------------------------------------------------------//
-/*import AddPhotoAlternateIcon from '@material-ui/icons/AddPhotoAlternate'
-import BrightnessHighIcon from '@material-ui/icons/BrightnessHigh'
-import BrightnessLowIcon from '@material-ui/icons/BrightnessLow'
-import ClearIcon from '@material-ui/icons/Clear'
-//import DescriptionIcon from '@material-ui/icons/Description'
-import FolderOpenIcon from '@material-ui/icons/FolderOpen'
-//import GetAppIcon from '@material-ui/icons/GetApp'
-import InvertColorsIcon from '@material-ui/icons/InvertColors'
-import InvertColorsOffIcon from '@material-ui/icons/InvertColorsOff'
-import LabelIcon from '@material-ui/icons/Label'
-import LabelOffIcon from '@material-ui/icons/LabelOff'
-import PhotoSizeSelectActualIcon from '@material-ui/icons/PhotoSizeSelectActual'
-import PhotoSizeSelectLargeIcon from '@material-ui/icons/PhotoSizeSelectLarge'
-import RedoIcon from '@material-ui/icons/Redo'
-import SaveIcon from '@material-ui/icons/Save'
-import StyleIcon from '@material-ui/icons/Style'
-import UndoIcon from '@material-ui/icons/Undo'
-import ViewListIcon from '@material-ui/icons/ViewList'*/
 
 //----------------------------------------------------------------//
 // Hawg View Handlers

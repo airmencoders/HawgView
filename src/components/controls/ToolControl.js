@@ -60,7 +60,7 @@ import pentagonIcon from '@iconify/icons-mdi/pentagon'
 import ellipseIcon from '@iconify/icons-mdi/ellipse'
 
 //----------------------------------------------------------------//
-// Custom Styles
+// Styles
 //----------------------------------------------------------------//
 const useStyles = makeStyles(theme => ({
   icon: {

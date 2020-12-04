@@ -47,7 +47,7 @@ import {
 } from '@material-ui/icons'
 
 //----------------------------------------------------------------//
-// Custom Styles
+// Styles
 //----------------------------------------------------------------//
 const useStyles = makeStyles(theme => ({
   icon: {

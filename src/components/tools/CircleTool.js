@@ -43,7 +43,6 @@ import {
 // Hawg View Functions
 //----------------------------------------------------------------//
 import { distanceAndHeading } from '../../functions/mathFunctions'
-//import { CircleMarker, Tooltip } from 'leaflet'
 
 //----------------------------------------------------------------//
 // Circle Tool Component
