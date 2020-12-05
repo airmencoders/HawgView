@@ -53,6 +53,13 @@ import {
 } from '@material-ui/icons'
 
 //----------------------------------------------------------------//
+// Hawg View Components
+//----------------------------------------------------------------//
+import {
+  Tools
+} from '../tools'
+
+//----------------------------------------------------------------//
 // Iconify Icons
 //----------------------------------------------------------------//
 import { Icon } from '@iconify/react'
@@ -74,6 +81,20 @@ const useStyles = makeStyles(theme => ({
 const ToolControls = (props) => {
   const classes = useStyles()
 
+  /**
+   * 
+   * @param {*} tool 
+   */
+  const changeTools = tool => {
+    props.setFocusedMarker(null)
+    props.setFocusedLatlng({ latlng: null, source: null })
+    if (tool === null || tool === props.activeTool) {
+      props.setActiveTool(null)
+    } else {
+      props.setActiveTool(tool)
+    }
+  }
+
   return (
     <Control position='topright'>
       <ButtonGroup
@@ -84,23 +105,23 @@ const ToolControls = (props) => {
         <Tooltip placement='left' title='Analysis tool: Press ESC to finish, twice to exit'>
           <Button
             color={props.activeTool === 'analysis' ? 'primary' : undefined}
-            onClick={() => props.toggle('analysis')}
+            onClick={() => changeTools('analysis')}
           >
             <SquareFootIcon className={classes.icon} />
           </Button>
         </Tooltip>
-        <Tooltip placement='left' title='Building Label: Increments with each click'>
+        <Tooltip placement='left' title='Building label: Increments with each click'>
           <Button
             color={props.activeTool === 'buildingLabel' ? 'primary' : undefined}
-            onClick={() => props.toggle('buildingLabel')}
+            onClick={() => changeTools('buildingLabel')}
           >
             <ApartmentIcon className={classes.icon} />
           </Button>
         </Tooltip>
-        <Tooltip placement='left' title='Kinetic Points: Increments with each click'>
+        <Tooltip placement='left' title='Kinetic points: Increments with each click'>
           <Button
             color={props.activeTool === 'kineticPoint' ? 'primary' : undefined}
-            onClick={() => props.toggle('kineticPoint')}
+            onClick={() => changeTools('kineticPoint')}
           >
             <FontDownloadIcon className={classes.icon} />
           </Button>
@@ -108,7 +129,7 @@ const ToolControls = (props) => {
         <Tooltip placement='left' title='Draw line: Press ESC to exit'>
           <Button
             color={props.activeTool === 'line' ? 'primary' : undefined}
-            onClick={() => props.toggle('line')}
+            onClick={() => changeTools('line')}
           >
             <TimelineIcon className={classes.icon} />
           </Button>
@@ -116,7 +137,7 @@ const ToolControls = (props) => {
         <Tooltip placement='left' title='Draw circle: Click to set circle, again to set radius'>
           <Button
             color={props.activeTool === 'circle' ? 'primary' : undefined}
-            onClick={() => props.toggle('circle')}
+            onClick={() => changeTools('circle')}
           >
             <FiberManualRecordIcon className={classes.icon} />
           </Button>
@@ -124,7 +145,7 @@ const ToolControls = (props) => {
         <Tooltip placement='left' title='Draw rectangle: Click to set each corner'>
           <Button
             color={props.activeTool === 'rectangle' ? 'primary' : undefined}
-            onClick={() => props.toggle('rectangle')}
+            onClick={() => changeTools('rectangle')}
           >
             <StopIcon className={classes.icon} />
           </Button>
@@ -132,20 +153,31 @@ const ToolControls = (props) => {
         <Tooltip placement='left' title='Draw polygon: Press ESC to exit'>
           <Button
             color={props.activeTool === 'polygon' ? 'primary' : undefined}
-            onClick={() => props.toggle('polygon')}
+            onClick={() => changeTools('polygon')}
           >
             <Icon className={classes.icon} icon={pentagonIcon} />
           </Button>
         </Tooltip>
-        <Tooltip placement='left' title='Draw Ellipse: Click map to select center'>
+        <Tooltip placement='left' title='Draw ellipse: Click map to select center'>
           <Button
             color={props.activeTool === 'ellipse' ? 'primary' : undefined}
-            onClick={() => props.toggle('ellipse')}
+            onClick={() => changeTools('ellipse')}
           >
             <Icon className={classes.icon} icon={ellipseIcon} />
           </Button>
         </Tooltip>
       </ButtonGroup>
+      <Tools
+        activeTool={props.activeTool}
+        editMarker={props.editMarker}
+        focusedLatlng={props.focusedLatlng}
+        history={props.history}
+        mouseCoords={props.mouseCoords}
+        setFocusedLatlng={props.setFocusedLatlng}
+        setMouseCoords={props.setMouseCoords}
+        step={props.step}
+        toggle={tool => changeTools(tool)}
+      />
     </Control>
   )
 }

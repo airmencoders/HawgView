@@ -83,21 +83,17 @@ import {
   StyleDrawer,
   LoadScenarioDialog,
 } from './components/dialogs'
-import {
-  AnalysisTool,
-  BuildingLabelTool,
-  CircleTool,
-  EllipseTool,
-  KineticPointTool,
-  LineTool,
-  RectangleTool,
-} from './components/tools'
 
 //----------------------------------------------------------------//
 // Hawg View Functions
 //----------------------------------------------------------------//
 import getElevation from './functions/getElevation'
-import { editMarkers } from './functions/editMarkers'
+
+//----------------------------------------------------------------//
+// Hawg View Handlers
+//----------------------------------------------------------------//
+import handleLoadScenario from './handlers/handleLoadScenario'
+import handleMarkerEdit from './handlers/handleMarkerEdit'
 
 //----------------------------------------------------------------//
 // Styles
@@ -198,7 +194,6 @@ const Cas = () => {
   const [snackPack, setSnackPack] = React.useState([])
   const [step, setStep] = React.useState(0)
   const [tooltipsActive, setTooltipsActive] = React.useState(false)
-  const [pageTitle, setPageTitle] = React.useState('CAS Planner')
 
   //----------------------------------------------------------------//
   // DEBUGGING AREA
@@ -222,13 +217,6 @@ const Cas = () => {
       window.removeEventListener('resize', handleMobileMenuClose, false)
     }
   }, [])
-
-  /**
-   * Changes the Page Title depending on the name of the loaded scenario
-   */
-  React.useEffect(() => {
-    document.title = `Hawg View | ${pageTitle}`
-  }, [pageTitle])
 
   /**
    * Any time the active dialog changes, reset the map
@@ -299,19 +287,6 @@ const Cas = () => {
   }
 
   /**
-   * Handler function for the mouse movement across the map
-   * 
-   * @param {Object} latlng LatLng coordinates of the mouse cursor
-   */
-  const handleMouseMove = latlng => {
-    if (activeTool === 'analysis') {
-      setMouseCoords(latlng)
-    } else if (activeTool !== null && activeTool !== 'analysis') {
-      setMouseCoords(latlng)
-    }
-  }
-
-  /**
    * Helper function to do multiple things when closing the map Popup
    */
   const handleMapReset = () => {
@@ -322,20 +297,6 @@ const Cas = () => {
     setFocusedShape(null)
     //setMapPopup(null)
     setElevation('Pending')
-  }
-
-  /**
-   * 
-   * @param {*} tool 
-   */
-  const toggleTools = tool => {
-    setFocusedMarker(null)
-    setFocusedLatlng({ latlng: null, source: null })
-    if (tool === null || tool === activeTool) {
-      setActiveTool(null)
-    } else {
-      setActiveTool(tool)
-    }
   }
 
   const handleCoordInput = latlng => {
@@ -368,85 +329,6 @@ const Cas = () => {
     setSnackPack(prev => [...prev, { message, key: new Date().getTime(), severity }])
   }
 
-  /**
-   * 
-   * @param {String} action The action to be completed
-   * @param {String} src Source of the marker image (create)
-   * @param {String} title Title of the marker (create)
-   * @param {String} sovereignty Sovereignty of the marker (create | edit)
-   * @param {String} threatSovereignty The sovereignty of the threat (create | edit)
-   * @param {Object} latlng The lat/lng of the marker (edit | drag)
-   * @param {Object} marker The marker object (edit | delete)
-   */
-  const handleMarkerEdit = (action, payload) => {
-    const supportedActions = ['clear', 'create', 'delete', 'drag', 'edit', '9line', '15line']
-
-    if (supportedActions.includes(action)) {
-
-      let updatedPayload = { ...payload }
-
-      let updatedTitle
-      if (payload.layer === 'threat') {
-        updatedTitle = payload.title
-      } else {
-        updatedTitle = markerLabel === '' ? payload.title : markerLabel
-      }
-
-      if (action === 'create') {
-        updatedPayload = {
-          ...updatedPayload,
-          id: history[step].data.markerId,
-        }
-
-        if (payload.layer !== 'bullseye') {
-          updatedPayload = {
-            ...updatedPayload,
-            elevation: elevation,
-          }
-        }
-
-        if (payload.layer === 'friendly' || payload.layer === 'hostile' || payload.layer === 'threat' || payload.layer === 'survivor' || payload.layer === 'ip' || payload.layer === 'mapLabel' || payload.layer === 'bullseye')
-          updatedPayload = {
-            ...updatedPayload,
-            latlng: focusedLatlng.latlng,
-            title: updatedTitle,
-          }
-      }
-
-      // Take the payload and add in the marker id (for when creating marker)
-      // todo: finish with the payload bullshit from the rest of the 'editMarkers' callbacks lol
-      const newStep = editMarkers(action, history, step, updatedPayload)
-
-      if (newStep !== false) {
-        let targetHistory
-        if (step === history.length - 1) {
-          targetHistory = history.slice()
-        } else {
-          targetHistory = history.slice(0, step + 1)
-        }
-
-        setHistory([...targetHistory, newStep])
-        setStep(step + 1)
-
-        if (action === 'create') {
-          //setMarkerId(markerId + 1)
-          setMarkerLabel('')
-        }
-
-        handleMapReset()
-
-        if (payload.layer === 'circle' || payload.layer === 'rectangle' || payload.layer === 'line' || payload.layer === 'polygon' || payload.layer === 'ellipse') {
-          setFocusedShape(updatedPayload)
-          setActiveDialog('editShape')
-          setActiveTool(null)
-        }
-      }
-    } else {
-      console.error(`Unsupported action ${action}. Could not modify Markers`)
-      toast('There was an error performing that action', 'error')
-    }
-  }
-
   const handleSnackbarClose = (event, reason) => {
     if (reason === 'clickaway') {
       return
@@ -455,78 +337,8 @@ const Cas = () => {
     setSnackbarOpen(false)
   }
 
-  const handleLoadScenario = data => {
-    let json
-    try {
-      let object = JSON.parse(data)
-
-      if (object && typeof object === 'object') {
-        json = object
-      }
-    } catch (error) {
-      console.error(error)
-      toast('There was an error loading the scenario', 'error')
-    }
-
-    if (json !== undefined) {
-
-      const newStep = {
-        action: 'load scenario',
-        anchor: json.data.anchor !== undefined ? json.data.anchor : {
-          declination: null,
-          id: null,
-          latlng: null,
-          name: null
-        },
-        buildingLabels: json.data.buildingLabels !== undefined ? json.data.buildingLabels : [],
-        bullseyes: json.data.bullseyes !== undefined ? json.data.bullseyes : [],
-        circles: json.data.circles !== undefined ? json.data.circles : [],
-        data: json.data.data !== undefined ? json.data.data : {
-          buildingLabel: 1,
-          firstLetter: 65,
-          markerId: 0,
-          secondLetter: 65,
-        },
-        ellipses: json.data.ellipses !== undefined ? json.data.ellipses : [],
-        rectangles: json.data.rectangles !== undefined ? json.data.rectangles : [],
-        friendlyMarkers: json.data.friendlyMarkers !== undefined ? json.data.friendlyMarkers : [],
-        hostileMarkers: json.data.hostileMarkers !== undefined ? json.data.hostileMarkers : [],
-        initialPoints: json.data.initialPoints !== undefined ? json.data.initialPoints : [],
-        kineticPoints: json.data.kineticPoints !== undefined ? json.data.kineticPoints : [],
-        lines: json.data.lines !== undefined ? json.data.lines : [],
-        mapLabels: json.data.mapLabels !== undefined ? json.data.mapLabels : [],
-        polygons: json.data.polygons !== undefined ? json.data.polygons : [],
-        survivors: json.data.survivors !== undefined ? json.data.survivors : [],
-        styles: json.data.styles !== undefined ? json.data.styles : {
-          mgrs: {
-            gridzoneColor: '#ffa500',
-            lineColor: '#ffffff',
-          },
-          gars: {
-            cellColor: '#ffa500',
-            quadrantColor: '#800080',
-            keypadColor: '#ffffff'
-          },
-          buildingLabel: {
-            color: '#ffff00',
-          },
-        },
-        threatMarkers: json.data.threatMarkers !== undefined ? json.data.threatMarkers : []
-      }
-
-      if (json.name === undefined || json.name === '') {
-        setPageTitle('CAS Planner')
-      } else {
-        setPageTitle(json.name)
-      }
-
-      setHistory([...history, newStep])
-      setStep(step + 1)
-      //setMarkerId(newId)
-      toast('Scenario loaded to map', 'success')
-    } else {
-      toast('There was an error loading the scenario', 'error')
-    }
+  const editMarker = (action, payload) => {
+    handleMarkerEdit(action, payload, elevation, focusedLatlng, markerLabel, history, step, setHistory, setStep, setMarkerLabel, handleMapReset, setFocusedShape, setActiveDialog, setActiveTool, toast)
   }
 
   return (
@@ -547,7 +359,7 @@ const Cas = () => {
           <div className={classes.sectionDesktop}>
             <CASTools
               brightness={brightness}
-              handleClearMarkers={() => handleMarkerEdit('clear', {})}
+              handleClearMarkers={() => editMarker('clear', {})}
               handleRedo={handleRedo}
               handleUndo={handleUndo}
               history={history}
@@ -582,7 +394,7 @@ const Cas = () => {
           </Tooltip>
           <MobileMenu
             brightness={brightness}
-            handleClearMarkers={() => handleMarkerEdit('clear', {})}
+            handleClearMarkers={() => editMarker('clear', {})}
             handleRedo={handleRedo}
             handleUndo={handleUndo}
             history={history}
@@ -615,12 +427,12 @@ const Cas = () => {
         <Map
           center={mapCenter}
           setMap={setMap}
-          toolActive={activeTool !== null}
+          activeTool={activeTool}
+          mouseCoords={mouseCoords}
           setMapCenter={latlng => setMapCenter([latlng.lat, latlng.lng])}
           setMapZoom={zoom => setMapZoom(zoom)}
           setMouseCoords={setMouseCoords}
           setFocusedLatlng={latlng => setFocusedLatlng(latlng)}
-          handleMouseMove={latlng => handleMouseMove(latlng)}
           zoom={mapZoom}
         >
           <MapPopup
@@ -636,7 +448,7 @@ const Cas = () => {
           <LayerControl
             anchor={history[step].anchor}
             brightness={brightness}
-            handleMarkerDrag={(marker, latlng) => handleMarkerEdit('drag', { marker: marker, latlng: latlng })}
+            handleMarkerDrag={(marker, latlng) => editMarker('drag', { marker: marker, latlng: latlng })}
             interactive={activeTool === null}
             map={map}
             mapCenter={mapCenter}
@@ -646,106 +458,53 @@ const Cas = () => {
             setFocusedMarker={marker => setFocusedMarker(marker)}
             setFocusedShape={shape => setFocusedShape(shape)}
             step={history[step]}
-            handleDeleteMarker={marker => handleMarkerEdit('delete', { marker: marker })}
+            handleDeleteMarker={marker => editMarker('delete', { marker: marker })}
             tooltipsActive={tooltipsActive}
           />
           <ZoomControl position='topright' />
           <ToolControl
             activeTool={activeTool}
-            toggle={tool => toggleTools(tool)}
+            editMarker={editMarker}
+            focusedLatlng={focusedLatlng}
+            history={history}
+            mouseCoords={mouseCoords}
+            setActiveTool={setActiveTool}
+            setFocusedMarker={setFocusedMarker}
+            setFocusedLatlng={setFocusedLatlng}
+            setMouseCoords={setMouseCoords}
+            step={step}
           />
           {/*<MouseCoordinatesControl
             anchor={history[step].anchor}
             mouseCoords={mouseCoords}
           />*/}
-          <AnalysisTool
-            active={activeTool === 'analysis'}
-            //clearLatlng={() => setFocusedLatlng(null)}
-            clearMouse={() => setMouseCoords(null)}
-            mouseCoords={mouseCoords}
-            toggle={() => toggleTools('analysis')}
-            latlng={focusedLatlng.latlng}
-            setFocusedLatlng={latlng => setFocusedLatlng(latlng)}
-          />
-          <BuildingLabelTool
-            active={activeTool === 'buildingLabel'}
-            index={history[step].data.buildingLabel}
-            latlng={focusedLatlng.latlng}
-            submit={(action, payload) => handleMarkerEdit(action, payload)}
-            toggle={() => toggleTools('buildingLabel')}
-          />
-          <KineticPointTool
-            active={activeTool === 'kineticPoint'}
-            firstLetter={history[step].data.firstLetter}
-            latlng={focusedLatlng.latlng}
-            secondLetter={history[step].data.secondLetter}
-            submit={(action, payload) => handleMarkerEdit(action, payload)}
-            toggle={() => toggleTools('kineticPoint')}
-          />
-          <LineTool
-            active={activeTool === 'line'}
-            latlng={focusedLatlng.latlng}
-            mouseCoords={mouseCoords}
-            submit={(action, payload) => handleMarkerEdit(action, payload)}
-            toggle={() => toggleTools('line')}
-            tool={activeTool}
-          />
-          <CircleTool
-            active={activeTool === 'circle'}
-            latlng={focusedLatlng.latlng}
-            mouseCoords={mouseCoords}
-            submit={(action, payload) => handleMarkerEdit(action, payload)}
-            toggle={() => toggleTools('circle')}
-          />
-          <RectangleTool
-            active={activeTool === 'rectangle'}
-            latlng={focusedLatlng.latlng}
-            mouseCoords={mouseCoords}
-            submit={(action, payload) => handleMarkerEdit(action, payload)}
-            toggle={() => toggleTools('rectangle')}
-          />
-          <LineTool
-            active={activeTool === 'polygon'}
-            latlng={focusedLatlng.latlng}
-            mouseCoords={mouseCoords}
-            submit={(action, payload) => handleMarkerEdit(action, payload)}
-            toggle={() => toggleTools('polygon')}
-            tool={activeTool}
-          />
-          <EllipseTool
-            active={activeTool === 'ellipse'}
-            latlng={focusedLatlng.latlng}
-            submit={(action, payload) => handleMarkerEdit(action, payload)}
-            toggle={() => toggleTools('ellipse')}
-          />
           <ScaleControl />
-
         </Map>
       </Box>
       <StyleDrawer
         open={activeDialog === 'style'}
         onClose={() => setActiveDialog(null)}
-        submit={(action, payload) => handleMarkerEdit(action, payload)}
+        submit={(action, payload) => editMarker(action, payload)}
       />
       <AddMarkerDrawer
         anchor={history[step].anchor}
         open={activeDialog === 'addMarker'}
         markerLabel={markerLabel}
         onClose={() => setActiveDialog(null)}
-        handleAddMarker={payload => handleMarkerEdit('create', payload)}
+        handleAddMarker={payload => editMarker('create', payload)}
         setMarkerLabel={setMarkerLabel}
       />
       <EditMarkerDrawer
         marker={focusedMarker}
         open={activeDialog === 'editMarker'}
         onClose={() => setActiveDialog(null)}
-        submit={(action, payload) => handleMarkerEdit(action, payload)}
+        submit={(action, payload) => editMarker(action, payload)}
       />
       <EditShapeDrawer
         shape={focusedShape}
         onClose={() => setActiveDialog(null)}
         open={activeDialog === 'editShape'}
-        submit={(action, payload) => handleMarkerEdit(action, payload)}
+        submit={(action, payload) => editMarker(action, payload)}
       />
       <MarkerListDialog
         open={activeDialog === 'markerList'}
@@ -781,7 +540,7 @@ const Cas = () => {
       <LoadScenarioDialog
         open={activeDialog === 'load'}
         setActiveDialog={dialog => setActiveDialog(dialog)}
-        submit={data => handleLoadScenario(data)}
+        submit={data => handleLoadScenario(data, history, step, toast, setHistory, setStep)}
       />
     </Box>
   )

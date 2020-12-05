@@ -32,7 +32,7 @@ import React from 'react'
 //----------------------------------------------------------------//
 // Material-UI Components
 //----------------------------------------------------------------//
-import { 
+import {
   makeStyles,
 } from '@material-ui/core/styles'
 
@@ -40,7 +40,7 @@ import {
 // React Leaflet Components
 //----------------------------------------------------------------//
 import {
-  Map,
+  Map as LMap,
 } from 'react-leaflet'
 
 //----------------------------------------------------------------//
@@ -57,36 +57,51 @@ const useStyles = makeStyles(() => ({
 //----------------------------------------------------------------//
 // Map Component
 //----------------------------------------------------------------//
-const LeafletMap = (props) => {
+const Map = (props) => {
   const classes = useStyles()
 
   let mapRef = React.useRef()
 
+  //----------------------------------------------------------------//
+  // React Callback Functions
+  //----------------------------------------------------------------//
+  const handleMouseMove = React.useCallback(latlng => {
+    if (props.activeTool !== null) {
+      props.setMouseCoords(latlng)
+    }
+  }, [props.mouseCoords, props.activeTool])
+
+  //----------------------------------------------------------------//
+  // React Effects
+  //----------------------------------------------------------------//
   React.useEffect(() => {
     if (mapRef !== null) {
       props.setMap(mapRef)
     }
   }, [mapRef])
 
+  //----------------------------------------------------------------//
+  // Render
+  //----------------------------------------------------------------//
   return (
-    <Map
+    <LMap
       center={props.center}
       className={classes.leafletMap}
-      doubleClickZoom={props.toolActive ? false : true}
+      doubleClickZoom={props.activeTool !== null ? false : true}
       maxZoom={19}
       onMoveend={event => props.setMapCenter(event.target.getCenter())}
       onZoomend={event => props.setMapZoom(event.target.getZoom())}
-      onClick={event => props.setFocusedLatlng({latlng: event.latlng, source: 'map'})}
-      onMouseMove={event => props.handleMouseMove(event.latlng)}
+      onClick={event => props.setFocusedLatlng({ latlng: event.latlng, source: 'map' })}
+      onMouseMove={event => handleMouseMove(event.latlng)}
       ref={map => (map !== null) ? mapRef = map.leafletElement : undefined}
-      style={props.toolActive ? { cursor: 'crosshair' } : undefined}
+      style={props.activeTool !== null ? { cursor: 'crosshair' } : undefined}
       worldCopyJump={true}
       zoom={props.zoom}
       zoomControl={false}
     >
       {props.children}
-    </Map>
+    </LMap>
   )
 }
 
-export default LeafletMap
+export default Map

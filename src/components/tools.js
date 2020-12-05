@@ -38,6 +38,7 @@ import EllipseTool from './tools/EllipseTool'
 import KineticPointTool from './tools/KineticPointTool'
 import LineTool from './tools/LineTool'
 import RectangleTool from './tools/RectangleTool'
+import Tools from './tools/Tools'
 
 export {
   AnalysisTool,
@@ -50,4 +51,5 @@ export {
   KineticPointTool,
   LineTool,
   RectangleTool,
+  Tools,
 }

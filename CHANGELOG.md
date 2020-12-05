@@ -1,3 +1,9 @@
+## 2.12.3-beta (Code Cleanup)
+### Changes
+* Pulled all the tools into its own `Tools` component to be imported by `ToolControl`
+* Pulled `LoadScenario` function to its own file
+* Moved `handleMouseMove` into a `React.useCallback` hook within the `Map` component
+
 ## 2.12.2-beta (Code Cleanup)
 ### Changes
 * Pulled `generateShapePopup` to its own function (to be updated with mega state?)
