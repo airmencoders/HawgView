@@ -74,14 +74,7 @@ import {
   SiteMenu,
 } from './components/core'
 import {
-  AddMarkerDrawer,
-  EditMarkerDrawer,
-  EditShapeDrawer,
-  MarkerListDialog,
-  NotificationsDialog,
-  SaveScenarioDialog,
-  StyleDrawer,
-  LoadScenarioDialog,
+  Dialogs
 } from './components/dialogs'
 
 //----------------------------------------------------------------//
@@ -92,7 +85,6 @@ import getElevation from './functions/getElevation'
 //----------------------------------------------------------------//
 // Hawg View Handlers
 //----------------------------------------------------------------//
-import handleLoadScenario from './handlers/handleLoadScenario'
 import handleMarkerEdit from './handlers/handleMarkerEdit'
 
 //----------------------------------------------------------------//
@@ -420,10 +412,6 @@ const Cas = () => {
       <Box
         flex={1}
       >
-        <NotificationsDialog
-          open={activeDialog === 'notifications'}
-          onClose={() => handleMapReset()}
-        />
         <Map
           center={mapCenter}
           setMap={setMap}
@@ -481,36 +469,6 @@ const Cas = () => {
           <ScaleControl />
         </Map>
       </Box>
-      <StyleDrawer
-        open={activeDialog === 'style'}
-        onClose={() => setActiveDialog(null)}
-        submit={(action, payload) => editMarker(action, payload)}
-      />
-      <AddMarkerDrawer
-        anchor={history[step].anchor}
-        open={activeDialog === 'addMarker'}
-        markerLabel={markerLabel}
-        onClose={() => setActiveDialog(null)}
-        handleAddMarker={payload => editMarker('create', payload)}
-        setMarkerLabel={setMarkerLabel}
-      />
-      <EditMarkerDrawer
-        marker={focusedMarker}
-        open={activeDialog === 'editMarker'}
-        onClose={() => setActiveDialog(null)}
-        submit={(action, payload) => editMarker(action, payload)}
-      />
-      <EditShapeDrawer
-        shape={focusedShape}
-        onClose={() => setActiveDialog(null)}
-        open={activeDialog === 'editShape'}
-        submit={(action, payload) => editMarker(action, payload)}
-      />
-      <MarkerListDialog
-        open={activeDialog === 'markerList'}
-        onClose={() => setActiveDialog(false)}
-        step={history[step]}
-      />
       <Snackbar
         anchorOrigin={{
           vertical: 'bottom',
@@ -531,16 +489,17 @@ const Cas = () => {
           {snackbarMessage ? snackbarMessage.message : undefined}
         </Alert>
       </Snackbar>
-      <SaveScenarioDialog
-        data={history[step]}
-        open={activeDialog === 'save'}
-        setActiveDialog={dialog => setActiveDialog(dialog)}
-        toast={(message, severity) => toast(message, severity)}
-      />
-      <LoadScenarioDialog
-        open={activeDialog === 'load'}
-        setActiveDialog={dialog => setActiveDialog(dialog)}
-        submit={data => handleLoadScenario(data, history, step, toast, setHistory, setStep)}
+      <Dialogs
+        activeDialog={activeDialog}
+        focusedMarker={focusedMarker}
+        handleEditMarker={(action, dialog) => editMarker(action, dialog)}
+        handleMapReset={handleMapReset}
+        history={history}
+        setActiveDialog={setActiveDialog}
+        setHistory={setHistory}
+        setStep={setStep}
+        step={step}
+        toast={toast}
       />
     </Box>
   )

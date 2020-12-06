@@ -1,3 +1,7 @@
+## 2.12.4-beta (Code Cleanup)
+### Changes
+* Pulled all the dialogs into its own `Dialogs` component to be imported by `CAS`
+
 ## 2.12.3-beta (Code Cleanup)
 ### Changes
 * Pulled all the tools into its own `Tools` component to be imported by `ToolControl`
