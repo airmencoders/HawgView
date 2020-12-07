@@ -45,7 +45,6 @@ import {
   Circle,
   LayersControl,
   LayerGroup,
-  Marker as RLMarker,
   Polygon,
   Polyline,
   Popup,
@@ -77,7 +76,6 @@ import { airspace } from '../../constants/airspace'
 // Geodesy Functions
 //----------------------------------------------------------------//
 import { LatLon as LL } from 'geodesy/mgrs'
-import LatLon from 'geodesy/latlon-spherical'
 
 //----------------------------------------------------------------//
 // Map Control Component
@@ -141,8 +139,6 @@ const LayerControl = props => {
     props.setActiveDialog('editShape')
   }
 
-  
-
   // Only for Circle || Ellipse || Bullseye
   const generateShapePopupText = shape => {
     let position
@@ -167,7 +163,7 @@ const LayerControl = props => {
     )
   }
 
-  return (
+  const layers = React.useMemo(() => (
     <LayersControl position='topright'>
       <BaseLayer
         checked
@@ -177,7 +173,7 @@ const LayerControl = props => {
           className='leaflet-layer-imagery'
           url='https://fly.maptiles.arcgis.com/arcgis/rest/services/World_Imagery_Firefly/MapServer/tile/{z}/{y}/{x}'
           attribution={`Esri, DigitalGlobe, GeoEye, Earthstar Geographics, CNES/Airbus DS, USDA, USGS, AeroGRID, IGN, and the GIS User Community`}
-          maxNativeZoom={19}
+          maxNativeZoom={17}
           opacity={props.brightness > 1 ? 2 - props.brightness : props.brightness}
           keepMounted
         />
@@ -187,7 +183,7 @@ const LayerControl = props => {
           className='leaflet-layer-imagery'
           url='https://clarity.maptiles.arcgis.com/arcgis/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'
           attribution={`Esri, DigitalGlobe, GeoEye, Earthstar Geographics, CNES/Airbus DS, USDA, USGS, AeroGRID, IGN, and the GIS User Community`}
-          maxNativeZoom={19}
+          maxNativeZoom={17}
           keepMounted
           opacity={props.brightness > 1 ? 2 - props.brightness : props.brightness}
         />
@@ -362,7 +358,7 @@ const LayerControl = props => {
           {props.step.threatMarkers.map(marker => (
             <Threat
               anchor={props.anchor}
-              interactie={props.interactive}
+              interactive={props.interactive}
               handleMarkerDrag={(marker, latlng) => props.handleMarkerDrag(marker, latlng)}
               handleDeleteMarker={marker => props.handleDeleteMarker(marker)}
               key={`${marker.layer}-${marker.title}-${marker.id}`}
@@ -393,7 +389,6 @@ const LayerControl = props => {
               mapZoom={props.mapZoom}
               setActiveDialog={dialog => props.setActiveDialog(dialog)}
               setFocusedMarker={marker => props.setFocusedMarker(marker)}
-              setFocusedShape={shape => props.setFocusedShape(shape)}
               //toggleEditMarkerDialog={() => props.toggleEditMarkerDialog()}
               tooltipsActive={props.tooltipsActive}
             />
@@ -698,7 +693,9 @@ const LayerControl = props => {
         </LayerGroup>
       </Overlay>
     </LayersControl>
-  )
+  ), [props.step, props.anchor, props.interactive, props.mapZoom, props.markerSize, props.tooltipsActive])
+
+ return layers
 }
 
 export default LayerControl

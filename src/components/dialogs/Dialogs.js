@@ -74,7 +74,7 @@ const Dialogs = props => {
       />
       <EditMarkerDrawer
         marker={props.focusedMarker}
-        open={props.activeDialog === 'props.handleEditMarker'}
+        open={props.activeDialog === 'editMarker'}
         onClose={() => props.setActiveDialog(null)}
         submit={(action, payload) => props.handleEditMarker(action, payload)}
       />

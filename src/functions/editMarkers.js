@@ -38,6 +38,16 @@
   return declination
 }*/
 
+const compare = (a, b) => {
+  const idA = a.id
+  const idB = b.id
+  
+  let comparison = 0
+  idA > idB ? comparison = 1 : idB > idA ? comparison = -1 : comparison = 0
+  
+  return comparison
+}
+
 const getDeclination = latlng => {
   let request = new XMLHttpRequest()
   request.open('GET', `https://www.ngdc.noaa.gov/geomag-web/calculators/calculateDeclination?lat1=${latlng.lat}&lon1=${latlng.lng}&resultFormat=json`, false)
@@ -469,95 +479,119 @@ const dragMarker = (history, step, payload) => {
     }
   }
 
+  let newMarkers
+
   switch (marker.layer) {
     case 'friendly':
       filteredMarkers = targetHistory[step].friendlyMarkers.filter(currentMarker => currentMarker.id !== marker.id)
+      newMarkers = [...filteredMarkers, newMarker]
+      newMarkers.sort(compare)
 
       return {
         ...targetHistory[step],
         action: `move ${marker.title}`,
-        friendlyMarkers: [...filteredMarkers, newMarker]
+        friendlyMarkers: newMarkers
       }
     case 'hostile':
       filteredMarkers = targetHistory[step].hostileMarkers.filter(currentMarker => currentMarker.id !== marker.id)
+      newMarkers = [...filteredMarkers, newMarker]
+      newMarkers.sort(compare)
 
       return {
         ...targetHistory[step],
         action: `move ${marker.title}`,
-        hostileMarkers: [...filteredMarkers, newMarker]
+        hostileMarkers: newMarkers
       }
     case 'ip':
       filteredMarkers = targetHistory[step].initialPoints.filter(currentMarker => currentMarker.id !== marker.id)
+      newMarkers = [...filteredMarkers, newMarker]
+      newMarkers.sort(compare)
 
       return {
         ...targetHistory[step],
         action: `move ${marker.title}`,
-        initialPoints: [...filteredMarkers, newMarker]
+        initialPoints: newMarkers
       }
     case 'survivor':
       filteredMarkers = targetHistory[step].survivors.filter(currentMarker => currentMarker.id !== marker.id)
+      newMarkers = [...filteredMarkers, newMarker]
+      newMarkers.sort(compare)
 
       return {
         ...targetHistory[step],
         action: `move ${marker.title}`,
-        survivors: [...filteredMarkers, newMarker]
+        survivors: newMarkers
       }
     case 'threat':
       filteredMarkers = targetHistory[step].threatMarkers.filter(currentMarker => currentMarker.id !== marker.id)
+      newMarkers = [...filteredMarkers, newMarker]
+      newMarkers.sort(compare)
 
       return {
         ...targetHistory[step],
         action: `move ${marker.title}`,
-        threatMarkers: [...filteredMarkers, newMarker]
+        threatMarkers: newMarkers
       }
     case 'circle':
       filteredMarkers = targetHistory[step].circles.filter(currentMarker => currentMarker.id !== marker.id)
+      newMarkers = [...filteredMarkers, newMarker]
+      newMarkers.sort(compare)
 
       return {
         ...targetHistory[step],
         action: `move circle ${marker.title}`,
-        circles: [...filteredMarkers, newMarker]
+        circles: newMarkers
       }
     case 'rectangle':
       filteredMarkers = targetHistory[step].rectangles.filter(currentMarker => currentMarker.id !== marker.id)
+      newMarkers = [...filteredMarkers, newMarker]
+      newMarkers.sort(compare)
 
       return {
         ...targetHistory[step],
         action: `move rectangle ${marker.title}`,
-        rectangles: [...filteredMarkers, newMarker]
+        rectangles: newMarkers
       }
     case 'buildingLabel':
       filteredMarkers = targetHistory[step].buildingLabels.filter(currentMarker => currentMarker.id !== marker.id)
+      newMarkers = [...filteredMarkers, newMarker]
+      newMarkers.sort(compare)
 
       return {
         ...targetHistory[step],
         action: `move building label ${marker.title}`,
-        buildingLabels: [...filteredMarkers, newMarker]
+        buildingLabels: newMarkers
       }
     case 'kineticPoint':
       filteredMarkers = targetHistory[step].kineticPoints.filter(currentMarker => currentMarker.id !== marker.id)
+      newMarkers = [...filteredMarkers, newMarker]
+      newMarkers.sort(compare)
 
       return {
         ...targetHistory[step],
         action: `move kinetic point ${marker.title}`,
-        kineticPoints: [...filteredMarkers, newMarker]
+        kineticPoints: newMarkers
       }
     case 'mapLabel':
       filteredMarkers = targetHistory[step].mapLabels.filter(currentMarker => currentMarker.id !== marker.id)
+      newMarkers = [...filteredMarkers, newMarker]
+      newMarkers.sort(compare)
 
       return {
         ...targetHistory[step],
         action: `move map label ${marker.title}`,
-        mapLabels: [...filteredMarkers, newMarker]
+        mapLabels: newMarkers
       }
     case 'bullseye':
       filteredMarkers = targetHistory[step].bullseyes.filter(currentMarker => currentMarker.id !== marker.id)
+      newMarkers = [...filteredMarkers, newMarker]
+      newMarkers.sort(compare)
 
       return {
         ...targetHistory[step],
         action: `move bullseye ${marker.title}`,
         anchor: marker.anchor ? { declination: newMarker.declination, id: newMarker.id, latlng: newMarker.latlng, name: newMarker.title } : targetHistory[step].anchor,
-        bullseyes: [...filteredMarkers, newMarker]
+        bullseyes: newMarkers
       }
     default:
       console.error(`Error: Could not drag marker (${marker}). Invalid sovereignty (${marker.sovereignty})`)
@@ -576,6 +610,8 @@ const editMarker = (history, step, payload) => {
     targetHistory = history.slice(0, step + 1)
   }
 
+  let newMarkers
+
   switch (marker.layer) {
     case 'friendly':
       filteredMarkers = targetHistory[step].friendlyMarkers.filter(currentMarker => currentMarker.id !== marker.id)
@@ -587,10 +623,13 @@ const editMarker = (history, step, payload) => {
         latlng: payload.latlng,
       }
 
+      newMarkers = [...filteredMarkers, newMarker]
+      newMarkers.sort(compare)
+
       return {
         ...targetHistory[step],
         action: `edit ${marker.title}`,
-        friendlyMarkers: [...filteredMarkers, newMarker]
+        friendlyMarkers: newMarkers
       }
     case 'hostile':
       filteredMarkers = targetHistory[step].hostileMarkers.filter(currentMarker => currentMarker.id !== marker.id)
@@ -603,10 +642,13 @@ const editMarker = (history, step, payload) => {
         latlng: payload.latlng,
       }
 
+      newMarkers = [...filteredMarkers, newMarker]
+      newMarkers.sort(compare)
+
       return {
         ...targetHistory[step],
         action: `edit ${marker.title}`,
-        hostileMarkers: [...filteredMarkers, newMarker]
+        hostileMarkers: newMarkers
       }
     case 'ip':
       filteredMarkers = targetHistory[step].initialPoints.filter(currentMarker => currentMarker.id !== marker.id)
@@ -617,10 +659,13 @@ const editMarker = (history, step, payload) => {
         latlng: payload.latlng,
       }
 
+      newMarkers = [...filteredMarkers, newMarker]
+      newMarkers.sort(compare)
+
       return {
         ...targetHistory[step],
         action: `edit ${marker.title}`,
-        initialPoints: [...filteredMarkers, newMarker]
+        initialPoints: newMarkers
       }
     case 'survivor':
       filteredMarkers = targetHistory[step].survivors.filter(currentMarker => currentMarker.id !== marker.id)
@@ -632,10 +677,13 @@ const editMarker = (history, step, payload) => {
         latlng: payload.latlng,
       }
 
+      newMarkers = [...filteredMarkers, newMarker]
+      newMarkers.sort(compare)
+
       return {
         ...targetHistory[step],
         action: `edit ${marker.title}`,
-        survivors: [...filteredMarkers, newMarker]
+        survivors: newMarkers
       }
     case 'threat':
       filteredMarkers = targetHistory[step].threatMarkers.filter(currentMarker => currentMarker.id !== marker.id)
@@ -656,10 +704,13 @@ const editMarker = (history, step, payload) => {
         unit: payload.unit,
       }
 
+      newMarkers = [...filteredMarkers, newMarker]
+      newMarkers.sort(compare)
+
       return {
         ...targetHistory[step],
         action: `edit ${marker.title}`,
-        threatMarkers: [...filteredMarkers, newMarker]
+        threatMarkers: newMarkers
       }
     case 'circle':
       filteredMarkers = targetHistory[step].circles.filter(currentMarker => currentMarker.id !== marker.id)
@@ -675,10 +726,13 @@ const editMarker = (history, step, payload) => {
         unit: payload.unit,
       }
 
+      newMarkers = [...filteredMarkers, newMarker]
+      newMarkers.sort(compare)
+
       return {
         ...targetHistory[step],
         action: `edit circle ${marker.title}`,
-        circles: [...filteredMarkers, newMarker]
+        circles: newMarkers
       }
     case 'rectangle':
       filteredMarkers = targetHistory[step].rectangles.filter(currentMarker => currentMarker.id !== marker.id)
@@ -691,10 +745,13 @@ const editMarker = (history, step, payload) => {
         dashArray: payload.dashArray,
       }
 
+      newMarkers = [...filteredMarkers, newMarker]
+      newMarkers.sort(compare)
+
       return {
         ...targetHistory[step],
         action: `edit rectangle ${marker.title}`,
-        rectangles: [...filteredMarkers, newMarker]
+        rectangles: newMarkers
       }
     case 'line':
       filteredMarkers = targetHistory[step].lines.filter(currentMarker => currentMarker.id !== marker.id)
@@ -706,10 +763,13 @@ const editMarker = (history, step, payload) => {
         dashArray: payload.dashArray,
       }
 
+      newMarkers = [...filteredMarkers, newMarker]
+      newMarkers.sort(compare)
+
       return {
         ...targetHistory[step],
         action: `edit line ${marker.title}`,
-        lines: [...filteredMarkers, newMarker]
+        lines: newMarkers
       }
     case 'polygon':
       filteredMarkers = targetHistory[step].polygons.filter(currentMarker => currentMarker.id !== marker.id)
@@ -722,10 +782,13 @@ const editMarker = (history, step, payload) => {
         title: payload.title,
       }
 
+      newMarkers = [...filteredMarkers, newMarker]
+      newMarkers.sort(compare)
+
       return {
         ...targetHistory[step],
         action: `edit polygon ${marker.title}`,
-        polygons: [...filteredMarkers, newMarker]
+        polygons: newMarkers
       }
     case 'buildingLabel':
       filteredMarkers = targetHistory[step].buildingLabels.filter(currentMarker => currentMarker.id !== marker.id)
@@ -737,10 +800,13 @@ const editMarker = (history, step, payload) => {
         elevation: payload.elevation,
       }
 
+      newMarkers = [...filteredMarkers, newMarker]
+      newMarkers.sort(compare)
+
       return {
         ...targetHistory[step],
         action: `edit building label ${marker.title}`,
-        buildingLabels: [...filteredMarkers, newMarker]
+        buildingLabels: newMarkers
       }
     case 'kineticPoint':
       filteredMarkers = targetHistory[step].kineticPoints.filter(currentMarker => currentMarker.id !== marker.id)
@@ -752,10 +818,13 @@ const editMarker = (history, step, payload) => {
         elevation: payload.elevation,
       }
 
+      newMarkers = [...filteredMarkers, newMarker]
+      newMarkers.sort(compare)
+
       return {
         ...targetHistory[step],
         action: `edit kinetic point ${marker.title}`,
-        kineticPoints: [...filteredMarkers, newMarker]
+        kineticPoints: newMarkers
       }
     case 'mapLabel':
       filteredMarkers = targetHistory[step].mapLabels.filter(currentMarker => currentMarker.id !== marker.id)
@@ -768,10 +837,13 @@ const editMarker = (history, step, payload) => {
         elevation: payload.elevation,
       }
 
+      newMarkers = [...filteredMarkers, newMarker]
+      newMarkers.sort(compare)
+
       return {
         ...targetHistory[step],
         action: `edit map label ${marker.title}`,
-        mapLabels: [...filteredMarkers, newMarker]
+        mapLabels: newMarkers
       }
     case 'bullseye':
       filteredMarkers = targetHistory[step].bullseyes.filter(currentMarker => currentMarker.id !== marker.id)
@@ -827,11 +899,14 @@ const editMarker = (history, step, payload) => {
         newBullseyes = [newMarker]
       }
 
+      newMarkers = [...filteredMarkers, ...newBullseyes]
+      newMarkers.sort(compare)
+
       return {
         ...targetHistory[step],
         action: `edit bullseye ${marker.title}`,
         anchor: newAnchor,
-        bullseyes: [...filteredMarkers, ...newBullseyes]
+        bullseyes: newMarkers
       }
     case 'ellipse':
       filteredMarkers = targetHistory[step].ellipses.filter(currentMarker => currentMarker.id !== marker.id)
@@ -848,10 +923,13 @@ const editMarker = (history, step, payload) => {
         width: payload.width,
       }
 
+      newMarkers = [...filteredMarkers, newMarker]
+      newMarkers.sort(compare)
+
       return {
         ...targetHistory[step],
         action: `edit ellipse ${marker.title}`,
-        ellipses: [...filteredMarkers, newMarker]
+        ellipses: newMarkers
       }
     case 'styles':
 

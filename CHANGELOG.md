@@ -1,3 +1,15 @@
+## 2.13.0-beta
+### Changes
+* Wrapped `LayerControl` in a `React.useMemo` to assist with the mouse coordinate rendering
+* Fixed typo in `LayerControl` preventing `interactive` prop being properly passed
+* Re-Added `MouseCoordinateControl`
+* Added sorting function to the `editMarkers` function to keep markers in the order that they were created
+
+### Fixes
+* Fixed bug preventing threats from being dragged
+* Fixed bug that did not allow for mouse coordinates to be displayed
+* Fixed issue which caused the `MarkerList` to be out of order once a marker was edited
+
 ## 2.12.6-beta
 ### Changes
 * Re-added `toggleTooltips` to `CASTools`

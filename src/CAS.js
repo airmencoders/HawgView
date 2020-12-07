@@ -61,6 +61,7 @@ import {
 //----------------------------------------------------------------//
 import {
   LayerControl,
+  MouseCoordinatesControl,
   ToolControl,
 } from './components/controls'
 import {
@@ -463,10 +464,10 @@ const Cas = () => {
             setMouseCoords={setMouseCoords}
             step={step}
           />
-          {/*<MouseCoordinatesControl
+          <MouseCoordinatesControl
             anchor={history[step].anchor}
             mouseCoords={mouseCoords}
-          />*/}
+          />
           <ScaleControl />
         </Map>
       </Box>
