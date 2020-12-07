@@ -1,3 +1,7 @@
+## 2.13.1-beta
+### Changes
+* Modified `handleMapReset` function to no longer reset the `focusedShape` and `focusedMarker`
+
 ## 2.13.0-beta
 ### Changes
 * Wrapped `LayerControl` in a `React.useMemo` to assist with the mouse coordinate rendering

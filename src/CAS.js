@@ -192,8 +192,6 @@ const Cas = () => {
   // DEBUGGING AREA
   //----------------------------------------------------------------//
 
-  // Edit to force git update
-
   //----------------------------------------------------------------//
   //----------------------------------------------------------------//
   //----------------------------------------------------------------//
@@ -288,10 +286,10 @@ const Cas = () => {
     setActiveDialog(null)
     setFocusedLatlng({ latlng: null, source: null })
     setMouseCoords(null)
-    setFocusedMarker(null)
-    setFocusedShape(null)
+    //setFocusedMarker(null)
+    //setFocusedShape(null)
     //setMapPopup(null)
-    setElevation('Pending')
+    //setElevation('Pending')
   }
 
   const handleCoordInput = latlng => {
