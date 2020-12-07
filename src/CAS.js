@@ -362,6 +362,7 @@ const Cas = () => {
               setMapColor={setMapColor}
               setMarkerSize={setMarkerSize}
               step={step}
+              toggleTooltips={() => setTooltipsActive(!tooltipsActive)}
               tooltipsActive={tooltipsActive}
             />
           </div>

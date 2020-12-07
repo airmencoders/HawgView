@@ -1,3 +1,10 @@
+## 2.12.6-beta
+### Changes
+* Re-added `toggleTooltips` to `CASTools`
+
+### Fixes
+* Fixed bug where desktop menu wouldn't toggle tooltips appropriately
+
 ## 2.12.5-beta (Code Cleanup)
 ### Changes
 * Finished pulling all the dialogs into `Dialogs` component
