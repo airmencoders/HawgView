@@ -10,6 +10,10 @@
 * Fixed bug that did not allow for mouse coordinates to be displayed
 * Fixed issue which caused the `MarkerList` to be out of order once a marker was edited
 
+## 2.12.7-beta
+### Changes
+* Changed `mapNativeZoom` for both baselayers to `17` which should reduce the amount of non-existing base layers for users
+
 ## 2.12.6-beta
 ### Changes
 * Re-added `toggleTooltips` to `CASTools`
