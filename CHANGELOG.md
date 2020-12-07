@@ -1,3 +1,8 @@
+## 2.12.5-beta (Code Cleanup)
+### Changes
+* Finished pulling all the dialogs into `Dialogs` component
+* Fixed title in `index.html`
+
 ## 2.12.4-beta (Code Cleanup)
 ### Changes
 * Pulled all the dialogs into its own `Dialogs` component to be imported by `CAS`

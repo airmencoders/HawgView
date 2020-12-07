@@ -46,7 +46,7 @@ import {
 //----------------------------------------------------------------//
 // Hawg View Handlers
 //----------------------------------------------------------------//
-import handleLoadScenario from './handlers/handleLoadScenario'
+import handleLoadScenario from '../../handlers/handleLoadScenario'
 
 //----------------------------------------------------------------//
 // Dialogs Component
@@ -67,10 +67,10 @@ const Dialogs = props => {
       <AddMarkerDrawer
         anchor={props.history[props.step].anchor}
         open={props.activeDialog === 'addMarker'}
-        markerLabel={markerLabel}
+        markerLabel={props.markerLabel}
         onClose={() => props.setActiveDialog(null)}
         handleAddMarker={payload => props.handleEditMarker('create', payload)}
-        setMarkerLabel={setMarkerLabel}
+        setMarkerLabel={props.setMarkerLabel}
       />
       <EditMarkerDrawer
         marker={props.focusedMarker}
@@ -79,7 +79,7 @@ const Dialogs = props => {
         submit={(action, payload) => props.handleEditMarker(action, payload)}
       />
       <EditShapeDrawer
-        shape={focusedShape}
+        shape={props.focusedShape}
         onClose={() => props.setActiveDialog(null)}
         open={props.activeDialog === 'editShape'}
         submit={(action, payload) => props.handleEditMarker(action, payload)}

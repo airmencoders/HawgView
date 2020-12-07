@@ -29,6 +29,7 @@
  */
 
 import AddMarkerDrawer from './dialogs/AddMarkerDrawer'
+import Dialogs from './dialogs/Dialogs'
 import EditMarkerDrawer from './dialogs/EditMarkerDrawer'
 import EditShapeDrawer from './dialogs/EditShapeDrawer'
 import FriendlyMarkers from './dialogs/FriendlyMarkers'
@@ -44,6 +45,7 @@ import UpdateScenarioDialog from './dialogs/UpdateScenarioDialog'
 
 export {
   AddMarkerDrawer,
+  Dialogs,
   EditMarkerDrawer,
   EditShapeDrawer,
   FriendlyMarkers,

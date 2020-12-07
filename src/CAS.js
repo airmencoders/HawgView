@@ -492,11 +492,14 @@ const Cas = () => {
       <Dialogs
         activeDialog={activeDialog}
         focusedMarker={focusedMarker}
+        focusedShape={focusedShape}
         handleEditMarker={(action, dialog) => editMarker(action, dialog)}
         handleMapReset={handleMapReset}
         history={history}
+        markerLabel={markerLabel}
         setActiveDialog={setActiveDialog}
         setHistory={setHistory}
+        setMarkerLabel={setMarkerLabel}
         setStep={setStep}
         step={step}
         toast={toast}
