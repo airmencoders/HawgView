@@ -376,7 +376,7 @@ const generateMarkers = (markers, folderName, folderId, kmlData) => {
         <Style>
           <IconStyle>
             <Icon>
-              <href>${marker.layer === 'buildingLabel' ? 'http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png' : marker.layer === 'kineticPoint' ? 'http://maps.google.com/mapfiles/kml/pushpin/red-pushpin.png' : remapIconUrl(marker.iconUrl)}</href>
+              <href>${marker.layer === 'buildingLabel' ? 'http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png' : marker.layer === 'kineticPoint' ? 'http://maps.google.com/mapfiles/kml/pushpin/red-pushpin.png' : marker.layer === 'mapLabel' ? 'http://maps.google.com/mapfiles/kml/pushpin/wht-pushpin.png' : remapIconUrl(marker.iconUrl)}</href>
             </Icon>
           </IconStyle>
         </Style>
@@ -833,6 +833,7 @@ const generateKML = step => {
   kmlData = generateMarkers(step.bullseyes, 'Bullseyes', 'bullseyes', kmlData)
   kmlData = generateMarkers(step.buildingLabels, 'Building Labels', 'building_labels', kmlData)
   kmlData = generateMarkers(step.kineticPoints, 'Kinetic Points', 'kinetic_points', kmlData)
+  kmlData = generateMarkers(step.mapLabels, 'Map Labels', 'map_labels', kmlData)
   kmlData = generateThreats(step.threatMarkers, kmlData)
 
   kmlData += fileClose

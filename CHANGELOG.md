@@ -1,3 +1,7 @@
+## 2.14.5-beta
+### Changes
+* Added Map Labels to the KML
+
 ## 2.14.4-beta
 ### Changes
 * Changed folders in KML to be closed by default
