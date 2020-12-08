@@ -36,7 +36,7 @@ import {
   Menu,
   MenuItem,
 } from '@material-ui/core'
-import { 
+import {
   makeStyles,
 } from '@material-ui/core/styles'
 import {
@@ -45,6 +45,7 @@ import {
   BrightnessLow as BrightnessLowIcon,
   Clear as ClearIcon,
   FolderOpen as FolderOpenIcon,
+  GetApp as GetAppIcon,
   InvertColors as InvertColorsIcon,
   InvertColorsOff as InvertColorsOffIcon,
   Label as LabelIcon,
@@ -57,6 +58,11 @@ import {
   Undo as UndoIcon,
   ViewList as ViewListIcon,
 } from '@material-ui/icons'
+
+//----------------------------------------------------------------//
+// Hawg View Functions
+//----------------------------------------------------------------//
+import generateKML from '../../functions/generateKML'
 
 //----------------------------------------------------------------//
 // Hawg View Handlers
@@ -138,6 +144,11 @@ const MobileMenu = (props) => {
     handleBrightnessDecrease(props.brightness, props.setBrightness)
   }
 
+  const handleDownloadClick = () => {
+    props.setActiveDialog(null)
+    generateKML(props.history[props.step])
+  }
+
   //----------------------------------------------------------------//
   // Component
   //----------------------------------------------------------------//
@@ -172,7 +183,7 @@ const MobileMenu = (props) => {
         <ClearIcon className={classes.icon} />
         Clear all markers
       </MenuItem>
-      <MenuItem 
+      <MenuItem
         disabled={props.markerSize === maxMarkerSize}
         onClick={handleMarkerSizeIncreaseClick}
       >
@@ -193,7 +204,7 @@ const MobileMenu = (props) => {
         <BrightnessLowIcon className={classes.icon} />
         Decrease brightness
       </MenuItem>
-      <MenuItem 
+      <MenuItem
         disabled={props.brightness === maxBrightness}
         onClick={handleBrightnessIncreaseClick}
       >
@@ -201,8 +212,8 @@ const MobileMenu = (props) => {
         Increase brightness
       </MenuItem>
       <MenuItem onClick={handleColorToggleClick}>
-        {props.mapColor ? 
-          <InvertColorsIcon className={classes.icon} /> 
+        {props.mapColor ?
+          <InvertColorsIcon className={classes.icon} />
           : <InvertColorsOffIcon className={classes.icon} />
         }
         Toggle map color
@@ -216,8 +227,8 @@ const MobileMenu = (props) => {
         View marker list
       </MenuItem>
       <MenuItem onClick={handleToggleTooltipsClick}>
-        {props.tooltipsActive ? 
-          <LabelOffIcon className={classes.icon} /> 
+        {props.tooltipsActive ?
+          <LabelOffIcon className={classes.icon} />
           : <LabelIcon className={classes.icon} />
         }
         Toggle marker labels
@@ -234,10 +245,10 @@ const MobileMenu = (props) => {
         <StyleIcon className={classes.icon} />
         Styles
       </MenuItem>
-      {/*<MenuItem disabled onClick={props.handleMinMenuClose}>
+      <MenuItem onClick={handleDownloadClick}>
         <GetAppIcon className={classes.icon} />
         Download products
-  </MenuItem>*/}
+      </MenuItem>
     </Menu>
   )
 }

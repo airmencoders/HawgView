@@ -1,3 +1,7 @@
+## 2.14.8-beta
+### Changes
+* Re-added `Download Products` to `MobileMenu`
+
 ## 2.14.7-beta
 ### Changes
 * Added shapes (except ellipse) to the KML download
