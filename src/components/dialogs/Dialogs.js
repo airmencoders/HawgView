@@ -61,32 +61,32 @@ const Dialogs = props => {
       />
       <StyleDrawer
         open={props.activeDialog === 'style'}
-        onClose={() => props.setActiveDialog(null)}
+        onClose={() => props.handleMapReset()}
         submit={(action, payload) => props.handleEditMarker(action, payload)}
       />
       <AddMarkerDrawer
         anchor={props.history[props.step].anchor}
         open={props.activeDialog === 'addMarker'}
         markerLabel={props.markerLabel}
-        onClose={() => props.setActiveDialog(null)}
+        onClose={() => props.handleMapReset()}
         handleAddMarker={payload => props.handleEditMarker('create', payload)}
         setMarkerLabel={props.setMarkerLabel}
       />
       <EditMarkerDrawer
         marker={props.focusedMarker}
         open={props.activeDialog === 'editMarker'}
-        onClose={() => props.setActiveDialog(null)}
+        onClose={() => props.handleMapReset()}
         submit={(action, payload) => props.handleEditMarker(action, payload)}
       />
       <EditShapeDrawer
         shape={props.focusedShape}
-        onClose={() => props.setActiveDialog(null)}
+        onClose={() => props.handleMapReset()}
         open={props.activeDialog === 'editShape'}
         submit={(action, payload) => props.handleEditMarker(action, payload)}
       />
       <MarkerListDialog
         open={props.activeDialog === 'markerList'}
-        onClose={() => props.setActiveDialog(false)}
+        onClose={() => props.handleMapReset()}
         step={props.history[props.step]}
       />
       <SaveScenarioDialog

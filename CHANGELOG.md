@@ -1,3 +1,10 @@
+## 2.14.7-beta
+### Changes
+* Added shapes (except ellipse) to the KML download
+
+### Fixes
+* Fixed bug where a drawer would not reset the map causing user not able to get the map popup
+
 ## 2.14.6-beta
 ### Fixes
 * Fixed bug where brightness changes to the map no longer work

@@ -27,6 +27,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+import { LatLon as LL } from 'geodesy/mgrs'
+import LatLon from 'geodesy/latlon-spherical'
+
 //----------------------------------------------------------------//
 // Hawg View Constants
 //----------------------------------------------------------------//
@@ -214,6 +217,254 @@ const remapIconUrl = svg => {
   return pngUrl
 }
 
+const tryMgrs = latlng => {
+  let position
+
+  try {
+    position = LL.parse(latlng.lat, latlng.lng).toUtm().toMgrs().toString()
+  } catch (e) {
+    position = LL.parse(latlng.lat, latlng.lng)
+  }
+
+  return position
+}
+
+const hexToKmlColor = color => {
+  let kml = color.substring(1)
+  let r = kml.substring(0, 2)
+  let g = kml.substring(2, 4)
+  let b = kml.substring(4)
+
+  return `FF${b}${g}${r}`
+}
+
+const generateBullseyes = (bullseyes, kmlData) => {
+  kmlData +=
+    `<Folder id='bullseyes'>
+      <name>Bullseyes</name>
+      <open>0</open>`
+
+  bullseyes.map((bullseye, index) => {
+    kmlData += 
+    `<Folder id='bullseye-${index}'>
+      <name>${bullseye.title}</name>
+      <open>0</open>
+      <Placemark>
+        <name>${bullseye.title}</name>
+        <Style>
+          <IconStyle><Icon/></IconStyle>
+        </Style>
+        <Point>
+          <coordinates>${bullseye.latlng.lng},${bullseye.latlng.lat}</coordinates>
+        </Point>
+      </Placemark>
+      `
+      
+      for(let i = 1; i <= bullseye.rings; i++) {
+        let circle = {
+          layer: 'circle',
+          unit: 'm',
+          radius: bullseye.distance * 1852 * i,
+          color: bullseye.color,
+          latlng: bullseye.latlng,
+        }
+
+        kmlData += generateCircle(circle)
+      }
+
+      for(let i = 1; i <= 360; i += bullseye.angle) {
+        let point = LatLon.parse(bullseye.latlng.lat, bullseye.latlng.lng)
+        let endPoint = point.destinationPoint(bullseye.rings * bullseye.distance * 1852, i + bullseye.declination)
+        kmlData += 
+          `<Placemark>
+            <Style>
+              <IconStyle><Icon/></IconStyle>
+              <LineStyle>
+                <color>${hexToKmlColor(bullseye.color)}</color>
+                <width>5</width>
+              </LineStyle>
+            </Style>
+            <LineString>
+              <tessellate>1</tessellate>
+              <coordinates>
+                ${bullseye.latlng.lng},${bullseye.latlng.lat}
+                ${endPoint.lon},${endPoint.lat}
+              </coordinates>
+            </LineString>
+          </Placemark>`
+      }
+
+    kmlData += `</Folder>`
+  })
+
+  kmlData += `</Folder>`
+  return kmlData
+}
+
+const generateCircles = (circles, kmlData) => {
+  kmlData +=
+    `<Folder id='circles'>
+      <name>Circles</name>
+      <open>0</open>
+      `
+
+  circles.map(circle => {
+    kmlData += generateCircle(circle)
+  })
+
+  kmlData += `</Folder>`
+  return kmlData
+}
+
+const generateLines = (lines, kmlData) => {
+  kmlData +=
+    `<Folder id='lines'>
+      <name>Lines</name>
+      <open>0</open>`
+
+  lines.map(line => {
+    kmlData +=
+      `<Placemark>
+        <Style>
+          <IconStyle><Icon/></IconStyle>
+          <LineStyle>
+            <color>${hexToKmlColor(line.color)}</color>
+            <width>5</width>
+          </LineStyle>
+        </Style>
+        <LineString>
+          <tessellate>1</tessellate>
+          <coordinates>`
+
+    line.positions.map(coordinate => {
+      kmlData += `${coordinate.lng},${coordinate.lat}\n`
+    })
+
+    kmlData +=
+      `</coordinates>
+        </LineString>
+          </Placemark>`
+  })
+
+  kmlData += `</Folder>`
+  return kmlData
+}
+
+const generateRectangles = (rectangles, kmlData) => {
+  kmlData +=
+    `<Folder id='rectangles'>
+      <name>Rectangles</name>
+      <open>0</open>`
+
+  rectangles.map(rectangle => {
+    kmlData +=
+      `<Placemark>
+        <Style>
+          <IconStyle><Icon/></IconStyle>
+          <LineStyle>
+            <color>${hexToKmlColor(rectangle.color)}</color>
+            <width>5</width>
+          </LineStyle>
+          <PolyStyle>
+            <color>00000000</color>
+          </PolyStyle>
+        </Style>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>
+                ${rectangle.bounds[0].lng},${rectangle.bounds[0].lat}
+                ${rectangle.bounds[1].lng},${rectangle.bounds[0].lat}
+                ${rectangle.bounds[1].lng},${rectangle.bounds[1].lat}
+                ${rectangle.bounds[0].lng},${rectangle.bounds[1].lat}
+                ${rectangle.bounds[0].lng},${rectangle.bounds[0].lat}
+              </coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+      </Placemark>`
+  })
+
+  kmlData += `</Folder>`
+  return kmlData
+}
+
+const generatePolygons = (polygons, kmlData) => {
+  kmlData +=
+    `<Folder id='polygons'>
+      <name>Polygons</name>
+      <open>0</open>`
+  
+  polygons.map(polygon => {
+    kmlData +=
+      `<Placemark>
+        <Style>
+          <IconStyle><Icon/></IconStyle>
+          <LineStyle>
+            <color>${hexToKmlColor(polygon.color)}</color>
+            <width>5</width>
+          </LineStyle>
+          <PolyStyle>
+            <color>00000000</color>
+          </PolyStyle>
+        </Style>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>`
+
+    polygon.positions.map(latlng => kmlData += `${latlng.lng},${latlng.lat}\n`)
+    kmlData += `${polygon.positions[0].lng},${polygon.positions[0].lat}`
+
+    kmlData +=
+      `</coordinates>
+        </LinearRing>
+          </outerBoundaryIs>
+            </Polygon>
+              </Placemark>`
+
+  })
+
+  kmlData += `</Folder>`
+  return kmlData
+}
+
+const generateCircle = marker => {
+  let radius = marker.layer === 'circle' ? marker.radius : marker.range
+  if(marker.unit === 'km') {
+    radius = radius * 1000
+  } else if (marker.unit === 'NM') {
+    radius = radius * 1852
+  }
+
+  let circleData = 
+  `<Placemark>
+    <name>${marker.layer === 'threat' ? `${marker.title === '' ? 'Custom Threat' : marker.title} (${marker.sovereignty} ${marker.label})` : `${marker.title}`}</name>
+    <Style>
+      <IconStyle><Icon/></IconStyle>
+      <LineStyle>
+        <color>${hexToKmlColor(marker.color)}</color>
+        <width>5</width>
+      </LineStyle>
+    </Style>
+    <LineString>
+      <tessellate>1</tessellate>
+      <coordinates>`
+
+  const point = LatLon.parse(marker.latlng.lat, marker.latlng.lng)
+  for (let degree = 0; degree <= 360; degree += 5) {
+    let newPoint = point.destinationPoint(radius, degree)
+    circleData += `${newPoint.lon},${newPoint.lat}\n`
+  }
+
+  circleData += 
+    `</coordinates>
+      </LineString>
+        </Placemark>`
+
+  return circleData
+}
+
 //----------------------------------------------------------------//
 // Generate Markers Function
 //----------------------------------------------------------------//
@@ -226,10 +477,10 @@ const generateMarkers = (markers, folderName, folderId, kmlData) => {
   markers.map(marker => {
     kmlData +=
       `<Placemark>
+        <description>
           ${marker.data !== null && marker.data !== undefined ? marker.data.type === '9line' ?
         (
-          `<description>
-          <table>
+          `<table>
             <tbody>
               <tr>
                 <td>Label</td>
@@ -284,12 +535,10 @@ const generateMarkers = (markers, folderName, folderId, kmlData) => {
                 <td>${marker.data.f2f}</td>
               </tr>
             </tbody>
-          </table>
-          </description>`
+          </table>`
         ) :
         (
-          `<description>
-          <table>
+          `<table>
             <tbody>
               <tr>
                 <td>Callsign</td>
@@ -368,10 +617,21 @@ const generateMarkers = (markers, folderName, folderId, kmlData) => {
                 <td>${marker.data.egress}</td>
               </tr>
             </tbody>
-          </table>
-          </description>`
+          </table>`
         )
-        : ''}
+        :
+        `<table>
+          <tbody>
+            <tr>
+              <td>${tryMgrs(marker.latlng)}</td>
+            </tr>
+            <tr>
+              <td>${marker.elevation} ${Number.isInteger(marker.elevation) ? 'feet' : ''}</td>
+            </tr>
+          </tbody>
+        </table>`
+      }
+        </description>
         <name>${marker.title}</name>
         <Style>
           <IconStyle>
@@ -396,11 +656,13 @@ const generateThreats = (threats, kmlData) => {
       <name>Threats</name>
       <open>1</open>`
 
-  threats.map(threat => {
+  threats.map((threat, index) => {
     kmlData +=
-      `<Placemark>
+      `<Folder id='threat-${index}'>
+        <name>${threat.title === '' ? 'Custom Threat' : threat.title} (${threat.sovereignty} ${threat.label})</name>
+        <open>0</open> 
+        <Placemark>
         <description>
-          (U) Range: ${threat.range} ${threat.unit}
           ${threat.data !== null ? (
             `<table>
             <tbody>
@@ -459,7 +721,18 @@ const generateThreats = (threats, kmlData) => {
             </tbody>
           </table>`
           )
-          :''}
+          :
+          `<table>
+            <tbody>
+              <tr>
+                <td>${tryMgrs(threat.latlng)}</td>
+              </tr>
+              <tr>
+                <td>${threat.elevation} ${Number.isInteger(threat.elevation) ? 'feet' : ''}</td>
+              </tr>
+            </tbody>
+            </table>`
+        }
         </description>
         <name>${threat.title === '' ? 'Custom Threat' : threat.title} (${threat.sovereignty} ${threat.label})</name>
         <Style>
@@ -474,6 +747,9 @@ const generateThreats = (threats, kmlData) => {
         </Point>
       </Placemark>
       `
+
+      kmlData += generateCircle(threat)
+      kmlData += `</Folder>`
   })
 
   kmlData += `</Folder>`
@@ -830,11 +1106,15 @@ const generateKML = step => {
   kmlData = generateMarkers(step.survivors, 'Survivors', 'survivors', kmlData)
   kmlData = generateMarkers(step.hostileMarkers, 'Hostile Markers', 'hostile_markers', kmlData)
   kmlData = generateMarkers(step.initialPoints, 'Initial Points', 'intial_points', kmlData)
-  kmlData = generateMarkers(step.bullseyes, 'Bullseyes', 'bullseyes', kmlData)
   kmlData = generateMarkers(step.buildingLabels, 'Building Labels', 'building_labels', kmlData)
   kmlData = generateMarkers(step.kineticPoints, 'Kinetic Points', 'kinetic_points', kmlData)
   kmlData = generateMarkers(step.mapLabels, 'Map Labels', 'map_labels', kmlData)
+  kmlData = generateBullseyes(step.bullseyes, kmlData)
   kmlData = generateThreats(step.threatMarkers, kmlData)
+  kmlData = generateCircles(step.circles, kmlData)
+  kmlData = generateLines(step.lines, kmlData)
+  kmlData = generateRectangles(step.rectangles, kmlData)
+  kmlData = generatePolygons(step.polygons, kmlData)
 
   kmlData += fileClose
 

@@ -286,10 +286,10 @@ const Cas = () => {
     setActiveDialog(null)
     setFocusedLatlng({ latlng: null, source: null })
     setMouseCoords(null)
-    //setFocusedMarker(null)
-    //setFocusedShape(null)
+    setFocusedMarker(null)
+    setFocusedShape(null)
     //setMapPopup(null)
-    //setElevation('Pending')
+    setElevation('Pending')
   }
 
   const handleCoordInput = latlng => {
@@ -331,7 +331,7 @@ const Cas = () => {
   }
 
   const editMarker = (action, payload) => {
-    handleMarkerEdit(action, payload, elevation, focusedLatlng, markerLabel, history, step, setHistory, setStep, setMarkerLabel, handleMapReset, setFocusedShape, setActiveDialog, setActiveTool, toast)
+    handleMarkerEdit(action, payload, elevation, focusedLatlng, markerLabel, history, step, setHistory, setStep, setMarkerLabel, handleMapReset, setFocusedMarker, setFocusedShape, setActiveDialog, setActiveTool, toast)
   }
 
   return (
