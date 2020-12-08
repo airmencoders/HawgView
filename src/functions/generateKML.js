@@ -597,7 +597,7 @@ const generateKML = step => {
   kmlData +=
     `<Folder id='korea_llzs'>
       <name>Korea LLZs</name>
-      <open>1</open>`
+      <open>0</open>`
 
   airspace.llzs.map(airspace => {
     kmlData +=
@@ -621,7 +621,7 @@ const generateKML = step => {
     `</Folder>
       <Folder id='low_moas'>
         <name>Low MOAs</name>
-        <open>1</open>`
+        <open>0</open>`
 
   airspace.lowMoas.map(airspace => {
     kmlData +=
@@ -645,7 +645,7 @@ const generateKML = step => {
     `</Folder>
       <Folder id='moas'>
         <name>MOAs</name>
-        <open>1</open>`
+        <open>0</open>`
 
   airspace.moas.map(airspace => {
     kmlData +=
@@ -669,7 +669,7 @@ const generateKML = step => {
     `</Folder>
       <Folder id='warning_areas'>
         <name>Warning Areas</name>
-        <open>1</open>`
+        <open>0</open>`
 
   airspace.warningAreas.map(airspace => {
     kmlData +=
@@ -693,7 +693,7 @@ const generateKML = step => {
     `</Folder>
       <Folder id='restricted_areas'>
         <name>Restricted Areas</name>
-        <open>1</open>`
+        <open>0</open>`
 
   airspace.restrictedAreas.map(airspace => {
     kmlData +=
@@ -717,7 +717,7 @@ const generateKML = step => {
     `</Folder>
       <Folder id='korea_nfl'>
         <name>Korea NFL</name>
-        <open>1</open>
+        <open>0</open>
         <Placemark>
           <styleUrl>#thick_line_black</styleUrl>
           <LineString>
@@ -738,7 +738,7 @@ const generateKML = step => {
     `</Folder>
       <Folder id='2nm_buffer'>
         <name>Korea NFL 2NM Buffer</name>
-        <open>1</open>
+        <open>0</open>
         <Placemark>
           <styleUrl>#thin_line_red</styleUrl>
           <LineString>
@@ -759,7 +759,7 @@ const generateKML = step => {
     `</Folder>
       <Folder id='p518_border'>
         <name>Korea P-518 Border</name>
-        <open>1</open>
+        <open>0</open>
         <Placemark>
           <styleUrl>#thick_line_red</styleUrl>
           <LineString>
@@ -780,7 +780,7 @@ const generateKML = step => {
     `</Folder>
       <Folder id='aars'>
         <name>AARs</name>
-        <open>1</open>`
+        <open>0</open>`
 
   airspace.aars.map(airspace => {
     kmlData +=
@@ -804,7 +804,7 @@ const generateKML = step => {
     `</Folder>
       <Folder id='atcaas'>
         <name>ATCAAs</name>
-        <open>1</open>`
+        <open>0</open>`
 
   airspace.atcaas.map(airspace => {
     kmlData +=

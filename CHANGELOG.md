@@ -1,3 +1,7 @@
+## 2.14.4-beta
+### Changes
+* Changed folders in KML to be closed by default
+
 ## 2.14.3-beta
 ### Fixed
 * Fixed bug where the bullseye icon would not remap when downloading scenario KML
