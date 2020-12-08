@@ -42,11 +42,11 @@ import {
   BrightnessLow as BrightnessLowIcon,
   Clear as ClearIcon,
   FolderOpen as FolderOpenIcon,
+  GetApp as GetAppIcon,
   InvertColors as InvertColorsIcon,
   InvertColorsOff as InvertColorsOffIcon,
   Label as LabelIcon,
   LabelOff as LabelOffIcon,
-  NotificationImportant as NotificationImportantIcon,
   PhotoSizeSelectActual as PhotoSizeSelectActualIcon,
   PhotoSizeSelectLarge as PhotoSizeSelectLargeIcon,
   Redo as RedoIcon,
@@ -55,6 +55,11 @@ import {
   Undo as UndoIcon,
   ViewList as ViewListIcon,
 } from '@material-ui/icons'
+
+//----------------------------------------------------------------//
+// Hawg View Functions
+//----------------------------------------------------------------//
+import generateKML from '../../functions/generateKML'
 
 //----------------------------------------------------------------//
 // Hawg View Handlers
@@ -221,7 +226,10 @@ const CASTools = props => {
       </Tooltip>
       {/*<Tooltip title='Download products'>
         <span>
-          <IconButton color='inherit' disabled>
+          <IconButton
+            color='inherit'
+            onClick={() => generateKML(props.history[props.step])}
+          >
             <GetAppIcon />
           </IconButton>
         </span>

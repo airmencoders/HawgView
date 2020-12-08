@@ -1,3 +1,16 @@
+## 2.14.0-beta
+### Changes
+* Added the ability to download the entire scenario as a KML (minus shapes)
+* Fixed broken image links in `handleUpdateScenario` in v1
+* Added PAA container to SPARTY (friendly and hostile)
+
+### Fixes
+* Fixed broken image links when translating scenario
+* Fixed SPARTY PAA
+
+### Tasks
+* Add shapes, threats, bullseyes, building labels, and kinetic points to the KML download
+
 ## 2.13.1-beta
 ### Changes
 * Modified `handleMapReset` function to no longer reset the `focusedShape` and `focusedMarker`

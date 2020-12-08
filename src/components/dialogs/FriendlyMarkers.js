@@ -97,7 +97,7 @@ const FriendlyMarkers = ({ handleAddMarker, handleMarkerDrawerToggle }) => {
       title,
     }
 
-    if (title === 'Artillery' || title === 'MLRS') {
+    if (title === 'Artillery' || title === 'MLRS' || title === 'Self-Propelled Artillery') {
       payload = {
         ...payload,
         arty: {

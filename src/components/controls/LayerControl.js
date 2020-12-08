@@ -36,7 +36,6 @@ import L from 'leaflet'
 import {
   Button
 } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
 
 //----------------------------------------------------------------//
 // React Leaflet Components
@@ -83,56 +82,6 @@ import { LatLon as LL } from 'geodesy/mgrs'
 const LayerControl = props => {
 
   const { BaseLayer, Overlay } = LayersControl
-
-  const useStyles = makeStyles(() => ({
-    hostileThreat: {
-      alignItems: 'center',
-      color: 'red',
-      display: 'flex',
-      fontSize: props.markerSize * props.mapZoom,
-      justifyContent: 'center',
-      margin: '0',
-      textAlign: 'center',
-      lineHeight: `${props.markerSize * props.mapZoom}px`,
-      wordWrap: 'break-word',
-    },
-    suspectThreat: {
-      alignItems: 'center',
-      color: 'yellow',
-      display: 'flex',
-      fontSize: props.markerSize * props.mapZoom,
-      justifyContent: 'center',
-      margin: '0',
-      textAlign: 'center',
-      lineHeight: `${props.markerSize * props.mapZoom}px`,
-      wordWrap: 'break-word',
-    },
-    unknownThreat: {
-      alignItems: 'center',
-      color: 'white',
-      display: 'flex',
-      fontSize: props.markerSize * props.mapZoom,
-      justifyContent: 'center',
-      margin: '0',
-      textAlign: 'center',
-      lineHeight: `${props.markerSize * props.mapZoom}px`,
-      wordWrap: 'break-word',
-    },
-    friendlyThreat: {
-      alignItems: 'center',
-      color: 'lime',
-      display: 'flex',
-      fontSize: props.markerSize * props.mapZoom,
-      justifyContent: 'center',
-      margin: '0',
-      textAlign: 'center',
-      lineHeight: `${props.markerSize * props.mapZoom}px`,
-      wordWrap: 'break-word',
-    },
-    
-  }))
-
-  const classes = useStyles(props)
 
   const handleEditShape = shape => {
     props.setFocusedShape(shape)
