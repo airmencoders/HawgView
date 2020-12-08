@@ -83,6 +83,9 @@ const remapIconUrl = svg => {
     case 'https://hawg-ops.com/static/media/aviation.ce5c976a.svg':
       pngUrl += 'friendly/aviation.png'
       break
+    case 'https://hawg-ops.com/static/media/bullseye.fde988a3.svg':
+      pngUrl += 'persistent/bullseye.png'
+      break
     case 'https://hawg-ops.com/static/media/cbrne.725c1dc5.svg':
       pngUrl += 'hostile/cbrne.png'
       break
@@ -223,11 +226,157 @@ const generateMarkers = (markers, folderName, folderId, kmlData) => {
   markers.map(marker => {
     kmlData +=
       `<Placemark>
+          ${marker.data !== null && marker.data !== undefined ? marker.data.type === '9line' ?
+        (
+          `<description>
+          <table>
+            <tbody>
+              <tr>
+                <td>Label</td>
+                <td>${marker.data.label}</td>
+              </tr>
+              <tr>
+                <td>GFC Intent</td>
+                <td>${marker.data.intent}</td>
+              </tr>
+              <tr>
+                <td>Type/Method</td>
+                <td>${marker.data.typeMethod}</td>
+              </tr>
+              <tr>
+                <td>IP / Hdg / Distance</td>
+                <td>${marker.data.ip}/${marker.data.hdg}/${marker.data.distance}</td>
+              </tr>
+              <tr>
+                <td>Elevation</td>
+                <td>${marker.data.elevation}</td>
+              </tr>
+              <tr>
+                <td>Description</td>
+                <td>${marker.data.description}</td>
+              </tr>
+              <tr>
+                <td>Location</td>
+                <td>${marker.data.location}</td>
+              </tr>
+              <tr>
+                <td>Mark</td>
+                <td>${marker.data.mark}</td>
+              </tr>
+              <tr>
+                <td>Friendlies</td>
+                <td>${marker.data.friendlies}</td>
+              </tr>
+              <tr>
+                <td>Egress</td>
+                <td>${marker.data.egress}</td>
+              </tr>
+              <tr>
+                <td>Remarks/Restrictions</td>
+                <td>${marker.data.remarks}</td>
+              </tr>
+              <tr>
+                <td>TOT</td>
+                <td>${marker.data.tot}</td>
+              </tr>
+              <tr>
+                <td>Fighter-to-Fighter</td>
+                <td>${marker.data.f2f}</td>
+              </tr>
+            </tbody>
+          </table>
+          </description>`
+        ) :
+        (
+          `<description>
+          <table>
+            <tbody>
+              <tr>
+                <td>Callsign</td>
+                <td>${marker.data.callsign}</td>
+              </tr>
+              <tr>
+                <td>Frequency</td>
+                <td>${marker.data.frequency}</td>
+              </tr>
+              <tr>
+                <td>PLS/HHRID</td>
+                <td>${marker.data.plsHhrid}</td>
+              </tr>
+              <tr>
+                <td>Number of Objectives</td>
+                <td>${marker.data.numObjectives}</td>
+              </tr>
+              <tr>
+                <td>Location</td>
+                <td>${marker.data.location}</td>
+              </tr>
+              <tr>
+                <td>Elevation</td>
+                <td>${marker.data.elevation}</td>
+              </tr>
+              <tr>
+                <td>Date/Time(z)</td>
+                <td>${marker.data.dateTime}</td>
+              </tr>
+              <tr>
+                <td>Source</td>
+                <td>${marker.data.source}</td>
+              </tr>
+              <tr>
+                <td>Condition</td>
+                <td>${marker.data.condition}</td>
+              </tr>
+              <tr>
+                <td>Equipment</td>
+                <td>${marker.data.equipment}</td>
+              </tr>
+              <tr>
+                <td>Authentication</td>
+                <td>${marker.data.authentication}</td>
+              </tr>
+              <tr>
+                <td>Threats</td>
+                <td>${marker.data.threats}</td>
+              </tr>
+              <tr>
+                <td>PZ Description</td>
+                <td>${marker.data.pzDescription}</td>
+              </tr>
+              <tr>
+                <td>OSC/frequency</td>
+                <td>${marker.data.oscFreq}</td>
+              </tr>
+              <tr>
+                <td>IP/Heading</td>
+                <td>${marker.data.ipHdg}</td>
+              </tr>
+              <tr>
+                <td>Rescort</td>
+                <td>${marker.data.rescort}</td>
+              </tr>
+              <tr>
+                <td>Terminal Area Gameplan</td>
+                <td>${marker.data.gameplan}</td>
+              </tr>
+              <tr>
+                <td>Signal</td>
+                <td>${marker.data.signal}</td>
+              </tr>
+              <tr>
+                <td>Egress Hdg</td>
+                <td>${marker.data.egress}</td>
+              </tr>
+            </tbody>
+          </table>
+          </description>`
+        )
+        : ''}
         <name>${marker.title}</name>
         <Style>
           <IconStyle>
             <Icon>
-              <href>${remapIconUrl(marker.iconUrl)}</href>
+              <href>${marker.layer === 'buildingLabel' ? 'http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png' : marker.layer === 'kineticPoint' ? 'http://maps.google.com/mapfiles/kml/pushpin/red-pushpin.png' : remapIconUrl(marker.iconUrl)}</href>
             </Icon>
           </IconStyle>
         </Style>
@@ -235,6 +384,96 @@ const generateMarkers = (markers, folderName, folderId, kmlData) => {
           <coordinates>${marker.latlng.lng},${marker.latlng.lat}</coordinates>
         </Point>
       </Placemark>`
+  })
+
+  kmlData += `</Folder>`
+  return kmlData
+}
+
+const generateThreats = (threats, kmlData) => {
+  kmlData +=
+    `<Folder id='threats'>
+      <name>Threats</name>
+      <open>1</open>`
+
+  threats.map(threat => {
+    kmlData +=
+      `<Placemark>
+        <description>
+          (U) Range: ${threat.range} ${threat.unit}
+          ${threat.data !== null ? (
+            `<table>
+            <tbody>
+              <tr>
+                <td>Label</td>
+                <td>${threat.data.label}</td>
+              </tr>
+              <tr>
+                <td>GFC Intent</td>
+                <td>${threat.data.intent}</td>
+              </tr>
+              <tr>
+                <td>Type/Method</td>
+                <td>${threat.data.typeMethod}</td>
+              </tr>
+              <tr>
+                <td>IP / Hdg / Distance</td>
+                <td>${threat.data.ip}/${threat.data.hdg}/${threat.data.distance}</td>
+              </tr>
+              <tr>
+                <td>Elevation</td>
+                <td>${threat.data.elevation}</td>
+              </tr>
+              <tr>
+                <td>Description</td>
+                <td>${threat.data.description}</td>
+              </tr>
+              <tr>
+                <td>Location</td>
+                <td>${threat.data.location}</td>
+              </tr>
+              <tr>
+                <td>Mark</td>
+                <td>${threat.data.mark}</td>
+              </tr>
+              <tr>
+                <td>Friendlies</td>
+                <td>${threat.data.friendlies}</td>
+              </tr>
+              <tr>
+                <td>Egress</td>
+                <td>${threat.data.egress}</td>
+              </tr>
+              <tr>
+                <td>Remarks/Restrictions</td>
+                <td>${threat.data.remarks}</td>
+              </tr>
+              <tr>
+                <td>TOT</td>
+                <td>${threat.data.tot}</td>
+              </tr>
+              <tr>
+                <td>Fighter-to-Fighter</td>
+                <td>${threat.data.f2f}</td>
+              </tr>
+            </tbody>
+          </table>`
+          )
+          :''}
+        </description>
+        <name>${threat.title === '' ? 'Custom Threat' : threat.title} (${threat.sovereignty} ${threat.label})</name>
+        <Style>
+          <IconStyle>
+            <Icon>
+              <href>http://maps.google.com/mapfiles/kml/shapes/caution.png</href>
+            </Icon>
+          </IconStyle>
+        </Style>
+        <Point>
+          <coordinates>${threat.latlng.lng},${threat.latlng.lat}</coordinates>
+        </Point>
+      </Placemark>
+      `
   })
 
   kmlData += `</Folder>`
@@ -591,14 +830,17 @@ const generateKML = step => {
   kmlData = generateMarkers(step.survivors, 'Survivors', 'survivors', kmlData)
   kmlData = generateMarkers(step.hostileMarkers, 'Hostile Markers', 'hostile_markers', kmlData)
   kmlData = generateMarkers(step.initialPoints, 'Initial Points', 'intial_points', kmlData)
-  kmlData = generateMarkers(step.threatMarkers, 'Threats', 'threats', kmlData)
+  kmlData = generateMarkers(step.bullseyes, 'Bullseyes', 'bullseyes', kmlData)
+  kmlData = generateMarkers(step.buildingLabels, 'Building Labels', 'building_labels', kmlData)
+  kmlData = generateMarkers(step.kineticPoints, 'Kinetic Points', 'kinetic_points', kmlData)
+  kmlData = generateThreats(step.threatMarkers, kmlData)
 
   kmlData += fileClose
 
   const element = document.createElement('a')
   const file = new Blob([kmlData], { type: 'text/plain' })
   element.href = URL.createObjectURL(file)
-  element.download = `Hawg View Scenario KML.kml`
+  element.download = `Hawg View Scenario ${title === 'Scenario' ? '' : title + ' '}KML.kml`
   document.body.appendChild(element)
   element.click()
 }

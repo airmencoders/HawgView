@@ -224,7 +224,7 @@ const CASTools = props => {
           <StyleIcon />
         </IconButton>
       </Tooltip>
-      {/*<Tooltip title='Download products'>
+      <Tooltip title='Download products'>
         <span>
           <IconButton
             color='inherit'
@@ -233,7 +233,7 @@ const CASTools = props => {
             <GetAppIcon />
           </IconButton>
         </span>
-</Tooltip>*/}
+      </Tooltip>
     </React.Fragment>
   )
 }

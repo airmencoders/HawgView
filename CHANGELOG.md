@@ -1,3 +1,8 @@
+## 2.14.1-beta
+### Changes
+* Enabled KML Scenario download
+* Unforunately no shapes are downloaded due to KML limitations (particularly with circles/ellipses)
+
 ## 2.14.0-beta
 ### Changes
 * Added the ability to download the entire scenario as a KML (minus shapes)
