@@ -1,3 +1,7 @@
+## 2.14.3-beta
+### Fixed
+* Fixed bug where the bullseye icon would not remap when downloading scenario KML
+
 ## 2.14.2-beta
 ### Changes
 * In `generateKML` changed the switch case from `bullseye` to `blank`

@@ -83,7 +83,7 @@ const remapIconUrl = svg => {
     case 'https://hawg-ops.com/static/media/aviation.ce5c976a.svg':
       pngUrl += 'friendly/aviation.png'
       break
-    case 'https://hawg-ops.com/static/media/blank.b6c2bdb7.svg':
+    case '/static/media/blank.b6c2bdb7.svg':
       pngUrl += 'persistent/bullseye.png'
       break
     case 'https://hawg-ops.com/static/media/cbrne.725c1dc5.svg':
