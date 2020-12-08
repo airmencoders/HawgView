@@ -1,3 +1,7 @@
+## 2.14.6-beta
+### Fixes
+* Fixed bug where brightness changes to the map no longer work
+
 ## 2.14.5-beta
 ### Changes
 * Added Map Labels to the KML
