@@ -50,64 +50,71 @@ const Tools = props => {
   return (
     <React.Fragment>
       <AnalysisTool
-        active={props.activeTool === 'analysis'}
-        //clearLatlng={() => props.setFocusedLatlng(null)}
         clearMouse={() => props.setMouseCoords(null)}
         mouseCoords={props.mouseCoords}
-        toggle={() => props.toggle('analysis')}
         latlng={props.focusedLatlng.latlng}
         setFocusedLatlng={latlng => props.setFocusedLatlng(latlng)}
+
+        setState={props.setState}
+        state={props.state}
       />
       <BuildingLabelTool
-        active={props.activeTool === 'buildingLabel'}
         index={props.history[props.step].data.buildingLabel}
         latlng={props.focusedLatlng.latlng}
         submit={(action, payload) => props.editMarker(action, payload)}
-        toggle={() => props.toggle('buildingLabel')}
+
+        setState={props.setState}
+        state={props.state}
       />
       <KineticPointTool
-        active={props.activeTool === 'kineticPoint'}
         firstLetter={props.history[props.step].data.firstLetter}
         latlng={props.focusedLatlng.latlng}
         secondLetter={props.history[props.step].data.secondLetter}
         submit={(action, payload) => props.editMarker(action, payload)}
-        toggle={() => props.toggle('kineticPoint')}
+
+        setState={props.setState}
+        state={props.state}
       />
       <LineTool
-        active={props.activeTool === 'line'}
         latlng={props.focusedLatlng.latlng}
         mouseCoords={props.mouseCoords}
         submit={(action, payload) => props.editMarker(action, payload)}
-        toggle={() => props.toggle('line')}
         tool={props.activeTool}
+
+        setState={props.setState}
+        state={props.state}
       />
       <CircleTool
-        active={props.activeTool === 'circle'}
         latlng={props.focusedLatlng.latlng}
         mouseCoords={props.mouseCoords}
         submit={(action, payload) => props.editMarker(action, payload)}
-        toggle={() => props.toggle('circle')}
+
+        setState={props.setState}
+        state={props.state}
       />
       <RectangleTool
-        active={props.activeTool === 'rectangle'}
         latlng={props.focusedLatlng.latlng}
         mouseCoords={props.mouseCoords}
         submit={(action, payload) => props.editMarker(action, payload)}
-        toggle={() => props.toggle('rectangle')}
+
+        setState={props.setState}
+        state={props.state}
       />
       <LineTool
-        active={props.activeTool === 'polygon'}
         latlng={props.focusedLatlng.latlng}
         mouseCoords={props.mouseCoords}
         submit={(action, payload) => props.editMarker(action, payload)}
-        toggle={() => props.toggle('polygon')}
         tool={props.activeTool}
+
+        setState={props.setState}
+        state={props.state}
       />
       <EllipseTool
-        active={props.activeTool === 'ellipse'}
         latlng={props.focusedLatlng.latlng}
         submit={(action, payload) => props.editMarker(action, payload)}
-        toggle={() => props.toggle('ellipse')}
+
+        setState={props.setState}
+        state={props.state}
       />
     </React.Fragment>
   )

@@ -446,7 +446,7 @@ const EditMarkerDrawer = (props) => {
         container={container}
         variant='temporary'
         anchor='left'
-        open={props.state.dialog.name === 'editMarker'}//props.open}
+        open={props.state.dialog.name === 'editMarker'}
         onClose={props.onClose}
         classes={{ paper: classes.drawerPaper, }}
         ModalProps={{ keepMounted: true, }}

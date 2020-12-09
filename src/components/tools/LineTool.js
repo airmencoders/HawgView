@@ -58,7 +58,7 @@ const LineTool = props => {
 
   React.useEffect(() => {
     setPositions([])
-  }, [props.active])
+  }, [props.state.tool])
 
   /**
    * Add Key and mouse listeners for the map
@@ -72,14 +72,14 @@ const LineTool = props => {
     return () => {
       document.removeEventListener('keydown', handleKeyPress, false)
     }
-  }, [props.active, positions])
+  }, [props.state.tool, positions])
 
   /**
    * Every time the clicked latlng changes and isn't null, add it to the analysis tool
    * As long as the tool is active
    */
   React.useEffect(() => {
-    if (props.latlng !== null && props.active) {
+    if (props.latlng !== null && (props.state.tool === 'line' || props.state.tool === 'polygon')) {
       setPositions([...positions, props.latlng])
     }
   }, [props.latlng])
@@ -96,16 +96,19 @@ const LineTool = props => {
    * @param {Event} event Key press event
    */
   const handleKeyPress = event => {
-    if (props.active && event.key === 'Escape') {
+    if ((props.state.tool === 'line' || props.state.tool === 'polygon') && event.key === 'Escape') {
       setPositions([])
       setDistances(null)
-      props.toggle()
+      props.setState({
+        ...props.state,
+        tool: null,
+      })
     }
   }
 
   const handleSubmit = () => {
-    if (props.active && positions.length > 1) {
-      if (props.tool === 'line') {
+    if ((props.state.tool === 'line' || props.state.tool === 'polygon') && positions.length > 1) {
+      if (props.state.tool === 'line') {
         props.submit('create', {
           color: '#4A90E2',
           dashArray: null,
@@ -113,7 +116,7 @@ const LineTool = props => {
           positions: positions,
           title: 'Line',
         })
-      } else if (props.tool === 'polygon') {
+      } else if (props.state.tool === 'polygon') {
         props.submit('create', {
           color: '#4A90E2',
           dashArray: null,
@@ -128,12 +131,11 @@ const LineTool = props => {
 
       setPositions([])
       setDistances(null)
-      props.toggle()
     }
   }
 
   return (
-    (props.active && positions.length > 0 && props.mouseCoords !== null) ?
+    ((props.state.tool === 'line' || props.state.tool === 'polygon') && positions.length > 0 && props.mouseCoords !== null) ?
       <FeatureGroup>
         <Polyline
           color='#4A90E2'
@@ -154,12 +156,12 @@ const LineTool = props => {
             <br/>
             {`meters: ${distances !== null ? distances.meters.toFixed(2) : ''}`}
             <br/>
-            {`Click ${props.tool === 'line' ? 'last' : 'first'} point to finish ${props.tool}`}
+            {`Click ${props.tool === 'line' ? 'last' : 'first'} point to finish ${props.state.tool}`}
           </Tooltip>
         </CircleMarker>
-        {(positions.length > (props.tool === 'line' ? 1 : 2)) ?
+        {(positions.length > (props.state.tool === 'line' ? 1 : 2)) ?
           <CircleMarker
-            center={props.tool === 'line' ? positions[positions.length - 1] : positions[0]}
+            center={props.state.tool === 'line' ? positions[positions.length - 1] : positions[0]}
             color='white'
             fill={true}
             fillColor='white'

@@ -88,11 +88,10 @@ const ToolControls = (props) => {
   const changeTools = tool => {
     props.setFocusedMarker(null)
     props.setFocusedLatlng({ latlng: null, source: null })
-    if (tool === null || tool === props.activeTool) {
-      props.setActiveTool(null)
-    } else {
-      props.setActiveTool(tool)
-    }
+    props.setState({
+      ...props.state,
+      tool: tool === props.state.tool ? null : tool,
+    })
   }
 
   return (
@@ -104,7 +103,7 @@ const ToolControls = (props) => {
       >
         <Tooltip placement='left' title='Analysis tool: Press ESC to finish, twice to exit'>
           <Button
-            color={props.activeTool === 'analysis' ? 'primary' : undefined}
+            color={props.state.tool === 'analysis' ? 'primary' : undefined}
             onClick={() => changeTools('analysis')}
           >
             <SquareFootIcon className={classes.icon} />
@@ -112,7 +111,7 @@ const ToolControls = (props) => {
         </Tooltip>
         <Tooltip placement='left' title='Building label: Increments with each click'>
           <Button
-            color={props.activeTool === 'buildingLabel' ? 'primary' : undefined}
+            color={props.state.tool === 'buildingLabel' ? 'primary' : undefined}
             onClick={() => changeTools('buildingLabel')}
           >
             <ApartmentIcon className={classes.icon} />
@@ -120,7 +119,7 @@ const ToolControls = (props) => {
         </Tooltip>
         <Tooltip placement='left' title='Kinetic points: Increments with each click'>
           <Button
-            color={props.activeTool === 'kineticPoint' ? 'primary' : undefined}
+            color={props.state.tool === 'kineticPoint' ? 'primary' : undefined}
             onClick={() => changeTools('kineticPoint')}
           >
             <FontDownloadIcon className={classes.icon} />
@@ -128,7 +127,7 @@ const ToolControls = (props) => {
         </Tooltip>
         <Tooltip placement='left' title='Draw line: Press ESC to exit'>
           <Button
-            color={props.activeTool === 'line' ? 'primary' : undefined}
+            color={props.state.tool === 'line' ? 'primary' : undefined}
             onClick={() => changeTools('line')}
           >
             <TimelineIcon className={classes.icon} />
@@ -136,7 +135,7 @@ const ToolControls = (props) => {
         </Tooltip>
         <Tooltip placement='left' title='Draw circle: Click to set circle, again to set radius'>
           <Button
-            color={props.activeTool === 'circle' ? 'primary' : undefined}
+            color={props.state.tool === 'circle' ? 'primary' : undefined}
             onClick={() => changeTools('circle')}
           >
             <FiberManualRecordIcon className={classes.icon} />
@@ -144,7 +143,7 @@ const ToolControls = (props) => {
         </Tooltip>
         <Tooltip placement='left' title='Draw rectangle: Click to set each corner'>
           <Button
-            color={props.activeTool === 'rectangle' ? 'primary' : undefined}
+            color={props.state.tool === 'rectangle' ? 'primary' : undefined}
             onClick={() => changeTools('rectangle')}
           >
             <StopIcon className={classes.icon} />
@@ -152,7 +151,7 @@ const ToolControls = (props) => {
         </Tooltip>
         <Tooltip placement='left' title='Draw polygon: Press ESC to exit'>
           <Button
-            color={props.activeTool === 'polygon' ? 'primary' : undefined}
+            color={props.state.tool === 'polygon' ? 'primary' : undefined}
             onClick={() => changeTools('polygon')}
           >
             <Icon className={classes.icon} icon={pentagonIcon} />
@@ -160,7 +159,7 @@ const ToolControls = (props) => {
         </Tooltip>
         <Tooltip placement='left' title='Draw ellipse: Click map to select center'>
           <Button
-            color={props.activeTool === 'ellipse' ? 'primary' : undefined}
+            color={props.state.tool === 'ellipse' ? 'primary' : undefined}
             onClick={() => changeTools('ellipse')}
           >
             <Icon className={classes.icon} icon={ellipseIcon} />
@@ -168,7 +167,6 @@ const ToolControls = (props) => {
         </Tooltip>
       </ButtonGroup>
       <Tools
-        activeTool={props.activeTool}
         editMarker={props.editMarker}
         focusedLatlng={props.focusedLatlng}
         history={props.history}
@@ -176,7 +174,9 @@ const ToolControls = (props) => {
         setFocusedLatlng={props.setFocusedLatlng}
         setMouseCoords={props.setMouseCoords}
         step={props.step}
-        toggle={tool => changeTools(tool)}
+
+        setState={props.setState}
+        state={props.state}
       />
     </Control>
   )

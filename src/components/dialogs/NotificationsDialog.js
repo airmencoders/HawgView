@@ -46,7 +46,7 @@ const NotificationsDialog = props => {
 
   return (
     <Dialog
-      open={props.state.dialog.name === 'notifications'}//props.open}
+      open={props.state.dialog.name === 'notifications'}
       onClose={props.onClose}
       maxWidth='lg'
     >

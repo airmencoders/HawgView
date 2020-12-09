@@ -44,17 +44,17 @@ const KineticPointTool = props => {
    * 
    */
   React.useEffect(() => {
-    if (props.active) {
+    if (props.state.tool === 'kineticPoint') {
       document.addEventListener('keydown', handleEscPress, false)
 
       return () => {
         document.removeEventListener('keydown', handleEscPress, false)
       }
     }
-  }, [props.active])
+  }, [props.state.tool])
 
   React.useEffect(() => {
-    if (props.active && props.latlng !== null) {
+    if (props.state.tool === 'kineticPoint' && props.latlng !== null) {
       const newData = {
         arty: {
           arty: false,
@@ -75,8 +75,11 @@ const KineticPointTool = props => {
    * @param {*} event 
    */
   const handleEscPress = event => {
-    if (props.active && event.key === 'Escape') {
-      props.toggle()
+    if (props.state.tool === 'kineticPoint' && event.key === 'Escape') {
+      props.setState({
+        ...props.state,
+        tool: null,
+      })
     }
   }
 

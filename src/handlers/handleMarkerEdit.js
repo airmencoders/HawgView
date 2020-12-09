@@ -95,19 +95,22 @@ const handleMarkerEdit = (action, payload, state, setState, elevation, focusedLa
       if (payload.layer === 'circle' || payload.layer === 'rectangle' || payload.layer === 'line' || payload.layer === 'polygon' || payload.layer === 'ellipse') {
         setFocusedShape(updatedPayload)
         //setActiveDialog('editShape')
+        console.log('[handleMarkerEdit] setting shape state dialog name is editShape')
         setState({
           ...state,
           dialog: {
             anchor: null,
             name: 'editShape',
           },
+          tool: null,
         })
-        setActiveTool(null)
+        //setActiveTool(null)
       }
 
       if (payload.layer === 'threat') {
         setFocusedMarker(updatedPayload)
         //setActiveDialog('editMarker')
+        console.log('[handleMarkerEdit] setting threat state dialog name is editMarker')
         setState({
           ...state,
           dialog: {
@@ -115,7 +118,7 @@ const handleMarkerEdit = (action, payload, state, setState, elevation, focusedLa
             name: 'editMarker',
           },
         })
-        setActiveTool(null)
+        //setActiveTool(null)
       }
     }
   } else {

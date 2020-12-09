@@ -70,11 +70,6 @@ import { distanceAndHeading } from '../../functions/mathFunctions'
 //----------------------------------------------------------------//
 const Marker = props => {
 
-  /*const handleClose = () => {
-    props.setActiveDialog(null)
-    props.setFocusedMarker(null)
-  }*/
-
   const computedSize = props.markerSize * props.mapZoom
 
   const useStyles = makeStyles({
@@ -180,7 +175,7 @@ const Marker = props => {
               anchor: null,
               name: 'editMarker',
             },
-          })}//props.setActiveDialog('editMarker')}
+          })}
         >
           Edit
         </Button>
@@ -216,17 +211,6 @@ const Marker = props => {
       />
     )
   }
-
-  /*const handlePopupClose = () => {
-    props.setFocusedMarker(null)
-    props.setFocusedShape(null)
-    props.setFocusedLatlng({latlng: null, source: null})
-  }*/
-
-  /*const handleEditMarker = marker => {
-    props.setFocusedMarker(marker)
-    props.toggleEditMarkerDialog()
-  }*/
 
   return (
     <React.Fragment>

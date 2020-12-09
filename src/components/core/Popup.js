@@ -86,14 +86,19 @@ const MapPopup = props => {
   // React Effects
   //----------------------------------------------------------------//
   React.useEffect(() => {
-    if (props.activeTool === null && props.focusedLatlng.latlng !== null && (props.focusedLatlng.source === 'map' || props.focusedLatlng.source === 'input')) {
+    if (
+      //props.activeTool === null &&
+      props.state.tool === null &&
+      props.focusedLatlng.latlng !== null &&
+      (props.focusedLatlng.source === 'map' || props.focusedLatlng.source === 'input')
+    ) {
       props.setFocusedMarker(null)
       setPopup({
         ...generateMapPopup(props.focusedLatlng.latlng, props.anchor),
         elevation: props.elevation
       })
     }
-  }, [props.elevation, props.focusedLatlng, props.activeTool])
+  }, [props.elevation, props.focusedLatlng, props.state.tool])//props.activeTool])
 
   //----------------------------------------------------------------//
   // Logic
@@ -104,7 +109,8 @@ const MapPopup = props => {
     props.focusedMarker === null &&
     props.focusedShape === null &&
     popup !== null &&
-    props.activeTool === null
+    //props.activeTool === null
+    props.state.tool === null
   ) {
     return (
       <Popup

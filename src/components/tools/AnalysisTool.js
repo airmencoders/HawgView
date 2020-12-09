@@ -34,8 +34,8 @@ import React from 'react'
 //----------------------------------------------------------------//
 // React Leaflet Components
 //----------------------------------------------------------------//
-import { 
-  FeatureGroup 
+import {
+  FeatureGroup
 } from 'react-leaflet'
 
 //----------------------------------------------------------------//
@@ -65,9 +65,11 @@ const AnalysisTool = (props) => {
   const [declination, setDeclination] = React.useState(null)
 
   React.useEffect(() => {
-    closeLine()
-    setLines([])
-  }, [props.active])
+    if (props.state.tool === null || props.state.tool === 'analysis') {
+      closeLine()
+      setLines([])
+    }
+  }, [props.state.tool])
 
   /**
    * Add Key and mouse listeners for the map
@@ -77,20 +79,18 @@ const AnalysisTool = (props) => {
    */
   React.useEffect(() => {
     document.addEventListener('keydown', handleEscPress, false)
-    //document.addEventListener('dblclick', closeLine, false)
 
     return () => {
       document.removeEventListener('keydown', handleEscPress, false)
-      //document.removeEventListener('dblclick', closeLine, false)
     }
-  }, [props.active, props.lineClosed, points])
+  }, [props.state.tool, props.lineClosed, points])
 
   /**
    * Every time the clicked latlng changes and isn't null, add it to the analysis tool
    * As long as the tool is active
    */
   React.useEffect(() => {
-    if (props.latlng !== null && props.active) {
+    if (props.latlng !== null && props.state.tool === 'analysis') {
       //props.setLineClosed(false)
       setTotalMeters(totalMeters + meters)
       setTotalMiles(totalMiles + miles)
@@ -123,15 +123,6 @@ const AnalysisTool = (props) => {
   }, [props.latlng, props.mouseCoords])
 
   /**
-   * Handle the Analysis Tool Toggle. Perform startup/cleanup actions
-   */
-  const toggle = () => {
-    setLines([])
-    setPoints([])
-    props.toggle()
-  }
-
-  /**
    * Calculates the distance and bearing between two points.
    * Uses the NOAA NGDC Magnetic Declination API to get the magnetic variance using the World Magnetic Model (WMM) for the starting point
    */
@@ -149,9 +140,13 @@ const AnalysisTool = (props) => {
    * @param {Event} event Key press event
    */
   const handleEscPress = event => {
-    if (props.active && event.key === 'Escape') {
+    if (props.state.tool === 'analysis' && event.key === 'Escape') {
       if (points.length === 0) {
-        toggle()
+
+        props.setState({
+          ...props.state,
+          tool: null,
+        })
       } else {
         closeLine()
       }
@@ -163,9 +158,8 @@ const AnalysisTool = (props) => {
    * and resets the tool for another line
    */
   const closeLine = () => {
-    props.setFocusedLatlng({latlng: null, source: null})
+    props.setFocusedLatlng({ latlng: null, source: null })
     props.clearMouse()
-    //props.setLineClosed(true)
     if (points.length > 1) {
       setLines([...lines, [...points]])
     }
@@ -181,7 +175,6 @@ const AnalysisTool = (props) => {
   return (
     <FeatureGroup>
       <AnalysisToolActiveLine
-        active={props.active}
         hdg={hdg}
         mouseCoords={props.mouseCoords}
         meters={meters}
@@ -191,6 +184,9 @@ const AnalysisTool = (props) => {
         totalMeters={totalMeters}
         totalMiles={totalMiles}
         declination={declination}
+
+        setState={props.setState}
+        state={props.state}
       />
       <AnalysisToolPastLines
         lines={lines}

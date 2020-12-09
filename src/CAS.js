@@ -28,7 +28,6 @@
  * SOFTWARE.
  */
 import React from 'react'
-//import L from 'leaflet'
 
 //----------------------------------------------------------------//
 // Material-UI Components
@@ -128,11 +127,10 @@ const Cas = () => {
     dialog: {
       anchor: null,
       name: null,
-    }
+    },
+    tool: null,
   })
 
-  //const [activeDialog, setActiveDialog] = React.useState()
-  const [activeTool, setActiveTool] = React.useState(null)
   const [brightness, setBrightness] = React.useState(1)   // Actually just sets the opacity of the map. When decreasing brightness (<1) also ensures the map background is black, Increasing the brightness (>= 1) ensures the map background is white
   const [mouseCoords, setMouseCoords] = React.useState(null)
   const [focusedLatlng, setFocusedLatlng] = React.useState({ latlng: null, source: null })
@@ -284,8 +282,6 @@ const Cas = () => {
         name: dialog,
       },
     })
-    //setMobileMenuAnchor(event.currentTarget)
-    //setActiveDialog(dialog)
   }
 
   const handleMobileMenuClose = () => {
@@ -296,15 +292,12 @@ const Cas = () => {
         name: null,
       },
     })
-    //setMobileMenuAnchor(null)
-    //setActiveDialog(null)
   }
 
   /**
    * Helper function to do multiple things when closing the map Popup
    */
   const handleMapReset = () => {
-    //setActiveDialog(null)
     setFocusedLatlng({ latlng: null, source: null })
     setMouseCoords(null)
     setFocusedMarker(null)
@@ -318,6 +311,7 @@ const Cas = () => {
         anchor: null,
         name: null,
       },
+      tool: null,
     })
   }
 
@@ -360,7 +354,7 @@ const Cas = () => {
   }
 
   const editMarker = (action, payload) => {
-    handleMarkerEdit(action, payload, state, setState, elevation, focusedLatlng, markerLabel, history, step, setHistory, setStep, setMarkerLabel, handleMapReset, setFocusedMarker, setFocusedShape, /*setActiveDialog,*/ setActiveTool, toast)
+    handleMarkerEdit(action, payload, state, setState, elevation, focusedLatlng, markerLabel, history, step, setHistory, setStep, setMarkerLabel, handleMapReset, setFocusedMarker, setFocusedShape, toast)
   }
 
   return (
@@ -385,7 +379,6 @@ const Cas = () => {
               history={history}
               mapColor={mapColor}
               markerSize={markerSize}
-              //setActiveDialog={setActiveDialog}
               setBrightness={setBrightness}
               setMapColor={setMapColor}
               setMarkerSize={setMarkerSize}
@@ -425,8 +418,6 @@ const Cas = () => {
             mapColor={mapColor}
             markerSize={markerSize}
             anchor={mobileMenuAnchor}
-            //open={activeDialog === 'mobileMenu'}
-            //setActiveDialog={dialog => setActiveDialog(dialog)}
             setBrightness={setBrightness}
             setMapColor={setMapColor}
             setMarkerSize={setMarkerSize}
@@ -438,10 +429,6 @@ const Cas = () => {
             state={state}
           />
           <SiteMenu
-            anchor={mobileMenuAnchor}
-            //open={activeDialog === 'siteMenu'}
-            //setActiveDialog={setActiveDialog}
-
             setState={setState}
             state={state}
           />
@@ -453,16 +440,17 @@ const Cas = () => {
         <Map
           center={mapCenter}
           setMap={setMap}
-          activeTool={activeTool}
           mouseCoords={mouseCoords}
           setMapCenter={latlng => setMapCenter([latlng.lat, latlng.lng])}
           setMapZoom={zoom => setMapZoom(zoom)}
           setMouseCoords={setMouseCoords}
           setFocusedLatlng={latlng => setFocusedLatlng(latlng)}
           zoom={mapZoom}
+
+          setState={setState}
+          state={state}
         >
           <MapPopup
-            activeTool={activeTool}
             anchor={history[step].anchor}
             elevation={elevation}
             focusedLatlng={focusedLatlng}
@@ -470,17 +458,19 @@ const Cas = () => {
             focusedShape={focusedShape}
             handleMapReset={handleMapReset}
             setFocusedMarker={setFocusedMarker}
+
+            setState={setState}
+            state={state}
           />
           <LayerControl
             anchor={history[step].anchor}
             brightness={brightness}
             handleMarkerDrag={(marker, latlng) => editMarker('drag', { marker: marker, latlng: latlng })}
-            interactive={activeTool === null}
+            interactive={state.tool === null}
             map={map}
             mapCenter={mapCenter}
             mapZoom={mapZoom}
             markerSize={markerSize}
-            //setActiveDialog={dialog => setActiveDialog(dialog)}
             setFocusedMarker={marker => setFocusedMarker(marker)}
             setFocusedShape={shape => setFocusedShape(shape)}
             step={history[step]}
@@ -492,16 +482,17 @@ const Cas = () => {
           />
           <ZoomControl position='topright' />
           <ToolControl
-            activeTool={activeTool}
             editMarker={editMarker}
             focusedLatlng={focusedLatlng}
             history={history}
             mouseCoords={mouseCoords}
-            setActiveTool={setActiveTool}
             setFocusedMarker={setFocusedMarker}
             setFocusedLatlng={setFocusedLatlng}
             setMouseCoords={setMouseCoords}
             step={step}
+
+            setState={setState}
+            state={state}
           />
           <MouseCoordinatesControl
             anchor={history[step].anchor}
@@ -531,14 +522,12 @@ const Cas = () => {
         </Alert>
       </Snackbar>
       <Dialogs
-        //activeDialog={activeDialog}
         focusedMarker={focusedMarker}
         focusedShape={focusedShape}
         handleEditMarker={(action, dialog) => editMarker(action, dialog)}
         handleMapReset={handleMapReset}
         history={history}
         markerLabel={markerLabel}
-        //setActiveDialog={setActiveDialog}
         setHistory={setHistory}
         setMarkerLabel={setMarkerLabel}
         setStep={setStep}

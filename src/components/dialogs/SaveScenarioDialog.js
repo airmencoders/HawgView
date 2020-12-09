@@ -89,7 +89,7 @@ const SaveScenarioDialog = (props) => {
 
   const resetDialog = () => {
     setName('')
-    //props.setActiveDialog(null)
+    console.log('[SaveScenarioDialog] resetDialog setting state')
     props.setState({
       ...props.state,
       dialog: {
@@ -108,7 +108,7 @@ const SaveScenarioDialog = (props) => {
     element.click()
 
     setName('')
-    //props.setActiveDialog(null)
+    console.log('[SaveScenarioDialog] downloadScenario setting state')
     props.setState({
       ...props.state,
       dialog: {
@@ -123,7 +123,7 @@ const SaveScenarioDialog = (props) => {
     <Dialog
       className={classes.dialog}
       fullWidth={true}
-      open={props.state.dialog.name === 'save'}//props.open}
+      open={props.state.dialog.name === 'save'}
       onClose={resetDialog}
       maxWidth='xs'
     >

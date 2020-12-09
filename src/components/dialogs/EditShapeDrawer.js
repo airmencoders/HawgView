@@ -337,7 +337,7 @@ const ShapeDrawer = (props) => {
         container={container}
         variant='temporary'
         anchor='left'
-        open={props.state.dialog.name === 'editShape'}//props.open}
+        open={props.state.dialog.name === 'editShape'}
         onClose={props.onClose}
         classes={{ paper: classes.drawerPaper, }}
         ModalProps={{ keepMounted: true, }}

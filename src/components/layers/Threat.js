@@ -155,20 +155,11 @@ const Threat = props => {
 
   /**
    * 
-   */
-  /*const handlePopupClose = () => {
-    props.setFocusedMarker(null)
-    props.setFocusedShape(null)
-    props.setClickedLatLng(null)
-  }*/
-
-  /**
-   * 
    * @param {*} marker 
    */
   const handleEditMarker = marker => {
     props.setFocusedMarker(marker)
-    //props.setActiveDialog('editMarker')
+    console.log('[Threat] handleEditMarker setting state')
     props.setState({
       ...props.state,
       dialog: {

@@ -66,7 +66,7 @@ const LoadScenarioDialog = (props) => {
     const reader = new FileReader()
 
     reader.onload = () => {
-      //props.setActiveDialog(null)
+      console.log('[LoadScenarioDialog] reader.onload setting state')
       props.setState({
         ...props.state,
         dialog: {
@@ -84,14 +84,14 @@ const LoadScenarioDialog = (props) => {
     <Dialog
       className={classes.dialog}
       fullWidth={true}
-      open={props.state.dialog.name === 'load'}//props.open}
+      open={props.state.dialog.name === 'load'}
       onClose={() => props.setState({
         ...props.state,
         dialog: {
           anchor: null,
           name: null,
         },
-      })}//props.setActiveDialog(null)}
+      })}
       maxWidth='xs'
     >
       <DialogTitle>Load Scenario</DialogTitle>
@@ -123,7 +123,7 @@ const LoadScenarioDialog = (props) => {
               anchor: null,
               name: null,
             },
-          })}//props.setActiveDialog(null)}
+          })}
         >
           Close
         </Button>

@@ -145,7 +145,7 @@ const StyleDrawer = (props) => {
         container={container}
         variant='temporary'
         anchor='left'
-        open={props.state.dialog.name === 'style'}//props.open}
+        open={props.state.dialog.name === 'style'}
         onClose={props.onClose}
         classes={{ paper: classes.drawerPaper, }}
         ModalProps={{ keepMounted: true }}

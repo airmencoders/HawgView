@@ -1,3 +1,7 @@
+## 2.15.1-beta
+### Changes
+* Moved `tool` to `state`
+
 ## 2.15.0-beta
 ### Changes
 * Started work on state cleanup

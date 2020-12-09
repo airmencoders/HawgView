@@ -54,14 +54,14 @@ const RectangleTool = props => {
       document.removeEventListener('keydown', handleEsc, false)
       setStartLatlng(null)
     }
-  }, [props.active])
+  }, [props.state.tool])
 
   React.useEffect(() => {
-    if (props.active && startLatlng === null) {
+    if (props.state.tool === 'rectangle' && startLatlng === null) {
       setStartLatlng(props.latlng)
     }
 
-    if (props.active && startLatlng !== null) {
+    if (props.state.tool === 'rectangle' && startLatlng !== null) {
       props.submit('create', {
         bounds: [startLatlng, props.latlng],
         color: '#4A90E2',
@@ -74,13 +74,16 @@ const RectangleTool = props => {
   }, [props.latlng])
 
   const handleEsc = event => {
-    if (props.active && event.key === 'Escape') {
+    if (props.state.tool === 'rectangle' && event.key === 'Escape') {
       setStartLatlng(null)
-      props.toggle()
+      props.setState({
+        ...props.state,
+        tool: null,
+      })
     }
   }
 
-  if (props.active && startLatlng !== null & props.mouseCoords !== null) {
+  if (props.state.tool === 'rectangle' && startLatlng !== null & props.mouseCoords !== null) {
     return (
       <FeatureGroup>
         <Rectangle

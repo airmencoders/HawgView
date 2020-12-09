@@ -39,7 +39,7 @@ const EllipseTool = props => {
    * Create an ellipse with the default values that the user can then change through the drawer
    */ 
   React.useEffect(() => {
-    if(props.active && props.latlng !== null) {
+    if(props.state.tool === 'ellipse' && props.latlng !== null) {
       props.submit('create', {
         center: props.latlng,
         color: '#4A90E2',
@@ -52,7 +52,7 @@ const EllipseTool = props => {
         width: 4630,
       })
     }
-  }, [props.active, props.latlng])
+  }, [props.state.tool, props.latlng])
 
   return null
 }

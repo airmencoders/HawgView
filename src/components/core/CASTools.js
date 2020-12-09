@@ -94,7 +94,7 @@ const CASTools = props => {
               anchor: null,
               name: 'addMarker',
             },
-          })}//props.setActiveDialog('addMarker')}
+          })}
         >
           <AddPhotoAlternateIcon />
         </IconButton>
@@ -197,7 +197,7 @@ const CASTools = props => {
               anchor: null,
               name: 'markerList',
             },
-          })}//props.setActiveDialog('markerList')}
+          })}
         >
           <ViewListIcon />
         </IconButton>
@@ -221,7 +221,7 @@ const CASTools = props => {
               anchor: null,
               name: 'save',
             },
-          })}//props.setActiveDialog('save')}
+          })}
         >
           <SaveIcon />
         </IconButton>
@@ -235,7 +235,7 @@ const CASTools = props => {
               anchor: null,
               name: 'load',
             },
-          })}//props.setActiveDialog('load')}
+          })}
         >
           <FolderOpenIcon />
         </IconButton>
@@ -249,7 +249,7 @@ const CASTools = props => {
               anchor: null,
               name: 'style',
             },
-          })}//props.setActiveDialog('style')}
+          })}
         >
           <StyleIcon />
         </IconButton>

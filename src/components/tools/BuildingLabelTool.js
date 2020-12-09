@@ -46,16 +46,16 @@ const BuildingLabelTool = (props) => {
    * 
    */
   React.useEffect(() => {
-    if (props.active) {
+    if (props.state.tool === 'buildingLabel') {
       document.addEventListener('keydown', handleEscPress, false)
       return () => {
         document.removeEventListener('keydown', handleEscPress, false)
       }
     }
-  }, [props.active])
+  }, [props.state.tool])
 
   React.useEffect(() => {
-    if (props.active && props.latlng !== null) {
+    if (props.state.tool === 'buildingLabel' && props.latlng !== null) {
       const newData = {
         arty: {
           arty: false,
@@ -76,8 +76,11 @@ const BuildingLabelTool = (props) => {
    * @param {*} event 
    */
   const handleEscPress = event => {
-    if (props.active && event.key === 'Escape') {
-      props.toggle()
+    if (props.state.tool === 'buildingLabel' && event.key === 'Escape') {
+      props.setState({
+        ...props.state,
+        tool: null,
+      })
     }
   }
 

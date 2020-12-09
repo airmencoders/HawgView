@@ -63,21 +63,21 @@ const CircleTool = (props) => {
       setCenter(null)
       setRadius(0)
     }
-  }, [props.active])
+  }, [props.state.tool])
 
   React.useEffect(() => {
-    if (props.active && props.latlng !== null && props.mouseCoords !== null) {
+    if (props.state.tool === 'circle' && props.latlng !== null && props.mouseCoords !== null) {
       setRadius(distanceAndHeading(props.latlng, props.mouseCoords, 0).meters)
       setDistance(distanceAndHeading(props.latlng, props.mouseCoords, 0))
     }
-  }, [props.active, props.latlng, props.mouseCoords])
+  }, [props.state.tool, props.latlng, props.mouseCoords])
 
   React.useEffect(() => {
-    if (props.active && center === null) {
+    if (props.state.tool === 'circle' && center === null) {
       setCenter(props.latlng)
     }
 
-    if (props.active && center !== null && radius !== 0) {
+    if (props.state.tool === 'circle' && center !== null && radius !== 0) {
       props.submit('create', {
         color: '#4A90E2',
         dashArray: null,
@@ -89,17 +89,20 @@ const CircleTool = (props) => {
         unit: 'm',
       })
     }
-  }, [props.active, props.latlng])
+  }, [props.state.tool, props.latlng])
 
   const handleEsc = event => {
-    if (props.active && event.key === 'Escape') {
+    if (props.state.tool === 'circle' && event.key === 'Escape') {
       setRadius(0)
       setCenter(null)
-      props.toggle()
+      props.setState({
+        ...props.state,
+        tool: null,
+      })
     }
   }
 
-  if (props.active && center !== null) {
+  if (props.state.tool === 'circle' && center !== null) {
     return (
       <FeatureGroup>
         <Circle

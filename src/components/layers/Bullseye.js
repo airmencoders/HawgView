@@ -84,7 +84,6 @@ const Bullseye = props => {
 
   const handleEditShape = shape => {
     props.setFocusedShape(shape)
-    //props.setActiveDialog('editShape')
     props.setState({
       ...props.state,
       dialog: {

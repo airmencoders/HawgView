@@ -100,7 +100,7 @@ const MobileMenu = (props) => {
   // Click Handlers
   //----------------------------------------------------------------//
   const handleClearMarkersClick = () => {
-    //props.setActiveDialog(null)
+    console.log('[MobileMenu] handleClearMarkersClick setting state')
     props.setState({
       ...props.state,
       dialog: {
@@ -112,7 +112,7 @@ const MobileMenu = (props) => {
   }
 
   const handleColorToggleClick = () => {
-    //props.setActiveDialog(null)
+    console.log('[MobileMenu] handleColorToggleClick setting state')
     props.setState({
       ...props.state,
       dialog: {
@@ -124,27 +124,23 @@ const MobileMenu = (props) => {
   }
 
   const handleMarkerSizeDecreaseClick = () => {
-    //props.setActiveDialog(null)
     handleMarkerSizeDecrease(props.markerSize, props.setMarkerSize)
   }
 
   const handleMarkerSizeIncreaseClick = () => {
-    //props.setActiveDialog(null)
     handleMarkerSizeIncrease(props.markerSize, props.setMarkerSize)
   }
 
   const handleRedoClick = () => {
-    //props.setActiveDialog(null)
     props.handleRedo()
   }
 
   const handleUndoClick = () => {
-    //props.setActiveDialog(null)
     props.handleUndo()
   }
 
   const handleToggleTooltipsClick = () => {
-    //props.setActiveDialog(null)
+    console.log('[MobileMenu] handleToggleTooltipsClick setting state')
     props.setState({
       ...props.state,
       dialog: {
@@ -156,17 +152,15 @@ const MobileMenu = (props) => {
   }
 
   const handleBrightnessIncreaseClick = () => {
-    //props.setActiveDialog(null)
     handleBrightnessIncrease(props.brightness, props.setBrightness)
   }
 
   const handleBrightnessDecreaseClick = () => {
-    //props.setActiveDialog(null)
     handleBrightnessDecrease(props.brightness, props.setBrightness)
   }
 
   const handleDownloadClick = () => {
-    //props.setActiveDialog(null)
+    console.log('[MobileMenu] handleDownloadClick setting state')
     props.setState({
       ...props.state,
       dialog: {
@@ -182,7 +176,7 @@ const MobileMenu = (props) => {
   //----------------------------------------------------------------//
   return (
     <Menu
-      anchorEl={props.state.dialog.anchor}//props.anchor}
+      anchorEl={props.state.dialog.anchor}
       anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
       keepMounted
       onClose={() => props.setState({
@@ -191,7 +185,7 @@ const MobileMenu = (props) => {
           anchor: null,
           name: null,
         },
-      })}//props.setActiveDialog(null)}
+      })}
       open={props.state.dialog.name === 'mobileMenu'}
       transformOrigin={{ vertical: 'top', horizontal: 'right' }}
     >
@@ -202,7 +196,7 @@ const MobileMenu = (props) => {
             anchor: null,
             name: 'addMarker',
           },
-        })}//props.setActiveDialog('addMarker')}
+        })}
       >
         <AddPhotoAlternateIcon className={classes.icon} />
         Add Marker
@@ -271,7 +265,7 @@ const MobileMenu = (props) => {
             anchor: null,
             name: 'markerList',
           },
-        })}//props.setActiveDialog('markerList')}
+        })}
       >
         <ViewListIcon className={classes.icon} />
         View marker list
@@ -290,7 +284,7 @@ const MobileMenu = (props) => {
             anchor: null,
             name: 'save',
           },
-        })}//props.setActiveDialog('save')}
+        })}
       >
         <SaveIcon className={classes.icon} />
         Save scenario
@@ -302,7 +296,7 @@ const MobileMenu = (props) => {
             anchor: null,
             name: 'load',
           },
-        })}//props.setActiveDialog('load')}
+        })}
       >
         <FolderOpenIcon className={classes.icon} />
         Load scenario
@@ -314,7 +308,7 @@ const MobileMenu = (props) => {
             anchor: null,
             name: 'style',
           },
-        })}//props.setActiveDialog('style')}
+        })}
       >
         <StyleIcon className={classes.icon} />
         Styles

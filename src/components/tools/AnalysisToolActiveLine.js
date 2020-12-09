@@ -117,7 +117,7 @@ const AnalysisToolActiveLine = (props) => {
        * Create the circle marker at the mouse only if the mouse coordinates are not null, the tool is active, and there is at least
        * one point in the array
        */}
-      {(props.mouseCoords !== null && props.points.length > 0 && props.active) ?
+      {(props.mouseCoords !== null && props.points.length > 0 && props.state.tool === 'analysis') ?
           <CircleMarker
             center={props.mouseCoords}
             color='red'
