@@ -95,7 +95,7 @@ const useStyles = makeStyles(theme => ({
 //----------------------------------------------------------------//
 // MGRS Input Component
 //----------------------------------------------------------------//
-const CoordInput = (props) => {
+const CoordInput = props => {
   const classes = useStyles()
 
   let inputRef = React.useRef('')

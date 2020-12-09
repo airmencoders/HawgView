@@ -71,7 +71,7 @@ const UpdateScenarioDialog = (props) => {
     <Dialog
       className={classes.dialog}
       fullWidth={true}
-      open={props.open}
+      open={props.state.dialog.name === 'update'}//props.open}
       onClose={props.toggle}
       maxWidth='xl'
     >

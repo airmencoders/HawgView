@@ -168,7 +168,14 @@ const Threat = props => {
    */
   const handleEditMarker = marker => {
     props.setFocusedMarker(marker)
-    props.setActiveDialog('editMarker')
+    //props.setActiveDialog('editMarker')
+    props.setState({
+      ...props.state,
+      dialog: {
+        anchor: null,
+        name: 'editMarker',
+      },
+    })
   }
 
   return (

@@ -73,7 +73,7 @@ const useStyles = makeStyles(theme => ({
 //----------------------------------------------------------------//
 // CAS Navigation Component
 //----------------------------------------------------------------//
-const CASNavigation = (props) => {
+const CASNavigation = props => {
   const classes = useStyles()
 
   let packageJson = require('../../../package.json')

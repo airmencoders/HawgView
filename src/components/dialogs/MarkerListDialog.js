@@ -61,7 +61,7 @@ const MarkerListDialog = (props) => {
     <Dialog
       fullWidth={true}
       maxWidth={false}
-      open={props.open}
+      open={props.state.dialog.name === 'markerList'}//props.open}
       onClose={props.onClose}
     >
       <DialogTitle>

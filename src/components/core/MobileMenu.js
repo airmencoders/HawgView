@@ -100,12 +100,26 @@ const MobileMenu = (props) => {
   // Click Handlers
   //----------------------------------------------------------------//
   const handleClearMarkersClick = () => {
-    props.setActiveDialog(null)
+    //props.setActiveDialog(null)
+    props.setState({
+      ...props.state,
+      dialog: {
+        anchor: null,
+        name: null,
+      },
+    })
     props.handleClearMarkers()
   }
 
   const handleColorToggleClick = () => {
-    props.setActiveDialog(null)
+    //props.setActiveDialog(null)
+    props.setState({
+      ...props.state,
+      dialog: {
+        anchor: null,
+        name: null,
+      },
+    })
     handleColorChange(props.mapColor, props.setMapColor)
   }
 
@@ -130,7 +144,14 @@ const MobileMenu = (props) => {
   }
 
   const handleToggleTooltipsClick = () => {
-    props.setActiveDialog(null)
+    //props.setActiveDialog(null)
+    props.setState({
+      ...props.state,
+      dialog: {
+        anchor: null,
+        name: null,
+      },
+    })
     props.toggleTooltips()
   }
 
@@ -145,7 +166,14 @@ const MobileMenu = (props) => {
   }
 
   const handleDownloadClick = () => {
-    props.setActiveDialog(null)
+    //props.setActiveDialog(null)
+    props.setState({
+      ...props.state,
+      dialog: {
+        anchor: null,
+        name: null,
+      },
+    })
     generateKML(props.history[props.step])
   }
 
@@ -154,14 +182,28 @@ const MobileMenu = (props) => {
   //----------------------------------------------------------------//
   return (
     <Menu
-      anchorEl={props.anchor}
+      anchorEl={props.state.dialog.anchor}//props.anchor}
       anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
       keepMounted
-      onClose={() => props.setActiveDialog(null)}
-      open={props.open}
+      onClose={() => props.setState({
+        ...props.state,
+        dialog: {
+          anchor: null,
+          name: null,
+        },
+      })}//props.setActiveDialog(null)}
+      open={props.state.dialog.name === 'mobileMenu'}
       transformOrigin={{ vertical: 'top', horizontal: 'right' }}
     >
-      <MenuItem onClick={() => props.setActiveDialog('addMarker')}>
+      <MenuItem 
+        onClick={() => props.setState({
+          ...props.state,
+          dialog: {
+            anchor: null,
+            name: 'addMarker',
+          },
+        })}//props.setActiveDialog('addMarker')}
+      >
         <AddPhotoAlternateIcon className={classes.icon} />
         Add Marker
       </MenuItem>
@@ -222,7 +264,15 @@ const MobileMenu = (props) => {
         <DescriptionIcon className={classes.icon} />
         CONOP tools
   </MenuItem>*/}
-      <MenuItem onClick={() => props.setActiveDialog('markerList')}>
+      <MenuItem 
+        onClick={() => props.setState({
+          ...props.state,
+          dialog: {
+            anchor: null,
+            name: 'markerList',
+          },
+        })}//props.setActiveDialog('markerList')}
+      >
         <ViewListIcon className={classes.icon} />
         View marker list
       </MenuItem>
@@ -233,15 +283,39 @@ const MobileMenu = (props) => {
         }
         Toggle marker labels
       </MenuItem>
-      <MenuItem onClick={() => props.setActiveDialog('save')}>
+      <MenuItem 
+        onClick={() => props.setState({
+          ...props.state,
+          dialog: {
+            anchor: null,
+            name: 'save',
+          },
+        })}//props.setActiveDialog('save')}
+      >
         <SaveIcon className={classes.icon} />
         Save scenario
       </MenuItem>
-      <MenuItem onClick={() => props.setActiveDialog('load')}>
+      <MenuItem 
+        onClick={() => props.setState({
+          ...props.state,
+          dialog: {
+            anchor: null,
+            name: 'load',
+          },
+        })}//props.setActiveDialog('load')}
+      >
         <FolderOpenIcon className={classes.icon} />
         Load scenario
       </MenuItem>
-      <MenuItem onClick={() => props.setActiveDialog('style')}>
+      <MenuItem 
+        onClick={() => props.setState({
+          ...props.state,
+          dialog: {
+            anchor: null,
+            name: 'style',
+          },
+        })}//props.setActiveDialog('style')}
+      >
         <StyleIcon className={classes.icon} />
         Styles
       </MenuItem>

@@ -92,7 +92,7 @@ const AddMarkerDrawer = props => {
         container={container}
         variant='temporary'
         anchor='left'
-        open={props.open}
+        open={props.state.dialog.name === 'addMarker'}//props.open}
         onClose={props.onClose}
         classes={{ paper: classes.drawerPaper, }}
         ModalProps={{ keepMounted: true, }}

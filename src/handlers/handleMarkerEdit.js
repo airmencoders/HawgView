@@ -35,7 +35,7 @@ import { editMarkers } from '../functions/editMarkers'
 //----------------------------------------------------------------//
 // Handle Marker Edit Function
 //----------------------------------------------------------------//
-const handleMarkerEdit = (action, payload, elevation, focusedLatlng, markerLabel, history, step, setHistory, setStep, setMarkerLabel, handleMapReset, setFocusedMarker, setFocusedShape, setActiveDialog, setActiveTool, toast) => {
+const handleMarkerEdit = (action, payload, state, setState, elevation, focusedLatlng, markerLabel, history, step, setHistory, setStep, setMarkerLabel, handleMapReset, setFocusedMarker, setFocusedShape, /*setActiveDialog,*/ setActiveTool, toast) => {
   const supportedActions = ['clear', 'create', 'delete', 'drag', 'edit', '9line', '15line']
 
   if (supportedActions.includes(action)) {
@@ -94,13 +94,27 @@ const handleMarkerEdit = (action, payload, elevation, focusedLatlng, markerLabel
 
       if (payload.layer === 'circle' || payload.layer === 'rectangle' || payload.layer === 'line' || payload.layer === 'polygon' || payload.layer === 'ellipse') {
         setFocusedShape(updatedPayload)
-        setActiveDialog('editShape')
+        //setActiveDialog('editShape')
+        setState({
+          ...state,
+          dialog: {
+            anchor: null,
+            name: 'editShape',
+          },
+        })
         setActiveTool(null)
       }
 
       if (payload.layer === 'threat') {
         setFocusedMarker(updatedPayload)
-        setActiveDialog('editMarker')
+        //setActiveDialog('editMarker')
+        setState({
+          ...state,
+          dialog: {
+            anchor: null,
+            name: 'editMarker',
+          },
+        })
         setActiveTool(null)
       }
     }

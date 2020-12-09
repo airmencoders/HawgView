@@ -133,7 +133,14 @@ const Shape = props => {
 
   const handleEditMarker = marker => {
     props.setFocusedMarker(marker)
-    props.toggleEditMarkerDialog()
+    //props.toggleEditMarkerDialog()
+    props.setState({
+      ...props.state,
+      dialog: {
+        anchor: null,
+        name: 'editMarker',
+      },
+    })
   }
 
   if (props.interactive) {

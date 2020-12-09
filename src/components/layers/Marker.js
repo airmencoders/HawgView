@@ -172,7 +172,18 @@ const Marker = props => {
         >
           TGP View
       </Button>
-        <Button color='primary' onClick={() => props.setActiveDialog('editMarker')}>Edit</Button>
+        <Button 
+          color='primary'
+          onClick={() => props.setState({
+            ...props.state,
+            dialog: {
+              anchor: null,
+              name: 'editMarker',
+            },
+          })}//props.setActiveDialog('editMarker')}
+        >
+          Edit
+        </Button>
         <Button color='secondary' onClick={() => props.handleDeleteMarker(marker)}>Delete</Button>
       </Popup>
     )

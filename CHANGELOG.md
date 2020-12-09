@@ -1,3 +1,8 @@
+## 2.15.0-beta
+### Changes
+* Started work on state cleanup
+* Moved `dialog` to `state`
+
 ## 2.14.8-beta
 ### Changes
 * Re-added `Download Products` to `MobileMenu`

@@ -56,49 +56,73 @@ const Dialogs = props => {
   return (
     <React.Fragment>
       <NotificationsDialog
-        open={props.activeDialog === 'notifications'}
+        //open={props.state.dialog.name === 'notifications'}//props.activeDialog === 'notifications'}
         onClose={() => props.handleMapReset()}
+
+        setState={props.setState}
+        state={props.state}
       />
       <StyleDrawer
-        open={props.activeDialog === 'style'}
+        //open={props.state.dialog.name === 'style'}//props.activeDialog === 'style'}
         onClose={() => props.handleMapReset()}
         submit={(action, payload) => props.handleEditMarker(action, payload)}
+
+        setState={props.setState}
+        state={props.state}
       />
       <AddMarkerDrawer
         anchor={props.history[props.step].anchor}
-        open={props.activeDialog === 'addMarker'}
+        //open={props.state.dialog.name === 'addMarker'}//props.activeDialog === 'addMarker'}
         markerLabel={props.markerLabel}
         onClose={() => props.handleMapReset()}
         handleAddMarker={payload => props.handleEditMarker('create', payload)}
         setMarkerLabel={props.setMarkerLabel}
+
+        setState={props.setState}
+        state={props.state}
       />
       <EditMarkerDrawer
         marker={props.focusedMarker}
-        open={props.activeDialog === 'editMarker'}
+        //open={props.state.dialog.name === 'editMarker'}//props.activeDialog === 'editMarker'}
         onClose={() => props.handleMapReset()}
         submit={(action, payload) => props.handleEditMarker(action, payload)}
+
+        setState={props.setState}
+        state={props.state}
       />
       <EditShapeDrawer
         shape={props.focusedShape}
         onClose={() => props.handleMapReset()}
-        open={props.activeDialog === 'editShape'}
+        //open={props.state.dialog.name === 'editShape'}//props.activeDialog === 'editShape'}
         submit={(action, payload) => props.handleEditMarker(action, payload)}
+
+        setState={props.setState}
+        state={props.state}
       />
       <MarkerListDialog
-        open={props.activeDialog === 'markerList'}
+        //open={props.state.dialog.name === 'markerList'}//props.activeDialog === 'markerList'}
         onClose={() => props.handleMapReset()}
         step={props.history[props.step]}
+
+        setState={props.setState}
+        state={props.state}
       />
       <SaveScenarioDialog
         data={props.history[props.step]}
-        open={props.activeDialog === 'save'}
+        //open={props.activeDialog === 'save'}
         setActiveDialog={dialog => props.setActiveDialog(dialog)}
         toast={(message, severity) => props.toast(message, severity)}
+
+        setState={props.setState}
+        state={props.state}
       />
       <LoadScenarioDialog
-        open={props.activeDialog === 'load'}
+        //open={props.activeDialog === 'load'}
         setActiveDialog={dialog => props.setActiveDialog(dialog)}
         submit={data => handleLoadScenario(data, props.history, props.step, props.toast, props.setHistory, props.setStep)}
+
+        setState={props.setState}
+        state={props.state}
       />
     </React.Fragment>
   )

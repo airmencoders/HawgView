@@ -124,7 +124,14 @@ const Cas = () => {
   //----------------------------------------------------------------//
   // State
   //----------------------------------------------------------------//
-  const [activeDialog, setActiveDialog] = React.useState()
+  const [state, setState] = React.useState({
+    dialog: {
+      anchor: null,
+      name: null,
+    }
+  })
+
+  //const [activeDialog, setActiveDialog] = React.useState()
   const [activeTool, setActiveTool] = React.useState(null)
   const [brightness, setBrightness] = React.useState(1)   // Actually just sets the opacity of the map. When decreasing brightness (<1) also ensures the map background is black, Increasing the brightness (>= 1) ensures the map background is white
   const [mouseCoords, setMouseCoords] = React.useState(null)
@@ -215,10 +222,10 @@ const Cas = () => {
    * Any time the active dialog changes, reset the map
    */
   React.useEffect(() => {
-    if (activeDialog === null) {
+    if (state.dialog.name === null) {
       handleMapReset()
     }
-  }, [activeDialog])
+  }, [state.dialog.name])
 
   /**
   * Any time the focusd marker changes, set elevation to its default state 'Pending'
@@ -270,26 +277,48 @@ const Cas = () => {
   // Private Handlers
   //----------------------------------------------------------------//
   const handleMobileMenuOpen = (event, dialog) => {
-    setMobileMenuAnchor(event.currentTarget)
-    setActiveDialog(dialog)
+    setState({
+      ...state,
+      dialog: {
+        anchor: event.currentTarget,
+        name: dialog,
+      },
+    })
+    //setMobileMenuAnchor(event.currentTarget)
+    //setActiveDialog(dialog)
   }
 
   const handleMobileMenuClose = () => {
-    setMobileMenuAnchor(null)
-    setActiveDialog(null)
+    setState({
+      ...state,
+      dialog: {
+        anchor: null,
+        name: null,
+      },
+    })
+    //setMobileMenuAnchor(null)
+    //setActiveDialog(null)
   }
 
   /**
    * Helper function to do multiple things when closing the map Popup
    */
   const handleMapReset = () => {
-    setActiveDialog(null)
+    //setActiveDialog(null)
     setFocusedLatlng({ latlng: null, source: null })
     setMouseCoords(null)
     setFocusedMarker(null)
     setFocusedShape(null)
     //setMapPopup(null)
     setElevation('Pending')
+
+    setState({
+      ...state,
+      dialog: {
+        anchor: null,
+        name: null,
+      },
+    })
   }
 
   const handleCoordInput = latlng => {
@@ -331,7 +360,7 @@ const Cas = () => {
   }
 
   const editMarker = (action, payload) => {
-    handleMarkerEdit(action, payload, elevation, focusedLatlng, markerLabel, history, step, setHistory, setStep, setMarkerLabel, handleMapReset, setFocusedMarker, setFocusedShape, setActiveDialog, setActiveTool, toast)
+    handleMarkerEdit(action, payload, state, setState, elevation, focusedLatlng, markerLabel, history, step, setHistory, setStep, setMarkerLabel, handleMapReset, setFocusedMarker, setFocusedShape, /*setActiveDialog,*/ setActiveTool, toast)
   }
 
   return (
@@ -342,9 +371,7 @@ const Cas = () => {
       width='100vw'
     >
       <Box>
-        <CASNavigation
-          setActiveDialog={setActiveDialog}
-        >
+        <CASNavigation>
           <CoordInput
             map={map}
             submit={handleCoordInput}
@@ -358,13 +385,16 @@ const Cas = () => {
               history={history}
               mapColor={mapColor}
               markerSize={markerSize}
-              setActiveDialog={setActiveDialog}
+              //setActiveDialog={setActiveDialog}
               setBrightness={setBrightness}
               setMapColor={setMapColor}
               setMarkerSize={setMarkerSize}
               step={step}
               toggleTooltips={() => setTooltipsActive(!tooltipsActive)}
               tooltipsActive={tooltipsActive}
+
+              setState={setState}
+              state={state}
             />
           </div>
           <div className={classes.sectionMobile}>
@@ -395,19 +425,25 @@ const Cas = () => {
             mapColor={mapColor}
             markerSize={markerSize}
             anchor={mobileMenuAnchor}
-            open={activeDialog === 'mobileMenu'}
-            setActiveDialog={dialog => setActiveDialog(dialog)}
+            //open={activeDialog === 'mobileMenu'}
+            //setActiveDialog={dialog => setActiveDialog(dialog)}
             setBrightness={setBrightness}
             setMapColor={setMapColor}
             setMarkerSize={setMarkerSize}
             step={step}
             toggleTooltips={() => setTooltipsActive(!tooltipsActive)}
             tooltipsActive={tooltipsActive}
+
+            setState={setState}
+            state={state}
           />
           <SiteMenu
             anchor={mobileMenuAnchor}
-            open={activeDialog === 'siteMenu'}
-            setActiveDialog={setActiveDialog}
+            //open={activeDialog === 'siteMenu'}
+            //setActiveDialog={setActiveDialog}
+
+            setState={setState}
+            state={state}
           />
         </CASNavigation>
       </Box>
@@ -444,12 +480,15 @@ const Cas = () => {
             mapCenter={mapCenter}
             mapZoom={mapZoom}
             markerSize={markerSize}
-            setActiveDialog={dialog => setActiveDialog(dialog)}
+            //setActiveDialog={dialog => setActiveDialog(dialog)}
             setFocusedMarker={marker => setFocusedMarker(marker)}
             setFocusedShape={shape => setFocusedShape(shape)}
             step={history[step]}
             handleDeleteMarker={marker => editMarker('delete', { marker: marker })}
             tooltipsActive={tooltipsActive}
+
+            setState={setState}
+            state={state}
           />
           <ZoomControl position='topright' />
           <ToolControl
@@ -492,19 +531,22 @@ const Cas = () => {
         </Alert>
       </Snackbar>
       <Dialogs
-        activeDialog={activeDialog}
+        //activeDialog={activeDialog}
         focusedMarker={focusedMarker}
         focusedShape={focusedShape}
         handleEditMarker={(action, dialog) => editMarker(action, dialog)}
         handleMapReset={handleMapReset}
         history={history}
         markerLabel={markerLabel}
-        setActiveDialog={setActiveDialog}
+        //setActiveDialog={setActiveDialog}
         setHistory={setHistory}
         setMarkerLabel={setMarkerLabel}
         setStep={setStep}
         step={step}
         toast={toast}
+
+        setState={setState}
+        state={state}
       />
     </Box>
   )

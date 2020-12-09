@@ -88,7 +88,13 @@ const CASTools = props => {
       <Tooltip title='Add marker'>
         <IconButton
           color='inherit'
-          onClick={() => props.setActiveDialog('addMarker')}
+          onClick={() => props.setState({
+            ...props.state,
+            dialog: {
+              anchor: null,
+              name: 'addMarker',
+            },
+          })}//props.setActiveDialog('addMarker')}
         >
           <AddPhotoAlternateIcon />
         </IconButton>
@@ -185,7 +191,13 @@ const CASTools = props => {
       <Tooltip title='View marker list'>
         <IconButton
           color='inherit'
-          onClick={() => props.setActiveDialog('markerList')}
+          onClick={() => props.setState({
+            ...props.state,
+            dialog: {
+              anchor: null,
+              name: 'markerList',
+            },
+          })}//props.setActiveDialog('markerList')}
         >
           <ViewListIcon />
         </IconButton>
@@ -203,7 +215,13 @@ const CASTools = props => {
       <Tooltip title='Save scenario'>
         <IconButton
           color='inherit'
-          onClick={() => props.setActiveDialog('save')}
+          onClick={() => props.setState({
+            ...props.state,
+            dialog: {
+              anchor: null,
+              name: 'save',
+            },
+          })}//props.setActiveDialog('save')}
         >
           <SaveIcon />
         </IconButton>
@@ -211,7 +229,13 @@ const CASTools = props => {
       <Tooltip title='Load scenario'>
         <IconButton
           color='inherit'
-          onClick={() => props.setActiveDialog('load')}
+          onClick={() => props.setState({
+            ...props.state,
+            dialog: {
+              anchor: null,
+              name: 'load',
+            },
+          })}//props.setActiveDialog('load')}
         >
           <FolderOpenIcon />
         </IconButton>
@@ -219,7 +243,13 @@ const CASTools = props => {
       <Tooltip title='Styles'>
         <IconButton
           color='inherit'
-          onClick={() => props.setActiveDialog('style')}
+          onClick={() => props.setState({
+            ...props.state,
+            dialog: {
+              anchor: null,
+              name: 'style',
+            },
+          })}//props.setActiveDialog('style')}
         >
           <StyleIcon />
         </IconButton>

@@ -65,7 +65,14 @@ const SiteMenu = (props) => {
 
   const handleNotificationClick = () => {
     setInvisible(true)
-    props.setActiveDialog('notifications')
+    //props.setActiveDialog('notifications')
+    props.setState({
+      ...props.state,
+      dialog: {
+        anchor: null,
+        name: 'notifications',
+      },
+    })
   }
 
   //----------------------------------------------------------------//
@@ -73,11 +80,17 @@ const SiteMenu = (props) => {
   //----------------------------------------------------------------//
   return (
     <Menu
-      anchorEl={props.anchor}
+      anchorEl={props.state.dialog.anchor}//props.anchor}
       anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
       keepMounted
-      onClose={() => props.setActiveDialog(null)}
-      open={props.open}
+      onClose={() => props.setState({
+        ...props.state,
+        dialog: {
+          anchor: null,
+          name: null,
+        },
+      })}//props.setActiveDialog(null)}
+      open={props.state.dialog.name === 'siteMenu'}//props.open}
       transformOrigin={{ vertical: 'top', horizontal: 'right' }}
     >
       <MenuItem onClick={handleNotificationClick}>
