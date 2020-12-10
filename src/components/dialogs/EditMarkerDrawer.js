@@ -183,9 +183,9 @@ const EditMarkerDrawer = (props) => {
   const getMgrs = () => {
     let position
 
-    if (props.marker !== null) {
+    if (props.state.focusedMarker !== null) {
       try {
-        position = LatLon.parse(props.marker.latlng.lat, props.marker.latlng.lng).toUtm().toMgrs().toString()
+        position = LatLon.parse(props.state.focusedMarker.latlng.lat, props.state.focusedMarker.latlng.lng).toUtm().toMgrs().toString()
       } catch (e) {
         // Logging?
       }
@@ -193,105 +193,105 @@ const EditMarkerDrawer = (props) => {
       if (position !== undefined) {
         setMgrs(position)
         setMgrsDisabled(false)
-        if (props.marker.data === null) {
+        if (props.state.focusedMarker.data === null) {
           setCasLocation(position)
           setCsarLocation(position)
         }
       } else {
         setLatlng(true)
         setMgrsDisabled(true)
-        if (props.marker.data === null) {
-          setCasLocation(`${props.marker.latlng.lat.toFixed(4)}, ${props.marker.latlng.lng.toFixed(4)}`)
-          setCsarLocation(`${props.marker.latlng.lat.toFixed(4)}, ${props.marker.latlng.lng.toFixed(4)}`)
+        if (props.state.focusedMarker.data === null) {
+          setCasLocation(`${props.state.focusedMarker.latlng.lat.toFixed(4)}, ${props.state.focusedMarker.latlng.lng.toFixed(4)}`)
+          setCsarLocation(`${props.state.focusedMarker.latlng.lat.toFixed(4)}, ${props.state.focusedMarker.latlng.lng.toFixed(4)}`)
         }
       }
     }
   }
 
   React.useEffect(() => {
-    if (props.marker !== null) {
-      setTitle(props.marker.title)
+    if (props.state.focusedMarker !== null) {
+      setTitle(props.state.focusedMarker.title)
       getMgrs()
-      setLat(props.marker.latlng.lat.toFixed(4))
-      setLng(props.marker.latlng.lng.toFixed(4))
-      setElevation(props.marker.elevation)
+      setLat(props.state.focusedMarker.latlng.lat.toFixed(4))
+      setLng(props.state.focusedMarker.latlng.lng.toFixed(4))
+      setElevation(props.state.focusedMarker.elevation)
       setCas(false)
       setCsar(false)
 
-      if (props.marker.arty.arty === true) {
-        setArtyDisplay(props.marker.arty.display)
+      if (props.state.focusedMarker.arty.arty === true) {
+        setArtyDisplay(props.state.focusedMarker.arty.display)
       }
 
-      if (props.marker.layer === 'threat') {
-        setThreatType(props.marker.threatType)
-        setRange(props.marker.range)
-        setUnit(props.marker.unit)
-        setSovereignty(props.marker.sovereignty)
-        setFill(props.marker.fill)
-        setFillColor(props.marker.fillColor)
+      if (props.state.focusedMarker.layer === 'threat') {
+        setThreatType(props.state.focusedMarker.threatType)
+        setRange(props.state.focusedMarker.range)
+        setUnit(props.state.focusedMarker.unit)
+        setSovereignty(props.state.focusedMarker.sovereignty)
+        setFill(props.state.focusedMarker.fill)
+        setFillColor(props.state.focusedMarker.fillColor)
       }
 
-      if (props.marker.layer === 'mapLabel' || props.marker.layer === 'threat') {
-        setColor(props.marker.color)
+      if (props.state.focusedMarker.layer === 'mapLabel' || props.state.focusedMarker.layer === 'threat') {
+        setColor(props.state.focusedMarker.color)
       }
 
-      if (props.marker.layer === 'hostile' || props.marker.layer === 'threat') {
-        if (props.marker.data === null) {
-          setCasElevation(props.marker.elevation)
-          setCasDescription(props.marker.title)
+      if (props.state.focusedMarker.layer === 'hostile' || props.state.focusedMarker.layer === 'threat') {
+        if (props.state.focusedMarker.data === null) {
+          setCasElevation(props.state.focusedMarker.elevation)
+          setCasDescription(props.state.focusedMarker.title)
           setCasMark('None')
         } else {
           setCas(true)
-          setCasLabel(props.marker.data.label)
-          setCasIntent(props.marker.data.intent)
-          setCasTypeMethod(props.marker.data.typeMethod)
-          setCasIp(props.marker.data.ip)
-          setCasHdg(props.marker.data.hdg)
-          setCasDistance(props.marker.data.distance)
-          setCasElevation(props.marker.data.elevation)
-          setCasDescription(props.marker.data.description)
-          setCasLocation(props.marker.data.location)
-          setCasMark(props.marker.data.mark)
-          setCasFriendlies(props.marker.data.friendlies)
-          setCasEgress(props.marker.data.egress)
-          setCasRemarks(props.marker.data.remarks)
-          setCasTot(props.marker.data.tot)
-          setCasF2F(props.marker.data.f2f)
+          setCasLabel(props.state.focusedMarker.data.label)
+          setCasIntent(props.state.focusedMarker.data.intent)
+          setCasTypeMethod(props.state.focusedMarker.data.typeMethod)
+          setCasIp(props.state.focusedMarker.data.ip)
+          setCasHdg(props.state.focusedMarker.data.hdg)
+          setCasDistance(props.state.focusedMarker.data.distance)
+          setCasElevation(props.state.focusedMarker.data.elevation)
+          setCasDescription(props.state.focusedMarker.data.description)
+          setCasLocation(props.state.focusedMarker.data.location)
+          setCasMark(props.state.focusedMarker.data.mark)
+          setCasFriendlies(props.state.focusedMarker.data.friendlies)
+          setCasEgress(props.state.focusedMarker.data.egress)
+          setCasRemarks(props.state.focusedMarker.data.remarks)
+          setCasTot(props.state.focusedMarker.data.tot)
+          setCasF2F(props.state.focusedMarker.data.f2f)
         }
-      } else if (props.marker.layer === 'survivor') {
-        if (props.marker.data === null) {
-          setCsarCallsign(props.marker.title)
+      } else if (props.state.focusedMarker.layer === 'survivor') {
+        if (props.state.focusedMarker.data === null) {
+          setCsarCallsign(props.state.focusedMarker.title)
           setCsarFrequency('A')
           setCsarNumObjectives('1')
-          setCsarElevation(props.marker.elevation)
+          setCsarElevation(props.state.focusedMarker.elevation)
           setCsarSource('CSEL')
           setCsarCondition('Ambulatory')
           setCsarEquipment('Standard')
         } else {
           setCsar(true)
-          setCsarCallsign(props.marker.data.callsign)
-          setCsarFrequency(props.marker.data.frequency)
-          setCsarPlsHhrid(props.marker.data.plsHhrid)
-          setCsarNumObjectives(props.marker.data.numObjectives)
-          setCsarLocation(props.marker.data.location)
-          setCsarElevation(props.marker.data.elevation)
-          setCsarDateTime(props.marker.data.dateTime)
-          setCsarSource(props.marker.data.source)
-          setCsarCondition(props.marker.data.condition)
-          setCsarEquipment(props.marker.data.equipment)
-          setCsarAuthentication(props.marker.data.authentication)
-          setCsarThreats(props.marker.data.threats)
-          setCsarPzDescription(props.marker.data.pzDescription)
-          setCsarOscFreq(props.marker.data.oscFreq)
-          setCsarIpHdg(props.marker.data.ipHdg)
-          setCsarRescort(props.marker.data.rescort)
-          setCsarGameplan(props.marker.data.gameplan)
-          setCsarSignal(props.marker.data.signal)
-          setCsarEgress(props.marker.data.egress)
+          setCsarCallsign(props.state.focusedMarker.data.callsign)
+          setCsarFrequency(props.state.focusedMarker.data.frequency)
+          setCsarPlsHhrid(props.state.focusedMarker.data.plsHhrid)
+          setCsarNumObjectives(props.state.focusedMarker.data.numObjectives)
+          setCsarLocation(props.state.focusedMarker.data.location)
+          setCsarElevation(props.state.focusedMarker.data.elevation)
+          setCsarDateTime(props.state.focusedMarker.data.dateTime)
+          setCsarSource(props.state.focusedMarker.data.source)
+          setCsarCondition(props.state.focusedMarker.data.condition)
+          setCsarEquipment(props.state.focusedMarker.data.equipment)
+          setCsarAuthentication(props.state.focusedMarker.data.authentication)
+          setCsarThreats(props.state.focusedMarker.data.threats)
+          setCsarPzDescription(props.state.focusedMarker.data.pzDescription)
+          setCsarOscFreq(props.state.focusedMarker.data.oscFreq)
+          setCsarIpHdg(props.state.focusedMarker.data.ipHdg)
+          setCsarRescort(props.state.focusedMarker.data.rescort)
+          setCsarGameplan(props.state.focusedMarker.data.gameplan)
+          setCsarSignal(props.state.focusedMarker.data.signal)
+          setCsarEgress(props.state.focusedMarker.data.egress)
         }
       }
     }
-  }, [props.marker])
+  }, [props.state.focusedMarker])
 
   const pullElevation = () => {
     setElevation('Pending')
@@ -353,15 +353,15 @@ const EditMarkerDrawer = (props) => {
     }
 
     let payload = {
-      marker: props.marker,
+      marker: props.state.focusedMarker,
       data: null,
       elevation: elevation,
       latlng: { lat: target.lat, lng: target.lon },
       title: title,
-      arty: props.marker.arty,
+      arty: props.state.focusedMarker.arty,
     }
 
-    if ((props.marker.layer === 'threat' || props.marker.layer === 'hostile') && cas) {
+    if ((props.state.focusedMarker.layer === 'threat' || props.state.focusedMarker.layer === 'hostile') && cas) {
       payload.data = {
         type: '9line',
         label: casLabel,
@@ -380,7 +380,7 @@ const EditMarkerDrawer = (props) => {
         tot: casTot,
         f2f: casF2F,
       }
-    } else if (props.marker.layer === 'survivor' && csar) {
+    } else if (props.state.focusedMarker.layer === 'survivor' && csar) {
       payload.data = {
         type: '15line',
         callsign: csarCallsign,
@@ -405,7 +405,7 @@ const EditMarkerDrawer = (props) => {
       }
     }
 
-    if (props.marker.arty.arty === true) {
+    if (props.state.focusedMarker.arty.arty === true) {
       payload = {
         ...payload,
         arty: {
@@ -415,7 +415,7 @@ const EditMarkerDrawer = (props) => {
       }
     }
 
-    if (props.marker.layer === 'threat') {
+    if (props.state.focusedMarker.layer === 'threat') {
       payload = {
         ...payload,
         threatType: threatType,
@@ -428,7 +428,7 @@ const EditMarkerDrawer = (props) => {
       }
     }
 
-    if (props.marker.layer === 'mapLabel' || props.marker.layer === 'threat') {
+    if (props.state.focusedMarker.layer === 'mapLabel' || props.state.focusedMarker.layer === 'threat') {
       payload = {
         ...payload,
         color: color,
@@ -458,7 +458,7 @@ const EditMarkerDrawer = (props) => {
           variant='outlined'
           value={title}
         />
-        {props.marker !== null && props.marker.layer === 'threat' ? (
+        {props.state.focusedMarker !== null && props.state.focusedMarker.layer === 'threat' ? (
           <React.Fragment>
             <FormControl
               className={classes.marginsMd}
@@ -591,7 +591,7 @@ const EditMarkerDrawer = (props) => {
           variant='outlined'
           value={elevation}
         />
-        {(props.marker !== null && (props.marker.layer === 'mapLabel' || props.marker.layer === 'threat')) ?
+        {(props.state.focusedMarker !== null && (props.state.focusedMarker.layer === 'mapLabel' || props.state.focusedMarker.layer === 'threat')) ?
           <Grid
             container
             direction='row'
@@ -611,7 +611,7 @@ const EditMarkerDrawer = (props) => {
           </Grid>
           : null
         }
-        {props.marker !== null && props.marker.layer === 'threat' ? (
+        {props.state.focusedMarker !== null && props.state.focusedMarker.layer === 'threat' ? (
           <React.Fragment>
             <Grid
               container
@@ -653,7 +653,7 @@ const EditMarkerDrawer = (props) => {
 
         )
           : null}
-        {(props.marker !== null && props.marker.arty.arty === true) ?
+        {(props.state.focusedMarker !== null && props.state.focusedMarker.arty.arty === true) ?
           (
             <Grid
               container
@@ -678,7 +678,7 @@ const EditMarkerDrawer = (props) => {
           : null
 
         }
-        {(props.marker !== null && (props.marker.layer === 'hostile' || props.marker.layer === 'threat')) ?
+        {(props.state.focusedMarker !== null && (props.state.focusedMarker.layer === 'hostile' || props.state.focusedMarker.layer === 'threat')) ?
           (
             <Grid
               container
@@ -702,7 +702,7 @@ const EditMarkerDrawer = (props) => {
           )
           : null
         }
-        {(props.marker !== null && props.marker.layer === 'survivor') ?
+        {(props.state.focusedMarker !== null && props.state.focusedMarker.layer === 'survivor') ?
           (
             <Grid
               container
@@ -726,7 +726,7 @@ const EditMarkerDrawer = (props) => {
           )
           : null
         }
-        {(props.marker !== null && cas) ?
+        {(props.state.focusedMarker !== null && cas) ?
           (
             <React.Fragment>
               <TextField
@@ -838,7 +838,7 @@ const EditMarkerDrawer = (props) => {
           )
           : null
         }
-        {(props.marker !== null && csar) ?
+        {(props.state.focusedMarker !== null && csar) ?
           (
             <React.Fragment>
               <TextField

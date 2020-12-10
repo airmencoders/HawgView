@@ -46,7 +46,7 @@ import {
 import {
   Button
 } from '@material-ui/core'
-import { 
+import {
   makeStyles
 } from '@material-ui/core/styles'
 
@@ -147,26 +147,27 @@ const Threat = props => {
         >
           TGP View
         </Button>
-        <Button color='primary' onClick={() => handleEditMarker(marker)}>Edit</Button>
-        <Button color='secondary' onClick={() => props.handleDeleteMarker(marker)}>Delete</Button>
+        <Button
+          color='primary'
+          onClick={() => props.setState({
+            ...props.state,
+            dialog: {
+              anchor: null,
+              name: 'editMarker',
+            },
+            focusedMarker: marker,
+          })}
+        >
+          Edit
+        </Button>
+        <Button
+          color='secondary'
+          onClick={() => props.handleDeleteMarker(marker)}
+        >
+          Delete
+        </Button>
       </Popup>
     )
-  }
-
-  /**
-   * 
-   * @param {*} marker 
-   */
-  const handleEditMarker = marker => {
-    props.setFocusedMarker(marker)
-    console.log('[Threat] handleEditMarker setting state')
-    props.setState({
-      ...props.state,
-      dialog: {
-        anchor: null,
-        name: 'editMarker',
-      },
-    })
   }
 
   return (

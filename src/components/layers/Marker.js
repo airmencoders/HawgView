@@ -231,7 +231,10 @@ const Marker = props => {
           })
         }
         id={props.marker.id}
-        onClick={props.interactive ? () => props.setFocusedMarker(props.marker) : undefined}
+        onClick={props.interactive ? () => props.setState({
+          ...props.state,
+          focusedMarker: props.marker
+        }) : undefined}
         onDragend={props.interactive ? event => props.handleMarkerDrag(props.marker, event.target.getLatLng()) : undefined}
         position={props.marker.latlng}
         title={props.marker.title}

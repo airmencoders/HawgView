@@ -276,7 +276,6 @@ const LayerControl = props => {
               handleDeleteMarker={marker => props.handleDeleteMarker(marker)}
               key={`${marker.layer}-${marker.title}-${marker.id}`}
               marker={marker}
-              setFocusedMarker={marker => props.setFocusedMarker(marker)}
               setFocusedShape={shape => props.setFocusedShape(shape)}
 
               setState={props.setState}
@@ -295,7 +294,6 @@ const LayerControl = props => {
               handleDeleteMarker={marker => props.handleDeleteMarker(marker)}
               key={`${marker.layer}-${marker.title}-${marker.id}`}
               marker={marker}
-              setFocusedMarker={marker => props.setFocusedMarker(marker)}
               setFocusedShape={shape => props.setFocusedShape(shape)}
 
               setState={props.setState}
@@ -315,7 +313,6 @@ const LayerControl = props => {
               key={`${marker.layer}-${marker.title}-${marker.id}`}
               marker={marker}
               setFocusedLatlng={latlng => props.setFocusedLatlng(latlng)}
-              setFocusedMarker={marker => props.setFocusedMarker(marker)}
               setFocusedShape={shape => props.setFocusedShape(shape)}
 
               setState={props.setState}
@@ -334,7 +331,6 @@ const LayerControl = props => {
               handleDeleteMarker={marker => props.handleDeleteMarker(marker)}
               key={`${marker.layer}-${marker.title}-${marker.id}`}
               marker={marker}
-              setFocusedMarker={marker => props.setFocusedMarker(marker)}
 
               setState={props.setState}
               state={props.state}
@@ -352,7 +348,6 @@ const LayerControl = props => {
               handleDeleteMarker={marker => props.handleDeleteMarker(marker)}
               key={`${marker.layer}-${marker.title}-${marker.id}`}
               marker={marker}
-              setFocusedMarker={marker => props.setFocusedMarker(marker)}
               setFocusedShape={shape => props.setFocusedShape(shape)}
 
               setState={props.setState}
@@ -372,7 +367,6 @@ const LayerControl = props => {
               handleDeleteMarker={marker => props.handleDeleteMarker(marker)}
               key={`${marker.layer}-${marker.title}-${marker.id}`}
               marker={marker}
-              setFocusedMarker={marker => props.setFocusedMarker(marker)}
               setFocusedShape={shape => props.setFocusedShape(shape)}
 
               setState={props.setState}
@@ -391,7 +385,6 @@ const LayerControl = props => {
               handleDeleteMarker={marker => props.handleDeleteMarker(marker)}
               key={`${marker.layer}-${marker.title}-${marker.id}`}
               marker={marker}
-              setFocusedMarker={marker => props.setFocusedMarker(marker)}
               setFocusedShape={shape => props.setFocusedShape(shape)}
 
               setState={props.setState}
@@ -410,7 +403,6 @@ const LayerControl = props => {
               handleDeleteMarker={marker => props.handleDeleteMarker(marker)}
               key={`${marker.layer}-${marker.title}-${marker.id}`}
               marker={marker}
-              setFocusedMarker={marker => props.setFocusedMarker(marker)}
               setFocusedShape={shape => props.setFocusedShape(shape)}
 
               setState={props.setState}
@@ -632,7 +624,7 @@ const LayerControl = props => {
         </LayerGroup>
       </Overlay>
     </LayersControl>
-  ), [props.step, props.anchor, props.interactive, props.state.map.zoom, props.state.markerSize, props.state.tooltips, props.state.map.brightness, props.state.map.center])
+  ), [props.step, props.anchor, props.interactive, props.state /*props.state.map.zoom, props.state.markerSize, props.state.tooltips, props.state.map.brightness, props.state.map.center*/])
 
  return layers
 }

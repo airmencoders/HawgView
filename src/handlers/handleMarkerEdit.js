@@ -35,7 +35,7 @@ import { editMarkers } from '../functions/editMarkers'
 //----------------------------------------------------------------//
 // Handle Marker Edit Function
 //----------------------------------------------------------------//
-const handleMarkerEdit = (action, payload, state, setState, elevation, focusedLatlng, markerLabel, history, setHistory, setMarkerLabel, handleMapReset, setFocusedMarker, setFocusedShape, toast) => {
+const handleMarkerEdit = (action, payload, state, setState, elevation, focusedLatlng, markerLabel, history, setHistory, setMarkerLabel, handleMapReset, setFocusedShape, toast) => {
   const supportedActions = ['clear', 'create', 'delete', 'drag', 'edit', '9line', '15line']
 
   if (supportedActions.includes(action)) {
@@ -91,30 +91,46 @@ const handleMarkerEdit = (action, payload, state, setState, elevation, focusedLa
 
       handleMapReset()
 
-      let newDialog = null
+      let newState = {
+        ...state,
+        dialog: {
+          anchor: null,
+          name: null,
+        },
+        step: state.step + 1,
+      }
 
       if (payload.layer === 'circle' || payload.layer === 'rectangle' || payload.layer === 'line' || payload.layer === 'polygon' || payload.layer === 'ellipse') {
+        newState = {
+          ...newState,
+          dialog: {
+            anchor: null,
+            name: 'editShape',
+          },
+          focusedShape: updatedPayload,
+        }
         setFocusedShape(updatedPayload)
         //setActiveDialog('editShape')
-        newDialog = 'editShape'
+        //newDialog = 'editShape'
         //setActiveTool(null)
       }
 
       if (payload.layer === 'threat') {
-        setFocusedMarker(updatedPayload)
+       // setFocusedMarker(updatedPayload)
         //setActiveDialog('editMarker')
-        newDialog = 'editMarker'
+        //newDialog = 'editMarker'
         //setActiveTool(null)
+        newState = {
+          ...newState,
+          dialog: {
+            anchor: null,
+            name: 'editMarker',
+          },
+          focusedMarker: updatedPayload
+        }
       }
 
-      setState({
-        ...state,
-        dialog: {
-          anchor: null,
-          name: newDialog,
-        },
-        step: state.step + 1,
-      })
+      setState(newState)
     }
   } else {
     console.error(`Unsupported action ${action}. Could not modify Markers`)

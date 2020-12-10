@@ -86,10 +86,14 @@ const ToolControls = (props) => {
    * @param {*} tool 
    */
   const changeTools = tool => {
-    props.setFocusedMarker(null)
     props.setFocusedLatlng({ latlng: null, source: null })
     props.setState({
       ...props.state,
+      focusedLatlng: {
+        latlng: null,
+        source: null,
+      },
+      focusedMarker: null,
       tool: tool === props.state.tool ? null : tool,
     })
   }

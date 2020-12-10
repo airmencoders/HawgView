@@ -128,6 +128,12 @@ const Cas = () => {
       anchor: null,
       name: null,
     },
+    focusedLatlng: {
+      latlng: null,
+      source: null,
+    },
+    focusedMarker: null,
+    focusedShape: null,
     map: {
       brightness: 1,
       center: [35.77, -93.34],
@@ -143,7 +149,6 @@ const Cas = () => {
   const [mouseCoords, setMouseCoords] = React.useState(null)
   const [focusedLatlng, setFocusedLatlng] = React.useState({ latlng: null, source: null })
   const [elevation, setElevation] = React.useState('Pending')
-  const [focusedMarker, setFocusedMarker] = React.useState(null)
   const [focusedShape, setFocusedShape] = React.useState(null)
   const [history, setHistory] = React.useState([{
     action: '',
@@ -232,10 +237,17 @@ const Cas = () => {
   */
   React.useEffect(() => {
     setElevation('Pending')
-    if (focusedMarker !== null) {
-      setFocusedLatlng({ latlng: focusedMarker.latlng, source: 'marker' })
+    if (state.focusedMarker !== null) {
+      //setFocusedLatlng({ latlng: focusedMarker.latlng, source: 'marker' })
+      setState({
+        ...state,
+        focusedLatlng: {
+          latlng: state.focusedMarker.latlng,
+          source: 'marker',
+        },
+      })
     }
-  }, [focusedMarker])
+  }, [state.focusedMarker])
 
   /**
    * Whenever the focused lat/lng changes, as long as it has a valid lat/lng object, get the elevation
@@ -301,7 +313,6 @@ const Cas = () => {
   const handleMapReset = () => {
     setFocusedLatlng({ latlng: null, source: null })
     setMouseCoords(null)
-    setFocusedMarker(null)
     setFocusedShape(null)
     //setMapPopup(null)
     setElevation('Pending')
@@ -312,6 +323,7 @@ const Cas = () => {
         anchor: null,
         name: null,
       },
+      //focusedMarker: null,
       tool: null,
     })
   }
@@ -337,7 +349,7 @@ const Cas = () => {
   }
 
   const editMarker = (action, payload) => {
-    handleMarkerEdit(action, payload, state, setState, elevation, focusedLatlng, markerLabel, history, setHistory, setMarkerLabel, handleMapReset, setFocusedMarker, setFocusedShape, toast)
+    handleMarkerEdit(action, payload, state, setState, elevation, focusedLatlng, markerLabel, history, setHistory, setMarkerLabel, handleMapReset, setFocusedShape, toast)
   }
 
   return (
@@ -410,10 +422,8 @@ const Cas = () => {
             anchor={history[state.step].anchor}
             elevation={elevation}
             focusedLatlng={focusedLatlng}
-            focusedMarker={focusedMarker}
             focusedShape={focusedShape}
             handleMapReset={handleMapReset}
-            setFocusedMarker={setFocusedMarker}
 
             setState={setState}
             state={state}
@@ -423,7 +433,6 @@ const Cas = () => {
             handleMarkerDrag={(marker, latlng) => editMarker('drag', { marker: marker, latlng: latlng })}
             interactive={state.tool === null}
             map={map}
-            setFocusedMarker={marker => setFocusedMarker(marker)}
             setFocusedShape={shape => setFocusedShape(shape)}
             step={history[state.step]}
             handleDeleteMarker={marker => editMarker('delete', { marker: marker })}
@@ -437,7 +446,6 @@ const Cas = () => {
             focusedLatlng={focusedLatlng}
             history={history}
             mouseCoords={mouseCoords}
-            setFocusedMarker={setFocusedMarker}
             setFocusedLatlng={setFocusedLatlng}
             setMouseCoords={setMouseCoords}
 
@@ -472,7 +480,6 @@ const Cas = () => {
         </Alert>
       </Snackbar>
       <Dialogs
-        focusedMarker={focusedMarker}
         focusedShape={focusedShape}
         handleEditMarker={(action, dialog) => editMarker(action, dialog)}
         handleMapReset={handleMapReset}

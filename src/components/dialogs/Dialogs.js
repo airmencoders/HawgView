@@ -79,7 +79,6 @@ const Dialogs = props => {
         state={props.state}
       />
       <EditMarkerDrawer
-        marker={props.focusedMarker}
         onClose={() => props.handleMapReset()}
         submit={(action, payload) => props.handleEditMarker(action, payload)}
 

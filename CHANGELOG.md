@@ -1,3 +1,8 @@
+## 2.15.8-beta
+### Changes
+* Moved `focusedMarker` to `state`
+* Removed setting `focusedMarker` to `null` when resetting the map
+
 ## 2.15.7-beta
 ### Changes
 * Moved `step` to `state`
