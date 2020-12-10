@@ -132,6 +132,7 @@ const Cas = () => {
       brightness: 1,
       center: [35.77, -93.34],
       color: true,
+      zoom: 5,
     },
     tool: null,
   })
@@ -185,7 +186,6 @@ const Cas = () => {
     threatMarkers: [],
   }])
   const [map, setMap] = React.useState(null)
-  const [mapZoom, setMapZoom] = React.useState(5)
   const [markerLabel, setMarkerLabel] = React.useState('')
   const [markerSize, setMarkerSize] = React.useState(3)
   const [mobileMenuAnchor, setMobileMenuAnchor] = React.useState(null)
@@ -434,10 +434,8 @@ const Cas = () => {
         <Map
           setMap={setMap}
           mouseCoords={mouseCoords}
-          setMapZoom={zoom => setMapZoom(zoom)}
           setMouseCoords={setMouseCoords}
           setFocusedLatlng={latlng => setFocusedLatlng(latlng)}
-          zoom={mapZoom}
 
           setState={setState}
           state={state}
@@ -459,7 +457,6 @@ const Cas = () => {
             handleMarkerDrag={(marker, latlng) => editMarker('drag', { marker: marker, latlng: latlng })}
             interactive={state.tool === null}
             map={map}
-            mapZoom={mapZoom}
             markerSize={markerSize}
             setFocusedMarker={marker => setFocusedMarker(marker)}
             setFocusedShape={shape => setFocusedShape(shape)}

@@ -1,3 +1,7 @@
+## 2.15.4-beta
+### Changes
+* Moved `zoom` to `state.map`
+
 ## 2.15.3-beta
 ### Changes
 * Moved `color` to `state.map`

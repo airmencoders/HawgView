@@ -67,7 +67,7 @@ import { distanceAndHeading } from '../../functions/mathFunctions'
 //----------------------------------------------------------------//
 const Threat = props => {
 
-  const computedSize = props.markerSize * props.mapZoom
+  const computedSize = props.markerSize * props.state.map.zoom
 
   const useStyles = makeStyles({
     divIcon: {

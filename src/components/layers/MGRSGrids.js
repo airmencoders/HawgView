@@ -92,16 +92,16 @@ const MGRSGrids = (props) => {
 
   React.useEffect(() => {
     generateGridZones()
-  }, [props.zoom, props.center])
+  }, [props.state.map.zoom, props.state.map.center])
 
   const gridSpacing = () => {
-    if (props.zoom < 10) {
+    if (props.state.map.zoom < 10) {
       return 100000
-    } else if (props.zoom < 13) {
+    } else if (props.state.map.zoom < 13) {
       return 10000
-    } else if (props.zoom < 16) {
+    } else if (props.state.map.zoom < 16) {
       return 1000
-    } else if (props.zoom <= 19) {
+    } else if (props.state.map.zoom <= 19) {
       return 100
     } else {
       return NaN
@@ -109,13 +109,13 @@ const MGRSGrids = (props) => {
   }
 
   const mgrsAccuracy = () => {
-    if (props.zoom < 10) {
+    if (props.state.map.zoom < 10) {
       return 0
-    } else if (props.zoom < 13) {
+    } else if (props.state.map.zoom < 13) {
       return 1
-    } else if (props.zoom < 16) {
+    } else if (props.state.map.zoom < 16) {
       return 2
-    } else if (props.zoom <= 19) {
+    } else if (props.state.map.zoom <= 19) {
       return 3
     } else {
       return NaN
@@ -422,7 +422,7 @@ const MGRSGrids = (props) => {
         lng += gridSpacing()
       }
 
-      if (props.zoom >= 9) {
+      if (props.state.map.zoom >= 9) {
         // Draw grid labels (E/W borders)
         if (mgrsAccuracy() === 0) {
           for (let x in horizontalLabelLines) {
@@ -431,7 +431,7 @@ const MGRSGrids = (props) => {
               if (labelPoint && mapBounds.contains(labelPoint)) {
                 let label = gridMath.forward([labelPoint.lng, labelPoint.lat], mgrsAccuracy())
 
-                if (props.zoom >= 8) {
+                if (props.state.map.zoom >= 8) {
                   label = label.substr(4)
                 }
 
@@ -499,7 +499,7 @@ const MGRSGrids = (props) => {
 
   return (
     <LayerGroup>
-      {props.zoom > 3 && zoneLines.map((line, index) => (
+      {props.state.map.zoom > 3 && zoneLines.map((line, index) => (
         <React.Fragment
           key={`mgrs-zone-line-${index}`}
         >
@@ -513,7 +513,7 @@ const MGRSGrids = (props) => {
             : null}
         </React.Fragment>
       ))}
-      {props.zoom >= 9 && gridLines.map((line, index) => (
+      {props.state.map.zoom >= 9 && gridLines.map((line, index) => (
         <React.Fragment
           key={`mgrs-grid-line-${index}`}
         >
@@ -528,7 +528,7 @@ const MGRSGrids = (props) => {
             : null}
         </React.Fragment>
       ))}
-      {props.zoom > 3 && labels.map((label, index) => (
+      {props.state.map.zoom > 3 && labels.map((label, index) => (
         <Marker
           icon={L.divIcon({
             className: classes.zoneLabel,

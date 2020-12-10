@@ -146,18 +146,18 @@ const LayerControl = props => {
       </BaseLayer>
       <Overlay name='MGRS Lines'>
         <MGRSGrids
-          center={props.state.map.center}
           map={props.map}
           style={props.step.styles.mgrs}
-          zoom={props.mapZoom}
+
+          state={props.state}
         />
       </Overlay>
       <Overlay name='GARS Cells'>
         <GARSCells
-          center={props.state.map.center}
           map={props.map}
           style={props.step.styles.gars}
-          zoom={props.mapZoom}
+          
+          state={props.state}
         />
       </Overlay>
       <Overlay checked name='Geo Labels'>
@@ -259,7 +259,6 @@ const LayerControl = props => {
               interactive={props.interactive}
               key={`${bullseye.layer}-${bullseye.title}-${bullseye.id}`}
               markerSize={props.markerSize}
-              mapZoom={props.mapZoom}
               setFocusedShape={shape => props.setFocusedShape(shape)}
               tooltipsActive={props.tooltipsActive}
 
@@ -280,7 +279,6 @@ const LayerControl = props => {
               key={`${marker.layer}-${marker.title}-${marker.id}`}
               markerSize={props.markerSize}
               marker={marker}
-              mapZoom={props.mapZoom}
               setFocusedMarker={marker => props.setFocusedMarker(marker)}
               setFocusedShape={shape => props.setFocusedShape(shape)}
               tooltipsActive={props.tooltipsActive}
@@ -302,7 +300,6 @@ const LayerControl = props => {
               key={`${marker.layer}-${marker.title}-${marker.id}`}
               markerSize={props.markerSize}
               marker={marker}
-              mapZoom={props.mapZoom}
               setFocusedMarker={marker => props.setFocusedMarker(marker)}
               setFocusedShape={shape => props.setFocusedShape(shape)}
               tooltipsActive={props.tooltipsActive}
@@ -324,7 +321,6 @@ const LayerControl = props => {
               key={`${marker.layer}-${marker.title}-${marker.id}`}
               markerSize={props.markerSize}
               marker={marker}
-              mapZoom={props.mapZoom}
               setFocusedLatlng={latlng => props.setFocusedLatlng(latlng)}
               setFocusedMarker={marker => props.setFocusedMarker(marker)}
               setFocusedShape={shape => props.setFocusedShape(shape)}
@@ -347,7 +343,6 @@ const LayerControl = props => {
               key={`${marker.layer}-${marker.title}-${marker.id}`}
               markerSize={props.markerSize}
               marker={marker}
-              mapZoom={props.mapZoom}
               setFocusedMarker={marker => props.setFocusedMarker(marker)}
               tooltipsActive={props.tooltipsActive}
 
@@ -368,7 +363,6 @@ const LayerControl = props => {
               key={`${marker.layer}-${marker.title}-${marker.id}`}
               markerSize={props.markerSize}
               marker={marker}
-              mapZoom={props.mapZoom}
               setFocusedMarker={marker => props.setFocusedMarker(marker)}
               setFocusedShape={shape => props.setFocusedShape(shape)}
               tooltipsActive={props.tooltipsActive}
@@ -391,7 +385,6 @@ const LayerControl = props => {
               key={`${marker.layer}-${marker.title}-${marker.id}`}
               markerSize={props.markerSize}
               marker={marker}
-              mapZoom={props.mapZoom}
               setFocusedMarker={marker => props.setFocusedMarker(marker)}
               setFocusedShape={shape => props.setFocusedShape(shape)}
               tooltipsActive={props.tooltipsActive}
@@ -413,7 +406,6 @@ const LayerControl = props => {
               key={`${marker.layer}-${marker.title}-${marker.id}`}
               markerSize={props.markerSize}
               marker={marker}
-              mapZoom={props.mapZoom}
               setFocusedMarker={marker => props.setFocusedMarker(marker)}
               setFocusedShape={shape => props.setFocusedShape(shape)}
               tooltipsActive={props.tooltipsActive}
@@ -435,7 +427,6 @@ const LayerControl = props => {
               key={`${marker.layer}-${marker.title}-${marker.id}`}
               markerSize={props.markerSize}
               marker={marker}
-              mapZoom={props.mapZoom}
               setFocusedMarker={marker => props.setFocusedMarker(marker)}
               setFocusedShape={shape => props.setFocusedShape(shape)}
               tooltipsActive={props.tooltipsActive}
@@ -622,7 +613,7 @@ const LayerControl = props => {
               {(props.tooltipsActive) ?
                 <Tooltip
                   direction='top'
-                  offset={L.point(0, -1 * props.markerSize * props.mapZoom)}
+                  offset={L.point(0, -1 * props.markerSize * props.state.map.zoom)}
                   opacity='1'
                   permanent
                 >
@@ -646,7 +637,7 @@ const LayerControl = props => {
               {(props.tooltipsActive) ?
                 <Tooltip
                   direction='top'
-                  offset={L.point(0, -1 * props.markerSize * props.mapZoom)}
+                  offset={L.point(0, -1 * props.markerSize * props.state.map.zoom)}
                   opacity='1'
                   permanent
                 >
@@ -659,7 +650,7 @@ const LayerControl = props => {
         </LayerGroup>
       </Overlay>
     </LayersControl>
-  ), [props.step, props.anchor, props.interactive, props.mapZoom, props.markerSize, props.tooltipsActive, props.state.map.brightness, props.state.map.center])
+  ), [props.step, props.anchor, props.interactive, props.state.map.zoom, props.markerSize, props.tooltipsActive, props.state.map.brightness, props.state.map.center])
 
  return layers
 }

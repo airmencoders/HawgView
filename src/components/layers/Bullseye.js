@@ -80,7 +80,7 @@ const useStyles = makeStyles(theme => ({
 //----------------------------------------------------------------//
 const Bullseye = props => {
   const classes = useStyles()
-  const computedSize = props.markerSize * props.mapZoom
+  const computedSize = props.markerSize * props.state.map.zoom
 
   const handleEditShape = shape => {
     props.setFocusedShape(shape)

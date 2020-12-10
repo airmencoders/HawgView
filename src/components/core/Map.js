@@ -94,13 +94,19 @@ const Map = (props) => {
           center: event.target.getCenter(),
         },
       })}
-      onZoomend={event => props.setMapZoom(event.target.getZoom())}
+      onZoomend={event => props.setState({
+        ...props.state,
+        map: {
+          ...props.state.map,
+          zoom: event.target.getZoom(),
+        },
+      })}
       onClick={event => props.setFocusedLatlng({ latlng: event.latlng, source: 'map' })}
       onMouseMove={event => handleMouseMove(event.latlng)}
       ref={map => (map !== null) ? mapRef = map.leafletElement : undefined}
       style={props.state.tool !== null ? { cursor: 'crosshair' } : undefined}
       worldCopyJump={true}
-      zoom={props.zoom}
+      zoom={props.state.map.zoom}
       zoomControl={false}
     >
       {props.children}

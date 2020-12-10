@@ -97,7 +97,7 @@ const GARSCells = (props) => {
 
   React.useEffect(() => {
     generateGARS()
-  }, [props.zoom, props.center])
+  }, [props.state.map.zoom, props.state.map.center])
 
   /*const snap = number => {
     //return Math.floor(number / gridSpacing()) * gridSpacing()
@@ -304,7 +304,7 @@ const GARSCells = (props) => {
 
   return (
     <LayerGroup>
-      {props.zoom > 6 && cells.map((cell, index) => (
+      {props.state.map.zoom > 6 && cells.map((cell, index) => (
         <Polyline
           color={props.style.cellColor}
           key={`gars-cell-line-${index}`}
@@ -312,7 +312,7 @@ const GARSCells = (props) => {
           positions={cell.positions}
         />
       ))}
-      {props.zoom > 8 && quadrants.map((quadrant, index) => (
+      {props.state.map.zoom > 8 && quadrants.map((quadrant, index) => (
         <Polyline
           color={props.style.quadrantColor}
           key={`gars-quadrant-line-${index}`}
@@ -320,7 +320,7 @@ const GARSCells = (props) => {
           positions={quadrant.positions}
         />
       ))}
-      {props.zoom > 10 && keypads.map((keypad, index) => (
+      {props.state.map.zoom > 10 && keypads.map((keypad, index) => (
         <Polyline
           color={props.style.keypadColor}
           key={`gars-keypad-line-${index}`}
@@ -329,7 +329,7 @@ const GARSCells = (props) => {
           weight={1}
         />
       ))}
-      {props.zoom > 8 && labels.map((label, index) => (
+      {props.state.map.zoom > 8 && labels.map((label, index) => (
         <Marker
           icon={L.divIcon({
             className: classes.cellLabel,
@@ -340,7 +340,7 @@ const GARSCells = (props) => {
           position={label.position}
         />
       ))}
-      {/*props.zoom >= 9 && gridLines.map((line, index) => (
+      {/*props.state.map.zoom >= 9 && gridLines.map((line, index) => (
         <Polyline
           color={lineStyle.color}
           key={`mgrs-grid-line-${index}`}
@@ -349,7 +349,7 @@ const GARSCells = (props) => {
           weight={lineStyle.weight}
         />
       ))*/}
-      {/*props.zoom > 3 && labels.map((label, index) => (
+      {/*props.state.map.zoom > 3 && labels.map((label, index) => (
         <Marker
           icon={L.divIcon({
             className: classes.zoneLabel,

@@ -72,12 +72,12 @@ const Shape = props => {
       alignItems: 'center',
       color: props.marker.color,
       display: 'flex',
-      fontSize: props.markerSize * props.mapZoom,
+      fontSize: props.markerSize * props.state.map.zoom,
       fontWeight: 'bold',
       justifyContent: 'center',
       margin: '0',
       textAlign: 'center',
-      lineHeight: `${props.markerSize * props.mapZoom}px`,
+      lineHeight: `${props.markerSize * props.state.map.zoom}px`,
       wordWrap: 'break-word',
     },
   })
@@ -150,7 +150,7 @@ const Shape = props => {
         icon={props.marker.iconType === 'img' ?
           L.icon({
             iconUrl: props.marker.iconUrl,
-            iconSize: [props.markerSize * props.mapZoom, props.markerSize * props.mapZoom],
+            iconSize: [props.markerSize * props.state.map.zoom, props.markerSize * props.state.map.zoom],
           })
           :
           L.divIcon({
@@ -171,7 +171,7 @@ const Shape = props => {
         {(props.tooltipsActive) ?
           <Tooltip
             direction='top'
-            offset={L.point(0, -1 * props.markerSize * props.mapZoom)}
+            offset={L.point(0, -1 * props.markerSize * props.state.map.zoom)}
             opacity={1}
             permanent
           />
@@ -184,7 +184,7 @@ const Shape = props => {
         icon={props.marker.iconType === 'img' ?
           L.icon({
             iconUrl: props.marker.iconUrl,
-            iconSize: [props.markerSize * props.mapZoom, props.markerSize * props.mapZoom],
+            iconSize: [props.markerSize * props.state.map.zoom, props.markerSize * props.state.map.zoom],
           })
           :
           L.divIcon({
@@ -202,7 +202,7 @@ const Shape = props => {
         {(props.tooltipsActive) ?
           <Tooltip
             direction='top'
-            offset={L.point(0, -1 * props.markerSize * props.mapZoom)}
+            offset={L.point(0, -1 * props.markerSize * props.state.map.zoom)}
             opacity={1}
             permanent
           />
