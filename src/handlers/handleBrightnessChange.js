@@ -30,15 +30,21 @@
 const minBrightness = 0
 const maxBrightness = 2
 
-const handleBrightnessDecrease = (brightness, setBrightness) => {
-  if (brightness > minBrightness) {
-    setBrightness(Number.parseFloat((brightness - 0.1).toFixed(1)))
+const handleBrightnessDecrease = (state, setState) => {
+  if (state.brightness > minBrightness) {
+    setState({
+      ...state,
+      brightness: Number.parseFloat((state.brightness - 0.1).toFixed(1)),
+    })
   }
 }
 
-const handleBrightnessIncrease = (brightness, setBrightness) => {
-  if (brightness < maxBrightness) {
-    setBrightness(Number.parseFloat((brightness + 0.1).toFixed(1)))
+const handleBrightnessIncrease = (state, setState) => {
+  if (state.brightness < maxBrightness) {
+    setState({
+      ...state,
+      brightness: Number.parseFloat((state.brightness + 0.1).toFixed(1)),
+    })
   }
 }
 

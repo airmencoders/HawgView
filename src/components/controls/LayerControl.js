@@ -130,7 +130,7 @@ const LayerControl = props => {
           url='https://fly.maptiles.arcgis.com/arcgis/rest/services/World_Imagery_Firefly/MapServer/tile/{z}/{y}/{x}'
           attribution={`Esri, DigitalGlobe, GeoEye, Earthstar Geographics, CNES/Airbus DS, USDA, USGS, AeroGRID, IGN, and the GIS User Community`}
           maxNativeZoom={17}
-          opacity={props.brightness > 1 ? 2 - props.brightness : props.brightness}
+          opacity={props.state.brightness > 1 ? 2 - props.state.brightness : props.state.brightness}
           keepMounted
         />
       </BaseLayer>
@@ -141,7 +141,7 @@ const LayerControl = props => {
           attribution={`Esri, DigitalGlobe, GeoEye, Earthstar Geographics, CNES/Airbus DS, USDA, USGS, AeroGRID, IGN, and the GIS User Community`}
           maxNativeZoom={17}
           keepMounted
-          opacity={props.brightness > 1 ? 2 - props.brightness : props.brightness}
+          opacity={props.state.brightness > 1 ? 2 - props.state.brightness : props.state.brightness}
         />
       </BaseLayer>
       <Overlay name='MGRS Lines'>
@@ -659,7 +659,7 @@ const LayerControl = props => {
         </LayerGroup>
       </Overlay>
     </LayersControl>
-  ), [props.step, props.anchor, props.interactive, props.mapZoom, props.markerSize, props.tooltipsActive, props.brightness])
+  ), [props.step, props.anchor, props.interactive, props.mapZoom, props.markerSize, props.tooltipsActive, props.state.brightness])
 
  return layers
 }

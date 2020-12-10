@@ -124,6 +124,7 @@ const Cas = () => {
   // State
   //----------------------------------------------------------------//
   const [state, setState] = React.useState({
+    brightness: 1,
     dialog: {
       anchor: null,
       name: null,
@@ -131,7 +132,6 @@ const Cas = () => {
     tool: null,
   })
 
-  const [brightness, setBrightness] = React.useState(1)   // Actually just sets the opacity of the map. When decreasing brightness (<1) also ensures the map background is black, Increasing the brightness (>= 1) ensures the map background is white
   const [mouseCoords, setMouseCoords] = React.useState(null)
   const [focusedLatlng, setFocusedLatlng] = React.useState({ latlng: null, source: null })
   const [elevation, setElevation] = React.useState('Pending')
@@ -264,12 +264,12 @@ const Cas = () => {
    * Also change the opacity of the 
    */
   React.useEffect(() => {
-    if (brightness > 1) {
+    if (state.brightness > 1) {
       document.getElementsByClassName('leaflet-container')[0].style.backgroundColor = 'white'
     } else {
       document.getElementsByClassName('leaflet-container')[0].style.backgroundColor = 'black'
     }
-  }, [brightness])
+  }, [state.brightness])
 
   //----------------------------------------------------------------//
   // Private Handlers
@@ -372,14 +372,12 @@ const Cas = () => {
           />
           <div className={classes.sectionDesktop}>
             <CASTools
-              brightness={brightness}
               handleClearMarkers={() => editMarker('clear', {})}
               handleRedo={handleRedo}
               handleUndo={handleUndo}
               history={history}
               mapColor={mapColor}
               markerSize={markerSize}
-              setBrightness={setBrightness}
               setMapColor={setMapColor}
               setMarkerSize={setMarkerSize}
               step={step}
@@ -410,7 +408,6 @@ const Cas = () => {
             </IconButton>
           </Tooltip>
           <MobileMenu
-            brightness={brightness}
             handleClearMarkers={() => editMarker('clear', {})}
             handleRedo={handleRedo}
             handleUndo={handleUndo}
@@ -418,7 +415,6 @@ const Cas = () => {
             mapColor={mapColor}
             markerSize={markerSize}
             anchor={mobileMenuAnchor}
-            setBrightness={setBrightness}
             setMapColor={setMapColor}
             setMarkerSize={setMarkerSize}
             step={step}
@@ -464,7 +460,6 @@ const Cas = () => {
           />
           <LayerControl
             anchor={history[step].anchor}
-            brightness={brightness}
             handleMarkerDrag={(marker, latlng) => editMarker('drag', { marker: marker, latlng: latlng })}
             interactive={state.tool === null}
             map={map}

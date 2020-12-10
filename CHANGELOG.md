@@ -1,3 +1,7 @@
+## 2.15.2-beta
+### Changes
+* Moved `brightness` to `state`
+
 ## 2.15.1-beta
 ### Changes
 * Moved `tool` to `state`

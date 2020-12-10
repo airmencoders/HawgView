@@ -151,14 +151,6 @@ const MobileMenu = (props) => {
     props.toggleTooltips()
   }
 
-  const handleBrightnessIncreaseClick = () => {
-    handleBrightnessIncrease(props.brightness, props.setBrightness)
-  }
-
-  const handleBrightnessDecreaseClick = () => {
-    handleBrightnessDecrease(props.brightness, props.setBrightness)
-  }
-
   const handleDownloadClick = () => {
     console.log('[MobileMenu] handleDownloadClick setting state')
     props.setState({
@@ -234,15 +226,15 @@ const MobileMenu = (props) => {
         Decrease marker size
       </MenuItem>
       <MenuItem
-        disabled={props.brightness === minBrightness}
-        onClick={handleBrightnessDecreaseClick}
+        disabled={props.state.brightness === minBrightness}
+        onClick={() => handleBrightnessDecrease(props.state, props.setState)}
       >
         <BrightnessLowIcon className={classes.icon} />
         Decrease brightness
       </MenuItem>
       <MenuItem
-        disabled={props.brightness === maxBrightness}
-        onClick={handleBrightnessIncreaseClick}
+        disabled={props.state.brightness === maxBrightness}
+        onClick={() => handleBrightnessIncrease(props.state, props.setState)}
       >
         <BrightnessHighIcon className={classes.icon} />
         Increase brightness

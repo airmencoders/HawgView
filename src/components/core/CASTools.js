@@ -155,8 +155,8 @@ const CASTools = props => {
         <span>
           <IconButton
             color='inherit'
-            disabled={props.brightness === minBrightness}
-            onClick={() => handleBrightnessDecrease(props.brightness, props.setBrightness)}
+            disabled={props.state.brightness === minBrightness}
+            onClick={() => handleBrightnessDecrease(props.state, props.setState)}
           >
             <BrightnessLowIcon />
           </IconButton>
@@ -166,8 +166,8 @@ const CASTools = props => {
         <span>
           <IconButton
             color='inherit'
-            disabled={props.brightness === maxBrightness}
-            onClick={() => handleBrightnessIncrease(props.brightness, props.setBrightness)}
+            disabled={props.state.brightness === maxBrightness}
+            onClick={() => handleBrightnessIncrease(props.state, props.setState)}
           >
             <BrightnessHighIcon />
           </IconButton>
