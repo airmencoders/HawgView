@@ -70,7 +70,7 @@ import { distanceAndHeading } from '../../functions/mathFunctions'
 //----------------------------------------------------------------//
 const Marker = props => {
 
-  const computedSize = props.markerSize * props.state.map.zoom
+  const computedSize = props.state.markerSize * props.state.map.zoom
 
   const useStyles = makeStyles({
     divIcon: {

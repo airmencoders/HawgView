@@ -111,11 +111,11 @@ const MobileMenu = (props) => {
   }
 
   const handleMarkerSizeDecreaseClick = () => {
-    handleMarkerSizeDecrease(props.markerSize, props.setMarkerSize)
+    handleMarkerSizeDecrease(props.state, props.setState)
   }
 
   const handleMarkerSizeIncreaseClick = () => {
-    handleMarkerSizeIncrease(props.markerSize, props.setMarkerSize)
+    handleMarkerSizeIncrease(props.state, props.setState)
   }
 
   const handleRedoClick = () => {
@@ -197,15 +197,15 @@ const MobileMenu = (props) => {
         Clear all markers
       </MenuItem>
       <MenuItem
-        disabled={props.markerSize === maxMarkerSize}
-        onClick={handleMarkerSizeIncreaseClick}
+        disabled={props.state.markerSize === maxMarkerSize}
+        onClick={() => handleMarkerSizeIncrease(props.state, props.setState)}
       >
         <PhotoSizeSelectActualIcon className={classes.icon} />
         Increase marker size
       </MenuItem>
       <MenuItem
-        disabled={props.markerSize === minMarkerSize}
-        onClick={handleMarkerSizeDecreaseClick}
+        disabled={props.state.markerSize === minMarkerSize}
+        onClick={() => handleMarkerSizeDecrease(props.state, props.setState)}
       >
         <PhotoSizeSelectLargeIcon className={classes.icon} />
         Decrease marker size

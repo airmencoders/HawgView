@@ -134,6 +134,7 @@ const Cas = () => {
       color: true,
       zoom: 5,
     },
+    markerSize: 3,
     tool: null,
     tooltips: false,
   })
@@ -188,7 +189,6 @@ const Cas = () => {
   }])
   const [map, setMap] = React.useState(null)
   const [markerLabel, setMarkerLabel] = React.useState('')
-  const [markerSize, setMarkerSize] = React.useState(3)
   const [mobileMenuAnchor, setMobileMenuAnchor] = React.useState(null)
   const [snackbarMessage, setSnackbarMessage] = React.useState(undefined)
   const [snackbarOpen, setSnackbarOpen] = React.useState(false)
@@ -216,7 +216,7 @@ const Cas = () => {
     return () => {
       window.removeEventListener('resize', handleMobileMenuClose, false)
     }
-  }, [])
+  }, [state])
 
   /**
    * Any time the active dialog changes, reset the map
@@ -378,8 +378,6 @@ const Cas = () => {
               handleRedo={handleRedo}
               handleUndo={handleUndo}
               history={history}
-              markerSize={markerSize}
-              setMarkerSize={setMarkerSize}
               step={step}
 
               setState={setState}
@@ -410,9 +408,7 @@ const Cas = () => {
             handleRedo={handleRedo}
             handleUndo={handleUndo}
             history={history}
-            markerSize={markerSize}
             anchor={mobileMenuAnchor}
-            setMarkerSize={setMarkerSize}
             step={step}
 
             setState={setState}
@@ -453,7 +449,6 @@ const Cas = () => {
             handleMarkerDrag={(marker, latlng) => editMarker('drag', { marker: marker, latlng: latlng })}
             interactive={state.tool === null}
             map={map}
-            markerSize={markerSize}
             setFocusedMarker={marker => setFocusedMarker(marker)}
             setFocusedShape={shape => setFocusedShape(shape)}
             step={history[step]}

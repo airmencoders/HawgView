@@ -30,15 +30,21 @@
 const maxMarkerSize = 10
 const minMarkerSize = 1
 
-const handleMarkerSizeDecrease = (markerSize, setMarkerSize) => {
-  if (markerSize > minMarkerSize) {
-    setMarkerSize(markerSize - 1)
+const handleMarkerSizeDecrease = (state, setState) => {
+  if (state.markerSize > minMarkerSize) {
+    setState({
+      ...state,
+      markerSize: state.markerSize - 1,
+    })
   }
 }
 
-const handleMarkerSizeIncrease = (markerSize, setMarkerSize) => {
-  if (markerSize < maxMarkerSize) {
-    setMarkerSize(markerSize + 1)
+const handleMarkerSizeIncrease = (state, setState) => {
+  if (state.markerSize < maxMarkerSize) {
+    setState({
+      ...state,
+      markerSize: state.markerSize + 1,
+    })
   }
 }
 

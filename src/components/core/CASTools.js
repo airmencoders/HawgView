@@ -133,8 +133,8 @@ const CASTools = props => {
         <span>
           <IconButton
             color='inherit'
-            disabled={props.markerSize === maxMarkerSize}
-            onClick={() => handleMarkerSizeIncrease(props.markerSize, props.setMarkerSize)}
+            disabled={props.state.markerSize === maxMarkerSize}
+            onClick={() => handleMarkerSizeIncrease(props.state, props.setState)}
           >
             <PhotoSizeSelectActualIcon />
           </IconButton>
@@ -144,8 +144,8 @@ const CASTools = props => {
         <span>
           <IconButton
             color='inherit'
-            disabled={props.markerSize === minMarkerSize}
-            onClick={() => handleMarkerSizeDecrease(props.markerSize, props.setMarkerSize)}
+            disabled={props.state.markerSize === minMarkerSize}
+            onClick={() => handleMarkerSizeDecrease(props.state, props.setState)}
           >
             <PhotoSizeSelectLargeIcon />
           </IconButton>

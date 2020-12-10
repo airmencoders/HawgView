@@ -1,3 +1,11 @@
+## 2.15.6-beta
+### Changes
+* Moved `markerSize` to `state`
+* Added `state` dependency to React Effect when handling window resize
+
+### Fixes
+* Fixed bug that would reset `markerSize` and `map.brightness` when window is resized
+
 ## 2.15.5-beta
 ### Changes
 * Moved `tooltips` to `state`
