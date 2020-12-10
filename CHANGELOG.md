@@ -1,3 +1,14 @@
+## 2.15.3-beta
+### Changes
+* Moved `color` to `state.map`
+* Moved `brightness` to `state.map`
+* Updated handler functions
+* Added `map.center` to `state`
+* Added `map.center` to `LayerControl.useMemo`
+
+### Fixes
+* Fixed bug where the MGRS gridlines would not re-render when the center of the map changes
+
 ## 2.15.2-beta
 ### Changes
 * Moved `brightness` to `state`

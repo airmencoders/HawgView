@@ -83,11 +83,17 @@ const Map = (props) => {
   //----------------------------------------------------------------//
   return (
     <LMap
-      center={props.center}
+      center={props.state.map.center}
       className={classes.leafletMap}
       doubleClickZoom={props.state.tool !== null ? false : true}
       maxZoom={19}
-      onMoveend={event => props.setMapCenter(event.target.getCenter())}
+      onMoveend={event => props.setState({
+        ...props.state,
+        map: {
+          ...props.state.map,
+          center: event.target.getCenter(),
+        },
+      })}
       onZoomend={event => props.setMapZoom(event.target.getZoom())}
       onClick={event => props.setFocusedLatlng({ latlng: event.latlng, source: 'map' })}
       onMouseMove={event => handleMouseMove(event.latlng)}

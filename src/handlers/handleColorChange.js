@@ -27,14 +27,24 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-const handleColorToggle = (mapColor, setMapColor) => {
-  if (mapColor) {
+const handleColorToggle = (state, setState) => {
+  if (state.map.color) {
     document.getElementsByClassName('leaflet-layer-imagery')[0].style.filter = 'grayscale(100%)'
   } else {
     document.getElementsByClassName('leaflet-layer-imagery')[0].style.filter = 'none'
   }
 
-  setMapColor(!mapColor)
+  setState({
+    ...state,
+    dialog: {
+      anchor: null,
+      name: null,
+    },
+    map: {
+      ...state.map,
+      color: !state.map.color,
+    },
+  })
 }
 
 export default handleColorToggle

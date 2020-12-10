@@ -124,10 +124,14 @@ const Cas = () => {
   // State
   //----------------------------------------------------------------//
   const [state, setState] = React.useState({
-    brightness: 1,
     dialog: {
       anchor: null,
       name: null,
+    },
+    map: {
+      brightness: 1,
+      center: [35.77, -93.34],
+      color: true,
     },
     tool: null,
   })
@@ -181,8 +185,6 @@ const Cas = () => {
     threatMarkers: [],
   }])
   const [map, setMap] = React.useState(null)
-  const [mapCenter, setMapCenter] = React.useState([35.77, -93.34])
-  const [mapColor, setMapColor] = React.useState(true)
   const [mapZoom, setMapZoom] = React.useState(5)
   const [markerLabel, setMarkerLabel] = React.useState('')
   const [markerSize, setMarkerSize] = React.useState(3)
@@ -264,12 +266,12 @@ const Cas = () => {
    * Also change the opacity of the 
    */
   React.useEffect(() => {
-    if (state.brightness > 1) {
+    if (state.map.brightness > 1) {
       document.getElementsByClassName('leaflet-container')[0].style.backgroundColor = 'white'
     } else {
       document.getElementsByClassName('leaflet-container')[0].style.backgroundColor = 'black'
     }
-  }, [state.brightness])
+  }, [state.map.brightness])
 
   //----------------------------------------------------------------//
   // Private Handlers
@@ -376,9 +378,7 @@ const Cas = () => {
               handleRedo={handleRedo}
               handleUndo={handleUndo}
               history={history}
-              mapColor={mapColor}
               markerSize={markerSize}
-              setMapColor={setMapColor}
               setMarkerSize={setMarkerSize}
               step={step}
               toggleTooltips={() => setTooltipsActive(!tooltipsActive)}
@@ -412,10 +412,8 @@ const Cas = () => {
             handleRedo={handleRedo}
             handleUndo={handleUndo}
             history={history}
-            mapColor={mapColor}
             markerSize={markerSize}
             anchor={mobileMenuAnchor}
-            setMapColor={setMapColor}
             setMarkerSize={setMarkerSize}
             step={step}
             toggleTooltips={() => setTooltipsActive(!tooltipsActive)}
@@ -434,10 +432,8 @@ const Cas = () => {
         flex={1}
       >
         <Map
-          center={mapCenter}
           setMap={setMap}
           mouseCoords={mouseCoords}
-          setMapCenter={latlng => setMapCenter([latlng.lat, latlng.lng])}
           setMapZoom={zoom => setMapZoom(zoom)}
           setMouseCoords={setMouseCoords}
           setFocusedLatlng={latlng => setFocusedLatlng(latlng)}
@@ -463,7 +459,6 @@ const Cas = () => {
             handleMarkerDrag={(marker, latlng) => editMarker('drag', { marker: marker, latlng: latlng })}
             interactive={state.tool === null}
             map={map}
-            mapCenter={mapCenter}
             mapZoom={mapZoom}
             markerSize={markerSize}
             setFocusedMarker={marker => setFocusedMarker(marker)}

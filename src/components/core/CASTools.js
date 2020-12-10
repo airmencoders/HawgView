@@ -155,7 +155,7 @@ const CASTools = props => {
         <span>
           <IconButton
             color='inherit'
-            disabled={props.state.brightness === minBrightness}
+            disabled={props.state.map.brightness === minBrightness}
             onClick={() => handleBrightnessDecrease(props.state, props.setState)}
           >
             <BrightnessLowIcon />
@@ -166,7 +166,7 @@ const CASTools = props => {
         <span>
           <IconButton
             color='inherit'
-            disabled={props.state.brightness === maxBrightness}
+            disabled={props.state.map.brightness === maxBrightness}
             onClick={() => handleBrightnessIncrease(props.state, props.setState)}
           >
             <BrightnessHighIcon />
@@ -176,9 +176,9 @@ const CASTools = props => {
       <Tooltip title='Toggle map color'>
         <IconButton
           color='inherit'
-          onClick={() => handleColorChange(props.mapColor, props.setMapColor)}
+          onClick={() => handleColorChange(props.state, props.setState)}
         >
-          {props.mapColor ? <InvertColorsIcon /> : <InvertColorsOffIcon />}
+          {props.state.map.color ? <InvertColorsIcon /> : <InvertColorsOffIcon />}
         </IconButton>
       </Tooltip>
       {/*<Tooltip title='CONOP tools'>

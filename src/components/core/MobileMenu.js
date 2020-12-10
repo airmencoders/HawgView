@@ -100,7 +100,6 @@ const MobileMenu = (props) => {
   // Click Handlers
   //----------------------------------------------------------------//
   const handleClearMarkersClick = () => {
-    console.log('[MobileMenu] handleClearMarkersClick setting state')
     props.setState({
       ...props.state,
       dialog: {
@@ -109,18 +108,6 @@ const MobileMenu = (props) => {
       },
     })
     props.handleClearMarkers()
-  }
-
-  const handleColorToggleClick = () => {
-    console.log('[MobileMenu] handleColorToggleClick setting state')
-    props.setState({
-      ...props.state,
-      dialog: {
-        anchor: null,
-        name: null,
-      },
-    })
-    handleColorChange(props.mapColor, props.setMapColor)
   }
 
   const handleMarkerSizeDecreaseClick = () => {
@@ -140,7 +127,6 @@ const MobileMenu = (props) => {
   }
 
   const handleToggleTooltipsClick = () => {
-    console.log('[MobileMenu] handleToggleTooltipsClick setting state')
     props.setState({
       ...props.state,
       dialog: {
@@ -152,7 +138,6 @@ const MobileMenu = (props) => {
   }
 
   const handleDownloadClick = () => {
-    console.log('[MobileMenu] handleDownloadClick setting state')
     props.setState({
       ...props.state,
       dialog: {
@@ -239,8 +224,8 @@ const MobileMenu = (props) => {
         <BrightnessHighIcon className={classes.icon} />
         Increase brightness
       </MenuItem>
-      <MenuItem onClick={handleColorToggleClick}>
-        {props.mapColor ?
+      <MenuItem onClick={() => handleColorChange(props.state, props.setState)}>
+        {props.state.map.color ?
           <InvertColorsIcon className={classes.icon} />
           : <InvertColorsOffIcon className={classes.icon} />
         }

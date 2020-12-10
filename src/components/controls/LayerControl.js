@@ -130,7 +130,7 @@ const LayerControl = props => {
           url='https://fly.maptiles.arcgis.com/arcgis/rest/services/World_Imagery_Firefly/MapServer/tile/{z}/{y}/{x}'
           attribution={`Esri, DigitalGlobe, GeoEye, Earthstar Geographics, CNES/Airbus DS, USDA, USGS, AeroGRID, IGN, and the GIS User Community`}
           maxNativeZoom={17}
-          opacity={props.state.brightness > 1 ? 2 - props.state.brightness : props.state.brightness}
+          opacity={props.state.map.brightness > 1 ? 2 - props.state.map.brightness : props.state.map.brightness}
           keepMounted
         />
       </BaseLayer>
@@ -141,12 +141,12 @@ const LayerControl = props => {
           attribution={`Esri, DigitalGlobe, GeoEye, Earthstar Geographics, CNES/Airbus DS, USDA, USGS, AeroGRID, IGN, and the GIS User Community`}
           maxNativeZoom={17}
           keepMounted
-          opacity={props.state.brightness > 1 ? 2 - props.state.brightness : props.state.brightness}
+          opacity={props.state.map.brightness > 1 ? 2 - props.state.map.brightness : props.state.map.brightness}
         />
       </BaseLayer>
       <Overlay name='MGRS Lines'>
         <MGRSGrids
-          center={props.mapCenter}
+          center={props.state.map.center}
           map={props.map}
           style={props.step.styles.mgrs}
           zoom={props.mapZoom}
@@ -154,7 +154,7 @@ const LayerControl = props => {
       </Overlay>
       <Overlay name='GARS Cells'>
         <GARSCells
-          center={props.mapCenter}
+          center={props.state.map.center}
           map={props.map}
           style={props.step.styles.gars}
           zoom={props.mapZoom}
@@ -659,7 +659,7 @@ const LayerControl = props => {
         </LayerGroup>
       </Overlay>
     </LayersControl>
-  ), [props.step, props.anchor, props.interactive, props.mapZoom, props.markerSize, props.tooltipsActive, props.state.brightness])
+  ), [props.step, props.anchor, props.interactive, props.mapZoom, props.markerSize, props.tooltipsActive, props.state.map.brightness, props.state.map.center])
 
  return layers
 }
