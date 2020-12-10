@@ -173,7 +173,6 @@ const ToolControls = (props) => {
         mouseCoords={props.mouseCoords}
         setFocusedLatlng={props.setFocusedLatlng}
         setMouseCoords={props.setMouseCoords}
-        step={props.step}
 
         setState={props.setState}
         state={props.state}

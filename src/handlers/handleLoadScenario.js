@@ -27,7 +27,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-const handleLoadScenario = (data, history, step, toast, setHistory, setStep) => {
+const handleLoadScenario = (data, history, state, setState, toast, setHistory) => {
   let json
   try {
     let object = JSON.parse(data)
@@ -41,6 +41,13 @@ const handleLoadScenario = (data, history, step, toast, setHistory, setStep) => 
   }
 
   if (json !== undefined) {
+
+    let targetHistory
+    if (state.step === history.length - 1) {
+      targetHistory = history.slice()
+    } else {
+      targetHistory = history.slice(0, state.step + 1)
+    }
 
     const newStep = {
       action: 'load scenario',
@@ -92,8 +99,15 @@ const handleLoadScenario = (data, history, step, toast, setHistory, setStep) => 
       document.title = `Hawg View | ${json.name}`
     }
 
-    setHistory([...history, newStep])
-    setStep(step + 1)
+    setHistory([...targetHistory, newStep])
+    setState({
+      ...state,
+      dialog: {
+        anchor: null,
+        name: null,
+      },
+      step: state.step + 1,
+    })
     toast('Scenario loaded to map', 'success')
   } else {
     toast('There was an error loading the scenario', 'error')

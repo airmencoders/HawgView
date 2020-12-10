@@ -135,6 +135,7 @@ const Cas = () => {
       zoom: 5,
     },
     markerSize: 3,
+    step: 0,
     tool: null,
     tooltips: false,
   })
@@ -189,11 +190,9 @@ const Cas = () => {
   }])
   const [map, setMap] = React.useState(null)
   const [markerLabel, setMarkerLabel] = React.useState('')
-  const [mobileMenuAnchor, setMobileMenuAnchor] = React.useState(null)
   const [snackbarMessage, setSnackbarMessage] = React.useState(undefined)
   const [snackbarOpen, setSnackbarOpen] = React.useState(false)
   const [snackPack, setSnackPack] = React.useState([])
-  const [step, setStep] = React.useState(0)
 
   //----------------------------------------------------------------//
   // DEBUGGING AREA
@@ -325,24 +324,6 @@ const Cas = () => {
     }
   }
 
-  /**
-   * Set the current step to the previous step (not less than 0)
-   */
-  const handleUndo = () => {
-    if (step > 0) {
-      setStep(step - 1)
-    }
-  }
-
-  /**
-   * Set the current step to the next step (not to exceed history length)
-   */
-  const handleRedo = () => {
-    if (step < history.length - 1) {
-      setStep(step + 1)
-    }
-  }
-
   const toast = (message, severity) => {
     setSnackPack(prev => [...prev, { message, key: new Date().getTime(), severity }])
   }
@@ -356,7 +337,7 @@ const Cas = () => {
   }
 
   const editMarker = (action, payload) => {
-    handleMarkerEdit(action, payload, state, setState, elevation, focusedLatlng, markerLabel, history, step, setHistory, setStep, setMarkerLabel, handleMapReset, setFocusedMarker, setFocusedShape, toast)
+    handleMarkerEdit(action, payload, state, setState, elevation, focusedLatlng, markerLabel, history, setHistory, setMarkerLabel, handleMapReset, setFocusedMarker, setFocusedShape, toast)
   }
 
   return (
@@ -375,10 +356,7 @@ const Cas = () => {
           <div className={classes.sectionDesktop}>
             <CASTools
               handleClearMarkers={() => editMarker('clear', {})}
-              handleRedo={handleRedo}
-              handleUndo={handleUndo}
               history={history}
-              step={step}
 
               setState={setState}
               state={state}
@@ -405,11 +383,7 @@ const Cas = () => {
           </Tooltip>
           <MobileMenu
             handleClearMarkers={() => editMarker('clear', {})}
-            handleRedo={handleRedo}
-            handleUndo={handleUndo}
             history={history}
-            anchor={mobileMenuAnchor}
-            step={step}
 
             setState={setState}
             state={state}
@@ -433,7 +407,7 @@ const Cas = () => {
           state={state}
         >
           <MapPopup
-            anchor={history[step].anchor}
+            anchor={history[state.step].anchor}
             elevation={elevation}
             focusedLatlng={focusedLatlng}
             focusedMarker={focusedMarker}
@@ -445,13 +419,13 @@ const Cas = () => {
             state={state}
           />
           <LayerControl
-            anchor={history[step].anchor}
+            anchor={history[state.step].anchor}
             handleMarkerDrag={(marker, latlng) => editMarker('drag', { marker: marker, latlng: latlng })}
             interactive={state.tool === null}
             map={map}
             setFocusedMarker={marker => setFocusedMarker(marker)}
             setFocusedShape={shape => setFocusedShape(shape)}
-            step={history[step]}
+            step={history[state.step]}
             handleDeleteMarker={marker => editMarker('delete', { marker: marker })}
 
             setState={setState}
@@ -466,13 +440,12 @@ const Cas = () => {
             setFocusedMarker={setFocusedMarker}
             setFocusedLatlng={setFocusedLatlng}
             setMouseCoords={setMouseCoords}
-            step={step}
 
             setState={setState}
             state={state}
           />
           <MouseCoordinatesControl
-            anchor={history[step].anchor}
+            anchor={history[state.step].anchor}
             mouseCoords={mouseCoords}
           />
           <ScaleControl />
@@ -507,8 +480,6 @@ const Cas = () => {
         markerLabel={markerLabel}
         setHistory={setHistory}
         setMarkerLabel={setMarkerLabel}
-        setStep={setStep}
-        step={step}
         toast={toast}
 
         setState={setState}

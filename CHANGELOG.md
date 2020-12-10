@@ -1,3 +1,10 @@
+## 2.15.7-beta
+### Changes
+* Moved `step` to `state`
+
+### Fixes
+* Fixed bug that would not properly change the history array when loading a scenario
+
 ## 2.15.6-beta
 ### Changes
 * Moved `markerSize` to `state`

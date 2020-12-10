@@ -110,22 +110,6 @@ const MobileMenu = (props) => {
     props.handleClearMarkers()
   }
 
-  const handleMarkerSizeDecreaseClick = () => {
-    handleMarkerSizeDecrease(props.state, props.setState)
-  }
-
-  const handleMarkerSizeIncreaseClick = () => {
-    handleMarkerSizeIncrease(props.state, props.setState)
-  }
-
-  const handleRedoClick = () => {
-    props.handleRedo()
-  }
-
-  const handleUndoClick = () => {
-    props.handleUndo()
-  }
-
   const handleToggleTooltipsClick = () => {
     props.setState({
       ...props.state,
@@ -145,7 +129,7 @@ const MobileMenu = (props) => {
         name: null,
       },
     })
-    generateKML(props.history[props.step])
+    generateKML(props.history[props.state.step])
   }
 
   //----------------------------------------------------------------//
@@ -179,18 +163,24 @@ const MobileMenu = (props) => {
         Add Marker
       </MenuItem>
       <MenuItem
-        disabled={props.step === 0}
-        onClick={props.step === 0 ? undefined : handleUndoClick}
+        disabled={props.state.step === 0}
+        onClick={props.state.step === 0 ? undefined : () => props.setState({
+          ...props.state,
+          step: props.state.step - 1,
+        })}
       >
         <UndoIcon className={classes.icon} />
-        Undo {props.step === 0 ? '' : props.history[props.step].action}
+        Undo {props.state.step === 0 ? '' : props.history[props.state.step].action}
       </MenuItem>
       <MenuItem
-        disabled={props.step === props.history.length - 1}
-        onClick={props.step === props.history.length - 1 ? undefined : handleRedoClick}
+        disabled={props.state.step === props.history.length - 1}
+        onClick={props.state.step === props.history.length - 1 ? undefined : () => props.setState({
+          ...props.state,
+          step: props.state.step + 1,
+        })}
       >
         <RedoIcon className={classes.icon} />
-        Redo {props.step === props.history.length - 1 ? '' : props.history[props.step + 1].action}
+        Redo {props.state.step === props.history.length - 1 ? '' : props.history[props.state.step + 1].action}
       </MenuItem>
       <MenuItem onClick={handleClearMarkersClick}>
         <ClearIcon className={classes.icon} />

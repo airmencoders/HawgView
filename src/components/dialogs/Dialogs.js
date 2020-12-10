@@ -69,7 +69,7 @@ const Dialogs = props => {
         state={props.state}
       />
       <AddMarkerDrawer
-        anchor={props.history[props.step].anchor}
+        anchor={props.history[props.state.step].anchor}
         markerLabel={props.markerLabel}
         onClose={() => props.handleMapReset()}
         handleAddMarker={payload => props.handleEditMarker('create', payload)}
@@ -96,13 +96,13 @@ const Dialogs = props => {
       />
       <MarkerListDialog
         onClose={() => props.handleMapReset()}
-        step={props.history[props.step]}
+        step={props.history[props.state.step]}
 
         setState={props.setState}
         state={props.state}
       />
       <SaveScenarioDialog
-        data={props.history[props.step]}
+        data={props.history[props.state.step]}
         setActiveDialog={dialog => props.setActiveDialog(dialog)}
         toast={(message, severity) => props.toast(message, severity)}
 
@@ -111,7 +111,7 @@ const Dialogs = props => {
       />
       <LoadScenarioDialog
         setActiveDialog={dialog => props.setActiveDialog(dialog)}
-        submit={data => handleLoadScenario(data, props.history, props.step, props.toast, props.setHistory, props.setStep)}
+        submit={data => handleLoadScenario(data, props.history, props.state, props.setState, props.toast, props.setHistory)}
 
         setState={props.setState}
         state={props.state}

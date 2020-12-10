@@ -35,7 +35,7 @@ import { editMarkers } from '../functions/editMarkers'
 //----------------------------------------------------------------//
 // Handle Marker Edit Function
 //----------------------------------------------------------------//
-const handleMarkerEdit = (action, payload, state, setState, elevation, focusedLatlng, markerLabel, history, step, setHistory, setStep, setMarkerLabel, handleMapReset, setFocusedMarker, setFocusedShape, /*setActiveDialog,*/ setActiveTool, toast) => {
+const handleMarkerEdit = (action, payload, state, setState, elevation, focusedLatlng, markerLabel, history, setHistory, setMarkerLabel, handleMapReset, setFocusedMarker, setFocusedShape, toast) => {
   const supportedActions = ['clear', 'create', 'delete', 'drag', 'edit', '9line', '15line']
 
   if (supportedActions.includes(action)) {
@@ -52,7 +52,7 @@ const handleMarkerEdit = (action, payload, state, setState, elevation, focusedLa
     if (action === 'create') {
       updatedPayload = {
         ...updatedPayload,
-        id: history[step].data.markerId,
+        id: history[state.step].data.markerId,
       }
 
       if (payload.layer !== 'bullseye') {
@@ -72,18 +72,17 @@ const handleMarkerEdit = (action, payload, state, setState, elevation, focusedLa
 
     // Take the payload and add in the marker id (for when creating marker)
     // todo: finish with the payload bullshit from the rest of the 'editMarkers' callbacks lol
-    const newStep = editMarkers(action, history, step, updatedPayload)
+    const newStep = editMarkers(action, history, state.step, updatedPayload)
 
     if (newStep !== false) {
       let targetHistory
-      if (step === history.length - 1) {
+      if (state.step === history.length - 1) {
         targetHistory = history.slice()
       } else {
-        targetHistory = history.slice(0, step + 1)
+        targetHistory = history.slice(0, state.step + 1)
       }
 
       setHistory([...targetHistory, newStep])
-      setStep(step + 1)
 
       if (action === 'create') {
         //setMarkerId(markerId + 1)
@@ -92,34 +91,30 @@ const handleMarkerEdit = (action, payload, state, setState, elevation, focusedLa
 
       handleMapReset()
 
+      let newDialog = null
+
       if (payload.layer === 'circle' || payload.layer === 'rectangle' || payload.layer === 'line' || payload.layer === 'polygon' || payload.layer === 'ellipse') {
         setFocusedShape(updatedPayload)
         //setActiveDialog('editShape')
-        console.log('[handleMarkerEdit] setting shape state dialog name is editShape')
-        setState({
-          ...state,
-          dialog: {
-            anchor: null,
-            name: 'editShape',
-          },
-          tool: null,
-        })
+        newDialog = 'editShape'
         //setActiveTool(null)
       }
 
       if (payload.layer === 'threat') {
         setFocusedMarker(updatedPayload)
         //setActiveDialog('editMarker')
-        console.log('[handleMarkerEdit] setting threat state dialog name is editMarker')
-        setState({
-          ...state,
-          dialog: {
-            anchor: null,
-            name: 'editMarker',
-          },
-        })
+        newDialog = 'editMarker'
         //setActiveTool(null)
       }
+
+      setState({
+        ...state,
+        dialog: {
+          anchor: null,
+          name: newDialog,
+        },
+        step: state.step + 1,
+      })
     }
   } else {
     console.error(`Unsupported action ${action}. Could not modify Markers`)
