@@ -180,7 +180,7 @@ const Bullseye = props => {
           <Button color='primary' onClick={() => handleEditShape(props.bullseye)}>Edit</Button>
           <Button color='secondary' onClick={() => props.handleDeleteMarker(props.bullseye)}>Delete</Button>
         </Popup>
-        {(props.tooltipsActive) ?
+        {(props.state.tooltips) ?
           <Tooltip
             direction='top'
             offset={L.point(0, -1 * computedSize)}

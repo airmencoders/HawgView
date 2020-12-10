@@ -206,9 +206,12 @@ const CASTools = props => {
         <span>
           <IconButton
             color='inherit'
-            onClick={props.toggleTooltips}
+            onClick={() => props.setState({
+              ...props.state,
+              tooltips: !props.state.tooltips,
+            })}
           >
-            {props.tooltipsActive ? <LabelOffIcon /> : <LabelIcon />}
+            {props.state.tooltips ? <LabelOffIcon /> : <LabelIcon />}
           </IconButton>
         </span>
       </Tooltip>

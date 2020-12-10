@@ -135,6 +135,7 @@ const Cas = () => {
       zoom: 5,
     },
     tool: null,
+    tooltips: false,
   })
 
   const [mouseCoords, setMouseCoords] = React.useState(null)
@@ -193,7 +194,6 @@ const Cas = () => {
   const [snackbarOpen, setSnackbarOpen] = React.useState(false)
   const [snackPack, setSnackPack] = React.useState([])
   const [step, setStep] = React.useState(0)
-  const [tooltipsActive, setTooltipsActive] = React.useState(false)
 
   //----------------------------------------------------------------//
   // DEBUGGING AREA
@@ -381,8 +381,6 @@ const Cas = () => {
               markerSize={markerSize}
               setMarkerSize={setMarkerSize}
               step={step}
-              toggleTooltips={() => setTooltipsActive(!tooltipsActive)}
-              tooltipsActive={tooltipsActive}
 
               setState={setState}
               state={state}
@@ -416,8 +414,6 @@ const Cas = () => {
             anchor={mobileMenuAnchor}
             setMarkerSize={setMarkerSize}
             step={step}
-            toggleTooltips={() => setTooltipsActive(!tooltipsActive)}
-            tooltipsActive={tooltipsActive}
 
             setState={setState}
             state={state}
@@ -462,7 +458,6 @@ const Cas = () => {
             setFocusedShape={shape => setFocusedShape(shape)}
             step={history[step]}
             handleDeleteMarker={marker => editMarker('delete', { marker: marker })}
-            tooltipsActive={tooltipsActive}
 
             setState={setState}
             state={state}

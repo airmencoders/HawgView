@@ -133,8 +133,8 @@ const MobileMenu = (props) => {
         anchor: null,
         name: null,
       },
+      tooltips: !props.state.tooltips,
     })
-    props.toggleTooltips()
   }
 
   const handleDownloadClick = () => {
@@ -248,7 +248,7 @@ const MobileMenu = (props) => {
         View marker list
       </MenuItem>
       <MenuItem onClick={handleToggleTooltipsClick}>
-        {props.tooltipsActive ?
+        {props.state.tooltips ?
           <LabelOffIcon className={classes.icon} />
           : <LabelIcon className={classes.icon} />
         }

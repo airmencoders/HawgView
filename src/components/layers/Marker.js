@@ -70,7 +70,7 @@ import { distanceAndHeading } from '../../functions/mathFunctions'
 //----------------------------------------------------------------//
 const Marker = props => {
 
-  const computedSize = props.markerSize * props.mapZoom
+  const computedSize = props.markerSize * props.state.map.zoom
 
   const useStyles = makeStyles({
     divIcon: {
@@ -237,7 +237,7 @@ const Marker = props => {
         title={props.marker.title}
       >
         {generatePopup(props.marker)}
-        {(props.tooltipsActive) ?
+        {(props.state.tooltips) ?
           <Tooltip
             direction='top'
             offset={L.point(0, -1 * computedSize)}

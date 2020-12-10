@@ -163,13 +163,13 @@ const LayerControl = props => {
       <Overlay checked name='Geo Labels'>
         <TileLayer
           url='https://services.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}'
-          maxNativeZoom={19}
+          maxNativeZoom={17}
         />
       </Overlay>
       <Overlay name='Road Labels'>
         <TileLayer
           url='https://services.arcgisonline.com/ArcGIS/rest/services/Reference/World_Transportation/MapServer/tile/{z}/{y}/{x}'
-          maxNativeZoom={19}
+          maxNativeZoom={17}
         />
       </Overlay>
       <Overlay checked name='Airspace'>
@@ -260,7 +260,6 @@ const LayerControl = props => {
               key={`${bullseye.layer}-${bullseye.title}-${bullseye.id}`}
               markerSize={props.markerSize}
               setFocusedShape={shape => props.setFocusedShape(shape)}
-              tooltipsActive={props.tooltipsActive}
 
               setState={props.setState}
               state={props.state}
@@ -281,7 +280,6 @@ const LayerControl = props => {
               marker={marker}
               setFocusedMarker={marker => props.setFocusedMarker(marker)}
               setFocusedShape={shape => props.setFocusedShape(shape)}
-              tooltipsActive={props.tooltipsActive}
 
               setState={props.setState}
               state={props.state}
@@ -302,7 +300,6 @@ const LayerControl = props => {
               marker={marker}
               setFocusedMarker={marker => props.setFocusedMarker(marker)}
               setFocusedShape={shape => props.setFocusedShape(shape)}
-              tooltipsActive={props.tooltipsActive}
 
               setState={props.setState}
               state={props.state}
@@ -324,7 +321,6 @@ const LayerControl = props => {
               setFocusedLatlng={latlng => props.setFocusedLatlng(latlng)}
               setFocusedMarker={marker => props.setFocusedMarker(marker)}
               setFocusedShape={shape => props.setFocusedShape(shape)}
-              tooltipsActive={props.tooltipsActive}
 
               setState={props.setState}
               state={props.state}
@@ -344,7 +340,6 @@ const LayerControl = props => {
               markerSize={props.markerSize}
               marker={marker}
               setFocusedMarker={marker => props.setFocusedMarker(marker)}
-              tooltipsActive={props.tooltipsActive}
 
               setState={props.setState}
               state={props.state}
@@ -365,7 +360,6 @@ const LayerControl = props => {
               marker={marker}
               setFocusedMarker={marker => props.setFocusedMarker(marker)}
               setFocusedShape={shape => props.setFocusedShape(shape)}
-              tooltipsActive={props.tooltipsActive}
 
               setState={props.setState}
               state={props.state}
@@ -387,7 +381,6 @@ const LayerControl = props => {
               marker={marker}
               setFocusedMarker={marker => props.setFocusedMarker(marker)}
               setFocusedShape={shape => props.setFocusedShape(shape)}
-              tooltipsActive={props.tooltipsActive}
 
               setState={props.setState}
               state={props.state}
@@ -408,7 +401,6 @@ const LayerControl = props => {
               marker={marker}
               setFocusedMarker={marker => props.setFocusedMarker(marker)}
               setFocusedShape={shape => props.setFocusedShape(shape)}
-              tooltipsActive={props.tooltipsActive}
 
               setState={props.setState}
               state={props.state}
@@ -429,7 +421,6 @@ const LayerControl = props => {
               marker={marker}
               setFocusedMarker={marker => props.setFocusedMarker(marker)}
               setFocusedShape={shape => props.setFocusedShape(shape)}
-              tooltipsActive={props.tooltipsActive}
 
               setState={props.setState}
               state={props.state}
@@ -610,7 +601,7 @@ const LayerControl = props => {
                 <Button color='primary' onClick={() => handleEditShape(circle)}>Edit</Button>
                 <Button color='secondary' onClick={() => props.handleDeleteMarker(circle)}>Delete</Button>
               </Popup>
-              {(props.tooltipsActive) ?
+              {(props.state.tooltips) ?
                 <Tooltip
                   direction='top'
                   offset={L.point(0, -1 * props.markerSize * props.state.map.zoom)}
@@ -634,7 +625,7 @@ const LayerControl = props => {
               radius={circle.unit === 'm' ? circle.radius : circle.unit === 'km' ? circle.radius * 1000 : circle.radius * 1852}
               weight={4}
             >
-              {(props.tooltipsActive) ?
+              {(props.state.tooltips) ?
                 <Tooltip
                   direction='top'
                   offset={L.point(0, -1 * props.markerSize * props.state.map.zoom)}
@@ -650,7 +641,7 @@ const LayerControl = props => {
         </LayerGroup>
       </Overlay>
     </LayersControl>
-  ), [props.step, props.anchor, props.interactive, props.state.map.zoom, props.markerSize, props.tooltipsActive, props.state.map.brightness, props.state.map.center])
+  ), [props.step, props.anchor, props.interactive, props.state.map.zoom, props.markerSize, props.state.tooltips, props.state.map.brightness, props.state.map.center])
 
  return layers
 }

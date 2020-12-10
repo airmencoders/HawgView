@@ -1,3 +1,8 @@
+## 2.15.5-beta
+### Changes
+* Moved `tooltips` to `state`
+* Changed `Geo Labels` `maxNativeZoom` from `19` to `17` in order to match imagery
+
 ## 2.15.4-beta
 ### Changes
 * Moved `zoom` to `state.map`

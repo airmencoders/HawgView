@@ -189,7 +189,7 @@ const Threat = props => {
         title={props.marker.title}
       >
         {generatePopup(props.marker)}
-        {(props.tooltipsActive) ?
+        {(props.state.tooltips) ?
           <Tooltip
             direction='top'
             offset={L.point(0, -1 * computedSize)}
