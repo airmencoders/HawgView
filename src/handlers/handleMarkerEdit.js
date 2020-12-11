@@ -35,7 +35,7 @@ import { editMarkers } from '../functions/editMarkers'
 //----------------------------------------------------------------//
 // Handle Marker Edit Function
 //----------------------------------------------------------------//
-const handleMarkerEdit = (action, payload, state, setState, elevation, focusedLatlng, markerLabel, history, setHistory, setMarkerLabel, handleMapReset, toast) => {
+const handleMarkerEdit = (action, payload, state, setState, elevation, markerLabel, history, setHistory, setMarkerLabel, toast) => {
   const supportedActions = ['clear', 'create', 'delete', 'drag', 'edit', '9line', '15line']
 
   if (supportedActions.includes(action)) {
@@ -65,7 +65,7 @@ const handleMarkerEdit = (action, payload, state, setState, elevation, focusedLa
       if (payload.layer === 'friendly' || payload.layer === 'hostile' || payload.layer === 'threat' || payload.layer === 'survivor' || payload.layer === 'ip' || payload.layer === 'mapLabel' || payload.layer === 'bullseye')
         updatedPayload = {
           ...updatedPayload,
-          latlng: focusedLatlng.latlng,
+          latlng: state.focusedLatlng.latlng,
           title: updatedTitle,
         }
     }
@@ -75,6 +75,7 @@ const handleMarkerEdit = (action, payload, state, setState, elevation, focusedLa
     const newStep = editMarkers(action, history, state.step, updatedPayload)
 
     if (newStep !== false) {
+
       let targetHistory
       if (state.step === history.length - 1) {
         targetHistory = history.slice()
@@ -84,45 +85,45 @@ const handleMarkerEdit = (action, payload, state, setState, elevation, focusedLa
 
       setHistory([...targetHistory, newStep])
 
-      if (action === 'create') {
-        //setMarkerId(markerId + 1)
-        setMarkerLabel('')
-      }
-
-      handleMapReset()
-
       let newState = {
         ...state,
         dialog: {
           anchor: null,
           name: null,
         },
+        focusedLatlng: {
+          latlng: null,
+          source: null,
+        },
+        focusedMarker: null,
+        focusedShape: null,
         step: state.step + 1,
       }
 
-      if (payload.layer === 'circle' || payload.layer === 'rectangle' || payload.layer === 'line' || payload.layer === 'polygon' || payload.layer === 'ellipse') {
-        newState = {
-          ...newState,
-          dialog: {
-            anchor: null,
-            name: 'editShape',
-          },
-          focusedShape: updatedPayload,
-          tool: null,
+      if (action === 'create') {
+        setMarkerLabel('')
+
+        if (payload.layer === 'circle' || payload.layer === 'rectangle' || payload.layer === 'line' || payload.layer === 'polygon' || payload.layer === 'ellipse') {
+          newState = {
+            ...newState,
+            dialog: {
+              anchor: null,
+              name: 'editShape',
+            },
+            focusedShape: updatedPayload,
+            tool: null,
+          }
+        } else if (payload.layer === 'threat') {
+          newState = {
+            ...newState,
+            dialog: {
+              anchor: null,
+              name: 'editMarker',
+            },
+            focusedMarker: updatedPayload
+          }
         }
       }
-
-      if (payload.layer === 'threat') {
-        newState = {
-          ...newState,
-          dialog: {
-            anchor: null,
-            name: 'editMarker',
-          },
-          focusedMarker: updatedPayload
-        }
-      }
-
       setState(newState)
     }
   } else {

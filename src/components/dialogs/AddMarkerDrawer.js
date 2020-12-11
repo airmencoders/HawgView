@@ -84,6 +84,16 @@ const AddMarkerDrawer = props => {
 
   const container = props.window !== undefined ? () => window().document.body : undefined
 
+  const handleClose = () => {
+    props.setState({
+      ...props.state,
+      dialog: {
+        anchor: null,
+        name: null,
+      }
+    })
+  }
+
   return (
     <nav
       className={classes.drawer}
@@ -93,7 +103,7 @@ const AddMarkerDrawer = props => {
         variant='temporary'
         anchor='left'
         open={props.state.dialog.name === 'addMarker'}
-        onClose={props.onClose}
+        onClose={handleClose}
         classes={{ paper: classes.drawerPaper, }}
         ModalProps={{ keepMounted: true, }}
       >

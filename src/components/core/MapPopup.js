@@ -34,15 +34,15 @@ import React from 'react'
 //----------------------------------------------------------------//
 import {
   Button,
-}from '@material-ui/core'
-import { 
+} from '@material-ui/core'
+import {
   makeStyles,
 } from '@material-ui/core/styles'
 
 //----------------------------------------------------------------//
 // React-Leaflet Components
 //----------------------------------------------------------------//
-import { 
+import {
   Popup as RLPopup,
 } from 'react-leaflet'
 
@@ -82,34 +82,43 @@ const Popup = props => {
   //----------------------------------------------------------------//
   const [popup, setPopup] = React.useState(null)
 
+  const handleClose = () => {
+    props.setState({
+      ...props.state,
+      elevation: 'Pending',
+      focusedLatlng: {
+        latlng: null,
+        source: null,
+      },
+      focusedMarker: null,
+      focusedShape: null
+    })
+  }
+
   //----------------------------------------------------------------//
   // React Effects
   //----------------------------------------------------------------//
   React.useEffect(() => {
     if (
-        props.state.tool === null &&
-        props.focusedLatlng.latlng !== null &&
-        (props.focusedLatlng.source === 'map' || props.focusedLatlng.source === 'input')
+      props.state.tool === null &&
+      props.state.focusedLatlng.latlng !== null &&
+      (props.state.focusedLatlng.source === 'map' || props.state.focusedLatlng.source === 'input')
     ) {
-      props.setState({
-        ...props.state,
-        focusedMarker: null,
-      })
+
+
       setPopup({
-        ...generateMapPopup(props.focusedLatlng.latlng, props.anchor),
+        ...generateMapPopup(props.state.focusedLatlng.latlng, props.anchor),
         elevation: props.elevation
       })
     }
-  }, [props.elevation, props.focusedLatlng, props.state.tool])
+  }, [props.anchor, props.elevation, props.state.focusedLatlng, props.state.tool])
 
   //----------------------------------------------------------------//
   // Logic
   //----------------------------------------------------------------//
   if (
-    props.focusedLatlng !== null &&
-    (props.focusedLatlng.source === 'map' || props.focusedLatlng.source === 'input') &&
-    props.state.focusedMarker === null &&
-    props.state.focusedShape === null &&
+    props.state.focusedLatlng.latlng !== null &&
+    (props.state.focusedLatlng.source === 'map' || props.state.focusedLatlng.source === 'input') &&
     popup !== null &&
     props.state.tool === null
   ) {
@@ -117,9 +126,9 @@ const Popup = props => {
       <RLPopup
         autoPan={false}
         maxWidth={500}
-        key={props.focusedLatlng}
-        onClose={props.handleMapReset}
-        position={props.focusedLatlng.latlng}
+        key={props.state.focusedLatlng.latlng}
+        onClose={handleClose}
+        position={props.state.focusedLatlng.latlng}
       >
         <table className={classes.popupTable}>
           <tbody>

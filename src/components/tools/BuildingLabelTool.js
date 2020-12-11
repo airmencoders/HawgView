@@ -55,21 +55,21 @@ const BuildingLabelTool = (props) => {
   }, [props.state.tool])
 
   React.useEffect(() => {
-    if (props.state.tool === 'buildingLabel' && props.latlng !== null) {
+    if (props.state.tool === 'buildingLabel' && props.state.focusedLatlng.latlng !== null) {
       const newData = {
         arty: {
           arty: false,
           display: false,
         },
         iconType: 'div',
-        latlng: props.latlng,
+        latlng: props.state.focusedLatlng.latlng,
         layer: 'buildingLabel',
         title: props.index,
       }
 
       props.submit('create', newData)
     }
-  }, [props.latlng])
+  }, [props.state.focusedLatlng.latlng])
 
   /**
    * 

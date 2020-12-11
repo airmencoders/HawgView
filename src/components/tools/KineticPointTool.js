@@ -54,21 +54,21 @@ const KineticPointTool = props => {
   }, [props.state.tool])
 
   React.useEffect(() => {
-    if (props.state.tool === 'kineticPoint' && props.latlng !== null) {
+    if (props.state.tool === 'kineticPoint' && props.state.focusedLatlng.latlng !== null) {
       const newData = {
         arty: {
           arty: false,
           display: false,
         },
         iconType: 'div',
-        latlng: props.latlng,
+        latlng: props.state.focusedLatlng.latlng,
         layer: 'kineticPoint',
         title: `${String.fromCharCode(props.firstLetter)}${String.fromCharCode(props.secondLetter)}`,
       }
 
       props.submit('create', newData)
     }
-  }, [props.latlng])
+  }, [props.state.focusedLatlng])
 
   /**
    * 

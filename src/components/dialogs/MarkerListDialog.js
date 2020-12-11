@@ -57,12 +57,22 @@ import {
 //----------------------------------------------------------------//
 const MarkerListDialog = (props) => {
 
+  const handleClose = () => {
+    props.setState({
+      ...props.state,
+      dialog: {
+        anchor: null,
+        name: null,
+      },
+    })
+  }
+
   return (
     <Dialog
       fullWidth={true}
       maxWidth={false}
       open={props.state.dialog.name === 'markerList'}
-      onClose={props.onClose}
+      onClose={handleClose}
     >
       <DialogTitle>
         <Box

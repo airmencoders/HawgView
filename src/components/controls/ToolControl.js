@@ -86,7 +86,6 @@ const ToolControls = (props) => {
    * @param {*} tool 
    */
   const changeTools = tool => {
-    props.setFocusedLatlng({ latlng: null, source: null })
     props.setState({
       ...props.state,
       focusedLatlng: {
@@ -172,10 +171,8 @@ const ToolControls = (props) => {
       </ButtonGroup>
       <Tools
         editMarker={props.editMarker}
-        focusedLatlng={props.focusedLatlng}
         history={props.history}
         mouseCoords={props.mouseCoords}
-        setFocusedLatlng={props.setFocusedLatlng}
         setMouseCoords={props.setMouseCoords}
 
         setState={props.setState}

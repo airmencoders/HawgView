@@ -159,7 +159,7 @@ const ShapeDrawer = (props) => {
       try {
         position = LatLon.parse(center.lat, center.lng).toUtm().toMgrs().toString()
       } catch (error) {
-        console.log(`Unable to parse MGRS coordinates from coordinates (${center.lat}, ${center.lng})`)
+        console.error(`Unable to parse MGRS coordinates from coordinates (${center.lat}, ${center.lng})`)
       }
 
       if (position !== undefined) {
@@ -307,7 +307,7 @@ const ShapeDrawer = (props) => {
     }
 
     props.submit('edit', payload)
-    props.onClose()
+    //props.onClose()
     setRadius(0)
     setUnit('m')
     setDashed(false)
@@ -329,6 +329,16 @@ const ShapeDrawer = (props) => {
     setIsAnchor(false)
   }
 
+  const handleClose = () => {
+    props.setState({
+      ...props.state,
+      dialog: {
+        anchor: null,
+        name: null,
+      },
+    })
+  }
+
   return (
     <nav
       className={classes.drawer}
@@ -338,7 +348,7 @@ const ShapeDrawer = (props) => {
         variant='temporary'
         anchor='left'
         open={props.state.dialog.name === 'editShape'}
-        onClose={props.onClose}
+        onClose={handleClose}
         classes={{ paper: classes.drawerPaper, }}
         ModalProps={{ keepMounted: true, }}
       >

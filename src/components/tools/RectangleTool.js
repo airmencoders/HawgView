@@ -58,12 +58,12 @@ const RectangleTool = props => {
 
   React.useEffect(() => {
     if (props.state.tool === 'rectangle' && startLatlng === null) {
-      setStartLatlng(props.latlng)
+      setStartLatlng(props.state.focusedLatlng.latlng)
     }
 
     if (props.state.tool === 'rectangle' && startLatlng !== null) {
       props.submit('create', {
-        bounds: [startLatlng, props.latlng],
+        bounds: [startLatlng, props.state.focusedLatlng.latlng],
         color: '#4A90E2',
         dashArray: null,
         fillColor: null,
@@ -71,7 +71,7 @@ const RectangleTool = props => {
         title: 'Rectangle',
       })
     }
-  }, [props.latlng])
+  }, [props.state.focusedLatlng])
 
   const handleEsc = event => {
     if (props.state.tool === 'rectangle' && event.key === 'Escape') {

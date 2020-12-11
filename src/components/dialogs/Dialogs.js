@@ -56,22 +56,17 @@ const Dialogs = props => {
   return (
     <React.Fragment>
       <NotificationsDialog
-        onClose={() => props.handleMapReset()}
-
         setState={props.setState}
         state={props.state}
       />
       <StyleDrawer
-        onClose={() => props.handleMapReset()}
-        submit={(action, payload) => props.handleEditMarker(action, payload)}
-
         setState={props.setState}
         state={props.state}
+        submit={(action, payload) => props.handleEditMarker(action, payload)}
       />
       <AddMarkerDrawer
         anchor={props.history[props.state.step].anchor}
         markerLabel={props.markerLabel}
-        onClose={() => props.handleMapReset()}
         handleAddMarker={payload => props.handleEditMarker('create', payload)}
         setMarkerLabel={props.setMarkerLabel}
 
@@ -79,40 +74,30 @@ const Dialogs = props => {
         state={props.state}
       />
       <EditMarkerDrawer
-        onClose={() => props.handleMapReset()}
-        submit={(action, payload) => props.handleEditMarker(action, payload)}
-
         setState={props.setState}
         state={props.state}
+        submit={(action, payload) => props.handleEditMarker(action, payload)}
       />
       <EditShapeDrawer
-        onClose={() => props.handleMapReset()}
-        submit={(action, payload) => props.handleEditMarker(action, payload)}
-
         setState={props.setState}
         state={props.state}
+        submit={(action, payload) => props.handleEditMarker(action, payload)}
       />
       <MarkerListDialog
-        onClose={() => props.handleMapReset()}
-        step={props.history[props.state.step]}
-
         setState={props.setState}
         state={props.state}
+        step={props.history[props.state.step]}
       />
       <SaveScenarioDialog
         data={props.history[props.state.step]}
-        setActiveDialog={dialog => props.setActiveDialog(dialog)}
-        toast={(message, severity) => props.toast(message, severity)}
-
         setState={props.setState}
         state={props.state}
+        toast={(message, severity) => props.toast(message, severity)}
       />
       <LoadScenarioDialog
-        setActiveDialog={dialog => props.setActiveDialog(dialog)}
-        submit={data => handleLoadScenario(data, props.history, props.state, props.setState, props.toast, props.setHistory)}
-
         setState={props.setState}
         state={props.state}
+        submit={data => handleLoadScenario(data, props.history, props.state, props.setState, props.toast, props.setHistory)}
       />
     </React.Fragment>
   )

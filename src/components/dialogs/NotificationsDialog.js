@@ -44,10 +44,20 @@ import {
 //----------------------------------------------------------------//
 const NotificationsDialog = props => {
 
+  const handleClose = () => {
+    props.setState({
+      ...props.state,
+      dialog: {
+        anchor: null,
+        name: null,
+      },
+    })
+  }
+
   return (
     <Dialog
       open={props.state.dialog.name === 'notifications'}
-      onClose={props.onClose}
+      onClose={handleClose}
       maxWidth='lg'
     >
       <DialogTitle>

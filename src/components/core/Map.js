@@ -69,6 +69,16 @@ const Map = (props) => {
     props.setMouseCoords(latlng)
   }, [props.mouseCoords])
 
+  const handleMapClick = latlng => {
+    props.setState({
+      ...props.state,
+      focusedLatlng: {
+        latlng,
+        source: 'map',
+      },
+    })
+  }
+
   //----------------------------------------------------------------//
   // React Effects
   //----------------------------------------------------------------//
@@ -101,7 +111,7 @@ const Map = (props) => {
           zoom: event.target.getZoom(),
         },
       })}
-      onClick={event => props.setFocusedLatlng({ latlng: event.latlng, source: 'map' })}
+      onClick={event => handleMapClick(event.latlng)}
       onMouseMove={event => handleMouseMove(event.latlng)}
       ref={map => (map !== null) ? mapRef = map.leafletElement : undefined}
       style={props.state.tool !== null ? { cursor: 'crosshair' } : undefined}

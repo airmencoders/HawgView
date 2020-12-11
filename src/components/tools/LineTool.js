@@ -79,16 +79,16 @@ const LineTool = props => {
    * As long as the tool is active
    */
   React.useEffect(() => {
-    if (props.latlng !== null && (props.state.tool === 'line' || props.state.tool === 'polygon')) {
-      setPositions([...positions, props.latlng])
+    if (props.state.focusedLatlng.latlng !== null && (props.state.tool === 'line' || props.state.tool === 'polygon')) {
+      setPositions([...positions, props.state.focusedLatlng.latlng])
     }
-  }, [props.latlng])
+  }, [props.state.focusedLatlng])
 
   React.useEffect(() => {
-    if(props.latlng !== null && props.mouseCoords !== null) {
-      setDistances(distanceAndHeading(props.latlng, props.mouseCoords, 0))
+    if(props.state.focusedLatlng.latlng !== null && props.mouseCoords !== null) {
+      setDistances(distanceAndHeading(props.state.focusedLatlng.latlng, props.mouseCoords, 0))
     }
-  }, [props.latlng, props.mouseCoords])
+  }, [props.state.focusedLatlng, props.mouseCoords])
 
   /**
    * Listen for the ESCAPE key to close the line or exit the tool
@@ -156,7 +156,7 @@ const LineTool = props => {
             <br/>
             {`meters: ${distances !== null ? distances.meters.toFixed(2) : ''}`}
             <br/>
-            {`Click ${props.tool === 'line' ? 'last' : 'first'} point to finish ${props.state.tool}`}
+            {`Click ${props.state.tool === 'line' ? 'last' : 'first'} point to finish ${props.state.tool}`}
           </Tooltip>
         </CircleMarker>
         {(positions.length > (props.state.tool === 'line' ? 1 : 2)) ?

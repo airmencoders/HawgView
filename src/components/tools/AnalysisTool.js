@@ -90,13 +90,13 @@ const AnalysisTool = (props) => {
    * As long as the tool is active
    */
   React.useEffect(() => {
-    if (props.latlng !== null && props.state.tool === 'analysis') {
+    if (props.state.focusedLatlng.latlng !== null && props.state.tool === 'analysis') {
       //props.setLineClosed(false)
       setTotalMeters(totalMeters + meters)
       setTotalMiles(totalMiles + miles)
 
       const newPoint = {
-        point: props.latlng,
+        point: props.state.focusedLatlng.latlng,
         hdg: hdg,
         mils: hdg * 17.78,
         nm: totalMiles + miles,
@@ -107,27 +107,27 @@ const AnalysisTool = (props) => {
 
       // Set the declination
       setDeclination(null)
-      fetch(`https://www.ngdc.noaa.gov/geomag-web/calculators/calculateDeclination?lat1=${props.latlng.lat}&lon1=${props.latlng.lng}&resultFormat=json`)
+      fetch(`https://www.ngdc.noaa.gov/geomag-web/calculators/calculateDeclination?lat1=${props.state.focusedLatlng.latlng.lat}&lon1=${props.state.focusedLatlng.latlng.lng}&resultFormat=json`)
         .then(response => response.json())
         .then(json => setDeclination(json.result[0].declination))
     }
-  }, [props.latlng])
+  }, [props.state.focusedLatlng])
 
   /**
    * As long as there are two lat/lon points to calculate (starting point and mouse) call the function
    */
   React.useEffect(() => {
-    if (props.latlng !== null && props.mouseCoords !== null) {
+    if (props.state.focusedLatlng.latlng !== null && props.mouseCoords !== null) {
       calculateHeadingAndDistance()
     }
-  }, [props.latlng, props.mouseCoords])
+  }, [props.state.focusedLatlng, props.mouseCoords])
 
   /**
    * Calculates the distance and bearing between two points.
    * Uses the NOAA NGDC Magnetic Declination API to get the magnetic variance using the World Magnetic Model (WMM) for the starting point
    */
   const calculateHeadingAndDistance = () => {
-    const distAndHdg = distanceAndHeading(props.latlng, props.mouseCoords, declination)
+    const distAndHdg = distanceAndHeading(props.state.focusedLatlng.latlng, props.mouseCoords, declination)
 
     setHdg(distAndHdg.heading)
     setMeters(distAndHdg.meters)
@@ -158,7 +158,14 @@ const AnalysisTool = (props) => {
    * and resets the tool for another line
    */
   const closeLine = () => {
-    props.setFocusedLatlng({ latlng: null, source: null })
+    //props.setFocusedLatlng({ latlng: null, source: null })
+    props.setState({
+      ...props.state, 
+      focusedLatlng: {
+        latlng: null,
+        source: null,
+      },
+    })
     props.clearMouse()
     if (points.length > 1) {
       setLines([...lines, [...points]])

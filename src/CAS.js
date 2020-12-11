@@ -147,7 +147,6 @@ const Cas = () => {
   })
 
   const [mouseCoords, setMouseCoords] = React.useState(null)
-  const [focusedLatlng, setFocusedLatlng] = React.useState({ latlng: null, source: null })
   const [elevation, setElevation] = React.useState('Pending')
   const [history, setHistory] = React.useState([{
     action: '',
@@ -226,7 +225,7 @@ const Cas = () => {
    */
   React.useEffect(() => {
     if (state.dialog.name === null) {
-      handleMapReset()
+      //handleMapReset()
     }
   }, [state.dialog.name])
 
@@ -235,11 +234,10 @@ const Cas = () => {
   * and set the focused lat/lng to the marker's latlng (If it's not null)
   */
   React.useEffect(() => {
-    setElevation('Pending')
     if (state.focusedMarker !== null) {
-      //setFocusedLatlng({ latlng: focusedMarker.latlng, source: 'marker' })
       setState({
         ...state,
+        elevation: 'Pending',
         focusedLatlng: {
           latlng: state.focusedMarker.latlng,
           source: 'marker',
@@ -252,10 +250,10 @@ const Cas = () => {
    * Whenever the focused lat/lng changes, as long as it has a valid lat/lng object, get the elevation
    */
   React.useEffect(() => {
-    if (focusedLatlng.latlng !== null) {
-      (async () => setElevation(await getElevation(focusedLatlng.latlng.lat, focusedLatlng.latlng.lng)))()
+    if (state.focusedLatlng.latlng !== null) {
+      (async () => setElevation(await getElevation(state.focusedLatlng.latlng.lat, state.focusedLatlng.latlng.lng)))()
     }
-  }, [focusedLatlng])
+  }, [state.focusedLatlng])
 
   /**
    * Whenever any changes occur to the snackbar, handle various changes to the package
@@ -306,31 +304,17 @@ const Cas = () => {
     })
   }
 
-  /**
-   * Helper function to do multiple things when closing the map Popup
-   */
-  const handleMapReset = () => {
-    setFocusedLatlng({ latlng: null, source: null })
-    setMouseCoords(null)
-    //setMapPopup(null)
-    setElevation('Pending')
-
-    setState({
-      ...state,
-      dialog: {
-        anchor: null,
-        name: null,
-      },
-      focusedShape: null,
-      tool: null,
-    })
-  }
-
   const handleCoordInput = latlng => {
     if (latlng === false) {
       toast('Invalid coordinates', 'error')
     } else {
-      setFocusedLatlng({ latlng: latlng, source: 'input' })
+      setState({
+        ...state,
+        focusedLatlng: {
+          latlng,
+          source: 'input',
+        },
+      })
     }
   }
 
@@ -346,9 +330,9 @@ const Cas = () => {
     setSnackbarOpen(false)
   }
 
-  const editMarker = (action, payload) => {
-    handleMarkerEdit(action, payload, state, setState, elevation, focusedLatlng, markerLabel, history, setHistory, setMarkerLabel, handleMapReset, toast)
-  }
+  const editMarker = React.useCallback((action, payload) => {
+    handleMarkerEdit(action, payload, state, setState, elevation, markerLabel, history, setHistory, setMarkerLabel, toast)
+  }, [state])
 
   return (
     <Box
@@ -411,7 +395,6 @@ const Cas = () => {
           setMap={setMap}
           mouseCoords={mouseCoords}
           setMouseCoords={setMouseCoords}
-          setFocusedLatlng={latlng => setFocusedLatlng(latlng)}
 
           setState={setState}
           state={state}
@@ -419,8 +402,6 @@ const Cas = () => {
           <MapPopup
             anchor={history[state.step].anchor}
             elevation={elevation}
-            focusedLatlng={focusedLatlng}
-            handleMapReset={handleMapReset}
 
             setState={setState}
             state={state}
@@ -439,10 +420,8 @@ const Cas = () => {
           <ZoomControl position='topright' />
           <ToolControl
             editMarker={editMarker}
-            focusedLatlng={focusedLatlng}
             history={history}
             mouseCoords={mouseCoords}
-            setFocusedLatlng={setFocusedLatlng}
             setMouseCoords={setMouseCoords}
 
             setState={setState}
@@ -477,7 +456,6 @@ const Cas = () => {
       </Snackbar>
       <Dialogs
         handleEditMarker={(action, dialog) => editMarker(action, dialog)}
-        handleMapReset={handleMapReset}
         history={history}
         markerLabel={markerLabel}
         setHistory={setHistory}

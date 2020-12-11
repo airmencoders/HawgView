@@ -106,7 +106,6 @@ const FriendlyMarkers = ({ handleAddMarker, handleMarkerDrawerToggle }) => {
         }
       }
     }
-    handleMarkerDrawerToggle()
     handleAddMarker(payload)
   }
 

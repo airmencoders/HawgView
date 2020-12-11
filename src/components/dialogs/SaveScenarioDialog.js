@@ -87,18 +87,6 @@ const SaveScenarioDialog = (props) => {
     }
   }
 
-  const resetDialog = () => {
-    setName('')
-    console.log('[SaveScenarioDialog] resetDialog setting state')
-    props.setState({
-      ...props.state,
-      dialog: {
-        anchor: null,
-        name: null,
-      },
-    })
-  }
-
   const downloadScenario = () => {
     const element = document.createElement('a')
     const file = new Blob([scenarioRef.current.value], { type: 'text/plain' })
@@ -107,8 +95,12 @@ const SaveScenarioDialog = (props) => {
     document.body.appendChild(element)
     element.click()
 
+    handleClose()
+    props.toast(`Scenario ${name} saved`)
+  }
+
+  const handleClose = () => {
     setName('')
-    console.log('[SaveScenarioDialog] downloadScenario setting state')
     props.setState({
       ...props.state,
       dialog: {
@@ -116,7 +108,6 @@ const SaveScenarioDialog = (props) => {
         name: null,
       },
     })
-    props.toast(`Scenario ${name} saved`)
   }
 
   return (
@@ -124,7 +115,7 @@ const SaveScenarioDialog = (props) => {
       className={classes.dialog}
       fullWidth={true}
       open={props.state.dialog.name === 'save'}
-      onClose={resetDialog}
+      onClose={handleClose}
       maxWidth='xs'
     >
       <DialogTitle>Save Scenario</DialogTitle>
@@ -145,7 +136,7 @@ const SaveScenarioDialog = (props) => {
       </DialogContent>
       <DialogActions>
         <Button onClick={downloadScenario} color='primary'>Download Scenario</Button>
-        <Button onClick={resetDialog}>Close</Button>
+        <Button onClick={handleClose}>Close</Button>
       </DialogActions>
     </Dialog>
   )

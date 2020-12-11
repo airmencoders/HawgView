@@ -140,8 +140,6 @@ const PersistentMarkers = props => { //{ handleAddMarker, handleMarkerDrawerTogg
         data: null
       }
     }
-
-    props.handleMarkerDrawerToggle()
     props.handleAddMarker(payload)
   }
 

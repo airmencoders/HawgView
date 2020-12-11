@@ -107,7 +107,6 @@ const HostileMarkers = ({ handleAddMarker, handleMarkerDrawerToggle }) => {
         }
       }
     }
-    handleMarkerDrawerToggle()
     handleAddMarker(payload)
   }
 

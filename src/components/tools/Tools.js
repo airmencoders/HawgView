@@ -52,7 +52,6 @@ const Tools = props => {
       <AnalysisTool
         clearMouse={() => props.setMouseCoords(null)}
         mouseCoords={props.mouseCoords}
-        latlng={props.focusedLatlng.latlng}
         setFocusedLatlng={latlng => props.setFocusedLatlng(latlng)}
 
         setState={props.setState}
@@ -60,7 +59,6 @@ const Tools = props => {
       />
       <BuildingLabelTool
         index={props.history[props.state.step].data.buildingLabel}
-        latlng={props.focusedLatlng.latlng}
         submit={(action, payload) => props.editMarker(action, payload)}
 
         setState={props.setState}
@@ -68,7 +66,6 @@ const Tools = props => {
       />
       <KineticPointTool
         firstLetter={props.history[props.state.step].data.firstLetter}
-        latlng={props.focusedLatlng.latlng}
         secondLetter={props.history[props.state.step].data.secondLetter}
         submit={(action, payload) => props.editMarker(action, payload)}
 
@@ -76,16 +73,13 @@ const Tools = props => {
         state={props.state}
       />
       <LineTool
-        latlng={props.focusedLatlng.latlng}
         mouseCoords={props.mouseCoords}
         submit={(action, payload) => props.editMarker(action, payload)}
-        tool={props.activeTool}
 
         setState={props.setState}
         state={props.state}
       />
       <CircleTool
-        latlng={props.focusedLatlng.latlng}
         mouseCoords={props.mouseCoords}
         submit={(action, payload) => props.editMarker(action, payload)}
 
@@ -93,7 +87,6 @@ const Tools = props => {
         state={props.state}
       />
       <RectangleTool
-        latlng={props.focusedLatlng.latlng}
         mouseCoords={props.mouseCoords}
         submit={(action, payload) => props.editMarker(action, payload)}
 
@@ -101,16 +94,13 @@ const Tools = props => {
         state={props.state}
       />
       <LineTool
-        latlng={props.focusedLatlng.latlng}
         mouseCoords={props.mouseCoords}
         submit={(action, payload) => props.editMarker(action, payload)}
-        tool={props.activeTool}
 
         setState={props.setState}
         state={props.state}
       />
       <EllipseTool
-        latlng={props.focusedLatlng.latlng}
         submit={(action, payload) => props.editMarker(action, payload)}
 
         setState={props.setState}

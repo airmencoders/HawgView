@@ -133,7 +133,6 @@ const Shape = props => {
 
   const handleEditMarker = marker => {
     props.setFocusedMarker(marker)
-    console.log('[Shape] handleEditMarker setting state')
     props.setState({
       ...props.state,
       dialog: {

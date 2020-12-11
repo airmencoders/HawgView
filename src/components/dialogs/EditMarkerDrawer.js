@@ -293,6 +293,16 @@ const EditMarkerDrawer = (props) => {
     }
   }, [props.state.focusedMarker])
 
+  const handleClose = () => {
+    props.setState({
+      ...props.state,
+      dialog: {
+        anchor: null,
+        name: null,
+      },
+    })
+  }
+
   const pullElevation = () => {
     setElevation('Pending')
 
@@ -447,7 +457,7 @@ const EditMarkerDrawer = (props) => {
         variant='temporary'
         anchor='left'
         open={props.state.dialog.name === 'editMarker'}
-        onClose={props.onClose}
+        onClose={handleClose}
         classes={{ paper: classes.drawerPaper, }}
         ModalProps={{ keepMounted: true, }}
       >

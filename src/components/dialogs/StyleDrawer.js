@@ -134,7 +134,16 @@ const StyleDrawer = (props) => {
     }
 
     props.submit('edit', newStyles)
-    props.onClose()
+  }
+
+  const handleClose = () => {
+    props.setState({
+      ...props.state,
+      dialog: {
+        anchor: null,
+        name: null,
+      },
+    })
   }
 
   return (
@@ -146,7 +155,7 @@ const StyleDrawer = (props) => {
         variant='temporary'
         anchor='left'
         open={props.state.dialog.name === 'style'}
-        onClose={props.onClose}
+        onClose={handleClose}
         classes={{ paper: classes.drawerPaper, }}
         ModalProps={{ keepMounted: true }}
       >

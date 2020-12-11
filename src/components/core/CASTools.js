@@ -89,12 +89,13 @@ const CASTools = props => {
         <IconButton
           color='inherit'
           onClick={() => props.setState({
-            ...props.state,
-            dialog: {
-              anchor: null,
-              name: 'addMarker',
-            },
-          })}
+              ...props.state,
+              dialog: {
+                anchor: null,
+                name: 'addMarker',
+              },
+            })
+          }
         >
           <AddPhotoAlternateIcon />
         </IconButton>
@@ -105,9 +106,10 @@ const CASTools = props => {
             color='inherit'
             disabled={props.state.step === 0}
             onClick={() => props.setState({
-              ...props.state,
-              step: props.state.step - 1,
-            })}
+                ...props.state,
+                step: props.state.step - 1,
+              })
+            }
           >
             <UndoIcon />
           </IconButton>
@@ -119,9 +121,10 @@ const CASTools = props => {
             color='inherit'
             disabled={props.state.step === props.history.length - 1}
             onClick={() => props.setState({
-              ...props.state,
-              step: props.state.step + 1,
-            })}
+                ...props.state,
+                step: props.state.step + 1,
+              })
+            }
           >
             <RedoIcon />
           </IconButton>
@@ -198,12 +201,13 @@ const CASTools = props => {
         <IconButton
           color='inherit'
           onClick={() => props.setState({
-            ...props.state,
-            dialog: {
-              anchor: null,
-              name: 'markerList',
-            },
-          })}
+              ...props.state,
+              dialog: {
+                anchor: null,
+                name: 'markerList',
+              },
+            })
+          }
         >
           <ViewListIcon />
         </IconButton>
@@ -213,9 +217,10 @@ const CASTools = props => {
           <IconButton
             color='inherit'
             onClick={() => props.setState({
-              ...props.state,
-              tooltips: !props.state.tooltips,
-            })}
+                ...props.state,
+                tooltips: !props.state.tooltips,
+              })
+            }
           >
             {props.state.tooltips ? <LabelOffIcon /> : <LabelIcon />}
           </IconButton>
@@ -225,12 +230,13 @@ const CASTools = props => {
         <IconButton
           color='inherit'
           onClick={() => props.setState({
-            ...props.state,
-            dialog: {
-              anchor: null,
-              name: 'save',
-            },
-          })}
+              ...props.state,
+              dialog: {
+                anchor: null,
+                name: 'save',
+              },
+            })
+          }
         >
           <SaveIcon />
         </IconButton>

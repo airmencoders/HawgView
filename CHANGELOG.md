@@ -1,3 +1,12 @@
+## 2.15.11-beta
+### Changes
+* Moved `focusedLatlng` to `state`
+* Reduced number of state updates to minimize chance of getting out of sync
+* Expect that in the future, will further reduce state updates / function calls
+
+### Fixes
+* Fixed issues with `focusedShape` and `focusedMarker` being out of sync with rest of state updates
+
 ## 2.15.10-beta
 ### Changes
 * Moved `focusedShape` to `state`

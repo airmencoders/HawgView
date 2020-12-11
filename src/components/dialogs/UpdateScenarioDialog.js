@@ -67,12 +67,22 @@ const UpdateScenarioDialog = (props) => {
   //----------------------------------------------------------------//
   const [scenario, setScenario] = React.useState('')
 
+  const handleClose = () => {
+    props.setState({
+      ...props.state,
+      dialog: {
+        anchor: null,
+        name: null,
+      },
+    })
+  }
+
   return (
     <Dialog
       className={classes.dialog}
       fullWidth={true}
       open={props.state.dialog.name === 'update'}
-      onClose={props.toggle}
+      onClose={handleClose}
       maxWidth='xl'
     >
       <DialogTitle>Load Scenario</DialogTitle>
