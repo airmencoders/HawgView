@@ -109,7 +109,7 @@ const Popup = props => {
     props.focusedLatlng !== null &&
     (props.focusedLatlng.source === 'map' || props.focusedLatlng.source === 'input') &&
     props.state.focusedMarker === null &&
-    props.focusedShape === null &&
+    props.state.focusedShape === null &&
     popup !== null &&
     props.state.tool === null
   ) {

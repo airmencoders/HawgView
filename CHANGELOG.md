@@ -1,3 +1,11 @@
+## 2.15.10-beta
+### Changes
+* Moved `focusedShape` to `state`
+* Added `tool: null` to the `handleMarkerEdit`
+
+### Fixes
+* Fixed issues when making a shape would not deactivate the tool properly
+
 ## 2.15.9-beta
 ### Changes
 * Fixed MGRS issues incorporated in `master` branch version `2.14.9-beta`

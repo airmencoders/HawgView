@@ -83,13 +83,13 @@ const Bullseye = props => {
   const computedSize = props.state.markerSize * props.state.map.zoom
 
   const handleEditShape = shape => {
-    props.setFocusedShape(shape)
     props.setState({
       ...props.state,
       dialog: {
         anchor: null,
         name: 'editShape',
       },
+      focusedShape: shape,
     })
   }
 

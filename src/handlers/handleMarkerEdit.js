@@ -35,7 +35,7 @@ import { editMarkers } from '../functions/editMarkers'
 //----------------------------------------------------------------//
 // Handle Marker Edit Function
 //----------------------------------------------------------------//
-const handleMarkerEdit = (action, payload, state, setState, elevation, focusedLatlng, markerLabel, history, setHistory, setMarkerLabel, handleMapReset, setFocusedShape, toast) => {
+const handleMarkerEdit = (action, payload, state, setState, elevation, focusedLatlng, markerLabel, history, setHistory, setMarkerLabel, handleMapReset, toast) => {
   const supportedActions = ['clear', 'create', 'delete', 'drag', 'edit', '9line', '15line']
 
   if (supportedActions.includes(action)) {
@@ -108,18 +108,11 @@ const handleMarkerEdit = (action, payload, state, setState, elevation, focusedLa
             name: 'editShape',
           },
           focusedShape: updatedPayload,
+          tool: null,
         }
-        setFocusedShape(updatedPayload)
-        //setActiveDialog('editShape')
-        //newDialog = 'editShape'
-        //setActiveTool(null)
       }
 
       if (payload.layer === 'threat') {
-       // setFocusedMarker(updatedPayload)
-        //setActiveDialog('editMarker')
-        //newDialog = 'editMarker'
-        //setActiveTool(null)
         newState = {
           ...newState,
           dialog: {

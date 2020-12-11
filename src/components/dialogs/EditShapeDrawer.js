@@ -150,11 +150,11 @@ const ShapeDrawer = (props) => {
     let position
     let center
 
-    if (props.shape !== null) {
-      if(props.shape.layer === 'ellipse') {
-        center = props.shape.center
+    if (props.state.focusedShape !== null) {
+      if(props.state.focusedShape.layer === 'ellipse') {
+        center = props.state.focusedShape.center
       } else {
-        center = props.shape.latlng
+        center = props.state.focusedShape.latlng
       }
       try {
         position = LatLon.parse(center.lat, center.lng).toUtm().toMgrs().toString()
@@ -173,46 +173,46 @@ const ShapeDrawer = (props) => {
   }
 
   React.useEffect(() => {
-    if (props.shape !== null) {
-      setDashed(props.shape.dashArray === null ? false : true)
-      setDashArray(props.shape.dashArray === null ? '10,10' : props.shape.dashArray)
-      setFill(props.shape.fillColor === null ? false : true)
-      setFillColor(props.shape.fillColor === null ? '#4A90E2' : props.shape.fillColor)
-      setTitle(props.shape.title)
-      setColor(props.shape.color)
+    if (props.state.focusedShape !== null) {
+      setDashed(props.state.focusedShape.dashArray === null ? false : true)
+      setDashArray(props.state.focusedShape.dashArray === null ? '10,10' : props.state.focusedShape.dashArray)
+      setFill(props.state.focusedShape.fillColor === null ? false : true)
+      setFillColor(props.state.focusedShape.fillColor === null ? '#4A90E2' : props.state.focusedShape.fillColor)
+      setTitle(props.state.focusedShape.title)
+      setColor(props.state.focusedShape.color)
 
-      if (props.shape.layer === 'ellipse') {
-        setLength(props.shape.length / 926)
-        setWidth(props.shape.width / 926)
-        setTilt(props.shape.tilt - 90)
+      if (props.state.focusedShape.layer === 'ellipse') {
+        setLength(props.state.focusedShape.length / 926)
+        setWidth(props.state.focusedShape.width / 926)
+        setTilt(props.state.focusedShape.tilt - 90)
       }
 
-      if (props.shape.layer === 'circle') {
-        setRadius(Number.parseFloat(props.shape.radius).toFixed(2))
-        setUnit(props.shape.unit)
+      if (props.state.focusedShape.layer === 'circle') {
+        setRadius(Number.parseFloat(props.state.focusedShape.radius).toFixed(2))
+        setUnit(props.state.focusedShape.unit)
       }
 
-      if (props.shape.layer === 'bullseye') {
-        setDistance(props.shape.distance)
-        setRings(props.shape.rings)
-        setAngle(props.shape.angle)
-        setShowData(props.shape.showData)
-        setIsAnchor(props.shape.anchor)
+      if (props.state.focusedShape.layer === 'bullseye') {
+        setDistance(props.state.focusedShape.distance)
+        setRings(props.state.focusedShape.rings)
+        setAngle(props.state.focusedShape.angle)
+        setShowData(props.state.focusedShape.showData)
+        setIsAnchor(props.state.focusedShape.anchor)
       }
 
-      if (props.shape.layer === 'ellipse') {
+      if (props.state.focusedShape.layer === 'ellipse') {
         getMgrs()
-        setLat(props.shape.center.lat.toFixed(4))
-        setLng(props.shape.center.lng.toFixed(4))
+        setLat(props.state.focusedShape.center.lat.toFixed(4))
+        setLng(props.state.focusedShape.center.lng.toFixed(4))
       }
 
-      if (props.shape.layer === 'circle' || props.shape.layer === 'bullseye') {
+      if (props.state.focusedShape.layer === 'circle' || props.state.focusedShape.layer === 'bullseye') {
         getMgrs()
-        setLat(props.shape.latlng.lat.toFixed(4))
-        setLng(props.shape.latlng.lng.toFixed(4))
+        setLat(props.state.focusedShape.latlng.lat.toFixed(4))
+        setLng(props.state.focusedShape.latlng.lng.toFixed(4))
       }
     }
-  }, [props.shape])
+  }, [props.state.focusedShape])
 
   const handleUnitChange = newUnit => {
     switch (unit) {
@@ -245,26 +245,26 @@ const ShapeDrawer = (props) => {
 
   const handleSubmit = () => {
     let payload = {
-      marker: props.shape,
+      marker: props.state.focusedShape,
       color: color,
       title: title,
     }
 
-    if (props.shape.layer !== 'bullseye') {
+    if (props.state.focusedShape.layer !== 'bullseye') {
       payload = {
         ...payload,
         dashArray: dashed ? dashArray : null,
       }
     }
 
-    if (props.shape.layer !== 'line' && props.shape.layer !== 'bullseye') {
+    if (props.state.focusedShape.layer !== 'line' && props.state.focusedShape.layer !== 'bullseye') {
       payload = {
         ...payload,
         fillColor: fill ? fillColor : null,
       }
     }
 
-    if (props.shape.layer === 'circle' || props.shape.layer === 'ellipse' || props.shape.layer === 'bullseye') {
+    if (props.state.focusedShape.layer === 'circle' || props.state.focusedShape.layer === 'ellipse' || props.state.focusedShape.layer === 'bullseye') {
       let target = false
       if (latlng) {
         target = submitCoordInput(lat + ', ' + lng)
@@ -278,7 +278,7 @@ const ShapeDrawer = (props) => {
       }
     }
 
-    if (props.shape.layer === 'ellipse') {
+    if (props.state.focusedShape.layer === 'ellipse') {
       payload = {
         ...payload,
         length: length * 926,
@@ -287,7 +287,7 @@ const ShapeDrawer = (props) => {
       }
     }
 
-    if (props.shape.layer === 'circle') {
+    if (props.state.focusedShape.layer === 'circle') {
       payload = {
         ...payload,
         radius: Number.parseFloat(radius),
@@ -295,13 +295,13 @@ const ShapeDrawer = (props) => {
       }
     }
 
-    if (props.shape.layer === 'bullseye') {
+    if (props.state.focusedShape.layer === 'bullseye') {
       payload = {
         ...payload,
         anchor: isAnchor,
-        distance: isNaN(distance) ? props.shape.distance : Number.parseFloat(distance),
-        rings: isNaN(rings) ? props.shape.rings : Number.parseInt(rings),
-        angle: isNaN(angle) ? props.shape.angle : Math.round(Number.parseFloat(angle)),
+        distance: isNaN(distance) ? props.state.focusedShape.distance : Number.parseFloat(distance),
+        rings: isNaN(rings) ? props.state.focusedShape.rings : Number.parseInt(rings),
+        angle: isNaN(angle) ? props.state.focusedShape.angle : Math.round(Number.parseFloat(angle)),
         showData: showData,
       }
     }
@@ -354,7 +354,7 @@ const ShapeDrawer = (props) => {
             variant='outlined'
             value={title}
           />
-          {(props.shape !== null && (props.shape.layer === 'circle' || props.shape.layer === 'ellipse' || props.shape.layer === 'bullseye')) ?
+          {(props.state.focusedShape !== null && (props.state.focusedShape.layer === 'circle' || props.state.focusedShape.layer === 'ellipse' || props.state.focusedShape.layer === 'bullseye')) ?
             (
               <React.Fragment>
                 <Grid
@@ -406,7 +406,7 @@ const ShapeDrawer = (props) => {
               </React.Fragment>
             ) : null
           }
-          {(props.shape !== null && props.shape.layer === 'bullseye') ?
+          {(props.state.focusedShape !== null && props.state.focusedShape.layer === 'bullseye') ?
             <React.Fragment>
               <TextField
                 className={classes.textField}
@@ -470,7 +470,7 @@ const ShapeDrawer = (props) => {
             </React.Fragment>
             : null
           }
-          {(props.shape !== null && props.shape.layer === 'circle') ?
+          {(props.state.focusedShape !== null && props.state.focusedShape.layer === 'circle') ?
             <React.Fragment>
               <TextField
                 className={classes.textField}
@@ -503,7 +503,7 @@ const ShapeDrawer = (props) => {
             </React.Fragment>
             : null
           }
-          {(props.shape !== null && props.shape.layer === 'ellipse') ?
+          {(props.state.focusedShape !== null && props.state.focusedShape.layer === 'ellipse') ?
             <React.Fragment>
               <TextField
                 className={classes.textField}
@@ -548,7 +548,7 @@ const ShapeDrawer = (props) => {
             onChange={color => setColor(color.hex)}
           />
         </Grid>
-        {(props.shape !== null && props.shape.layer !== 'line' && props.shape.layer !== 'bullseye') ?
+        {(props.state.focusedShape !== null && props.state.focusedShape.layer !== 'line' && props.state.focusedShape.layer !== 'bullseye') ?
           <Grid
             container
             direction='row'
@@ -588,7 +588,7 @@ const ShapeDrawer = (props) => {
           </Grid>
           : null
         }
-        {(props.shape !== null && props.shape.layer !== 'bullseye') ?
+        {(props.state.focusedShape !== null && props.state.focusedShape.layer !== 'bullseye') ?
           <Grid
             container
             direction='row'

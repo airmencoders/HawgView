@@ -149,7 +149,6 @@ const Cas = () => {
   const [mouseCoords, setMouseCoords] = React.useState(null)
   const [focusedLatlng, setFocusedLatlng] = React.useState({ latlng: null, source: null })
   const [elevation, setElevation] = React.useState('Pending')
-  const [focusedShape, setFocusedShape] = React.useState(null)
   const [history, setHistory] = React.useState([{
     action: '',
     anchor: {
@@ -313,7 +312,6 @@ const Cas = () => {
   const handleMapReset = () => {
     setFocusedLatlng({ latlng: null, source: null })
     setMouseCoords(null)
-    setFocusedShape(null)
     //setMapPopup(null)
     setElevation('Pending')
 
@@ -323,7 +321,7 @@ const Cas = () => {
         anchor: null,
         name: null,
       },
-      //focusedMarker: null,
+      focusedShape: null,
       tool: null,
     })
   }
@@ -349,7 +347,7 @@ const Cas = () => {
   }
 
   const editMarker = (action, payload) => {
-    handleMarkerEdit(action, payload, state, setState, elevation, focusedLatlng, markerLabel, history, setHistory, setMarkerLabel, handleMapReset, setFocusedShape, toast)
+    handleMarkerEdit(action, payload, state, setState, elevation, focusedLatlng, markerLabel, history, setHistory, setMarkerLabel, handleMapReset, toast)
   }
 
   return (
@@ -422,7 +420,6 @@ const Cas = () => {
             anchor={history[state.step].anchor}
             elevation={elevation}
             focusedLatlng={focusedLatlng}
-            focusedShape={focusedShape}
             handleMapReset={handleMapReset}
 
             setState={setState}
@@ -433,7 +430,6 @@ const Cas = () => {
             handleMarkerDrag={(marker, latlng) => editMarker('drag', { marker: marker, latlng: latlng })}
             interactive={state.tool === null}
             map={map}
-            setFocusedShape={shape => setFocusedShape(shape)}
             step={history[state.step]}
             handleDeleteMarker={marker => editMarker('delete', { marker: marker })}
 
@@ -480,7 +476,6 @@ const Cas = () => {
         </Alert>
       </Snackbar>
       <Dialogs
-        focusedShape={focusedShape}
         handleEditMarker={(action, dialog) => editMarker(action, dialog)}
         handleMapReset={handleMapReset}
         history={history}
