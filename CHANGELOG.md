@@ -1,3 +1,10 @@
+## 2.14.9-beta
+### Changes
+* Changed way that Hawg View parses MGRS grids
+
+### Fixes
+* Fixed bug in very northern areas where the MGRS grid identifier is a single digit which causes issues with the 100k label and gridline labels
+
 ## 2.14.8-beta
 ### Changes
 * Re-added `Download Products` to `MobileMenu`

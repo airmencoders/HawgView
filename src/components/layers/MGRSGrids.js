@@ -92,6 +92,7 @@ const MGRSGrids = (props) => {
 
   React.useEffect(() => {
     generateGridZones()
+
   }, [props.zoom, props.center])
 
   const gridSpacing = () => {
@@ -236,7 +237,6 @@ const MGRSGrids = (props) => {
     // Hack to make this work....
     zoneBreaks.push(eastBound)
     zoneBreaks.push(eastBound)
-
 
     // Create vertical lines in the non exclusion zone
     for (var i = 1; i < zoneBreaks.length - 1; i++) {
@@ -432,7 +432,8 @@ const MGRSGrids = (props) => {
                 let label = gridMath.forward([labelPoint.lng, labelPoint.lat], mgrsAccuracy())
 
                 if (props.zoom >= 8) {
-                  label = label.substr(4)
+                  let splitLabel = label.split(' ')
+                  label = splitLabel[1]
                 }
 
                 tempLabels.push({
@@ -450,9 +451,10 @@ const MGRSGrids = (props) => {
               let labelPoint = gridMath.lineIntersect(horizontalLabelLines[x].positions, verticalLabelLines[y].positions)
               if (labelPoint && mapBounds.contains(labelPoint) && !drawn) {
                 let label = gridMath.forward([mapBounds.getWest(), labelPoint.lat], mgrsAccuracy())
-                label = label.substr(7)
+
                 let gridArray = label.split(' ')
-                label = gridArray[1]
+                label = gridArray[3]
+                label = label.substring(0, mgrsAccuracy())
 
                 let labelUTM = gridMath.LLtoUTM(labelPoint)
                 labelUTM.northing -= gridSpacing() / 2
@@ -473,10 +475,10 @@ const MGRSGrids = (props) => {
               let labelPoint = gridMath.lineIntersect(horizontalLabelLines[x].positions, verticalLabelLines[y].positions)
               if (labelPoint && mapBounds.contains(labelPoint) && !drawn) {
                 let label = gridMath.forward([labelPoint.lng, labelPoint.lat], mgrsAccuracy())
-                label = label.substr(7)
 
                 let gridArray = label.split(' ')
-                label = gridArray[0]
+                label = gridArray[2]
+                label = label.substring(0, mgrsAccuracy())
 
                 let labelUTM = gridMath.LLtoUTM(labelPoint)
                 labelUTM.easting -= gridSpacing() / 2

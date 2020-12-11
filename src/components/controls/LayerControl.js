@@ -642,7 +642,7 @@ const LayerControl = props => {
         </LayerGroup>
       </Overlay>
     </LayersControl>
-  ), [props.step, props.anchor, props.interactive, props.mapZoom, props.markerSize, props.tooltipsActive, props.brightness])
+  ), [props.step, props.anchor, props.interactive, props.mapZoom, props.mapCenter, props.markerSize, props.tooltipsActive, props.brightness])
 
  return layers
 }
