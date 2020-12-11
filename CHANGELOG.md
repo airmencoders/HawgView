@@ -1,3 +1,10 @@
+## 2.15.9-beta
+### Changes
+* Fixed MGRS issues incorporated in `master` branch version `2.14.9-beta`
+
+### Fixes
+* Fixed issue where MGRS labels would not properly display in northern regions where the grid identifier is only two characters long
+
 ## 2.15.8-beta
 ### Changes
 * Moved `focusedMarker` to `state`
