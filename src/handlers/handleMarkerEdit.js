@@ -35,7 +35,7 @@ import { editMarkers } from '../functions/editMarkers'
 //----------------------------------------------------------------//
 // Handle Marker Edit Function
 //----------------------------------------------------------------//
-const handleMarkerEdit = (action, payload, state, setState, elevation, markerLabel, history, setHistory, setMarkerLabel, toast) => {
+const handleMarkerEdit = (action, payload, state, setState, markerLabel, history, setHistory, setMarkerLabel, toast) => {
   const supportedActions = ['clear', 'create', 'delete', 'drag', 'edit', '9line', '15line']
 
   if (supportedActions.includes(action)) {
@@ -58,7 +58,7 @@ const handleMarkerEdit = (action, payload, state, setState, elevation, markerLab
       if (payload.layer !== 'bullseye') {
         updatedPayload = {
           ...updatedPayload,
-          elevation: elevation,
+          elevation: state.elevation,
         }
       }
 

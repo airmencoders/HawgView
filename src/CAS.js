@@ -128,6 +128,7 @@ const Cas = () => {
       anchor: null,
       name: null,
     },
+    elevation: 'Pending',
     focusedLatlng: {
       latlng: null,
       source: null,
@@ -147,7 +148,6 @@ const Cas = () => {
   })
 
   const [mouseCoords, setMouseCoords] = React.useState(null)
-  const [elevation, setElevation] = React.useState('Pending')
   const [history, setHistory] = React.useState([{
     action: '',
     anchor: {
@@ -251,7 +251,13 @@ const Cas = () => {
    */
   React.useEffect(() => {
     if (state.focusedLatlng.latlng !== null) {
-      (async () => setElevation(await getElevation(state.focusedLatlng.latlng.lat, state.focusedLatlng.latlng.lng)))()
+      (async () => {
+        setState({
+          ...state,
+          elevation: (await getElevation(state.focusedLatlng.latlng.lat, state.focusedLatlng.latlng.lng)),
+        })
+      }
+      )()
     }
   }, [state.focusedLatlng])
 
@@ -331,7 +337,7 @@ const Cas = () => {
   }
 
   const editMarker = React.useCallback((action, payload) => {
-    handleMarkerEdit(action, payload, state, setState, elevation, markerLabel, history, setHistory, setMarkerLabel, toast)
+    handleMarkerEdit(action, payload, state, setState, markerLabel, history, setHistory, setMarkerLabel, toast)
   }, [state])
 
   return (
@@ -401,8 +407,6 @@ const Cas = () => {
         >
           <MapPopup
             anchor={history[state.step].anchor}
-            elevation={elevation}
-
             setState={setState}
             state={state}
           />

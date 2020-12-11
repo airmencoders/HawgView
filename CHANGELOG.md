@@ -1,3 +1,7 @@
+## 2.15.12-beta
+### Changes
+* Moved `elevation` to `state`
+
 ## 2.15.11-beta
 ### Changes
 * Moved `focusedLatlng` to `state`
