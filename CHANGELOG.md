@@ -1,3 +1,10 @@
+## 2.15.14-beta
+### Changes
+* Changed `Array.map` to `Array.forEach` for each of the `generateKML` functions
+
+### Fixes
+* Fixed syntax/linting errors
+
 ## 2.15.13-beta
 ### Changes
 * Moved `mouseCoords` to `state`

@@ -244,7 +244,7 @@ const generateBullseyes = (bullseyes, kmlData) => {
       <name>Bullseyes</name>
       <open>0</open>`
 
-  bullseyes.map((bullseye, index) => {
+  bullseyes.forEach((bullseye, index) => {
     kmlData += 
     `<Folder id='bullseye-${index}'>
       <name>${bullseye.title}</name>
@@ -308,7 +308,7 @@ const generateCircles = (circles, kmlData) => {
       <open>0</open>
       `
 
-  circles.map(circle => {
+  circles.forEach(circle => {
     kmlData += generateCircle(circle)
   })
 
@@ -322,7 +322,7 @@ const generateLines = (lines, kmlData) => {
       <name>Lines</name>
       <open>0</open>`
 
-  lines.map(line => {
+  lines.forEach(line => {
     kmlData +=
       `<Placemark>
         <Style>
@@ -336,7 +336,7 @@ const generateLines = (lines, kmlData) => {
           <tessellate>1</tessellate>
           <coordinates>`
 
-    line.positions.map(coordinate => {
+    line.positions.forEach(coordinate => {
       kmlData += `${coordinate.lng},${coordinate.lat}\n`
     })
 
@@ -356,7 +356,7 @@ const generateRectangles = (rectangles, kmlData) => {
       <name>Rectangles</name>
       <open>0</open>`
 
-  rectangles.map(rectangle => {
+  rectangles.forEach(rectangle => {
     kmlData +=
       `<Placemark>
         <Style>
@@ -395,7 +395,7 @@ const generatePolygons = (polygons, kmlData) => {
       <name>Polygons</name>
       <open>0</open>`
   
-  polygons.map(polygon => {
+  polygons.forEach(polygon => {
     kmlData +=
       `<Placemark>
         <Style>
@@ -413,7 +413,7 @@ const generatePolygons = (polygons, kmlData) => {
             <LinearRing>
               <coordinates>`
 
-    polygon.positions.map(latlng => kmlData += `${latlng.lng},${latlng.lat}\n`)
+    polygon.positions.forEach(latlng => kmlData += `${latlng.lng},${latlng.lat}\n`)
     kmlData += `${polygon.positions[0].lng},${polygon.positions[0].lat}`
 
     kmlData +=
@@ -474,7 +474,7 @@ const generateMarkers = (markers, folderName, folderId, kmlData) => {
       <name>${folderName}</name>
       <open>1</open>`
 
-  markers.map(marker => {
+  markers.forEach(marker => {
     kmlData +=
       `<Placemark>
         <description>
@@ -656,7 +656,7 @@ const generateThreats = (threats, kmlData) => {
       <name>Threats</name>
       <open>1</open>`
 
-  threats.map((threat, index) => {
+  threats.forEach((threat, index) => {
     kmlData +=
       `<Folder id='threat-${index}'>
         <name>${threat.title === '' ? 'Custom Threat' : threat.title} (${threat.sovereignty} ${threat.label})</name>
@@ -875,7 +875,7 @@ const generateKML = step => {
       <name>Korea LLZs</name>
       <open>0</open>`
 
-  airspace.llzs.map(airspace => {
+  airspace.llzs.forEach(airspace => {
     kmlData +=
       `<Placemark>
         <styleUrl>#poly_purple</styleUrl>
@@ -884,7 +884,7 @@ const generateKML = step => {
             <LinearRing>
               <coordinates>`
 
-    airspace.map(coordinate => kmlData += `${coordinate[1]},${coordinate[0]}\n`)
+    airspace.forEach(coordinate => kmlData += `${coordinate[1]},${coordinate[0]}\n`)
     kmlData += `${airspace[0][1]},${airspace[0][0]}\n`
 
     kmlData += airspaceClose
@@ -899,7 +899,7 @@ const generateKML = step => {
         <name>Low MOAs</name>
         <open>0</open>`
 
-  airspace.lowMoas.map(airspace => {
+  airspace.lowMoas.forEach(airspace => {
     kmlData +=
       `<Placemark>
         <styleUrl>#poly_green</styleUrl>
@@ -908,7 +908,7 @@ const generateKML = step => {
             <LinearRing>
               <coordinates>`
 
-    airspace.map(coordinate => kmlData += `${coordinate[1]},${coordinate[0]}\n`)
+    airspace.forEach(coordinate => kmlData += `${coordinate[1]},${coordinate[0]}\n`)
     kmlData += `${airspace[0][1]},${airspace[0][0]}\n`
 
     kmlData += airspaceClose
@@ -923,7 +923,7 @@ const generateKML = step => {
         <name>MOAs</name>
         <open>0</open>`
 
-  airspace.moas.map(airspace => {
+  airspace.moas.forEach(airspace => {
     kmlData +=
       `<Placemark>
         <styleUrl>#poly_teal</styleUrl>
@@ -932,7 +932,7 @@ const generateKML = step => {
             <LinearRing>
               <coordinates>`
 
-    airspace.map(coordinate => kmlData += `${coordinate[1]},${coordinate[0]}\n`)
+    airspace.forEach(coordinate => kmlData += `${coordinate[1]},${coordinate[0]}\n`)
     kmlData += `${airspace[0][1]},${airspace[0][0]}\n`
 
     kmlData += airspaceClose
@@ -947,7 +947,7 @@ const generateKML = step => {
         <name>Warning Areas</name>
         <open>0</open>`
 
-  airspace.warningAreas.map(airspace => {
+  airspace.warningAreas.forEach(airspace => {
     kmlData +=
       `<Placemark>
         <styleUrl>#poly_orange</styleUrl>
@@ -956,7 +956,7 @@ const generateKML = step => {
             <LinearRing>
               <coordinates>`
 
-    airspace.map(coordinate => kmlData += `${coordinate[1]},${coordinate[0]}\n`)
+    airspace.forEach(coordinate => kmlData += `${coordinate[1]},${coordinate[0]}\n`)
     kmlData += `${airspace[0][1]},${airspace[0][0]}\n`
 
     kmlData += airspaceClose
@@ -971,7 +971,7 @@ const generateKML = step => {
         <name>Restricted Areas</name>
         <open>0</open>`
 
-  airspace.restrictedAreas.map(airspace => {
+  airspace.restrictedAreas.forEach(airspace => {
     kmlData +=
       `<Placemark>
         <styleUrl>#poly_red</styleUrl>
@@ -980,7 +980,7 @@ const generateKML = step => {
             <LinearRing>
               <coordinates>`
 
-    airspace.map(coordinate => kmlData += `${coordinate[1]},${coordinate[0]}\n`)
+    airspace.forEach(coordinate => kmlData += `${coordinate[1]},${coordinate[0]}\n`)
     kmlData += `${airspace[0][1]},${airspace[0][0]}\n`
 
     kmlData += airspaceClose
@@ -1000,7 +1000,7 @@ const generateKML = step => {
             <tessellate>1</tessellate>
             <coordinates>`
 
-  airspace.koreaNfl.map(coordinate => kmlData += `${coordinate[1]},${coordinate[0]}\n`)
+  airspace.koreaNfl.forEach(coordinate => kmlData += `${coordinate[1]},${coordinate[0]}\n`)
 
   kmlData +=
     `</coordinates>
@@ -1021,7 +1021,7 @@ const generateKML = step => {
             <tessellate>1</tessellate>
             <coordinates>`
 
-  airspace.koreaNflBuffer.map(coordinate => kmlData += `${coordinate[1]},${coordinate[0]}\n`)
+  airspace.koreaNflBuffer.forEach(coordinate => kmlData += `${coordinate[1]},${coordinate[0]}\n`)
 
   kmlData +=
     `</coordinates>
@@ -1042,7 +1042,7 @@ const generateKML = step => {
             <tessellate>1</tessellate>
             <coordinates>`
 
-  airspace.p518.map(coordinate => kmlData += `${coordinate[1]},${coordinate[0]}\n`)
+  airspace.p518.forEach(coordinate => kmlData += `${coordinate[1]},${coordinate[0]}\n`)
 
   kmlData +=
     `</coordinates>
@@ -1058,7 +1058,7 @@ const generateKML = step => {
         <name>AARs</name>
         <open>0</open>`
 
-  airspace.aars.map(airspace => {
+  airspace.aars.forEach(airspace => {
     kmlData +=
       `<Placemark>
         <styleUrl>#poly_blue</styleUrl>
@@ -1067,7 +1067,7 @@ const generateKML = step => {
             <LinearRing>
               <coordinates>`
 
-    airspace.map(coordinate => kmlData += `${coordinate[1]},${coordinate[0]}\n`)
+    airspace.forEach(coordinate => kmlData += `${coordinate[1]},${coordinate[0]}\n`)
     kmlData += `${airspace[0][1]},${airspace[0][0]}\n`
 
     kmlData += airspaceClose
@@ -1082,7 +1082,7 @@ const generateKML = step => {
         <name>ATCAAs</name>
         <open>0</open>`
 
-  airspace.atcaas.map(airspace => {
+  airspace.atcaas.forEach(airspace => {
     kmlData +=
       `<Placemark>
         <styleUrl>#poly_yellow</styleUrl>
@@ -1091,7 +1091,7 @@ const generateKML = step => {
             <LinearRing>
               <coordinates>`
 
-    airspace.map(coordinate => kmlData += `${coordinate[1]},${coordinate[0]}\n`)
+    airspace.forEach(coordinate => kmlData += `${coordinate[1]},${coordinate[0]}\n`)
     kmlData += `${airspace[0][1]},${airspace[0][0]}\n`
 
     kmlData += airspaceClose
