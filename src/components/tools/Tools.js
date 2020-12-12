@@ -50,10 +50,6 @@ const Tools = props => {
   return (
     <React.Fragment>
       <AnalysisTool
-        clearMouse={() => props.setMouseCoords(null)}
-        mouseCoords={props.mouseCoords}
-        setFocusedLatlng={latlng => props.setFocusedLatlng(latlng)}
-
         setState={props.setState}
         state={props.state}
       />
@@ -73,28 +69,24 @@ const Tools = props => {
         state={props.state}
       />
       <LineTool
-        mouseCoords={props.mouseCoords}
         submit={(action, payload) => props.editMarker(action, payload)}
 
         setState={props.setState}
         state={props.state}
       />
       <CircleTool
-        mouseCoords={props.mouseCoords}
         submit={(action, payload) => props.editMarker(action, payload)}
 
         setState={props.setState}
         state={props.state}
       />
       <RectangleTool
-        mouseCoords={props.mouseCoords}
         submit={(action, payload) => props.editMarker(action, payload)}
 
         setState={props.setState}
         state={props.state}
       />
       <LineTool
-        mouseCoords={props.mouseCoords}
         submit={(action, payload) => props.editMarker(action, payload)}
 
         setState={props.setState}

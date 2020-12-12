@@ -142,12 +142,12 @@ const Cas = () => {
       zoom: 5,
     },
     markerSize: 3,
+    mouseCoords: null,
     step: 0,
     tool: null,
     tooltips: false,
   })
 
-  const [mouseCoords, setMouseCoords] = React.useState(null)
   const [history, setHistory] = React.useState([{
     action: '',
     anchor: {
@@ -247,10 +247,10 @@ const Cas = () => {
   }, [state.focusedMarker])
 
   /**
-   * Whenever the focused lat/lng changes, as long as it has a valid lat/lng object, get the elevation
+   * Whenever the focused lat/lng changes, as long as it has a valid lat/lng object and tool is not active, get the elevation
    */
   React.useEffect(() => {
-    if (state.focusedLatlng.latlng !== null) {
+    if (state.focusedLatlng.latlng !== null && state.tool === null) {
       (async () => {
         setState({
           ...state,
@@ -259,7 +259,7 @@ const Cas = () => {
       }
       )()
     }
-  }, [state.focusedLatlng])
+  }, [state.focusedLatlng, state.tool])
 
   /**
    * Whenever any changes occur to the snackbar, handle various changes to the package
@@ -399,9 +399,6 @@ const Cas = () => {
       >
         <Map
           setMap={setMap}
-          mouseCoords={mouseCoords}
-          setMouseCoords={setMouseCoords}
-
           setState={setState}
           state={state}
         >
@@ -425,15 +422,13 @@ const Cas = () => {
           <ToolControl
             editMarker={editMarker}
             history={history}
-            mouseCoords={mouseCoords}
-            setMouseCoords={setMouseCoords}
 
             setState={setState}
             state={state}
           />
           <MouseCoordinatesControl
             anchor={history[state.step].anchor}
-            mouseCoords={mouseCoords}
+            state={state}
           />
           <ScaleControl />
         </Map>

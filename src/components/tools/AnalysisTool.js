@@ -117,17 +117,17 @@ const AnalysisTool = (props) => {
    * As long as there are two lat/lon points to calculate (starting point and mouse) call the function
    */
   React.useEffect(() => {
-    if (props.state.focusedLatlng.latlng !== null && props.mouseCoords !== null) {
+    if (props.state.focusedLatlng.latlng !== null && props.state.mouseCoords !== null) {
       calculateHeadingAndDistance()
     }
-  }, [props.state.focusedLatlng, props.mouseCoords])
+  }, [props.state.focusedLatlng, props.state.mouseCoords])
 
   /**
    * Calculates the distance and bearing between two points.
    * Uses the NOAA NGDC Magnetic Declination API to get the magnetic variance using the World Magnetic Model (WMM) for the starting point
    */
   const calculateHeadingAndDistance = () => {
-    const distAndHdg = distanceAndHeading(props.state.focusedLatlng.latlng, props.mouseCoords, declination)
+    const distAndHdg = distanceAndHeading(props.state.focusedLatlng.latlng, props.state.mouseCoords, declination)
 
     setHdg(distAndHdg.heading)
     setMeters(distAndHdg.meters)
@@ -145,6 +145,10 @@ const AnalysisTool = (props) => {
 
         props.setState({
           ...props.state,
+          focusedLatlng: {
+            latlng: null,
+            source: null,
+          },
           tool: null,
         })
       } else {
@@ -158,7 +162,6 @@ const AnalysisTool = (props) => {
    * and resets the tool for another line
    */
   const closeLine = () => {
-    //props.setFocusedLatlng({ latlng: null, source: null })
     props.setState({
       ...props.state, 
       focusedLatlng: {
@@ -166,7 +169,6 @@ const AnalysisTool = (props) => {
         source: null,
       },
     })
-    props.clearMouse()
     if (points.length > 1) {
       setLines([...lines, [...points]])
     }
@@ -183,7 +185,6 @@ const AnalysisTool = (props) => {
     <FeatureGroup>
       <AnalysisToolActiveLine
         hdg={hdg}
-        mouseCoords={props.mouseCoords}
         meters={meters}
         miles={miles}
         mils={hdg * 17.78}

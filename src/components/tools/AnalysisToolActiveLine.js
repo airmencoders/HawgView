@@ -79,11 +79,11 @@ const AnalysisToolActiveLine = (props) => {
       {/**
        * Create a polyline that will go through all the points that are passed
        */}
-      {(props.points.length > 0 && props.mouseCoords !== null) ?
+      {(props.points.length > 0 && props.state.mouseCoords !== null) ?
           <Polyline
             color='red'
             dashArray='1 7'
-            positions={[...props.points.map(point => point.point), props.mouseCoords]}
+            positions={[...props.points.map(point => point.point), props.state.mouseCoords]}
             weight='2'
           />
           : undefined
@@ -117,9 +117,9 @@ const AnalysisToolActiveLine = (props) => {
        * Create the circle marker at the mouse only if the mouse coordinates are not null, the tool is active, and there is at least
        * one point in the array
        */}
-      {(props.mouseCoords !== null && props.points.length > 0 && props.state.tool === 'analysis') ?
+      {(props.state.mouseCoords !== null && props.points.length > 0 && props.state.tool === 'analysis') ?
           <CircleMarker
-            center={props.mouseCoords}
+            center={props.state.mouseCoords}
             color='red'
             radius='2'
           >

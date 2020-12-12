@@ -66,11 +66,15 @@ const CircleTool = (props) => {
   }, [props.state.tool])
 
   React.useEffect(() => {
-    if (props.state.tool === 'circle' && props.state.focusedLatlng.latlng !== null && props.mouseCoords !== null) {
-      setRadius(distanceAndHeading(props.state.focusedLatlng.latlng, props.mouseCoords, 0).meters)
-      setDistance(distanceAndHeading(props.state.focusedLatlng.latlng, props.mouseCoords, 0))
+    if (
+      props.state.tool === 'circle' && 
+      props.state.focusedLatlng.latlng !== null && 
+      props.state.mouseCoords !== null
+    ) {
+      setRadius(distanceAndHeading(props.state.focusedLatlng.latlng, props.state.mouseCoords, 0).meters)
+      setDistance(distanceAndHeading(props.state.focusedLatlng.latlng, props.state.mouseCoords, 0))
     }
-  }, [props.state.tool, props.state.focusedLatlng, props.mouseCoords])
+  }, [props.state.tool, props.state.focusedLatlng, props.state.mouseCoords])
 
   React.useEffect(() => {
     if (props.state.tool === 'circle' && center === null) {
@@ -97,6 +101,10 @@ const CircleTool = (props) => {
       setCenter(null)
       props.setState({
         ...props.state,
+        focusedLatlng: {
+          latlng: null,
+          source: null,
+        },
         tool: null,
       })
     }
@@ -113,7 +121,7 @@ const CircleTool = (props) => {
           weight={4}
         />
         <CircleMarker
-          center={props.mouseCoords}
+          center={props.state.mouseCoords}
           fill='false'
           opacity='0'
         >

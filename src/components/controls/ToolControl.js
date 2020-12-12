@@ -172,8 +172,6 @@ const ToolControls = (props) => {
       <Tools
         editMarker={props.editMarker}
         history={props.history}
-        mouseCoords={props.mouseCoords}
-        setMouseCoords={props.setMouseCoords}
 
         setState={props.setState}
         state={props.state}

@@ -1,3 +1,15 @@
+## 2.15.13-beta
+### Changes
+* Moved `mouseCoords` to `state`
+* Added clause that prevents elevation from being fetched when `tool` is active
+* Added clause that sets `focusedLatlng` to `null` when exiting a tool
+* Added key listener to `EllipseTool`
+
+### Fixes
+* Fixed bug where mouse coords would jump when using a tool due to elevation fetching
+* Fixed bug where exiting a tool via the `Escape` key would keep a `focusedLatlng`
+* Fixed bug where `Escape` would not exit the `EllipseTool`
+
 ## 2.15.12-beta
 ### Changes
 * Moved `elevation` to `state`

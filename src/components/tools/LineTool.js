@@ -85,10 +85,10 @@ const LineTool = props => {
   }, [props.state.focusedLatlng])
 
   React.useEffect(() => {
-    if(props.state.focusedLatlng.latlng !== null && props.mouseCoords !== null) {
-      setDistances(distanceAndHeading(props.state.focusedLatlng.latlng, props.mouseCoords, 0))
+    if(props.state.focusedLatlng.latlng !== null && props.state.mouseCoords !== null) {
+      setDistances(distanceAndHeading(props.state.focusedLatlng.latlng, props.state.mouseCoords, 0))
     }
-  }, [props.state.focusedLatlng, props.mouseCoords])
+  }, [props.state.focusedLatlng, props.state.mouseCoords])
 
   /**
    * Listen for the ESCAPE key to close the line or exit the tool
@@ -101,6 +101,10 @@ const LineTool = props => {
       setDistances(null)
       props.setState({
         ...props.state,
+        focusedLatlng: {
+          latlng: null,
+          source: null,
+        },
         tool: null,
       })
     }
@@ -135,15 +139,15 @@ const LineTool = props => {
   }
 
   return (
-    ((props.state.tool === 'line' || props.state.tool === 'polygon') && positions.length > 0 && props.mouseCoords !== null) ?
+    ((props.state.tool === 'line' || props.state.tool === 'polygon') && positions.length > 0 && props.state.mouseCoords !== null) ?
       <FeatureGroup>
         <Polyline
           color='#4A90E2'
-          positions={[...positions, props.mouseCoords]}
+          positions={[...positions, props.state.mouseCoords]}
           weight={4}
         />
         <CircleMarker
-          center={props.mouseCoords}
+          center={props.state.mouseCoords}
           fill='false'
           opacity='0'
         >

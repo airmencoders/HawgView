@@ -78,6 +78,10 @@ const KineticPointTool = props => {
     if (props.state.tool === 'kineticPoint' && event.key === 'Escape') {
       props.setState({
         ...props.state,
+        focusedLatlng: {
+          latlng: null,
+          source: null,
+        },
         tool: null,
       })
     }

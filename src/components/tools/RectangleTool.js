@@ -78,16 +78,20 @@ const RectangleTool = props => {
       setStartLatlng(null)
       props.setState({
         ...props.state,
+        focusedLatlng: {
+          latlng: null,
+          source: null,
+        },
         tool: null,
       })
     }
   }
 
-  if (props.state.tool === 'rectangle' && startLatlng !== null & props.mouseCoords !== null) {
+  if (props.state.tool === 'rectangle' && startLatlng !== null & props.state.mouseCoords !== null) {
     return (
       <FeatureGroup>
         <Rectangle
-          bounds={[startLatlng, props.mouseCoords]}
+          bounds={[startLatlng, props.state.mouseCoords]}
           color='#4A90E2'
           fill={null}
           weight={4}

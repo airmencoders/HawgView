@@ -34,6 +34,14 @@ import React from 'react'
 //----------------------------------------------------------------//
 const EllipseTool = props => {
 
+  React.useEffect(() => {
+    document.addEventListener('keydown', handleEsc, false)
+
+    return () => {
+      document.removeEventListener('keydown', handleEsc, false)
+    }
+  })
+
   /**
    * Since the Leaflet Ellipse plugin isn't dynamic, we're kinda hacking it here.
    * Create an ellipse with the default values that the user can then change through the drawer
@@ -53,6 +61,19 @@ const EllipseTool = props => {
       })
     }
   }, [props.state.tool, props.state.focusedLatlng])
+
+  const handleEsc = event => {
+    if (props.state.tool === 'ellipse' && event.key === 'Escape') {
+      props.setState({
+        ...props.state,
+        focusedLatlng: {
+          latlng: null,
+          source: null,
+        },
+        tool: null,
+      })
+    }
+  }
 
   return null
 }

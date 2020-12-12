@@ -79,6 +79,10 @@ const BuildingLabelTool = (props) => {
     if (props.state.tool === 'buildingLabel' && event.key === 'Escape') {
       props.setState({
         ...props.state,
+        focusedLatlng: {
+          latlng: null,
+          source: null,
+        },
         tool: null,
       })
     }

@@ -68,8 +68,8 @@ const MouseCoordinatesControl = props => {
   // React Effects
   //----------------------------------------------------------------//
   React.useEffect(() => {
-    if (props.mouseCoords !== null) {
-      setData(generateMapPopup(props.mouseCoords, props.anchor))
+    if (props.state.mouseCoords !== null) {
+      setData(generateMapPopup(props.state.mouseCoords, props.anchor))
     }
 
   }, [props])

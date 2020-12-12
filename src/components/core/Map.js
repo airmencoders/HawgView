@@ -66,8 +66,11 @@ const Map = (props) => {
   // React Callback Functions
   //----------------------------------------------------------------//
   const handleMouseMove = React.useCallback(latlng => {
-    props.setMouseCoords(latlng)
-  }, [props.mouseCoords])
+    props.setState({
+      ...props.state,
+      mouseCoords: latlng,
+    })
+  }, [props.state])
 
   const handleMapClick = latlng => {
     props.setState({
