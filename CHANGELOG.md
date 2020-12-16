@@ -1,3 +1,10 @@
+## 2.15.16-beta
+### Changes
+* Re-added separate `elevation` state due to the asynchronous effect of getting the elevation
+
+### Fixes
+* Fixed issue if a user modifies state between initiating function and it resolving reverting to an older version of state
+
 ## 2.15.15-beta
 ### Changes
 * Moved `history` to `state

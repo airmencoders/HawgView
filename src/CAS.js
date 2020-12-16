@@ -191,6 +191,8 @@ const Cas = () => {
     tooltips: false,
   })
 
+  const [elevation, setElevation] = React.useState('Pending')
+
   const [map, setMap] = React.useState(null)
   const [markerLabel, setMarkerLabel] = React.useState('')
   const [snackbarMessage, setSnackbarMessage] = React.useState(undefined)
@@ -247,19 +249,26 @@ const Cas = () => {
   }, [state.focusedMarker])
 
   /**
-   * Whenever the focused lat/lng changes, as long as it has a valid lat/lng object and tool is not active, get the elevation
+   * Whenever the focused lat/lng changes, as long as it has a valid lat/lng object and tool is not active,
+   * get the elevation
    */
   React.useEffect(() => {
     if (state.focusedLatlng.latlng !== null && state.tool === null) {
-      (async () => {
-        setState({
-          ...state,
-          elevation: (await getElevation(state.focusedLatlng.latlng.lat, state.focusedLatlng.latlng.lng)),
-        })
-      }
+      (async () => setElevation(await getElevation(state.focusedLatlng.latlng.lat, state.focusedLatlng.latlng.lng))
       )()
     }
   }, [state.focusedLatlng, state.tool])
+
+  /**
+   * Needed due to the asynchronous effect of getting the elevation
+   * Any time the elevation changes, modify the master state
+   */
+  React.useEffect(() => {
+    setState({
+      ...state,
+      elevation: elevation,
+    })
+  }, [elevation])
 
   /**
    * Whenever any changes occur to the snackbar, handle various changes to the package
