@@ -1,3 +1,10 @@
+## 2.15.18-beta
+### Changes
+* Changed `buildingLabelTool` and `kineticPointTool` Effect dependency from `props.state.tool` to `props.state`
+
+### Fixes
+* Fixed issue where using the `Escape` key to close the tool reverted to state prior to the usage of the tool
+
 ## 2.15.17-beta
 ### Changes
 * Added `snackbar` to `state`

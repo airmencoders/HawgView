@@ -52,7 +52,7 @@ const BuildingLabelTool = (props) => {
         document.removeEventListener('keydown', handleEscPress, false)
       }
     }
-  }, [props.state.tool])
+  }, [props.state])
 
   React.useEffect(() => {
     if (props.state.tool === 'buildingLabel' && props.state.focusedLatlng.latlng !== null) {
