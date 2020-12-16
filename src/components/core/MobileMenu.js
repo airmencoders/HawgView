@@ -129,7 +129,7 @@ const MobileMenu = (props) => {
         name: null,
       },
     })
-    generateKML(props.history[props.state.step])
+    generateKML(props.state.history[props.state.step])
   }
 
   //----------------------------------------------------------------//
@@ -170,17 +170,17 @@ const MobileMenu = (props) => {
         })}
       >
         <UndoIcon className={classes.icon} />
-        Undo {props.state.step === 0 ? '' : props.history[props.state.step].action}
+        Undo {props.state.step === 0 ? '' : props.state.history[props.state.step].action}
       </MenuItem>
       <MenuItem
-        disabled={props.state.step === props.history.length - 1}
-        onClick={props.state.step === props.history.length - 1 ? undefined : () => props.setState({
+        disabled={props.state.step === props.state.history.length - 1}
+        onClick={props.state.step === props.state.history.length - 1 ? undefined : () => props.setState({
           ...props.state,
           step: props.state.step + 1,
         })}
       >
         <RedoIcon className={classes.icon} />
-        Redo {props.state.step === props.history.length - 1 ? '' : props.history[props.state.step + 1].action}
+        Redo {props.state.step === props.state.history.length - 1 ? '' : props.state.history[props.state.step + 1].action}
       </MenuItem>
       <MenuItem onClick={handleClearMarkersClick}>
         <ClearIcon className={classes.icon} />

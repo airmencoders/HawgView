@@ -107,11 +107,11 @@ const Popup = props => {
 
 
       setPopup({
-        ...generateMapPopup(props.state.focusedLatlng.latlng, props.anchor),
+        ...generateMapPopup(props.state.focusedLatlng.latlng, props.state.history[props.state.step].anchor),
         elevation: props.state.elevation
       })
     }
-  }, [props.anchor, props.state.elevation, props.state.focusedLatlng, props.state.tool])
+  }, [props.state.history[props.state.step].anchor, props.state.elevation, props.state.focusedLatlng, props.state.tool])
 
   //----------------------------------------------------------------//
   // Logic
@@ -150,7 +150,7 @@ const Popup = props => {
             </tr>
             {popup.fromBE !== null ? (
               <tr>
-                <td className={classes.popupCell}>{props.anchor.name}</td>
+                <td className={classes.popupCell}>{props.state.history[props.state.step].anchor.name}</td>
                 <td className={classes.popupCell}>{Number.parseInt(popup.fromBE.heading)}&deg; / {Number.parseInt(popup.fromBE.nm)} NM</td>
               </tr>
             )

@@ -69,7 +69,7 @@ const MouseCoordinatesControl = props => {
   //----------------------------------------------------------------//
   React.useEffect(() => {
     if (props.state.mouseCoords !== null) {
-      setData(generateMapPopup(props.state.mouseCoords, props.anchor))
+      setData(generateMapPopup(props.state.mouseCoords, props.state.history[props.state.step].anchor))
     }
 
   }, [props])
@@ -87,9 +87,9 @@ const MouseCoordinatesControl = props => {
             <td>{data !== null ? data.mgrs : ''}</td>
           </tr>
           <tr>
-            {data !== null && props.anchor.id !== null && data.fromBE !== null ? (
+            {data !== null && props.state.history[props.state.step].anchor.id !== null && data.fromBE !== null ? (
               <td>
-                {props.anchor.name} {Number.parseInt(data.fromBE.heading)}&deg; / {Number.parseInt(data.fromBE.nm)} NM
+                {props.state.history[props.state.step].anchor.name} {Number.parseInt(data.fromBE.heading)}&deg; / {Number.parseInt(data.fromBE.nm)} NM
               </td>
             )
               : null

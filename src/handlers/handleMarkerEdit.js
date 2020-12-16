@@ -35,7 +35,7 @@ import { editMarkers } from '../functions/editMarkers'
 //----------------------------------------------------------------//
 // Handle Marker Edit Function
 //----------------------------------------------------------------//
-const handleMarkerEdit = (action, payload, state, setState, markerLabel, history, setHistory, setMarkerLabel, toast) => {
+const handleMarkerEdit = (action, payload, state, setState, markerLabel, setMarkerLabel, toast) => {
   const supportedActions = ['clear', 'create', 'delete', 'drag', 'edit', '9line', '15line']
 
   if (supportedActions.includes(action)) {
@@ -52,7 +52,7 @@ const handleMarkerEdit = (action, payload, state, setState, markerLabel, history
     if (action === 'create') {
       updatedPayload = {
         ...updatedPayload,
-        id: history[state.step].data.markerId,
+        id: state.history[state.step].data.markerId,
       }
 
       if (payload.layer !== 'bullseye') {
@@ -72,18 +72,16 @@ const handleMarkerEdit = (action, payload, state, setState, markerLabel, history
 
     // Take the payload and add in the marker id (for when creating marker)
     // todo: finish with the payload bullshit from the rest of the 'editMarkers' callbacks lol
-    const newStep = editMarkers(action, history, state.step, updatedPayload)
+    const newStep = editMarkers(action, updatedPayload, state)
 
     if (newStep !== false) {
 
       let targetHistory
-      if (state.step === history.length - 1) {
-        targetHistory = history.slice()
+      if (state.step === state.history.length - 1) {
+        targetHistory = state.history.slice()
       } else {
-        targetHistory = history.slice(0, state.step + 1)
+        targetHistory = state.history.slice(0, state.step + 1)
       }
-
-      setHistory([...targetHistory, newStep])
 
       let newState = {
         ...state,
@@ -97,6 +95,7 @@ const handleMarkerEdit = (action, payload, state, setState, markerLabel, history
         },
         focusedMarker: null,
         focusedShape: null,
+        history: [...targetHistory, newStep],
         step: state.step + 1,
       }
 

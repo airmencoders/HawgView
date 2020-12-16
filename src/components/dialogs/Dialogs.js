@@ -65,7 +65,7 @@ const Dialogs = props => {
         submit={(action, payload) => props.handleEditMarker(action, payload)}
       />
       <AddMarkerDrawer
-        anchor={props.history[props.state.step].anchor}
+        anchor={props.state.history[props.state.step].anchor}
         markerLabel={props.markerLabel}
         handleAddMarker={payload => props.handleEditMarker('create', payload)}
         setMarkerLabel={props.setMarkerLabel}
@@ -86,10 +86,10 @@ const Dialogs = props => {
       <MarkerListDialog
         setState={props.setState}
         state={props.state}
-        step={props.history[props.state.step]}
+        step={props.state.history[props.state.step]}
       />
       <SaveScenarioDialog
-        data={props.history[props.state.step]}
+        data={props.state.history[props.state.step]}
         setState={props.setState}
         state={props.state}
         toast={(message, severity) => props.toast(message, severity)}
@@ -97,7 +97,7 @@ const Dialogs = props => {
       <LoadScenarioDialog
         setState={props.setState}
         state={props.state}
-        submit={data => handleLoadScenario(data, props.history, props.state, props.setState, props.toast, props.setHistory)}
+        submit={data => handleLoadScenario(data, props.state.history, props.state, props.setState, props.toast)}
       />
     </React.Fragment>
   )

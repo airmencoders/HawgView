@@ -171,7 +171,6 @@ const ToolControls = (props) => {
       </ButtonGroup>
       <Tools
         editMarker={props.editMarker}
-        history={props.history}
 
         setState={props.setState}
         state={props.state}

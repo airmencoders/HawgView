@@ -41,10 +41,10 @@
 const compare = (a, b) => {
   const idA = a.id
   const idB = b.id
-  
+
   let comparison = 0
   idA > idB ? comparison = 1 : idB > idA ? comparison = -1 : comparison = 0
-  
+
   return comparison
 }
 
@@ -62,7 +62,9 @@ const getDeclination = latlng => {
   return declination
 }
 
-export const editMarkers = (action, history, step, payload) => {
+export const editMarkers = (action, payload, state) => {
+
+  let { history, step } = state
 
   switch (action) {
     case 'clear':
@@ -106,9 +108,9 @@ const clearMarkers = (history, step) => {
 
     return {
       action: 'Clear markers',
-      anchor: { 
+      anchor: {
         declination: null,
-        id: null, 
+        id: null,
         latlng: null,
         name: null,
       },

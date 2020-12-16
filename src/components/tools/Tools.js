@@ -54,15 +54,15 @@ const Tools = props => {
         state={props.state}
       />
       <BuildingLabelTool
-        index={props.history[props.state.step].data.buildingLabel}
+        index={props.state.history[props.state.step].data.buildingLabel}
         submit={(action, payload) => props.editMarker(action, payload)}
 
         setState={props.setState}
         state={props.state}
       />
       <KineticPointTool
-        firstLetter={props.history[props.state.step].data.firstLetter}
-        secondLetter={props.history[props.state.step].data.secondLetter}
+        firstLetter={props.state.history[props.state.step].data.firstLetter}
+        secondLetter={props.state.history[props.state.step].data.secondLetter}
         submit={(action, payload) => props.editMarker(action, payload)}
 
         setState={props.setState}

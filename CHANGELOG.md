@@ -1,3 +1,13 @@
+## 2.15.15-beta
+### Changes
+* Moved `history` to `state
+
+### Tasks
+* Finish removing props that rely on `history` or `step` from components (e.g. `anchor={props.state.history[props.state.step].anchor}`)
+
+### Bugs
+* Async `getElevation` can cause a bug when resolving the promise by resetting state to what it previously was if the user somehow changes the state in between initiating the function and it resolving (e.g. click the map to immediately opening the `addMarkerDrawer` - When the async function finishes, the drawer closes because it was closed when the function was initially called)
+
 ## 2.15.14-beta
 ### Changes
 * Changed `Array.map` to `Array.forEach` for each of the `generateKML` functions

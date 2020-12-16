@@ -100,7 +100,7 @@ const CASTools = props => {
           <AddPhotoAlternateIcon />
         </IconButton>
       </Tooltip>
-      <Tooltip title={`Undo ${props.state.step === 0 ? '' : props.history[props.state.step].action}`}>
+      <Tooltip title={`Undo ${props.state.step === 0 ? '' : props.state.history[props.state.step].action}`}>
         <span>
           <IconButton
             color='inherit'
@@ -115,11 +115,11 @@ const CASTools = props => {
           </IconButton>
         </span>
       </Tooltip>
-      <Tooltip title={`Redo ${props.state.step === props.history.length - 1 ? '' : props.history[props.state.step + 1].action}`}>
+      <Tooltip title={`Redo ${props.state.step === props.state.history.length - 1 ? '' : props.state.history[props.state.step + 1].action}`}>
         <span>
           <IconButton
             color='inherit'
-            disabled={props.state.step === props.history.length - 1}
+            disabled={props.state.step === props.state.history.length - 1}
             onClick={() => props.setState({
                 ...props.state,
                 step: props.state.step + 1,
@@ -273,7 +273,7 @@ const CASTools = props => {
         <span>
           <IconButton
             color='inherit'
-            onClick={() => generateKML(props.history[props.state.step])}
+            onClick={() => generateKML(props.state.history[props.state.step])}
           >
             <GetAppIcon />
           </IconButton>

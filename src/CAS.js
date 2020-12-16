@@ -135,6 +135,49 @@ const Cas = () => {
     },
     focusedMarker: null,
     focusedShape: null,
+    history: [{
+      action: '',
+      anchor: {
+        declination: null,
+        id: null,
+        latlng: null,
+        name: null,
+      },
+      buildingLabels: [],
+      bullseyes: [],
+      circles: [],
+      data: {
+        buildingLabel: 1,
+        firstLetter: 65,
+        markerId: 0,
+        secondLetter: 65,
+      },
+      ellipses: [],
+      friendlyMarkers: [],
+      hostileMarkers: [],
+      initialPoints: [],
+      kineticPoints: [],
+      lines: [],
+      mapLabels: [],
+      polygons: [],
+      rectangles: [],
+      survivors: [],
+      styles: {
+        mgrs: {
+          gridzoneColor: '#ffa500',
+          lineColor: '#ffffff',
+        },
+        gars: {
+          cellColor: '#ffa500',
+          quadrantColor: '#800080',
+          keypadColor: '#ffffff'
+        },
+        buildingLabel: {
+          color: '#ffff00',
+        },
+      },
+      threatMarkers: [],
+    }],
     map: {
       brightness: 1,
       center: [35.77, -93.34],
@@ -148,49 +191,6 @@ const Cas = () => {
     tooltips: false,
   })
 
-  const [history, setHistory] = React.useState([{
-    action: '',
-    anchor: {
-      declination: null,
-      id: null,
-      latlng: null,
-      name: null,
-    },
-    buildingLabels: [],
-    bullseyes: [],
-    circles: [],
-    data: {
-      buildingLabel: 1,
-      firstLetter: 65,
-      markerId: 0,
-      secondLetter: 65,
-    },
-    ellipses: [],
-    friendlyMarkers: [],
-    hostileMarkers: [],
-    initialPoints: [],
-    kineticPoints: [],
-    lines: [],
-    mapLabels: [],
-    polygons: [],
-    rectangles: [],
-    survivors: [],
-    styles: {
-      mgrs: {
-        gridzoneColor: '#ffa500',
-        lineColor: '#ffffff',
-      },
-      gars: {
-        cellColor: '#ffa500',
-        quadrantColor: '#800080',
-        keypadColor: '#ffffff'
-      },
-      buildingLabel: {
-        color: '#ffff00',
-      },
-    },
-    threatMarkers: [],
-  }])
   const [map, setMap] = React.useState(null)
   const [markerLabel, setMarkerLabel] = React.useState('')
   const [snackbarMessage, setSnackbarMessage] = React.useState(undefined)
@@ -337,7 +337,7 @@ const Cas = () => {
   }
 
   const editMarker = React.useCallback((action, payload) => {
-    handleMarkerEdit(action, payload, state, setState, markerLabel, history, setHistory, setMarkerLabel, toast)
+    handleMarkerEdit(action, payload, state, setState, markerLabel, setMarkerLabel, toast)
   }, [state])
 
   return (
@@ -356,7 +356,6 @@ const Cas = () => {
           <div className={classes.sectionDesktop}>
             <CASTools
               handleClearMarkers={() => editMarker('clear', {})}
-              history={history}
 
               setState={setState}
               state={state}
@@ -383,7 +382,6 @@ const Cas = () => {
           </Tooltip>
           <MobileMenu
             handleClearMarkers={() => editMarker('clear', {})}
-            history={history}
 
             setState={setState}
             state={state}
@@ -403,16 +401,13 @@ const Cas = () => {
           state={state}
         >
           <MapPopup
-            anchor={history[state.step].anchor}
             setState={setState}
             state={state}
           />
           <LayerControl
-            anchor={history[state.step].anchor}
             handleMarkerDrag={(marker, latlng) => editMarker('drag', { marker: marker, latlng: latlng })}
             interactive={state.tool === null}
             map={map}
-            step={history[state.step]}
             handleDeleteMarker={marker => editMarker('delete', { marker: marker })}
 
             setState={setState}
@@ -421,13 +416,11 @@ const Cas = () => {
           <ZoomControl position='topright' />
           <ToolControl
             editMarker={editMarker}
-            history={history}
 
             setState={setState}
             state={state}
           />
           <MouseCoordinatesControl
-            anchor={history[state.step].anchor}
             state={state}
           />
           <ScaleControl />
@@ -455,9 +448,7 @@ const Cas = () => {
       </Snackbar>
       <Dialogs
         handleEditMarker={(action, dialog) => editMarker(action, dialog)}
-        history={history}
         markerLabel={markerLabel}
-        setHistory={setHistory}
         setMarkerLabel={setMarkerLabel}
         toast={toast}
 

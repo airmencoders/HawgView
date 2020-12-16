@@ -146,7 +146,7 @@ const LayerControl = props => {
       <Overlay name='MGRS Lines'>
         <MGRSGrids
           map={props.map}
-          style={props.step.styles.mgrs}
+          style={props.state.history[props.state.step].styles.mgrs}
 
           state={props.state}
         />
@@ -154,7 +154,7 @@ const LayerControl = props => {
       <Overlay name='GARS Cells'>
         <GARSCells
           map={props.map}
-          style={props.step.styles.gars}
+          style={props.state.history[props.state.step].styles.gars}
           
           state={props.state}
         />
@@ -250,7 +250,7 @@ const LayerControl = props => {
       </Overlay>
       <Overlay checked name='Bullseyes'>
         <LayerGroup>
-          {props.step.bullseyes.map(bullseye => (
+          {props.state.history[props.state.step].bullseyes.map(bullseye => (
             <Bullseye
               bullseye={bullseye}  
               handleDeleteMarker={marker => props.handleDeleteMarker(marker)}
@@ -266,9 +266,9 @@ const LayerControl = props => {
       </Overlay>
       <Overlay checked name='Friendly Markers'>
         <LayerGroup>
-          {props.step.friendlyMarkers.map(marker => (
+          {props.state.history[props.state.step].friendlyMarkers.map(marker => (
             <Marker
-              anchor={props.anchor}
+              anchor={props.state.history[props.state.step].anchor}
               interactive={props.interactive}
               handleMarkerDrag={(marker, latlng) => props.handleMarkerDrag(marker, latlng)}
               handleDeleteMarker={marker => props.handleDeleteMarker(marker)}
@@ -283,9 +283,9 @@ const LayerControl = props => {
       </Overlay>
       <Overlay checked name='Hostile Markers'>
         <LayerGroup>
-          {props.step.hostileMarkers.map(marker => (
+          {props.state.history[props.state.step].hostileMarkers.map(marker => (
             <Marker
-              anchor={props.anchor}
+              anchor={props.state.history[props.state.step].anchor}
               interactive={props.interactive}
               handleMarkerDrag={(marker, latlng) => props.handleMarkerDrag(marker, latlng)}
               handleDeleteMarker={marker => props.handleDeleteMarker(marker)}
@@ -300,9 +300,9 @@ const LayerControl = props => {
       </Overlay>
       <Overlay checked name='Threat Markers'>
         <LayerGroup>
-          {props.step.threatMarkers.map(marker => (
+          {props.state.history[props.state.step].threatMarkers.map(marker => (
             <Threat
-              anchor={props.anchor}
+              anchor={props.state.history[props.state.step].anchor}
               interactive={props.interactive}
               handleMarkerDrag={(marker, latlng) => props.handleMarkerDrag(marker, latlng)}
               handleDeleteMarker={marker => props.handleDeleteMarker(marker)}
@@ -318,9 +318,9 @@ const LayerControl = props => {
       </Overlay>
       <Overlay checked name='Survivors'>
         <LayerGroup>
-          {props.step.survivors.map(marker => (
+          {props.state.history[props.state.step].survivors.map(marker => (
             <Marker
-              anchor={props.anchor}
+              anchor={props.state.history[props.state.step].anchor}
               interactive={props.interactive}
               handleMarkerDrag={(marker, latlng) => props.handleMarkerDrag(marker, latlng)}
               handleDeleteMarker={marker => props.handleDeleteMarker(marker)}
@@ -335,9 +335,9 @@ const LayerControl = props => {
       </Overlay>
       <Overlay checked name='IPs/CPs'>
         <LayerGroup>
-          {props.step.initialPoints.map(marker => (
+          {props.state.history[props.state.step].initialPoints.map(marker => (
             <Marker
-              anchor={props.anchor}
+              anchor={props.state.history[props.state.step].anchor}
               interactive={props.interactive}
               handleMarkerDrag={(marker, latlng) => props.handleMarkerDrag(marker, latlng)}
               handleDeleteMarker={marker => props.handleDeleteMarker(marker)}
@@ -352,10 +352,10 @@ const LayerControl = props => {
       </Overlay>
       <Overlay checked name='Building Labels'>
         <LayerGroup>
-          {props.step.buildingLabels.map(marker => (
+          {props.state.history[props.state.step].buildingLabels.map(marker => (
             <Marker
-              anchor={props.anchor}
-              color={props.step.styles.buildingLabel.color}
+              anchor={props.state.history[props.state.step].anchor}
+              color={props.state.history[props.state.step].styles.buildingLabel.color}
               interactive={props.interactive}
               handleMarkerDrag={(marker, latlng) => props.handleMarkerDrag(marker, latlng)}
               handleDeleteMarker={marker => props.handleDeleteMarker(marker)}
@@ -370,9 +370,9 @@ const LayerControl = props => {
       </Overlay>
       <Overlay checked name='Kinetic Points'>
         <LayerGroup>
-          {props.step.kineticPoints.map(marker => (
+          {props.state.history[props.state.step].kineticPoints.map(marker => (
             <Marker
-              anchor={props.anchor}
+              anchor={props.state.history[props.state.step].anchor}
               interactive={props.interactive}
               handleMarkerDrag={(marker, latlng) => props.handleMarkerDrag(marker, latlng)}
               handleDeleteMarker={marker => props.handleDeleteMarker(marker)}
@@ -387,9 +387,9 @@ const LayerControl = props => {
       </Overlay>
       <Overlay checked name='Map Labels'>
         <LayerGroup>
-          {props.step.mapLabels.map(marker => (
+          {props.state.history[props.state.step].mapLabels.map(marker => (
             <Marker
-              anchor={props.anchor}
+              anchor={props.state.history[props.state.step].anchor}
               interactive={props.interactive}
               handleMarkerDrag={(marker, latlng) => props.handleMarkerDrag(marker, latlng)}
               handleDeleteMarker={marker => props.handleDeleteMarker(marker)}
@@ -404,7 +404,7 @@ const LayerControl = props => {
       </Overlay>
       <Overlay checked name='Ellipses'>
         <LayerGroup>
-          {props.interactive && props.step.ellipses.map(ellipse => (
+          {props.interactive && props.state.history[props.state.step].ellipses.map(ellipse => (
             <Ellipse
               center={ellipse.center}
               length={ellipse.length}
@@ -429,7 +429,7 @@ const LayerControl = props => {
               </Popup>
             </Ellipse>
           ))}
-          {!props.interactive && props.step.ellipses.map(ellipse => (
+          {!props.interactive && props.state.history[props.state.step].ellipses.map(ellipse => (
             <Ellipse
               center={ellipse.center}
               length={ellipse.length}
@@ -449,7 +449,7 @@ const LayerControl = props => {
       </Overlay>
       <Overlay checked name='Lines'>
         <LayerGroup>
-          {props.interactive && props.step.lines.map((line, index) => (
+          {props.interactive && props.state.history[props.state.step].lines.map((line, index) => (
             <Polyline
               positions={line.positions}
               color={line.color}
@@ -469,7 +469,7 @@ const LayerControl = props => {
               </Popup>
             </Polyline>
           ))}
-          {!props.interactive && props.step.lines.map((line, index) => (
+          {!props.interactive && props.state.history[props.state.step].lines.map((line, index) => (
             <Polyline
               positions={line.positions}
               color={line.color}
@@ -482,7 +482,7 @@ const LayerControl = props => {
       </Overlay>
       <Overlay checked name='Polygons'>
         <LayerGroup>
-          {props.interactive && props.step.polygons.map((polygon, index) => (
+          {props.interactive && props.state.history[props.state.step].polygons.map((polygon, index) => (
             <Polygon
               positions={polygon.positions}
               color={polygon.color}
@@ -504,7 +504,7 @@ const LayerControl = props => {
               </Popup>
             </Polygon>
           ))}
-          {!props.interactive && props.step.polygons.map((polygon, index) => (
+          {!props.interactive && props.state.history[props.state.step].polygons.map((polygon, index) => (
             <Polygon
               positions={polygon.positions}
               color={polygon.color}
@@ -519,7 +519,7 @@ const LayerControl = props => {
       </Overlay>
       <Overlay checked name='Rectangles'>
         <LayerGroup>
-          {props.interactive && props.step.rectangles.map(rectangle => (
+          {props.interactive && props.state.history[props.state.step].rectangles.map(rectangle => (
             <Rectangle
               bounds={rectangle.bounds}
               color={rectangle.color}
@@ -541,7 +541,7 @@ const LayerControl = props => {
               </Popup>
             </Rectangle>
           ))}
-          {!props.interactive && props.step.rectangles.map(rectangle => (
+          {!props.interactive && props.state.history[props.state.step].rectangles.map(rectangle => (
             <Rectangle
               bounds={rectangle.bounds}
               color={rectangle.color}
@@ -556,7 +556,7 @@ const LayerControl = props => {
       </Overlay>
       <Overlay checked name='Circles'>
         <LayerGroup>
-          {props.interactive && props.step.circles.map(circle => (
+          {props.interactive && props.state.history[props.state.step].circles.map(circle => (
             <Circle
               center={circle.latlng}
               color={circle.color}
@@ -588,7 +588,7 @@ const LayerControl = props => {
               }
             </Circle>
           ))}
-          {!props.interactive && props.step.circles.map(circle => (
+          {!props.interactive && props.state.history[props.state.step].circles.map(circle => (
             <Circle
               center={circle.latlng}
               color={circle.color}
@@ -615,7 +615,7 @@ const LayerControl = props => {
         </LayerGroup>
       </Overlay>
     </LayersControl>
-  ), [props.step, props.anchor, props.interactive, props.state /*props.state.map.zoom, props.state.markerSize, props.state.tooltips, props.state.map.brightness, props.state.map.center*/])
+  ), [props.state.history, props.state.history[props.state.step].anchor, props.interactive, props.state /*props.state.map.zoom, props.state.markerSize, props.state.tooltips, props.state.map.brightness, props.state.map.center*/])
 
  return layers
 }
