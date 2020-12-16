@@ -46,15 +46,17 @@ import {
 import {
   Button
 } from '@material-ui/core'
-import {
-  makeStyles
-} from '@material-ui/core/styles'
 
 //----------------------------------------------------------------//
 // Geodesy Functions
 //----------------------------------------------------------------//
 import { LatLon as LL } from 'geodesy/mgrs'
 import LatLon from 'geodesy/latlon-spherical'
+
+//----------------------------------------------------------------//
+// Hawg View Constants
+//----------------------------------------------------------------//
+import useStyles from '../../constants/useStyles'
 
 //----------------------------------------------------------------//
 // Hawg View Functions
@@ -69,22 +71,10 @@ const Threat = props => {
 
   const computedSize = props.state.markerSize * props.state.map.zoom
 
-  const useStyles = makeStyles({
-    divIcon: {
-      alignItems: 'center',
-      color: props.marker.color,
-      display: 'flex',
-      fontSize: computedSize,
-      fontWeight: 'bold',
-      justifyContent: 'center',
-      margin: '0',
-      textAlign: 'center',
-      lineHeight: `${computedSize}px`,
-      wordWrap: 'break-word',
-    },
+  const classes = useStyles({
+    color: props.marker.color,
+    computedSize,
   })
-
-  const classes = useStyles(props)
 
   /**
    * 

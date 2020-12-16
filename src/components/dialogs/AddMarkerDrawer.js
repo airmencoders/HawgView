@@ -41,9 +41,6 @@ import {
   Switch,
   TextField,
 } from '@material-ui/core'
-import {
-  makeStyles,
-} from '@material-ui/core/styles'
 
 //----------------------------------------------------------------//
 // Hawg View Components
@@ -55,24 +52,9 @@ import {
 } from '../dialogs'
 
 //----------------------------------------------------------------//
-// Styles
+// Hawg View Constants
 //----------------------------------------------------------------//
-const drawerWidth = 240
-
-const useStyles = makeStyles(theme => ({
-  descriptionField: {
-    margin: theme.spacing(2),
-  },
-  drawer: {
-    [theme.breakpoints.up('sm')]: {
-      width: drawerWidth,
-      flexShrink: 0,
-    },
-  },
-  drawerPaper: {
-    width: drawerWidth,
-  },
-}))
+import useStyles from '../../constants/useStyles'
 
 //----------------------------------------------------------------//
 // Add Marker Drawer Component

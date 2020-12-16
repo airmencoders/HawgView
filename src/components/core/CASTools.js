@@ -65,12 +65,14 @@ import generateKML from '../../functions/generateKML'
 // Hawg View Handlers
 //----------------------------------------------------------------//
 import handleColorChange from '../../handlers/handleColorChange'
+
 import {
   handleBrightnessDecrease,
   handleBrightnessIncrease,
   maxBrightness,
   minBrightness,
 } from '../../handlers/handleBrightnessChange'
+
 import {
   handleMarkerSizeDecrease,
   handleMarkerSizeIncrease,

@@ -46,15 +46,17 @@ import {
 import {
   Button,
 } from '@material-ui/core'
-import { 
-  makeStyles,
-} from '@material-ui/core/styles'
 
 //----------------------------------------------------------------//
 // Geodesy Functions
 //----------------------------------------------------------------//
 import { LatLon as LL } from 'geodesy/mgrs'
 import LatLon from 'geodesy/latlon-spherical'
+
+//----------------------------------------------------------------//
+// Hawg View Functions
+//----------------------------------------------------------------//
+import useStyles from '../../constants/useStyles'
 
 //----------------------------------------------------------------//
 // Hawg View Functions
@@ -72,36 +74,10 @@ const Marker = props => {
 
   const computedSize = props.state.markerSize * props.state.map.zoom
 
-  const useStyles = makeStyles({
-    divIcon: {
-      alignItems: 'center',
-      color: (props.color === undefined || props.color === null) ? props.marker.color : props.color,
-      display: 'flex',
-      fontSize: computedSize,
-      fontWeight: 'bold',
-      justifyContent: 'center',
-      margin: '0',
-      textAlign: 'center',
-      lineHeight: `${computedSize}px`,
-      wordWrap: 'break-word',
-    },
-    kineticPoint: {
-      alignItems: 'center',
-      backgroundColor: '#ffff00',
-      border: 'solid #000000 2px',
-      color: 'black',
-      display: 'flex',
-      fontSize: computedSize / 2,
-      fontWeight: 'bold',
-      justifyContent: 'center',
-      margin: '0',
-      textAlign: 'center',
-      lineHeight: `${computedSize / 2}px`,
-      wordWrap: 'break-word',
-    }
+  const classes = useStyles({
+    color: props.color === undefined || props.color === null ? props.marker.color : props.color,
+    computedSize,
   })
-
-  const classes = useStyles(props)
 
   /**
    * 

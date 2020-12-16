@@ -40,9 +40,7 @@ import {
   ButtonGroup,
   Tooltip,
 } from '@material-ui/core'
-import {
-  makeStyles,
-} from '@material-ui/core/styles'
+
 import {
   Apartment as ApartmentIcon,
   FiberManualRecord as FiberManualRecordIcon,
@@ -60,20 +58,16 @@ import {
 } from '../tools'
 
 //----------------------------------------------------------------//
+// Hawg View Constants
+//----------------------------------------------------------------//
+import useStyles from '../../constants/useStyles'
+
+//----------------------------------------------------------------//
 // Iconify Icons
 //----------------------------------------------------------------//
 import { Icon } from '@iconify/react'
 import pentagonIcon from '@iconify/icons-mdi/pentagon'
 import ellipseIcon from '@iconify/icons-mdi/ellipse'
-
-//----------------------------------------------------------------//
-// Styles
-//----------------------------------------------------------------//
-const useStyles = makeStyles(theme => ({
-  icon: {
-    fontSize: '25px',
-  },
-}))
 
 //----------------------------------------------------------------//
 // Tool Control Component
@@ -109,7 +103,7 @@ const ToolControls = (props) => {
             color={props.state.tool === 'analysis' ? 'primary' : undefined}
             onClick={() => changeTools('analysis')}
           >
-            <SquareFootIcon className={classes.icon} />
+            <SquareFootIcon className={classes.utilityToolIcon} />
           </Button>
         </Tooltip>
         <Tooltip placement='left' title='Building label: Increments with each click'>
@@ -117,7 +111,7 @@ const ToolControls = (props) => {
             color={props.state.tool === 'buildingLabel' ? 'primary' : undefined}
             onClick={() => changeTools('buildingLabel')}
           >
-            <ApartmentIcon className={classes.icon} />
+            <ApartmentIcon className={classes.utilityToolIcon} />
           </Button>
         </Tooltip>
         <Tooltip placement='left' title='Kinetic points: Increments with each click'>
@@ -125,7 +119,7 @@ const ToolControls = (props) => {
             color={props.state.tool === 'kineticPoint' ? 'primary' : undefined}
             onClick={() => changeTools('kineticPoint')}
           >
-            <FontDownloadIcon className={classes.icon} />
+            <FontDownloadIcon className={classes.utilityToolIcon} />
           </Button>
         </Tooltip>
         <Tooltip placement='left' title='Draw line: Press ESC to exit'>
@@ -133,7 +127,7 @@ const ToolControls = (props) => {
             color={props.state.tool === 'line' ? 'primary' : undefined}
             onClick={() => changeTools('line')}
           >
-            <TimelineIcon className={classes.icon} />
+            <TimelineIcon className={classes.utilityToolIcon} />
           </Button>
         </Tooltip>
         <Tooltip placement='left' title='Draw circle: Click to set circle, again to set radius'>
@@ -141,7 +135,7 @@ const ToolControls = (props) => {
             color={props.state.tool === 'circle' ? 'primary' : undefined}
             onClick={() => changeTools('circle')}
           >
-            <FiberManualRecordIcon className={classes.icon} />
+            <FiberManualRecordIcon className={classes.utilityToolIcon} />
           </Button>
         </Tooltip>
         <Tooltip placement='left' title='Draw rectangle: Click to set each corner'>
@@ -149,7 +143,7 @@ const ToolControls = (props) => {
             color={props.state.tool === 'rectangle' ? 'primary' : undefined}
             onClick={() => changeTools('rectangle')}
           >
-            <StopIcon className={classes.icon} />
+            <StopIcon className={classes.utilityToolIcon} />
           </Button>
         </Tooltip>
         <Tooltip placement='left' title='Draw polygon: Press ESC to exit'>
@@ -157,7 +151,7 @@ const ToolControls = (props) => {
             color={props.state.tool === 'polygon' ? 'primary' : undefined}
             onClick={() => changeTools('polygon')}
           >
-            <Icon className={classes.icon} icon={pentagonIcon} />
+            <Icon className={classes.utilityToolIcon} icon={pentagonIcon} />
           </Button>
         </Tooltip>
         <Tooltip placement='left' title='Draw ellipse: Click map to select center'>
@@ -165,7 +159,7 @@ const ToolControls = (props) => {
             color={props.state.tool === 'ellipse' ? 'primary' : undefined}
             onClick={() => changeTools('ellipse')}
           >
-            <Icon className={classes.icon} icon={ellipseIcon} />
+            <Icon className={classes.utilityToolIcon} icon={ellipseIcon} />
           </Button>
         </Tooltip>
       </ButtonGroup>

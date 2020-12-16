@@ -37,9 +37,7 @@ import {
   IconButton,
   Tooltip,
 } from '@material-ui/core'
-import {
-  makeStyles,
-} from '@material-ui/core/styles'
+
 import {
   Menu as MenuIcon,
   MoreVert as MoreVertIcon,
@@ -61,6 +59,7 @@ import {
   MouseCoordinatesControl,
   ToolControl,
 } from './components/controls'
+
 import {
   CASNavigation,
   CASTools,
@@ -71,9 +70,15 @@ import {
   SiteMenu,
   Snackbar,
 } from './components/core'
+
 import {
   Dialogs
 } from './components/dialogs'
+
+//----------------------------------------------------------------//
+// Hawg View Constants
+//----------------------------------------------------------------//
+import useStyles from './constants/useStyles'
 
 //----------------------------------------------------------------//
 // Hawg View Functions
@@ -89,28 +94,6 @@ import handleMarkerEdit from './handlers/handleMarkerEdit'
 // Styles
 //----------------------------------------------------------------//
 import 'leaflet/dist/leaflet.css'
-
-const useStyles = makeStyles(theme => ({
-  leafletMap: {
-    height: '100%',
-    width: '100%',
-  },
-  sectionDesktop: {
-    display: 'none',
-    [theme.breakpoints.up('lg')]: {
-      display: 'flex',
-    },
-  },
-  sectionMobile: {
-    display: 'flex',
-    [theme.breakpoints.up('lg')]: {
-      display: 'none',
-    },
-  },
-  grow: {
-    flexGrow: 1,
-  },
-}))
 
 //----------------------------------------------------------------//
 // CAS Component
@@ -189,7 +172,7 @@ const Cas = () => {
       open: false,
       message: undefined,
       pack: [],
-    }, 
+    },
     step: 0,
     tool: null,
     tooltips: false,
@@ -256,10 +239,10 @@ const Cas = () => {
    * Any time the elevation changes, modify the master state
    */
   React.useEffect(() => {
-    /*setState({
+    setState({
       ...state,
       elevation: elevation,
-    })*/
+    })
   }, [elevation])
 
   /**

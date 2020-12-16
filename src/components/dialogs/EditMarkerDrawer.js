@@ -49,9 +49,6 @@ import {
   TextField,
   Typography,
 } from '@material-ui/core'
-import {
-  makeStyles,
-} from '@material-ui/core/styles'
 
 //----------------------------------------------------------------//
 // Geodesy Functions
@@ -74,37 +71,7 @@ import {
   units,
 } from '../../constants/threats'
 
-//----------------------------------------------------------------//
-// Styles
-//----------------------------------------------------------------//
-const drawerWidth = 240
-
-const useStyles = makeStyles(theme => ({
-  drawer: {
-    [theme.breakpoints.up('sm')]: {
-      width: drawerWidth,
-      flexShrink: 0,
-    }
-  },
-  drawerPaper: {
-    width: drawerWidth,
-  },
-  marginsMd: {
-    margin: theme.spacing(2),
-  },
-  textField: {
-    marginLeft: theme.spacing(2),
-    marginRight: theme.spacing(2),
-    marginTop: theme.spacing(1),
-    marginBottom: theme.spacing(1)
-  },
-  firstTextField: {
-    marginLeft: theme.spacing(2),
-    marginRight: theme.spacing(2),
-    marginTop: theme.spacing(2),
-    marginBottom: theme.spacing(1)
-  },
-}))
+import useStyles from '../../constants/useStyles'
 
 //----------------------------------------------------------------//
 // Edit Marker Drawer Component

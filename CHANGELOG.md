@@ -1,3 +1,7 @@
+## 2.15.20-beta
+### Changes
+* Moved `styles` into its own `useStyle` file
+
 ## 2.15.19-beta
 ### Changes
 * Removed `props.state` from `LayerControl` `useMemo` hook. Replaced with `props.state.map`, `props.state.markerSize`

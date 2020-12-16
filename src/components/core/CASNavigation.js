@@ -41,9 +41,6 @@ import {
   Tooltip,
   Typography,
 } from '@material-ui/core'
-import {
-  makeStyles,
-} from '@material-ui/core/styles'
 
 //----------------------------------------------------------------//
 // Hawg View Components
@@ -53,22 +50,9 @@ import {
  } from '../core'
 
 //----------------------------------------------------------------//
-// Styles
+// Hawg View Constants
 //----------------------------------------------------------------//
-const useStyles = makeStyles(theme => ({
-  appBar: {
-    zIndex: theme.zIndex.drawer + 1,
-  },
-  grow: {
-    flexGrow: 1,
-  },
-  title: {
-    display: 'none',
-    [theme.breakpoints.up('sm')]: {
-      display: 'block',
-    },
-  },
-}))
+import useStyles from '../../constants/useStyles'
 
 //----------------------------------------------------------------//
 // CAS Navigation Component

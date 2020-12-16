@@ -40,11 +40,9 @@ import {
 } from 'react-leaflet'
 
 //----------------------------------------------------------------//
-// Material-UI Components
+// Material-UI Constants
 //----------------------------------------------------------------//
-import { 
-  makeStyles,
-} from '@material-ui/core/styles'
+import useStyles from '../../constants/useStyles'
 
 //----------------------------------------------------------------//
 // Hawg View Functions
@@ -56,19 +54,7 @@ import gridMath from '../../functions/gridMath'
 //----------------------------------------------------------------//
 const MGRSGrids = (props) => {
 
-  //----------------------------------------------------------------//
-  // Custom Styling
-  //----------------------------------------------------------------//
-  const useStyles = makeStyles({
-    zoneLabel: {
-      backgroundColor: 'black',
-      color: props.style.gridzoneColor,
-      fontSize: '0.9rem',
-      lineHeight: '20px',
-      textAlign: 'center',
-    },
-  })
-  const classes = useStyles(props)
+  const classes = useStyles(props.state.history[props.state.step].styles.mgrs)
 
   const zoneStyle = {
     color: props.style.gridzoneColor,

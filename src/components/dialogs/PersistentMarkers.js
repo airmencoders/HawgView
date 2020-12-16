@@ -36,9 +36,11 @@ import {
   Button,
   Tooltip,
 } from '@material-ui/core'
-import {
-  makeStyles,
-} from '@material-ui/core/styles'
+
+//----------------------------------------------------------------//
+// Hawg View Constants
+//----------------------------------------------------------------//
+import useStyles from '../../constants/useStyles'
 
 //----------------------------------------------------------------//
 // Hawg View Marker Icons
@@ -53,19 +55,6 @@ import noStrike from '../../markers/persistent/no-strike.svg'
 import survivor from '../../markers/persistent/srv.svg'
 import target from '../../markers/persistent/tgt.svg'
 import threat from '../../markers/persistent/threat-ring.svg'
-
-//----------------------------------------------------------------//
-// Styles
-//----------------------------------------------------------------//
-const useStyles = makeStyles(theme => ({
-  button: {
-    margin: theme.spacing(1),
-  },
-  image: {
-    margin: theme.spacing(1),
-    width: '30px',
-  },
-}))
 
 //----------------------------------------------------------------//
 // Persistent Markers Component
@@ -149,7 +138,7 @@ const PersistentMarkers = props => { //{ handleAddMarker, handleMarkerDrawerTogg
         <Tooltip title='ADA'>
           <img
             alt='ADA'
-            className={classes.image}
+            className={classes.markerImage}
             onClick={event => handleMarkerClick(event.target.src, 'img', 'ADA', 'hostile')}
             src={ada}
           />
@@ -157,7 +146,7 @@ const PersistentMarkers = props => { //{ handleAddMarker, handleMarkerDrawerTogg
         <Tooltip title='Missile'>
           <img
             alt='Missile'
-            className={classes.image}
+            className={classes.markerImage}
             onClick={event => handleMarkerClick(event.target.src, 'img', 'Missile', 'hostile')}
             src={missile}
           />
@@ -165,7 +154,7 @@ const PersistentMarkers = props => { //{ handleAddMarker, handleMarkerDrawerTogg
         <Tooltip title='Target'>
           <img
             alt='Target'
-            className={classes.image}
+            className={classes.markerImage}
             onClick={event => handleMarkerClick(event.target.src, 'img', 'Target', 'hostile')}
             src={target}
           />
@@ -173,7 +162,7 @@ const PersistentMarkers = props => { //{ handleAddMarker, handleMarkerDrawerTogg
         <Tooltip title='IP'>
           <img
             alt='IP'
-            className={classes.image}
+            className={classes.markerImage}
             onClick={event => handleMarkerClick(event.target.src, 'img', 'IP', 'ip')}
             src={ip}
           />
@@ -181,7 +170,7 @@ const PersistentMarkers = props => { //{ handleAddMarker, handleMarkerDrawerTogg
         <Tooltip title='CP'>
           <img
             alt='CP'
-            className={classes.image}
+            className={classes.markerImage}
             onClick={event => handleMarkerClick(event.target.src, 'img', 'CP', 'ip')}
             src={cp}
           />
@@ -189,7 +178,7 @@ const PersistentMarkers = props => { //{ handleAddMarker, handleMarkerDrawerTogg
         <Tooltip title='Threat Ring'>
           <img
             alt='Threat Ring'
-            className={classes.image}
+            className={classes.markerImage}
             onClick={() => handleMarkerClick(null, 'div', '', 'threat')}
             src={threat}
           />
@@ -197,7 +186,7 @@ const PersistentMarkers = props => { //{ handleAddMarker, handleMarkerDrawerTogg
         <Tooltip title='No Strike'>
           <img
             alt='No Strike'
-            className={classes.image}
+            className={classes.markerImage}
             onClick={event => handleMarkerClick(event.target.src, 'img', 'No Strike', 'ip')}
             src={noStrike}
           />
@@ -205,7 +194,7 @@ const PersistentMarkers = props => { //{ handleAddMarker, handleMarkerDrawerTogg
         <Tooltip title='Survivor'>
           <img
             alt='Survivor'
-            className={classes.image}
+            className={classes.markerImage}
             onClick={event => handleMarkerClick(event.target.src, 'img', 'Survivor', 'survivor')}
             src={survivor}
           />
@@ -213,7 +202,7 @@ const PersistentMarkers = props => { //{ handleAddMarker, handleMarkerDrawerTogg
         <Tooltip title='Bullseye'>
           <img
             alt='Bullseye'
-            className={classes.image}
+            className={classes.markerImage}
             onClick={() => handleMarkerClick(blank, 'img', 'Bullseye', 'bullseye')}
             src={bullseye}
           />

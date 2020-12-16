@@ -31,29 +31,14 @@ import React from 'react'
 import Control from 'react-leaflet-control'
 
 //----------------------------------------------------------------//
-// Material-UI Components
+// Hawg View Constants
 //----------------------------------------------------------------//
-import { 
-  makeStyles,
-} from '@material-ui/core/styles'
+import useStyles from '../../constants/useStyles'
 
 //----------------------------------------------------------------//
 // Hawg View Functions
 //----------------------------------------------------------------//
 import generateMapPopup from '../../functions/generateMapPopup'
-
-//----------------------------------------------------------------//
-// Styles
-//----------------------------------------------------------------//
-const useStyles = makeStyles(theme => ({
-  root: {
-    backgroundColor: '#000000',
-    color: '#ffffff',
-    fontSize: '15px',
-    opacity: 0.5,
-    textAlign: 'right',
-  }
-}))
 
 //----------------------------------------------------------------//
 // Mouse Coordinates Control Component
@@ -71,14 +56,13 @@ const MouseCoordinatesControl = props => {
     if (props.state.mouseCoords !== null) {
       setData(generateMapPopup(props.state.mouseCoords, props.state.history[props.state.step].anchor))
     }
-
   }, [props])
 
   return (
     <Control
       position='bottomright'
     >
-      <table className={classes.root}>
+      <table className={classes.mouseCoordinateControlRoot}>
         <tbody>
           <tr>
             <td>{data !== null ? data.dm : ''}</td>

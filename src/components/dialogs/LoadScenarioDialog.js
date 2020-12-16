@@ -39,21 +39,11 @@ import {
   DialogContent,
   DialogTitle,
 } from '@material-ui/core'
-import {
-  makeStyles,
-} from '@material-ui/core/styles'
 
 //----------------------------------------------------------------//
-// Styles
+// Material-UI Components
 //----------------------------------------------------------------//
-const useStyles = makeStyles(theme => ({
-  dialog: {
-    padding: theme.spacing(2),
-  },
-  input: {
-    display: 'none',
-  }
-}))
+import useStyles from '../../constants/useStyles'
 
 //----------------------------------------------------------------//
 // Load Scenario Dialog Component

@@ -42,31 +42,9 @@ import {
 } from 'react-leaflet'
 
 //----------------------------------------------------------------//
-// Material-UI Components
+// Hawg View Constants
 //----------------------------------------------------------------//
-import { 
-  makeStyles,
-} from '@material-ui/core/styles'
-
-//----------------------------------------------------------------//
-// Styles
-//----------------------------------------------------------------//
-const useStyles = makeStyles(theme => ({
-  movingTooltip: {
-    backgroundColor: 'rgba(255, 255, 255, .7)',
-    backgroundClip: 'padding-box',
-    opacity: '0.5',
-    border: 'dotted',
-    borderColor: 'red',
-    //fontSize: 'smaller',
-  },
-  resultTooltip: {
-    backgroundColor: 'white',
-    borderWidth: 'medium',
-    borderColor: '#de0000',
-    //fontSize: 'smaller',
-  },
-}))
+import useStyles from '../../constants/useStyles'
 
 //----------------------------------------------------------------//
 // Analysis Tool Active Line Component

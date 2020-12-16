@@ -30,13 +30,6 @@
 import React from 'react'
 
 //----------------------------------------------------------------//
-// Material-UI Components
-//----------------------------------------------------------------//
-import {
-  makeStyles,
-} from '@material-ui/core/styles'
-
-//----------------------------------------------------------------//
 // React Leaflet Components
 //----------------------------------------------------------------//
 import {
@@ -44,15 +37,9 @@ import {
 } from 'react-leaflet'
 
 //----------------------------------------------------------------//
-// Styles
+// Hawg View Constants
 //----------------------------------------------------------------//
-const useStyles = makeStyles(() => ({
-  leafletMap: {
-    backgroundColor: 'black',
-    height: '100%',
-    width: '100%',
-  },
-}))
+import useStyles from '../../constants/useStyles'
 
 //----------------------------------------------------------------//
 // Map Component

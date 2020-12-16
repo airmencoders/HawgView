@@ -40,9 +40,6 @@ import {
   Toolbar,
   Typography,
 } from '@material-ui/core'
-import {
-  makeStyles,
-} from '@material-ui/core/styles'
 
 //----------------------------------------------------------------//
 // Hawg View Components
@@ -52,19 +49,9 @@ import {
  } from '../core'
 
 //----------------------------------------------------------------//
-// Styles
+// Hawg View Constants
 //----------------------------------------------------------------//
-const useStyles = makeStyles(theme => ({
-  appBar: {
-    zIndex: theme.zIndex.drawer + 1,
-  },
-  grow: {
-    flexGrow: 1,
-  },
-  title: {
-    flexGrow: 1,
-  },
-}))
+import useStyles from '../../constants/useStyles'
 
 //----------------------------------------------------------------//
 // IE Navigation Component

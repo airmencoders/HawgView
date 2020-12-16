@@ -35,9 +35,6 @@ import React from 'react'
 import {
   Button,
 } from '@material-ui/core'
-import {
-  makeStyles,
-} from '@material-ui/core/styles'
 
 //----------------------------------------------------------------//
 // React-Leaflet Components
@@ -52,24 +49,14 @@ import {
 import { LatLon } from 'geodesy/mgrs'
 
 //----------------------------------------------------------------//
+// Hawg View Constants
+//----------------------------------------------------------------//
+import useStyles from '../../constants/useStyles'
+
+//----------------------------------------------------------------//
 // Hawg View Functions
 //----------------------------------------------------------------//
 import generateMapPopup from '../../functions/generateMapPopup'
-
-//----------------------------------------------------------------//
-// Styles
-//----------------------------------------------------------------//
-const useStyles = makeStyles(() => ({
-  popupCell: {
-    border: '1px solid black',
-    borderCollapse: 'collapse',
-    padding: '5px',
-  },
-  popupTable: {
-    border: '1px solid black',
-    borderCollapse: 'collapse',
-  },
-}))
 
 //----------------------------------------------------------------//
 // Popup Component

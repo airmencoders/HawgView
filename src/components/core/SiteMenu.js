@@ -37,9 +37,7 @@ import {
   Menu,
   MenuItem,
 } from '@material-ui/core'
-import {
-  makeStyles,
-} from '@material-ui/core/styles'
+
 import {
   HelpOutline as HelpOutlineIcon,
   History as HistoryIcon,
@@ -47,13 +45,9 @@ import {
 } from '@material-ui/icons'
 
 //----------------------------------------------------------------//
-// Styles
+// Hawg View Constants
 //----------------------------------------------------------------//
-const useStyles = makeStyles(theme => ({
-  icon: {
-    marginRight: theme.spacing(1),
-  },
-}))
+import useStyles from '../../constants/useStyles'
 
 //----------------------------------------------------------------//
 // Site Menu Component
@@ -98,12 +92,12 @@ const SiteMenu = (props) => {
           variant='dot'
           invisible={invisible}
         >
-          <NotificationImportantIcon className={classes.icon} />
+          <NotificationImportantIcon className={classes.mobileMenuIcon} />
           Notifications
         </Badge>
       </MenuItem>
       <MenuItem>
-        <HistoryIcon className={classes.icon} />
+        <HistoryIcon className={classes.mobileMenuIcon} />
         <a
           href='https://v1.hawg-ops.com'
           style={{ color: 'inherit', textDecoration: 'none' }}
@@ -114,7 +108,7 @@ const SiteMenu = (props) => {
         </a>
       </MenuItem>
       <MenuItem>
-        <HelpOutlineIcon className={classes.icon} />
+        <HelpOutlineIcon className={classes.mobileMenuIcon} />
         <a
           href='https://wiki.hawg-ops.com'
           style={{ color: 'inherit', textDecoration: 'none' }}

@@ -42,11 +42,9 @@ import {
 } from 'react-leaflet'
 
 //----------------------------------------------------------------//
-// Material-UI Components
+// Hawg View Constants
 //----------------------------------------------------------------//
-import { 
-  makeStyles,
-} from '@material-ui/core/styles'
+import useStyles from '../../constants/useStyles'
 
 //----------------------------------------------------------------//
 // Hawg View Functions
@@ -58,37 +56,7 @@ import gridMath from '../../functions/gridMath'
 //----------------------------------------------------------------//
 const GARSCells = (props) => {
 
-  //----------------------------------------------------------------//
-  // Custom Styles
-  //----------------------------------------------------------------//
-  const useStyles = makeStyles(({
-    cellLabel: {
-      backgroundColor: 'black',
-      color: props.style.cellColor,
-      fontSize: '0.9rem',
-      lineHeight: '20px',
-      textAlign: 'center',
-    },
-  }))
-
-  const classes = useStyles(props)
-
-  // To-do: use props and user settings?
-  /*const cellStyle = {
-    color: props.style.cellColor,
-    opacity: 1,
-  }
-
-  const quadrantStyle = {
-    color: props.style.quadrantColor,
-    opacity: 1,
-  }
-
-  const keypadStyle = {
-    color: props.style.keypadColor,
-    opacity: 1,
-    weight: 1,
-  }*/
+  const classes = useStyles(props.state.history[props.state.step].styles.gars)
 
   const [cells, setCells] = React.useState([])
   const [quadrants, setQuandrants] = React.useState([])

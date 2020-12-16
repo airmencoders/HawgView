@@ -35,9 +35,11 @@ import React from 'react'
 import {
   Tooltip,
 } from '@material-ui/core'
-import { 
-  makeStyles,
-} from '@material-ui/core/styles'
+
+//----------------------------------------------------------------//
+// Hawg View Constants
+//----------------------------------------------------------------//
+import useStyles from '../../constants/useStyles'
 
 //----------------------------------------------------------------//
 // Hawg View Marker Icons
@@ -66,16 +68,6 @@ import specialForces from '../../markers/friendly/special-forces.svg'
 import supply from '../../markers/friendly/supply.svg'
 import unit from '../../markers/friendly/unit.svg'
 import wheeledArmor from '../../markers/friendly/wheeled-armor.svg'
-
-//----------------------------------------------------------------//
-// Styles
-//----------------------------------------------------------------//
-const useStyles = makeStyles(theme => ({
-  image: {
-    margin: theme.spacing(1),
-    width: '30px',
-  },
-}))
 
 //----------------------------------------------------------------//
 // Friendly Markers Component
@@ -114,7 +106,7 @@ const FriendlyMarkers = ({ handleAddMarker, handleMarkerDrawerToggle }) => {
       <Tooltip title='Airborne'>
         <img
           alt='Friendly Airborne'
-          className={classes.image}
+          className={classes.markerImage}
           onClick={event => handleMarkerClick(event.target.src, 'Airborne')}
           src={airborne}
         />
@@ -122,7 +114,7 @@ const FriendlyMarkers = ({ handleAddMarker, handleMarkerDrawerToggle }) => {
       <Tooltip title='Airborne Infantry'>
         <img
           alt='Friendly Airborne Infantry'
-          className={classes.image}
+          className={classes.markerImage}
           onClick={event => handleMarkerClick(event.target.src, 'Airborne Infantry')}
           src={airborneInfantry}
         />
@@ -130,7 +122,7 @@ const FriendlyMarkers = ({ handleAddMarker, handleMarkerDrawerToggle }) => {
       <Tooltip title='Air Defense'>
         <img
           alt='Friendly Air Defense'
-          className={classes.image}
+          className={classes.markerImage}
           onClick={event => handleMarkerClick(event.target.src, 'Air Defense')}
           src={airDefense}
         />
@@ -138,7 +130,7 @@ const FriendlyMarkers = ({ handleAddMarker, handleMarkerDrawerToggle }) => {
       <Tooltip title='Anti Armor'>
         <img
           alt='Friendly Anti Armor'
-          className={classes.image}
+          className={classes.markerImage}
           onClick={event => handleMarkerClick(event.target.src, 'Anti Armor')}
           src={antiArmor}
         />
@@ -146,7 +138,7 @@ const FriendlyMarkers = ({ handleAddMarker, handleMarkerDrawerToggle }) => {
       <Tooltip title='Armor'>
         <img
           alt='Friendly Armor'
-          className={classes.image}
+          className={classes.markerImage}
           onClick={event => handleMarkerClick(event.target.src, 'Armor')}
           src={armor}
         />
@@ -154,7 +146,7 @@ const FriendlyMarkers = ({ handleAddMarker, handleMarkerDrawerToggle }) => {
       <Tooltip title='Artillery'>
         <img
           alt='Friendly Artillery'
-          className={classes.image}
+          className={classes.markerImage}
           onClick={event => handleMarkerClick(event.target.src, 'Artillery')}
           src={artillery}
         />
@@ -162,7 +154,7 @@ const FriendlyMarkers = ({ handleAddMarker, handleMarkerDrawerToggle }) => {
       <Tooltip title='Aviation'>
         <img
           alt='Friendly Aviation'
-          className={classes.image}
+          className={classes.markerImage}
           onClick={event => handleMarkerClick(event.target.src, 'Aviation')}
           src={aviation}
         />
@@ -170,7 +162,7 @@ const FriendlyMarkers = ({ handleAddMarker, handleMarkerDrawerToggle }) => {
       <Tooltip title='CBRNE'>
         <img
           alt='Friendly CBRNE'
-          className={classes.image}
+          className={classes.markerImage}
           onClick={event => handleMarkerClick(event.target.src, 'CBRNE')}
           src={cbrne}
         />
@@ -178,7 +170,7 @@ const FriendlyMarkers = ({ handleAddMarker, handleMarkerDrawerToggle }) => {
       <Tooltip title='Counterbattery Radar'>
         <img
           alt='Friendly Counterbattery Radar'
-          className={classes.image}
+          className={classes.markerImage}
           onClick={event => handleMarkerClick(event.target.src, 'Counterbattery Radar')}
           src={counterBatteryRadar}
         />
@@ -186,7 +178,7 @@ const FriendlyMarkers = ({ handleAddMarker, handleMarkerDrawerToggle }) => {
       <Tooltip title='Engineer'>
         <img
           alt='Friendly Engineer'
-          className={classes.image}
+          className={classes.markerImage}
           onClick={event => handleMarkerClick(event.target.src, 'Engineer')}
           src={engineer}
         />
@@ -194,7 +186,7 @@ const FriendlyMarkers = ({ handleAddMarker, handleMarkerDrawerToggle }) => {
       <Tooltip title='Infantry'>
         <img
           alt='Friendly Infantry'
-          className={classes.image}
+          className={classes.markerImage}
           onClick={event => handleMarkerClick(event.target.src, 'Infantry')}
           src={infantry}
         />
@@ -202,7 +194,7 @@ const FriendlyMarkers = ({ handleAddMarker, handleMarkerDrawerToggle }) => {
       <Tooltip title='Light Armor'>
         <img
           alt='Friendly Light Armor'
-          className={classes.image}
+          className={classes.markerImage}
           onClick={event => handleMarkerClick(event.target.src, 'Light Armor')}
           src={lightArmor}
         />
@@ -210,7 +202,7 @@ const FriendlyMarkers = ({ handleAddMarker, handleMarkerDrawerToggle }) => {
       <Tooltip title='Maintenance'>
         <img
           alt='Friendly Maintenance'
-          className={classes.image}
+          className={classes.markerImage}
           onClick={event => handleMarkerClick(event.target.src, 'Maintenance')}
           src={maintenance}
         />
@@ -218,7 +210,7 @@ const FriendlyMarkers = ({ handleAddMarker, handleMarkerDrawerToggle }) => {
       <Tooltip title='Mech Infantry'>
         <img
           alt='Friendly Mech Infantry'
-          className={classes.image}
+          className={classes.markerImage}
           onClick={event => handleMarkerClick(event.target.src, 'Mech Infantry')}
           src={mechInfantry}
         />
@@ -226,7 +218,7 @@ const FriendlyMarkers = ({ handleAddMarker, handleMarkerDrawerToggle }) => {
       <Tooltip title='Medical'>
         <img
           alt='Friendly Medical'
-          className={classes.image}
+          className={classes.markerImage}
           onClick={event => handleMarkerClick(event.target.src, 'Medical')}
           src={medical}
         />
@@ -234,7 +226,7 @@ const FriendlyMarkers = ({ handleAddMarker, handleMarkerDrawerToggle }) => {
       <Tooltip title='Missile'>
         <img
           alt='Friendly Missile'
-          className={classes.image}
+          className={classes.markerImage}
           onClick={event => handleMarkerClick(event.target.src, 'Missile')}
           src={missile}
         />
@@ -242,7 +234,7 @@ const FriendlyMarkers = ({ handleAddMarker, handleMarkerDrawerToggle }) => {
       <Tooltip title='MLRS'>
         <img
           alt='Friendly MLRS'
-          className={classes.image}
+          className={classes.markerImage}
           onClick={event => handleMarkerClick(event.target.src, 'MLRS')}
           src={mlrs}
         />
@@ -250,7 +242,7 @@ const FriendlyMarkers = ({ handleAddMarker, handleMarkerDrawerToggle }) => {
       <Tooltip title='Recce'>
         <img
           alt='Friendly Recce'
-          className={classes.image}
+          className={classes.markerImage}
           onClick={event => handleMarkerClick(event.target.src, 'Recce')}
           src={recce}
         />
@@ -258,7 +250,7 @@ const FriendlyMarkers = ({ handleAddMarker, handleMarkerDrawerToggle }) => {
       <Tooltip title='Self-Propelled Artillery'>
         <img
           alt='Friendly Self-Propelled Artillery'
-          className={classes.image}
+          className={classes.markerImage}
           onClick={event => handleMarkerClick(event.target.src, 'Self-Propelled Artillery')}
           src={sparty}
         />
@@ -266,7 +258,7 @@ const FriendlyMarkers = ({ handleAddMarker, handleMarkerDrawerToggle }) => {
       <Tooltip title='Signals'>
         <img
           alt='Friendly Signals'
-          className={classes.image}
+          className={classes.markerImage}
           onClick={event => handleMarkerClick(event.target.src, 'Signals')}
           src={signals}
         />
@@ -274,7 +266,7 @@ const FriendlyMarkers = ({ handleAddMarker, handleMarkerDrawerToggle }) => {
       <Tooltip title='Special Forces'>
         <img
           alt='Friendly Special Forces'
-          className={classes.image}
+          className={classes.markerImage}
           onClick={event => handleMarkerClick(event.target.src, 'Special Forces')}
           src={specialForces}
         />
@@ -282,7 +274,7 @@ const FriendlyMarkers = ({ handleAddMarker, handleMarkerDrawerToggle }) => {
       <Tooltip title='Supply'>
         <img
           alt='Friendly Supply'
-          className={classes.image}
+          className={classes.markerImage}
           onClick={event => handleMarkerClick(event.target.src, 'Supply')}
           src={supply}
         />
@@ -290,7 +282,7 @@ const FriendlyMarkers = ({ handleAddMarker, handleMarkerDrawerToggle }) => {
       <Tooltip title='Unit'>
         <img
           alt='Friendly Unit'
-          className={classes.image}
+          className={classes.markerImage}
           onClick={event => handleMarkerClick(event.target.src, 'Unit')}
           src={unit}
         />
@@ -298,7 +290,7 @@ const FriendlyMarkers = ({ handleAddMarker, handleMarkerDrawerToggle }) => {
       <Tooltip title='Wheeled Armor'>
         <img
           alt='Friendly Wheeled Armor'
-          className={classes.image}
+          className={classes.markerImage}
           onClick={event => handleMarkerClick(event.target.src, 'Wheeled Armor')}
           src={wheeledArmor}
         />

@@ -43,54 +43,11 @@ import {
   Grid,
   Typography,
 } from '@material-ui/core'
-import {
-  makeStyles,
-} from '@material-ui/core/styles'
 
 //----------------------------------------------------------------//
-// Styles
+// Hawg View Constants
 //----------------------------------------------------------------//
-const drawerWidth = 750
-
-const useStyles = makeStyles(theme => ({
-  flex: {
-    display: 'flex',
-  },
-  grow: {
-    flexGrow: 1,
-  },
-  marginsMd: {
-    margin: theme.spacing(2),
-  },
-  marginsSm: {
-    margin: theme.spacing(1),
-  },
-  drawer: {
-    [theme.breakpoints.up('sm')]: {
-      width: drawerWidth,
-      flexShrink: 0,
-    },
-  },
-  drawerPaper: {
-    width: drawerWidth,
-  },
-  firstTextField: {
-    marginLeft: theme.spacing(2),
-    marginRight: theme.spacing(2),
-    marginTop: theme.spacing(2),
-    marginBottom: theme.spacing(1),
-  },
-  formControl: {
-    display: 'flex',
-    margin: theme.spacing(2),
-  },
-  textField: {
-    marginLeft: theme.spacing(2),
-    marginRight: theme.spacing(2),
-    marginTop: theme.spacing(1),
-    marginBottom: theme.spacing(1),
-  },
-}))
+import useStyles from '../../constants/useStyles'
 
 //----------------------------------------------------------------//
 // Style Drawer Component
@@ -156,7 +113,7 @@ const StyleDrawer = (props) => {
         anchor='left'
         open={props.state.dialog.name === 'style'}
         onClose={handleClose}
-        classes={{ paper: classes.drawerPaper, }}
+        classes={{ paper: classes.wideDrawerPaper, }}
         ModalProps={{ keepMounted: true }}
       >
         <Grid

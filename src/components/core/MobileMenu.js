@@ -36,9 +36,7 @@ import {
   Menu,
   MenuItem,
 } from '@material-ui/core'
-import {
-  makeStyles,
-} from '@material-ui/core/styles'
+
 import {
   AddPhotoAlternate as AddPhotoAlternateIcon,
   BrightnessHigh as BrightnessHighIcon,
@@ -65,30 +63,28 @@ import {
 import generateKML from '../../functions/generateKML'
 
 //----------------------------------------------------------------//
+// Hawg View Constants
+//----------------------------------------------------------------//
+import useStyles from '../../constants/useStyles'
+
+//----------------------------------------------------------------//
 // Hawg View Handlers
 //----------------------------------------------------------------//
 import handleColorChange from '../../handlers/handleColorChange'
+
 import {
   handleBrightnessDecrease,
   handleBrightnessIncrease,
   maxBrightness,
   minBrightness,
 } from '../../handlers/handleBrightnessChange'
+
 import {
   handleMarkerSizeDecrease,
   handleMarkerSizeIncrease,
   maxMarkerSize,
   minMarkerSize,
 } from '../../handlers/handleMarkerSizeChange'
-
-//----------------------------------------------------------------//
-// Styles
-//----------------------------------------------------------------//
-const useStyles = makeStyles(theme => ({
-  icon: {
-    marginRight: theme.spacing(1),
-  },
-}))
 
 //----------------------------------------------------------------//
 // Mobile Menu Component
@@ -159,7 +155,7 @@ const MobileMenu = (props) => {
           },
         })}
       >
-        <AddPhotoAlternateIcon className={classes.icon} />
+        <AddPhotoAlternateIcon className={classes.mobileMenuIcon} />
         Add Marker
       </MenuItem>
       <MenuItem
@@ -169,7 +165,7 @@ const MobileMenu = (props) => {
           step: props.state.step - 1,
         })}
       >
-        <UndoIcon className={classes.icon} />
+        <UndoIcon className={classes.mobileMenuIcon} />
         Undo {props.state.step === 0 ? '' : props.state.history[props.state.step].action}
       </MenuItem>
       <MenuItem
@@ -179,50 +175,50 @@ const MobileMenu = (props) => {
           step: props.state.step + 1,
         })}
       >
-        <RedoIcon className={classes.icon} />
+        <RedoIcon className={classes.mobileMenuIcon} />
         Redo {props.state.step === props.state.history.length - 1 ? '' : props.state.history[props.state.step + 1].action}
       </MenuItem>
       <MenuItem onClick={handleClearMarkersClick}>
-        <ClearIcon className={classes.icon} />
+        <ClearIcon className={classes.mobileMenuIcon} />
         Clear all markers
       </MenuItem>
       <MenuItem
         disabled={props.state.markerSize === maxMarkerSize}
         onClick={() => handleMarkerSizeIncrease(props.state, props.setState)}
       >
-        <PhotoSizeSelectActualIcon className={classes.icon} />
+        <PhotoSizeSelectActualIcon className={classes.mobileMenuIcon} />
         Increase marker size
       </MenuItem>
       <MenuItem
         disabled={props.state.markerSize === minMarkerSize}
         onClick={() => handleMarkerSizeDecrease(props.state, props.setState)}
       >
-        <PhotoSizeSelectLargeIcon className={classes.icon} />
+        <PhotoSizeSelectLargeIcon className={classes.mobileMenuIcon} />
         Decrease marker size
       </MenuItem>
       <MenuItem
         disabled={props.state.brightness === minBrightness}
         onClick={() => handleBrightnessDecrease(props.state, props.setState)}
       >
-        <BrightnessLowIcon className={classes.icon} />
+        <BrightnessLowIcon className={classes.mobileMenuIcon} />
         Decrease brightness
       </MenuItem>
       <MenuItem
         disabled={props.state.brightness === maxBrightness}
         onClick={() => handleBrightnessIncrease(props.state, props.setState)}
       >
-        <BrightnessHighIcon className={classes.icon} />
+        <BrightnessHighIcon className={classes.mobileMenuIcon} />
         Increase brightness
       </MenuItem>
       <MenuItem onClick={() => handleColorChange(props.state, props.setState)}>
         {props.state.map.color ?
-          <InvertColorsIcon className={classes.icon} />
-          : <InvertColorsOffIcon className={classes.icon} />
+          <InvertColorsIcon className={classes.mobileMenuIcon} />
+          : <InvertColorsOffIcon className={classes.mobileMenuIcon} />
         }
         Toggle map color
       </MenuItem>
       {/*<MenuItem onClick={props.handleMinMenuClose} disabled>
-        <DescriptionIcon className={classes.icon} />
+        <DescriptionIcon className={classes.mobileMenuIcon} />
         CONOP tools
   </MenuItem>*/}
       <MenuItem 
@@ -234,13 +230,13 @@ const MobileMenu = (props) => {
           },
         })}
       >
-        <ViewListIcon className={classes.icon} />
+        <ViewListIcon className={classes.mobileMenuIcon} />
         View marker list
       </MenuItem>
       <MenuItem onClick={handleToggleTooltipsClick}>
         {props.state.tooltips ?
-          <LabelOffIcon className={classes.icon} />
-          : <LabelIcon className={classes.icon} />
+          <LabelOffIcon className={classes.mobileMenuIcon} />
+          : <LabelIcon className={classes.mobileMenuIcon} />
         }
         Toggle marker labels
       </MenuItem>
@@ -253,7 +249,7 @@ const MobileMenu = (props) => {
           },
         })}
       >
-        <SaveIcon className={classes.icon} />
+        <SaveIcon className={classes.mobileMenuIcon} />
         Save scenario
       </MenuItem>
       <MenuItem 
@@ -265,7 +261,7 @@ const MobileMenu = (props) => {
           },
         })}
       >
-        <FolderOpenIcon className={classes.icon} />
+        <FolderOpenIcon className={classes.mobileMenuIcon} />
         Load scenario
       </MenuItem>
       <MenuItem 
@@ -277,11 +273,11 @@ const MobileMenu = (props) => {
           },
         })}
       >
-        <StyleIcon className={classes.icon} />
+        <StyleIcon className={classes.mobileMenuIcon} />
         Styles
       </MenuItem>
       <MenuItem onClick={handleDownloadClick}>
-        <GetAppIcon className={classes.icon} />
+        <GetAppIcon className={classes.mobileMenuIcon} />
         Download products
       </MenuItem>
     </Menu>
