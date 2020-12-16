@@ -615,7 +615,7 @@ const LayerControl = props => {
         </LayerGroup>
       </Overlay>
     </LayersControl>
-  ), [props.state.history, props.state.history[props.state.step].anchor, props.interactive, props.state /*props.state.map.zoom, props.state.markerSize, props.state.tooltips, props.state.map.brightness, props.state.map.center*/])
+  ), [props.state.history, props.state.history[props.state.step].anchor, props.interactive, props.state.markerSize, props.state.map, props.state.tooltips/*, /*props.state /*props.state.map.zoom, props.state.markerSize, props.state.tooltips, props.state.map.brightness, props.state.map.center*/])
 
  return layers
 }

@@ -1,3 +1,10 @@
+## 2.15.19-beta
+### Changes
+* Removed `props.state` from `LayerControl` `useMemo` hook. Replaced with `props.state.map`, `props.state.markerSize`
+
+### Fixes
+* Fixed issue where state changing caused numerous re-renders, effectively nullifying the draggabililty of markers
+
 ## 2.15.18-beta
 ### Changes
 * Changed `buildingLabelTool` and `kineticPointTool` Effect dependency from `props.state.tool` to `props.state`

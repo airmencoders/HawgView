@@ -256,10 +256,10 @@ const Cas = () => {
    * Any time the elevation changes, modify the master state
    */
   React.useEffect(() => {
-    setState({
+    /*setState({
       ...state,
       elevation: elevation,
-    })
+    })*/
   }, [elevation])
 
   /**
