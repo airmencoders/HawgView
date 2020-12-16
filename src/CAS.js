@@ -35,14 +35,12 @@ import React from 'react'
 import {
   Box,
   IconButton,
-  Snackbar,
   Tooltip,
 } from '@material-ui/core'
 import {
   makeStyles,
 } from '@material-ui/core/styles'
 import {
-  Close as CloseIcon,
   Menu as MenuIcon,
   MoreVert as MoreVertIcon,
 } from '@material-ui/icons'
@@ -64,7 +62,6 @@ import {
   ToolControl,
 } from './components/controls'
 import {
-  Alert,
   CASNavigation,
   CASTools,
   CoordInput,
@@ -72,6 +69,7 @@ import {
   MapPopup,
   MobileMenu,
   SiteMenu,
+  Snackbar,
 } from './components/core'
 import {
   Dialogs
@@ -182,22 +180,25 @@ const Cas = () => {
       brightness: 1,
       center: [35.77, -93.34],
       color: true,
+      reference: null,
       zoom: 5,
     },
     markerSize: 3,
     mouseCoords: null,
+    snackbar: {
+      open: false,
+      message: undefined,
+      pack: [],
+    }, 
     step: 0,
     tool: null,
     tooltips: false,
   })
 
   const [elevation, setElevation] = React.useState('Pending')
-
   const [map, setMap] = React.useState(null)
+
   const [markerLabel, setMarkerLabel] = React.useState('')
-  const [snackbarMessage, setSnackbarMessage] = React.useState(undefined)
-  const [snackbarOpen, setSnackbarOpen] = React.useState(false)
-  const [snackPack, setSnackPack] = React.useState([])
 
   //----------------------------------------------------------------//
   // DEBUGGING AREA
@@ -221,15 +222,6 @@ const Cas = () => {
       window.removeEventListener('resize', handleMobileMenuClose, false)
     }
   }, [state])
-
-  /**
-   * Any time the active dialog changes, reset the map
-   */
-  React.useEffect(() => {
-    if (state.dialog.name === null) {
-      //handleMapReset()
-    }
-  }, [state.dialog.name])
 
   /**
   * Any time the focusd marker changes, set elevation to its default state 'Pending'
@@ -269,19 +261,6 @@ const Cas = () => {
       elevation: elevation,
     })
   }, [elevation])
-
-  /**
-   * Whenever any changes occur to the snackbar, handle various changes to the package
-   */
-  React.useEffect(() => {
-    if (snackPack.length && !snackbarMessage) {
-      setSnackbarMessage({ ...snackPack[0] })
-      setSnackPack(prev => prev.slice(1))
-      setSnackbarOpen(true)
-    } else if (snackPack.length && snackbarMessage && snackbarOpen) {
-      setSnackbarOpen(false)
-    }
-  }, [snackPack, snackbarMessage, snackbarOpen])
 
   /**
    * Whenever the brightness, zoom, or center of the map changes, set the background color of the leaflet container 
@@ -334,15 +313,17 @@ const Cas = () => {
   }
 
   const toast = (message, severity) => {
-    setSnackPack(prev => [...prev, { message, key: new Date().getTime(), severity }])
-  }
-
-  const handleSnackbarClose = (event, reason) => {
-    if (reason === 'clickaway') {
-      return
-    }
-
-    setSnackbarOpen(false)
+    setState({
+      ...state,
+      snackbar: {
+        ...state.snackbar,
+        pack: [...state.snackbar.pack, {
+          key: new Date().getTime(),
+          message,
+          severity,
+        }],
+      }
+    })
   }
 
   const editMarker = React.useCallback((action, payload) => {
@@ -436,25 +417,9 @@ const Cas = () => {
         </Map>
       </Box>
       <Snackbar
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'left',
-        }}
-        key={snackbarMessage ? snackbarMessage.key : undefined}
-        open={snackbarOpen}
-        autoHideDuration={5000}
-        onClose={handleSnackbarClose}
-        onExited={() => setSnackbarMessage(undefined)}
-        action={
-          <IconButton size='small' aria-label='close' color='inherit' onClick={handleSnackbarClose}>
-            <CloseIcon fontSize='small' />
-          </IconButton>
-        }
-      >
-        <Alert severity={snackbarMessage ? snackbarMessage.severity : undefined} onClose={handleSnackbarClose}>
-          {snackbarMessage ? snackbarMessage.message : undefined}
-        </Alert>
-      </Snackbar>
+        state={state}
+        setState={setState}
+      />
       <Dialogs
         handleEditMarker={(action, dialog) => editMarker(action, dialog)}
         markerLabel={markerLabel}

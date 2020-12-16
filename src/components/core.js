@@ -38,6 +38,7 @@ import Map from './core/Map'
 import MapPopup from './core/MapPopup'
 import MobileMenu from './core/MobileMenu'
 import SiteMenu from './core/SiteMenu'
+import Snackbar from './core/Snackbar'
 //import SiteNavigation from './core/SiteNavigation'
 
 export {
@@ -51,5 +52,6 @@ export {
   MapPopup,
   MobileMenu,
   SiteMenu,
+  Snackbar,
   //SiteNavigation,
 }

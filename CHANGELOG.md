@@ -1,3 +1,8 @@
+## 2.15.17-beta
+### Changes
+* Added `snackbar` to `state`
+* `snackbar` encompasses `open`, `message`, and `pack` (queue)
+
 ## 2.15.16-beta
 ### Changes
 * Re-added separate `elevation` state due to the asynchronous effect of getting the elevation
