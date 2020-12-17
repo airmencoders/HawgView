@@ -35,19 +35,12 @@ import { editMarkers } from '../functions/editMarkers'
 //----------------------------------------------------------------//
 // Handle Marker Edit Function
 //----------------------------------------------------------------//
-const handleMarkerEdit = (action, payload, state, setState, markerLabel, setMarkerLabel, toast) => {
+const handleMarkerEdit = (action, payload, state, setState) => {
   const supportedActions = ['clear', 'create', 'delete', 'drag', 'edit', '9line', '15line']
 
   if (supportedActions.includes(action)) {
 
     let updatedPayload = { ...payload }
-
-    let updatedTitle
-    if (payload.layer === 'threat') {
-      updatedTitle = payload.title
-    } else {
-      updatedTitle = markerLabel === '' ? payload.title : markerLabel
-    }
 
     if (action === 'create') {
       updatedPayload = {
@@ -66,7 +59,6 @@ const handleMarkerEdit = (action, payload, state, setState, markerLabel, setMark
         updatedPayload = {
           ...updatedPayload,
           latlng: state.focusedLatlng.latlng,
-          title: updatedTitle,
         }
     }
 
@@ -100,7 +92,6 @@ const handleMarkerEdit = (action, payload, state, setState, markerLabel, setMark
       }
 
       if (action === 'create') {
-        setMarkerLabel('')
 
         if (payload.layer === 'circle' || payload.layer === 'rectangle' || payload.layer === 'line' || payload.layer === 'polygon' || payload.layer === 'ellipse') {
           newState = {
@@ -127,7 +118,6 @@ const handleMarkerEdit = (action, payload, state, setState, markerLabel, setMark
     }
   } else {
     console.error(`Unsupported action ${action}. Could not modify Markers`)
-    toast('There was an error performing that action', 'error')
   }
 }
 

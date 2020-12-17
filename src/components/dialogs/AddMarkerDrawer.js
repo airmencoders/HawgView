@@ -57,15 +57,33 @@ import {
 import useStyles from '../../constants/useStyles'
 
 //----------------------------------------------------------------//
+// Hawg View Handlers
+//----------------------------------------------------------------//
+import handleMarkerEdit from '../../handlers/handleMarkerEdit'
+
+//----------------------------------------------------------------//
 // Add Marker Drawer Component
 //----------------------------------------------------------------//
 const AddMarkerDrawer = props => {
-  const classes = useStyles()
 
-  const [hostile, setHostile] = React.useState(false)
+  //----------------------------------------------------------------//
+  // Component Setup
+  //----------------------------------------------------------------//
+  const classes = useStyles()
 
   const container = props.window !== undefined ? () => window().document.body : undefined
 
+  const [_state, _setState] = React.useState({
+    hostile: false,
+    label: '',
+  })
+
+  //----------------------------------------------------------------//
+  // Component Handlers
+  //----------------------------------------------------------------//
+  /**
+   * Close the Add Marker Drawer
+   */
   const handleClose = () => {
     props.setState({
       ...props.state,
@@ -73,6 +91,38 @@ const AddMarkerDrawer = props => {
         anchor: null,
         name: null,
       }
+    })
+  }
+
+  /**
+   * Ingest marker data, modify title, and forward to function to modify state
+   * 
+   * @param {Object} payload Marker object to be added into state
+   */
+  const handleAddMarker = payload => {
+
+    // If marker is a threat, keep it as the title (default is blank)
+    // Otherwise utilize the label if it is present
+    let updatedTitle
+    if (payload.layer === 'threat') {
+      updatedTitle = payload.title
+    } else {
+      updatedTitle = _state.label === '' ? payload.title : _state.label
+    }
+
+    // Update the payload
+    const updatedPayload = {
+      ...payload,
+      title: updatedTitle,
+    }
+
+    // Forward to the function
+    handleMarkerEdit('create', updatedPayload, props.state, props.setState)
+    
+    // Clear the marker description TextField
+    _setState({
+      ..._state,
+      label: '',
     })
   }
 
@@ -99,9 +149,9 @@ const AddMarkerDrawer = props => {
               <FormControlLabel
                 control={
                   <Switch
-                    checked={hostile}
+                    checked={_state.hostile}
                     name='hostile'
-                    onChange={() => setHostile(!hostile)}
+                    onChange={() => _setState({ ..._state, hostile: !_state.hostile })}
                   />
                 }
                 label='Hostile'
@@ -112,26 +162,26 @@ const AddMarkerDrawer = props => {
           <TextField
             className={classes.descriptionField}
             label='Marker Label'
-            onChange={event => props.setMarkerLabel(event.target.value)}
+            onChange={event => _setState({ ..._state, label: event.target.value, })}
             variant='outlined'
-            value={props.markerLabel}
+            value={_state.label}
           />
           <Divider />
           <PersistentMarkers
-            anchor={props.anchor}
-            handleAddMarker={payload => props.handleAddMarker(payload)}
+            handleAddMarker={payload => handleAddMarker(payload)}
             handleMarkerDrawerToggle={props.onClose}
+            state={props.state}
             toggleEditThreatDialog={props.toggleEditThreatDialog}
           />
           <Divider />
-          {(hostile) ?
+          {_state.hostile ?
             <HostileMarkers
-              handleAddMarker={payload => props.handleAddMarker(payload)}
+              handleAddMarker={payload => handleAddMarker(payload)}
               handleMarkerDrawerToggle={props.onClose}
             />
             :
             <FriendlyMarkers
-              handleAddMarker={payload => props.handleAddMarker(payload)}
+              handleAddMarker={payload => handleAddMarker(payload)}
               handleMarkerDrawerToggle={props.onClose}
             />
           }

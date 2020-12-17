@@ -92,13 +92,12 @@ const Popup = props => {
       (props.state.focusedLatlng.source === 'map' || props.state.focusedLatlng.source === 'input')
     ) {
 
-
       setPopup({
         ...generateMapPopup(props.state.focusedLatlng.latlng, props.state.history[props.state.step].anchor),
         elevation: props.state.elevation
       })
     }
-  }, [props.state.history[props.state.step].anchor, props.state.elevation, props.state.focusedLatlng, props.state.tool])
+  }, [props.state.history[props.state.step].anchor, props.state.elevation, props.state.focusedLatlng])
 
   //----------------------------------------------------------------//
   // Logic

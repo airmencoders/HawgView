@@ -65,6 +65,11 @@ import { render9line } from '../../functions/renderData'
 import { distanceAndHeading } from '../../functions/mathFunctions'
 
 //----------------------------------------------------------------//
+// Hawg View Handlers
+//----------------------------------------------------------------//
+import handleMarkerEdit from '../../handlers/handleMarkerEdit'
+
+//----------------------------------------------------------------//
 // Threat Component
 //----------------------------------------------------------------//
 const Threat = props => {
@@ -75,6 +80,43 @@ const Threat = props => {
     color: props.marker.color,
     computedSize,
   })
+
+  const handleClickThreat = () => {
+    if (props.state.tool === null) {
+      props.setState({
+        ...props.state,
+        focusedLatlng: {
+          latlng: props.marker.latlng,
+          source: 'marker',
+        },
+      })
+    }
+  }
+
+  const handleDeleteThreat = () => {
+    if (props.state.tool === null) {
+      handleMarkerEdit('delete', { marker: props.marker }, props.state, props.setState)
+    }
+  }
+
+  const handleDragThreat = latlng => {
+    if (props.state.tool === null) {
+      handleMarkerEdit('drag', { marker: props.marker, latlng: latlng }, props.state, props.setState)
+    }
+  }
+
+  const handleEditThreat = () => {
+    if (props.state.tool === null) {
+      props.setState({
+        ...props.state,
+        dialog: {
+          anchor: null,
+          name: 'editMarker',
+        },
+        focusedMarker: props.marker,
+      })
+    }
+  }
 
   /**
    * 
@@ -89,8 +131,8 @@ const Threat = props => {
     }
 
     let fromBE = null
-    if (props.anchor.id !== null) {
-      fromBE = distanceAndHeading(props.anchor.latlng, marker.latlng, props.anchor.declination)
+    if (props.state.history[props.state.step].anchor.id !== null) {
+      fromBE = distanceAndHeading(props.state.history[props.state.step].anchor.latlng, marker.latlng, props.state.history[props.state.step].anchor.declination)
     }
 
     return (
@@ -104,7 +146,7 @@ const Threat = props => {
           </tr>
           {fromBE !== null ? (
             <tr>
-              <td>{props.anchor.name} {Number.parseInt(fromBE.heading)}&deg; / {fromBE.nm.toFixed(2)} NM</td>
+              <td>{props.state.history[props.state.step].anchor.name} {Number.parseInt(fromBE.heading)}&deg; / {fromBE.nm.toFixed(2)} NM</td>
             </tr>
           )
             :
@@ -139,20 +181,13 @@ const Threat = props => {
         </Button>
         <Button
           color='primary'
-          onClick={() => props.setState({
-            ...props.state,
-            dialog: {
-              anchor: null,
-              name: 'editMarker',
-            },
-            focusedMarker: marker,
-          })}
+          onClick={handleEditThreat}
         >
           Edit
         </Button>
         <Button
           color='secondary'
-          onClick={() => props.handleDeleteMarker(marker)}
+          onClick={handleDeleteThreat}
         >
           Delete
         </Button>
@@ -163,7 +198,7 @@ const Threat = props => {
   return (
     <React.Fragment>
       <Marker
-        draggable={props.interactive}
+        draggable={props.state.tool === null}
         icon={
           L.divIcon({
             className: classes.divIcon,
@@ -173,8 +208,8 @@ const Threat = props => {
           })
         }
         id={props.marker.id}
-        onClick={props.interactive ? () => props.setFocusedMarker(props.marker) : undefined}
-        onDragend={props.interactive ? event => props.handleMarkerDrag(props.marker, event.target.getLatLng()) : undefined}
+        onClick={handleClickThreat}
+        onDragend={event => handleDragThreat(event.target.getLatLng())}
         position={props.marker.latlng}
         riseOnHover
         title={props.marker.title}

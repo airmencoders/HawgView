@@ -40,6 +40,11 @@ import {
 } from 'react-leaflet'
 
 //----------------------------------------------------------------//
+// Hawg View Handlers
+//----------------------------------------------------------------//
+import handleMarkerEdit from '../../handlers/handleMarkerEdit'
+
+//----------------------------------------------------------------//
 // Rectangle Tool Component
 //----------------------------------------------------------------//
 const RectangleTool = props => {
@@ -62,14 +67,16 @@ const RectangleTool = props => {
     }
 
     if (props.state.tool === 'rectangle' && startLatlng !== null) {
-      props.submit('create', {
+      let payload = {
         bounds: [startLatlng, props.state.focusedLatlng.latlng],
         color: '#4A90E2',
         dashArray: null,
         fillColor: null,
         layer: 'rectangle',
         title: 'Rectangle',
-      })
+      }
+
+      handleMarkerEdit('create', payload, props.state, props.setState)
     }
   }, [props.state.focusedLatlng])
 

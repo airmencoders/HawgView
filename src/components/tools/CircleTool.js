@@ -45,9 +45,14 @@ import {
 import { distanceAndHeading } from '../../functions/mathFunctions'
 
 //----------------------------------------------------------------//
+// Hawg View Handlers
+//----------------------------------------------------------------//
+import handleMarkerEdit from '../../handlers/handleMarkerEdit'
+
+//----------------------------------------------------------------//
 // Circle Tool Component
 //----------------------------------------------------------------//
-const CircleTool = (props) => {
+const CircleTool = props => {
 
   const [radius, setRadius] = React.useState(0)
   const [center, setCenter] = React.useState(null)
@@ -82,7 +87,7 @@ const CircleTool = (props) => {
     }
 
     if (props.state.tool === 'circle' && center !== null && radius !== 0) {
-      props.submit('create', {
+      const payload = {
         color: '#4A90E2',
         dashArray: null,
         fillColor: null,
@@ -91,7 +96,9 @@ const CircleTool = (props) => {
         radius: radius,
         title: 'Circle',
         unit: 'm',
-      })
+      }
+
+      handleMarkerEdit('create', payload, props.state, props.setState)
     }
   }, [props.state.tool, props.state.focusedLatlng])
 

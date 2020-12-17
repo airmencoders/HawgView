@@ -274,7 +274,7 @@ const GARSCells = (props) => {
     <LayerGroup>
       {props.state.map.zoom > 6 && cells.map((cell, index) => (
         <Polyline
-          color={props.style.cellColor}
+          color={props.state.history[props.state.step].styles.gars.cellColor}
           key={`gars-cell-line-${index}`}
           opacity={1}
           positions={cell.positions}
@@ -282,7 +282,7 @@ const GARSCells = (props) => {
       ))}
       {props.state.map.zoom > 8 && quadrants.map((quadrant, index) => (
         <Polyline
-          color={props.style.quadrantColor}
+          color={props.state.history[props.state.step].styles.gars.quadrantColor}
           key={`gars-quadrant-line-${index}`}
           opacity={1}
           positions={quadrant.positions}
@@ -290,7 +290,7 @@ const GARSCells = (props) => {
       ))}
       {props.state.map.zoom > 10 && keypads.map((keypad, index) => (
         <Polyline
-          color={props.style.keypadColor}
+          color={props.state.history[props.state.step].styles.gars.keypadColor}
           key={`gars-keypad-line-${index}`}
           opacity={1}
           positions={keypad.positions}

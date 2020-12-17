@@ -72,8 +72,7 @@ import wheeledArmor from '../../markers/hostile/wheeled-armor.svg'
 //----------------------------------------------------------------//
 // Hostile Markers Component
 //----------------------------------------------------------------//
-// TODO Props here?
-const HostileMarkers = ({ handleAddMarker, handleMarkerDrawerToggle }) => {
+const HostileMarkers = props => {
   const classes = useStyles()
 
   const handleMarkerClick = (iconUrl, title) => {
@@ -99,7 +98,8 @@ const HostileMarkers = ({ handleAddMarker, handleMarkerDrawerToggle }) => {
         }
       }
     }
-    handleAddMarker(payload)
+
+    props.handleAddMarker(payload)
   }
 
   return (

@@ -1,3 +1,11 @@
+## 2.15.21-beta
+### Changes
+* Added tooltips to all the shapes
+* Moved all shapes to their own Component for maintenance & reusability in `components\layers`
+* Removed almost all extraneous properties such that only state and setting state is passed
+* Only remaining properties are the `toast()` function and `map` reference.
+* Future to pull those out
+
 ## 2.15.20-beta
 ### Changes
 * Moved `styles` into its own `useStyle` file

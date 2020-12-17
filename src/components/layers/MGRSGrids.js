@@ -57,12 +57,12 @@ const MGRSGrids = (props) => {
   const classes = useStyles(props.state.history[props.state.step].styles.mgrs)
 
   const zoneStyle = {
-    color: props.style.gridzoneColor,
+    color: props.state.history[props.state.step].styles.mgrs.gridzoneColor,
     opacity: 0.6,
   }
 
   const lineStyle = {
-    color: props.style.lineColor,
+    color: props.state.history[props.state.step].styles.mgrs.lineColor,
     opacity: 1,
     weight: 1,
   }

@@ -27,7 +27,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-const handleLoadScenario = (data, history, state, setState, toast) => {
+const handleLoadScenario = (data, state, setState, toast) => {
   let json
   try {
     let object = JSON.parse(data)
@@ -43,10 +43,10 @@ const handleLoadScenario = (data, history, state, setState, toast) => {
   if (json !== undefined) {
 
     let targetHistory
-    if (state.step === history.length - 1) {
-      targetHistory = history.slice()
+    if (state.step === state.history.length - 1) {
+      targetHistory = state.history.slice()
     } else {
-      targetHistory = history.slice(0, state.step + 1)
+      targetHistory = state.history.slice(0, state.step + 1)
     }
 
     const newStep = {

@@ -32,6 +32,11 @@
 import React from 'react'
 
 //----------------------------------------------------------------//
+// Hawg View Handlers
+//----------------------------------------------------------------//
+import handleMarkerEdit from '../../handlers/handleMarkerEdit'
+
+//----------------------------------------------------------------//
 // Kinetic Point Tool Component
 //----------------------------------------------------------------//
 /**
@@ -55,7 +60,7 @@ const KineticPointTool = props => {
 
   React.useEffect(() => {
     if (props.state.tool === 'kineticPoint' && props.state.focusedLatlng.latlng !== null) {
-      const newData = {
+      const payload = {
         arty: {
           arty: false,
           display: false,
@@ -63,10 +68,10 @@ const KineticPointTool = props => {
         iconType: 'div',
         latlng: props.state.focusedLatlng.latlng,
         layer: 'kineticPoint',
-        title: `${String.fromCharCode(props.firstLetter)}${String.fromCharCode(props.secondLetter)}`,
+        title: `${String.fromCharCode(props.state.history[props.state.step].data.firstLetter)}${String.fromCharCode(props.state.history[props.state.step].data.secondLetter)}`,
       }
 
-      props.submit('create', newData)
+      handleMarkerEdit('create', payload, props.state, props.setState)
     }
   }, [props.state.focusedLatlng])
 

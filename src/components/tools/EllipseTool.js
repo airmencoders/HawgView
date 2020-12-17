@@ -30,6 +30,11 @@
 import React from 'react'
 
 //----------------------------------------------------------------//
+// Hawg View Handlers
+//----------------------------------------------------------------//
+import handleMarkerEdit from '../../handlers/handleMarkerEdit'
+
+//----------------------------------------------------------------//
 // Ellipse Tool Component
 //----------------------------------------------------------------//
 const EllipseTool = props => {
@@ -48,7 +53,7 @@ const EllipseTool = props => {
    */ 
   React.useEffect(() => {
     if(props.state.tool === 'ellipse' && props.state.focusedLatlng.latlng !== null) {
-      props.submit('create', {
+      const payload = {
         center: props.state.focusedLatlng.latlng,
         color: '#4A90E2',
         dashArray: null,
@@ -58,7 +63,9 @@ const EllipseTool = props => {
         tilt: 90,
         title: 'Ellipse',
         width: 4630,
-      })
+      }
+
+      handleMarkerEdit('create', payload, props.state, props.setState)
     }
   }, [props.state.tool, props.state.focusedLatlng])
 

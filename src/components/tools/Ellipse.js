@@ -47,24 +47,47 @@ import {
 class Ellipse extends Path {
 
   createLeafletElement(props) {
-    return new L.ellipse(props.center, [props.length, props.width], props.tilt, props.options)
+    let options = {
+      color: props.ellipse.color,
+      dashArray: props.ellipse.dashArray,
+      fill: props.ellipse.fillColor === null ? false : true,
+      fillColor: props.ellipse.fillColor,
+      weight: 4,
+    }
+
+    return new L.ellipse(
+      props.ellipse.center,
+      [props.ellipse.length, props.ellipse.width],
+      props.ellipse.tilt,
+      options)
   }
 
   updateLeafletElement(fromProps, toProps) {
-    if (toProps.center !== fromProps.center) {
-      this.leafletElement.setLatLng(toProps.center)
+    if (toProps.ellipse.center !== fromProps.ellipse.center) {
+      this.leafletElement.setLatLng(toProps.ellipse.center)
     }
 
-    if (toProps.tilt !== fromProps.tilt) {
-      this.leafletElement.setTilt(toProps.tilt)
+    if (toProps.ellipse.tilt !== fromProps.ellipse.tilt) {
+      this.leafletElement.setTilt(toProps.ellipse.tilt)
     }
 
-    if (toProps.options !== fromProps.options) {
-      this.leafletElement.setStyle(toProps.options)
+    if (
+      toProps.ellipse.color !== fromProps.ellipse.color ||
+      toProps.ellipse.dashArray !== fromProps.ellipse.dashArray ||
+      toProps.ellipse.fill !== fromProps.ellipse.fill ||
+      toProps.ellipse.fillColor !== fromProps.ellipse.fillColor
+    ) {
+      this.leafletElement.setStyle({
+        color: toProps.ellipse.color,
+        dashArray: toProps.ellipse.dashArray,
+        fill: toProps.ellipse.fillColor === null ? false : true,
+        fillColor: toProps.ellipse.fillColor,
+        weight: 4,
+      })
     }
 
-    if (toProps.length !== fromProps.length || toProps.width !== fromProps.width) {
-      this.leafletElement.setRadius([toProps.length, toProps.width])
+    if (toProps.ellipse.length !== fromProps.ellipse.length || toProps.ellipse.width !== fromProps.ellipse.width) {
+      this.leafletElement.setRadius([toProps.ellipse.length, toProps.ellipse.width])
     }
   }
 }

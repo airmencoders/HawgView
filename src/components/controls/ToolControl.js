@@ -164,8 +164,6 @@ const ToolControls = (props) => {
         </Tooltip>
       </ButtonGroup>
       <Tools
-        editMarker={props.editMarker}
-
         setState={props.setState}
         state={props.state}
       />

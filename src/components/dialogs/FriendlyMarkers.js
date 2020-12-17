@@ -72,8 +72,7 @@ import wheeledArmor from '../../markers/friendly/wheeled-armor.svg'
 //----------------------------------------------------------------//
 // Friendly Markers Component
 //----------------------------------------------------------------//
-// TODO Props here?
-const FriendlyMarkers = ({ handleAddMarker, handleMarkerDrawerToggle }) => {
+const FriendlyMarkers = props => {
   const classes = useStyles()
 
   const handleMarkerClick = (iconUrl, title) => {
@@ -98,7 +97,8 @@ const FriendlyMarkers = ({ handleAddMarker, handleMarkerDrawerToggle }) => {
         }
       }
     }
-    handleAddMarker(payload)
+    
+    props.handleAddMarker(payload)
   }
 
   return (

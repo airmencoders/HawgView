@@ -86,6 +86,8 @@ import {
   minMarkerSize,
 } from '../../handlers/handleMarkerSizeChange'
 
+import handleMarkerEdit from '../../handlers/handleMarkerEdit'
+
 //----------------------------------------------------------------//
 // Mobile Menu Component
 //----------------------------------------------------------------//
@@ -95,17 +97,6 @@ const MobileMenu = (props) => {
   //----------------------------------------------------------------//
   // Click Handlers
   //----------------------------------------------------------------//
-  const handleClearMarkersClick = () => {
-    props.setState({
-      ...props.state,
-      dialog: {
-        anchor: null,
-        name: null,
-      },
-    })
-    props.handleClearMarkers()
-  }
-
   const handleToggleTooltipsClick = () => {
     props.setState({
       ...props.state,
@@ -178,7 +169,7 @@ const MobileMenu = (props) => {
         <RedoIcon className={classes.mobileMenuIcon} />
         Redo {props.state.step === props.state.history.length - 1 ? '' : props.state.history[props.state.step + 1].action}
       </MenuItem>
-      <MenuItem onClick={handleClearMarkersClick}>
+      <MenuItem onClick={() => handleMarkerEdit('clear', {}, props.state, props.setState)}>
         <ClearIcon className={classes.mobileMenuIcon} />
         Clear all markers
       </MenuItem>

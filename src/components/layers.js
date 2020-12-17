@@ -29,17 +29,27 @@
  */
 
 import Bullseye from './layers/Bullseye'
+import Circle from './layers/Circle'
+import Ellipse from './layers/Ellipse'
 import GARSCells from './layers/GARSCells'
+import Line from './layers/Line'
 import Marker from './layers/Marker'
 import MGRSGrids from './layers/MGRSGrids'
+import Polygon from './layers/Polygon'
+import Rectangle from './layers/Rectangle'
 import Shape from './layers/Shape'
 import Threat from './layers/Threat'
 
 export {
   Bullseye,
+  Circle,
+  Ellipse,
   GARSCells,
+  Line,
   Marker,
   MGRSGrids,
+  Polygon,
+  Rectangle,
   Shape,
   Threat,
 }

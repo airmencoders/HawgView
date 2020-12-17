@@ -46,6 +46,11 @@ import {
 import useStyles from '../../constants/useStyles'
 
 //----------------------------------------------------------------//
+// Hawg View Handlers
+//----------------------------------------------------------------//
+import handleLoadScenario from '../../handlers/handleLoadScenario'
+
+//----------------------------------------------------------------//
 // Load Scenario Dialog Component
 //----------------------------------------------------------------//
 const LoadScenarioDialog = (props) => {
@@ -56,8 +61,7 @@ const LoadScenarioDialog = (props) => {
     const reader = new FileReader()
 
     reader.onload = () => {
-      handleClose()
-      props.submit(reader.result)
+      handleLoadScenario(reader.result, props.state, props.setState, props.toast)
     }
 
     reader.readAsText(file)

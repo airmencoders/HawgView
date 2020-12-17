@@ -80,6 +80,8 @@ import {
   maxMarkerSize,
 } from '../../handlers/handleMarkerSizeChange'
 
+import handleMarkerEdit from '../../handlers/handleMarkerEdit'
+
 //----------------------------------------------------------------//
 // CAS Tools Component
 //----------------------------------------------------------------//
@@ -135,7 +137,7 @@ const CASTools = props => {
       <Tooltip title='Clear all markers'>
         <IconButton
           color='inherit'
-          onClick={props.handleClearMarkers}
+          onClick={() => handleMarkerEdit('clear', {}, props.state, props.setState)}
         >
           <ClearIcon />
         </IconButton>

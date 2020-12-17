@@ -50,6 +50,11 @@ import {
 import useStyles from '../../constants/useStyles'
 
 //----------------------------------------------------------------//
+// Hawg View Handlers
+//----------------------------------------------------------------//
+import handleMarkerEdit from '../../handlers/handleMarkerEdit'
+
+//----------------------------------------------------------------//
 // Style Drawer Component
 //----------------------------------------------------------------//
 /**
@@ -90,7 +95,7 @@ const StyleDrawer = (props) => {
       },
     }
 
-    props.submit('edit', newStyles)
+    handleMarkerEdit('edit', newStyles, props.state, props.setState)
   }
 
   const handleClose = () => {

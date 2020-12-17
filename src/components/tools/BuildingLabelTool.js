@@ -32,6 +32,11 @@
 import React from 'react'
 
 //----------------------------------------------------------------//
+// Hawg View Handlers
+//----------------------------------------------------------------//
+import handleMarkerEdit from '../../handlers/handleMarkerEdit'
+
+//----------------------------------------------------------------//
 // Analysis Tool Component
 //----------------------------------------------------------------//
 /**
@@ -56,7 +61,7 @@ const BuildingLabelTool = (props) => {
 
   React.useEffect(() => {
     if (props.state.tool === 'buildingLabel' && props.state.focusedLatlng.latlng !== null) {
-      const newData = {
+      const payload = {
         arty: {
           arty: false,
           display: false,
@@ -64,10 +69,10 @@ const BuildingLabelTool = (props) => {
         iconType: 'div',
         latlng: props.state.focusedLatlng.latlng,
         layer: 'buildingLabel',
-        title: props.index,
+        title: props.state.history[props.state.step].data.buildingLabel,
       }
 
-      props.submit('create', newData)
+      handleMarkerEdit('create', payload, props.state, props.setState)
     }
   }, [props.state.focusedLatlng.latlng])
 

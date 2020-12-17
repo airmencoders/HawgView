@@ -56,7 +56,7 @@ const MouseCoordinatesControl = props => {
     if (props.state.mouseCoords !== null) {
       setData(generateMapPopup(props.state.mouseCoords, props.state.history[props.state.step].anchor))
     }
-  }, [props])
+  }, [props.state.mouseCoords])
 
   return (
     <Control

@@ -86,11 +86,6 @@ import useStyles from './constants/useStyles'
 import getElevation from './functions/getElevation'
 
 //----------------------------------------------------------------//
-// Hawg View Handlers
-//----------------------------------------------------------------//
-import handleMarkerEdit from './handlers/handleMarkerEdit'
-
-//----------------------------------------------------------------//
 // Styles
 //----------------------------------------------------------------//
 import 'leaflet/dist/leaflet.css'
@@ -181,8 +176,6 @@ const Cas = () => {
   const [elevation, setElevation] = React.useState('Pending')
   const [map, setMap] = React.useState(null)
 
-  const [markerLabel, setMarkerLabel] = React.useState('')
-
   //----------------------------------------------------------------//
   // DEBUGGING AREA
   //----------------------------------------------------------------//
@@ -205,23 +198,6 @@ const Cas = () => {
       window.removeEventListener('resize', handleMobileMenuClose, false)
     }
   }, [state])
-
-  /**
-  * Any time the focusd marker changes, set elevation to its default state 'Pending'
-  * and set the focused lat/lng to the marker's latlng (If it's not null)
-  */
-  React.useEffect(() => {
-    if (state.focusedMarker !== null) {
-      setState({
-        ...state,
-        elevation: 'Pending',
-        focusedLatlng: {
-          latlng: state.focusedMarker.latlng,
-          source: 'marker',
-        },
-      })
-    }
-  }, [state.focusedMarker])
 
   /**
    * Whenever the focused lat/lng changes, as long as it has a valid lat/lng object and tool is not active,
@@ -298,6 +274,10 @@ const Cas = () => {
   const toast = (message, severity) => {
     setState({
       ...state,
+      dialog: {
+        anchor: null,
+        name: null,
+      },
       snackbar: {
         ...state.snackbar,
         pack: [...state.snackbar.pack, {
@@ -309,9 +289,9 @@ const Cas = () => {
     })
   }
 
-  const editMarker = React.useCallback((action, payload) => {
-    handleMarkerEdit(action, payload, state, setState, markerLabel, setMarkerLabel, toast)
-  }, [state])
+  /*const editMarker = React.useCallback((action, payload) => {
+    handleMarkerEdit(action, payload, state, setState, toast)
+  }, [state])*/
 
   return (
     <Box
@@ -328,8 +308,6 @@ const Cas = () => {
           />
           <div className={classes.sectionDesktop}>
             <CASTools
-              handleClearMarkers={() => editMarker('clear', {})}
-
               setState={setState}
               state={state}
             />
@@ -354,8 +332,6 @@ const Cas = () => {
             </IconButton>
           </Tooltip>
           <MobileMenu
-            handleClearMarkers={() => editMarker('clear', {})}
-
             setState={setState}
             state={state}
           />
@@ -378,18 +354,12 @@ const Cas = () => {
             state={state}
           />
           <LayerControl
-            handleMarkerDrag={(marker, latlng) => editMarker('drag', { marker: marker, latlng: latlng })}
-            interactive={state.tool === null}
             map={map}
-            handleDeleteMarker={marker => editMarker('delete', { marker: marker })}
-
             setState={setState}
             state={state}
           />
           <ZoomControl position='topright' />
           <ToolControl
-            editMarker={editMarker}
-
             setState={setState}
             state={state}
           />
@@ -404,13 +374,9 @@ const Cas = () => {
         setState={setState}
       />
       <Dialogs
-        handleEditMarker={(action, dialog) => editMarker(action, dialog)}
-        markerLabel={markerLabel}
-        setMarkerLabel={setMarkerLabel}
-        toast={toast}
-
         setState={setState}
         state={state}
+        toast={toast}
       />
     </Box>
   )

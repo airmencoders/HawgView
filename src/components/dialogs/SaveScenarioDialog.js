@@ -49,34 +49,36 @@ import useStyles from '../../constants/useStyles'
 //----------------------------------------------------------------//
 // Save Scenario Dialog Component
 //----------------------------------------------------------------//
-const SaveScenarioDialog = (props) => {
+const SaveScenarioDialog = props => {
   const classes = useStyles()
   let scenarioRef = React.useRef(null)
 
   const [name, setName] = React.useState('')
+
+  let data = props.state.history[props.state.step]
 
   const scenario = {
     name: name,
     classification: 'UNCLASSIFIED',
     date: new Date(),
     data: {
-      anchor: props.data.anchor,
-      buildingLabels: props.data.buildingLabels,
-      bullseyes: props.data.bullseyes,
-      circles: props.data.circles,
-      data: props.data.data,
-      ellipses: props.data.ellipses,
-      friendlyMarkers: props.data.friendlyMarkers,
-      hostileMarkers: props.data.hostileMarkers,
-      initialPoints: props.data.initialPoints,
-      kineticPoints: props.data.kineticPoints,
-      lines: props.data.lines,
-      mapLabels: props.data.mapLabels,
-      polygons: props.data.polygons,
-      rectangles: props.data.rectangles,
-      survivors: props.data.survivors,
-      styles: props.data.styles,
-      threatMarkers: props.data.threatMarkers
+      anchor: data.anchor,
+      buildingLabels: data.buildingLabels,
+      bullseyes: data.bullseyes,
+      circles: data.circles,
+      data: data.data,
+      ellipses: data.ellipses,
+      friendlyMarkers: data.friendlyMarkers,
+      hostileMarkers: data.hostileMarkers,
+      initialPoints: data.initialPoints,
+      kineticPoints: data.kineticPoints,
+      lines: data.lines,
+      mapLabels: data.mapLabels,
+      polygons: data.polygons,
+      rectangles: data.rectangles,
+      survivors: data.survivors,
+      styles: data.styles,
+      threatMarkers: data.threatMarkers
     }
   }
 
@@ -88,8 +90,8 @@ const SaveScenarioDialog = (props) => {
     document.body.appendChild(element)
     element.click()
 
-    handleClose()
     props.toast(`Scenario ${name} saved`)
+    setName('')
   }
 
   const handleClose = () => {

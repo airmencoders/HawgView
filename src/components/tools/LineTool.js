@@ -47,6 +47,11 @@ import {
 import { distanceAndHeading } from '../../functions/mathFunctions'
 
 //----------------------------------------------------------------//
+// Hawg View Handlers
+//----------------------------------------------------------------//
+import handleMarkerEdit from '../../handlers/handleMarkerEdit'
+
+//----------------------------------------------------------------//
 // Line Tool Component
 //----------------------------------------------------------------//
 const LineTool = props => {
@@ -112,25 +117,32 @@ const LineTool = props => {
 
   const handleSubmit = () => {
     if ((props.state.tool === 'line' || props.state.tool === 'polygon') && positions.length > 1) {
+
+      let payload = null
+
       if (props.state.tool === 'line') {
-        props.submit('create', {
+        payload = {
           color: '#4A90E2',
           dashArray: null,
           layer: 'line',
           positions: positions,
           title: 'Line',
-        })
+        }
       } else if (props.state.tool === 'polygon') {
-        props.submit('create', {
+        payload = {
           color: '#4A90E2',
           dashArray: null,
           fillColor: null,
           layer: 'polygon',
           positions: positions,
           title: 'Polygon',
-        })
+        }
       } else {
         console.error(`Invalid tool (${props.tool}) selected.`)
+      }
+
+      if (payload !== null) {
+        handleMarkerEdit('create', payload, props.state, props.setState)
       }
 
       setPositions([])

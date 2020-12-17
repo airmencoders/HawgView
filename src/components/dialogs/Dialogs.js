@@ -44,11 +44,6 @@ import {
 } from '../dialogs'
 
 //----------------------------------------------------------------//
-// Hawg View Handlers
-//----------------------------------------------------------------//
-import handleLoadScenario from '../../handlers/handleLoadScenario'
-
-//----------------------------------------------------------------//
 // Dialogs Component
 //----------------------------------------------------------------//
 const Dialogs = props => {
@@ -62,34 +57,24 @@ const Dialogs = props => {
       <StyleDrawer
         setState={props.setState}
         state={props.state}
-        submit={(action, payload) => props.handleEditMarker(action, payload)}
       />
       <AddMarkerDrawer
-        anchor={props.state.history[props.state.step].anchor}
-        markerLabel={props.markerLabel}
-        handleAddMarker={payload => props.handleEditMarker('create', payload)}
-        setMarkerLabel={props.setMarkerLabel}
-
         setState={props.setState}
         state={props.state}
       />
       <EditMarkerDrawer
         setState={props.setState}
         state={props.state}
-        submit={(action, payload) => props.handleEditMarker(action, payload)}
       />
       <EditShapeDrawer
         setState={props.setState}
         state={props.state}
-        submit={(action, payload) => props.handleEditMarker(action, payload)}
       />
       <MarkerListDialog
         setState={props.setState}
         state={props.state}
-        step={props.state.history[props.state.step]}
       />
       <SaveScenarioDialog
-        data={props.state.history[props.state.step]}
         setState={props.setState}
         state={props.state}
         toast={(message, severity) => props.toast(message, severity)}
@@ -97,7 +82,7 @@ const Dialogs = props => {
       <LoadScenarioDialog
         setState={props.setState}
         state={props.state}
-        submit={data => handleLoadScenario(data, props.state.history, props.state, props.setState, props.toast)}
+        toast={(message, severity) => props.toast(message, severity)}
       />
     </React.Fragment>
   )

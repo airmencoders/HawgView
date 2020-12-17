@@ -54,18 +54,23 @@ import { LatLon as LL } from 'geodesy/mgrs'
 import LatLon from 'geodesy/latlon-spherical'
 
 //----------------------------------------------------------------//
-// Hawg View Functions
+// Hawg View Constants
 //----------------------------------------------------------------//
 import useStyles from '../../constants/useStyles'
 
 //----------------------------------------------------------------//
 // Hawg View Functions
 //----------------------------------------------------------------//
-import { 
+import {
   render9line,
   render15line,
 } from '../../functions/renderData'
 import { distanceAndHeading } from '../../functions/mathFunctions'
+
+//----------------------------------------------------------------//
+// Hawg View Handlers
+//----------------------------------------------------------------//
+import handleMarkerEdit from '../../handlers/handleMarkerEdit'
 
 //----------------------------------------------------------------//
 // Layer Markers Component
@@ -75,9 +80,47 @@ const Marker = props => {
   const computedSize = props.state.markerSize * props.state.map.zoom
 
   const classes = useStyles({
-    color: props.color === undefined || props.color === null ? props.marker.color : props.color,
+    color: props.marker.layer === 'buildingLabel' ? props.state.history[props.state.step].styles.buildingLabel.color : props.marker.color,
     computedSize,
   })
+
+  const handleClickMarker = () => {
+    if (props.state.tool === null) {
+      props.setState({
+        ...props.state,
+        focusedLatlng: {
+          latlng: props.marker.latlng,
+          source: 'marker',
+        },
+      })
+    }
+  }
+
+  const handleDeleteMarker = () => {
+    if (props.state.tool === null) {
+      handleMarkerEdit('delete', { marker: props.marker }, props.state, props.setState)
+    }
+  }
+
+
+  const handleDragMarker = latlng => {
+    if (props.state.tool === null) {
+      handleMarkerEdit('drag', { marker: props.marker, latlng: latlng }, props.state, props.setState)
+    }
+  }
+
+  const handleEditMarker = () => {
+    if (props.state.tool === null) {
+      props.setState({
+        ...props.state,
+        dialog: {
+          anchor: null,
+          name: 'editMarker',
+        },
+        focusedMarker: props.marker,
+      })
+    }
+  }
 
   /**
    * 
@@ -92,8 +135,12 @@ const Marker = props => {
     }
 
     let fromBE = null
-    if (props.anchor.id !== null) {
-      fromBE = distanceAndHeading(props.anchor.latlng, marker.latlng, props.anchor.declination)
+    if (props.state.history[props.state.step].anchor.id !== null) {
+      fromBE = distanceAndHeading(
+        props.state.history[props.state.step].anchor.latlng,
+        marker.latlng,
+        props.state.history[props.state.step].anchor.declination
+      )
     }
     return (
       <table>
@@ -106,7 +153,7 @@ const Marker = props => {
           </tr>
           {fromBE !== null ? (
             <tr>
-              <td>{props.anchor.name} {Number.parseInt(fromBE.heading)}&deg; / {Number.parseInt(fromBE.nm)} NM</td>
+              <td>{props.state.history[props.state.step].anchor.name} {Number.parseInt(fromBE.heading)}&deg; / {Number.parseInt(fromBE.nm)} NM</td>
             </tr>
           )
             :
@@ -143,19 +190,16 @@ const Marker = props => {
         >
           TGP View
       </Button>
-        <Button 
+        <Button
           color='primary'
-          onClick={() => props.setState({
-            ...props.state,
-            dialog: {
-              anchor: null,
-              name: 'editMarker',
-            },
-          })}
+          onClick={handleEditMarker}
         >
           Edit
         </Button>
-        <Button color='secondary' onClick={() => props.handleDeleteMarker(marker)}>Delete</Button>
+        <Button
+          color='secondary'
+          onClick={handleDeleteMarker}
+        >Delete</Button>
       </Popup>
     )
   }
@@ -192,7 +236,7 @@ const Marker = props => {
     <React.Fragment>
       {(props.marker.arty.arty && props.marker.arty.display) ? generatePAA(props.marker.latlng, props.marker.layer) : null}
       <RLMarker
-        draggable={props.interactive}
+        draggable={props.state.tool === null}
         icon={props.marker.iconType === 'img' ?
           L.icon({
             iconUrl: props.marker.iconUrl,
@@ -201,17 +245,13 @@ const Marker = props => {
           :
           L.divIcon({
             className: props.marker.layer === 'kineticPoint' ? classes.kineticPoint : classes.divIcon,
-            color: props.marker.color,
             html: props.marker.title,
             iconSize: props.marker.layer === 'kineticPoint' ? [computedSize, computedSize] : [20, 20],
           })
         }
         id={props.marker.id}
-        onClick={props.interactive ? () => props.setState({
-          ...props.state,
-          focusedMarker: props.marker
-        }) : undefined}
-        onDragend={props.interactive ? event => props.handleMarkerDrag(props.marker, event.target.getLatLng()) : undefined}
+        onClick={handleClickMarker}
+        onDragend={event => handleDragMarker(event.target.getLatLng())}
         position={props.marker.latlng}
         title={props.marker.title}
       >

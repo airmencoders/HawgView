@@ -54,47 +54,30 @@ const Tools = props => {
         state={props.state}
       />
       <BuildingLabelTool
-        index={props.state.history[props.state.step].data.buildingLabel}
-        submit={(action, payload) => props.editMarker(action, payload)}
-
         setState={props.setState}
         state={props.state}
       />
       <KineticPointTool
-        firstLetter={props.state.history[props.state.step].data.firstLetter}
-        secondLetter={props.state.history[props.state.step].data.secondLetter}
-        submit={(action, payload) => props.editMarker(action, payload)}
-
         setState={props.setState}
         state={props.state}
       />
       <LineTool
-        submit={(action, payload) => props.editMarker(action, payload)}
-
         setState={props.setState}
         state={props.state}
       />
       <CircleTool
-        submit={(action, payload) => props.editMarker(action, payload)}
-
         setState={props.setState}
         state={props.state}
       />
       <RectangleTool
-        submit={(action, payload) => props.editMarker(action, payload)}
-
         setState={props.setState}
         state={props.state}
       />
       <LineTool
-        submit={(action, payload) => props.editMarker(action, payload)}
-
         setState={props.setState}
         state={props.state}
       />
       <EllipseTool
-        submit={(action, payload) => props.editMarker(action, payload)}
-
         setState={props.setState}
         state={props.state}
       />

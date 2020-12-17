@@ -28,28 +28,16 @@
  * SOFTWARE.
  */
 import React from 'react'
-import L from 'leaflet'
-
-//----------------------------------------------------------------//
-// Material-UI Components
-//----------------------------------------------------------------//
-import {
-  Button
-} from '@material-ui/core'
 
 //----------------------------------------------------------------//
 // React Leaflet Components
 //----------------------------------------------------------------//
 import {
-  Circle,
   LayersControl,
   LayerGroup,
-  Polygon,
+  Polygon as RLPolygon,
   Polyline,
-  Popup,
-  Rectangle,
   TileLayer,
-  Tooltip,
 } from 'react-leaflet'
 
 //----------------------------------------------------------------//
@@ -57,15 +45,16 @@ import {
 //----------------------------------------------------------------//
 import {
   Bullseye,
+  Circle,
+  Ellipse,
+  GARSCells,
+  Line,
   Marker,
   MGRSGrids,
-  GARSCells,
+  Polygon,
+  Rectangle,
   Threat,
 } from '../layers'
-
-import {
-  Ellipse,
-} from '../tools'
 
 //----------------------------------------------------------------//
 // Hawg View Constants
@@ -73,51 +62,11 @@ import {
 import { airspace } from '../../constants/airspace'
 
 //----------------------------------------------------------------//
-// Geodesy Functions
-//----------------------------------------------------------------//
-import { LatLon as LL } from 'geodesy/mgrs'
-
-//----------------------------------------------------------------//
 // Map Control Component
 //----------------------------------------------------------------//
 const LayerControl = props => {
 
   const { BaseLayer, Overlay } = LayersControl
-
-  const handleEditShape = shape => {
-    props.setState({
-      ...props.state,
-      dialog: {
-        anchor: null,
-        name: 'editShape',
-      },
-      focusedShape: shape,
-    })
-  }
-
-  // Only for Circle || Ellipse || Bullseye
-  const generateShapePopupText = shape => {
-    let position
-    let center
-
-    if (shape.layer === 'ellipse') {
-      center = shape.center
-    } else {
-      center = shape.latlng
-    }
-    try {
-      position = LL.parse(center.lat, center.lng).toUtm().toMgrs().toString()
-    } catch (e) {
-      position = `${center.lat.toFixed(4)}, ${center.lng.toFixed(4)}`
-    }
-    return (
-      <React.Fragment>
-        {shape.title}
-        <br />
-        {position}
-      </React.Fragment>
-    )
-  }
 
   const layers = React.useMemo(() => (
     <LayersControl position='topright'>
@@ -147,16 +96,12 @@ const LayerControl = props => {
       <Overlay name='MGRS Lines'>
         <MGRSGrids
           map={props.map}
-          style={props.state.history[props.state.step].styles.mgrs}
-
           state={props.state}
         />
       </Overlay>
       <Overlay name='GARS Cells'>
         <GARSCells
           map={props.map}
-          style={props.state.history[props.state.step].styles.gars}
-          
           state={props.state}
         />
       </Overlay>
@@ -174,35 +119,35 @@ const LayerControl = props => {
       </Overlay>
       <Overlay checked name='Airspace'>
         <LayerGroup>
-          <Polygon
+          <RLPolygon
             clickable={false}
             color='#ff00ff'
             fill={false}
             positions={airspace.llzs}
             weight={2}
           />
-          <Polygon
+          <RLPolygon
             clickable={false}
             color='#00ff00'
             fill={false}
             positions={airspace.lowMoas}
             weight={2}
           />
-          <Polygon
+          <RLPolygon
             clickable={false}
             color='#00ffff'
             fill={false}
             positions={airspace.moas}
             weight={2}
           />
-          <Polygon
+          <RLPolygon
             clickable={false}
             color='#ff9000'
             fill={false}
             positions={airspace.warningAreas}
             weight={2}
           />
-          <Polygon
+          <RLPolygon
             clickable={false}
             color='#ff0000'
             fill={false}
@@ -232,7 +177,7 @@ const LayerControl = props => {
         </LayerGroup>
       </Overlay>
       <Overlay checked name='AARs'>
-        <Polygon
+        <RLPolygon
           clickable={false}
           color='#070080'
           fill={false}
@@ -241,7 +186,7 @@ const LayerControl = props => {
         />
       </Overlay>
       <Overlay checked name='ATCAAs'>
-        <Polygon
+        <RLPolygon
           clickable={false}
           color='#ffff00'
           fill={false}
@@ -253,12 +198,8 @@ const LayerControl = props => {
         <LayerGroup>
           {props.state.history[props.state.step].bullseyes.map(bullseye => (
             <Bullseye
-              bullseye={bullseye}  
-              handleDeleteMarker={marker => props.handleDeleteMarker(marker)}
-              handleMarkerDrag={(marker, latlng) => props.handleMarkerDrag(marker, latlng)}
-              interactive={props.interactive}
+              bullseye={bullseye}
               key={`${bullseye.layer}-${bullseye.title}-${bullseye.id}`}
-
               setState={props.setState}
               state={props.state}
             />
@@ -269,13 +210,8 @@ const LayerControl = props => {
         <LayerGroup>
           {props.state.history[props.state.step].friendlyMarkers.map(marker => (
             <Marker
-              anchor={props.state.history[props.state.step].anchor}
-              interactive={props.interactive}
-              handleMarkerDrag={(marker, latlng) => props.handleMarkerDrag(marker, latlng)}
-              handleDeleteMarker={marker => props.handleDeleteMarker(marker)}
               key={`${marker.layer}-${marker.title}-${marker.id}`}
               marker={marker}
-
               setState={props.setState}
               state={props.state}
             />
@@ -286,13 +222,8 @@ const LayerControl = props => {
         <LayerGroup>
           {props.state.history[props.state.step].hostileMarkers.map(marker => (
             <Marker
-              anchor={props.state.history[props.state.step].anchor}
-              interactive={props.interactive}
-              handleMarkerDrag={(marker, latlng) => props.handleMarkerDrag(marker, latlng)}
-              handleDeleteMarker={marker => props.handleDeleteMarker(marker)}
               key={`${marker.layer}-${marker.title}-${marker.id}`}
               marker={marker}
-
               setState={props.setState}
               state={props.state}
             />
@@ -303,14 +234,8 @@ const LayerControl = props => {
         <LayerGroup>
           {props.state.history[props.state.step].threatMarkers.map(marker => (
             <Threat
-              anchor={props.state.history[props.state.step].anchor}
-              interactive={props.interactive}
-              handleMarkerDrag={(marker, latlng) => props.handleMarkerDrag(marker, latlng)}
-              handleDeleteMarker={marker => props.handleDeleteMarker(marker)}
               key={`${marker.layer}-${marker.title}-${marker.id}`}
               marker={marker}
-              setFocusedLatlng={latlng => props.setFocusedLatlng(latlng)}
-
               setState={props.setState}
               state={props.state}
             />
@@ -321,13 +246,8 @@ const LayerControl = props => {
         <LayerGroup>
           {props.state.history[props.state.step].survivors.map(marker => (
             <Marker
-              anchor={props.state.history[props.state.step].anchor}
-              interactive={props.interactive}
-              handleMarkerDrag={(marker, latlng) => props.handleMarkerDrag(marker, latlng)}
-              handleDeleteMarker={marker => props.handleDeleteMarker(marker)}
               key={`${marker.layer}-${marker.title}-${marker.id}`}
               marker={marker}
-
               setState={props.setState}
               state={props.state}
             />
@@ -338,13 +258,8 @@ const LayerControl = props => {
         <LayerGroup>
           {props.state.history[props.state.step].initialPoints.map(marker => (
             <Marker
-              anchor={props.state.history[props.state.step].anchor}
-              interactive={props.interactive}
-              handleMarkerDrag={(marker, latlng) => props.handleMarkerDrag(marker, latlng)}
-              handleDeleteMarker={marker => props.handleDeleteMarker(marker)}
               key={`${marker.layer}-${marker.title}-${marker.id}`}
               marker={marker}
-
               setState={props.setState}
               state={props.state}
             />
@@ -355,14 +270,8 @@ const LayerControl = props => {
         <LayerGroup>
           {props.state.history[props.state.step].buildingLabels.map(marker => (
             <Marker
-              anchor={props.state.history[props.state.step].anchor}
-              color={props.state.history[props.state.step].styles.buildingLabel.color}
-              interactive={props.interactive}
-              handleMarkerDrag={(marker, latlng) => props.handleMarkerDrag(marker, latlng)}
-              handleDeleteMarker={marker => props.handleDeleteMarker(marker)}
               key={`${marker.layer}-${marker.title}-${marker.id}`}
               marker={marker}
-
               setState={props.setState}
               state={props.state}
             />
@@ -373,13 +282,8 @@ const LayerControl = props => {
         <LayerGroup>
           {props.state.history[props.state.step].kineticPoints.map(marker => (
             <Marker
-              anchor={props.state.history[props.state.step].anchor}
-              interactive={props.interactive}
-              handleMarkerDrag={(marker, latlng) => props.handleMarkerDrag(marker, latlng)}
-              handleDeleteMarker={marker => props.handleDeleteMarker(marker)}
               key={`${marker.layer}-${marker.title}-${marker.id}`}
               marker={marker}
-
               setState={props.setState}
               state={props.state}
             />
@@ -390,13 +294,8 @@ const LayerControl = props => {
         <LayerGroup>
           {props.state.history[props.state.step].mapLabels.map(marker => (
             <Marker
-              anchor={props.state.history[props.state.step].anchor}
-              interactive={props.interactive}
-              handleMarkerDrag={(marker, latlng) => props.handleMarkerDrag(marker, latlng)}
-              handleDeleteMarker={marker => props.handleDeleteMarker(marker)}
               key={`${marker.layer}-${marker.title}-${marker.id}`}
               marker={marker}
-
               setState={props.setState}
               state={props.state}
             />
@@ -405,220 +304,68 @@ const LayerControl = props => {
       </Overlay>
       <Overlay checked name='Ellipses'>
         <LayerGroup>
-          {props.interactive && props.state.history[props.state.step].ellipses.map(ellipse => (
+          {props.state.history[props.state.step].ellipses.map(ellipse => (
             <Ellipse
-              center={ellipse.center}
-              length={ellipse.length}
-              width={ellipse.width}
-              tilt={ellipse.tilt}
+              ellipse={ellipse}
               key={`ellipse-${ellipse.id}-${ellipse.title}`}
-              options={{
-                color: ellipse.color,
-                dashArray: ellipse.dashArray,
-                fill: ellipse.fillColor === null ? false : true,
-                fillColor: ellipse.fillColor,
-                weight: 4,
-              }}
-            >
-              <Popup
-                autoPan={false}
-              >
-                {generateShapePopupText(ellipse)}
-                <br />
-                <Button color='primary' onClick={() => handleEditShape(ellipse)}>Edit</Button>
-                <Button color='secondary' onClick={() => props.handleDeleteMarker(ellipse)}>Delete</Button>
-              </Popup>
-            </Ellipse>
-          ))}
-          {!props.interactive && props.state.history[props.state.step].ellipses.map(ellipse => (
-            <Ellipse
-              center={ellipse.center}
-              length={ellipse.length}
-              width={ellipse.width}
-              tilt={ellipse.tilt}
-              key={`ellipse-${ellipse.id}-${ellipse.title}`}
-              options={{
-                color: ellipse.color,
-                dashArray: ellipse.dashArray,
-                fill: ellipse.fillColor === null ? false : true,
-                fillColor: ellipse.fillColor,
-                weight: 4,
-              }}
+              setState={props.setState}
+              state={props.state}
             />
           ))}
         </LayerGroup>
       </Overlay>
       <Overlay checked name='Lines'>
         <LayerGroup>
-          {props.interactive && props.state.history[props.state.step].lines.map((line, index) => (
-            <Polyline
-              positions={line.positions}
-              color={line.color}
-              dashArray={line.dashArray}
+          {props.state.history[props.state.step].lines.map((line, index) => (
+            <Line
               key={`line-${index}`}
-              weight={4}
-            >
-              <Popup
-                autoPan={false}
-              >
-                <React.Fragment>
-                  {line.title}
-                  <br />
-                </React.Fragment>
-                <Button color='primary' onClick={() => handleEditShape(line)}>Edit</Button>
-                <Button color='secondary' onClick={() => props.handleDeleteMarker(line)}>Delete</Button>
-              </Popup>
-            </Polyline>
-          ))}
-          {!props.interactive && props.state.history[props.state.step].lines.map((line, index) => (
-            <Polyline
-              positions={line.positions}
-              color={line.color}
-              dashArray={line.dashArray}
-              key={`line-${index}`}
-              weight={4}
+              line={line}
+              setState={props.setState}
+              state={props.state}
             />
           ))}
         </LayerGroup>
       </Overlay>
       <Overlay checked name='Polygons'>
         <LayerGroup>
-          {props.interactive && props.state.history[props.state.step].polygons.map((polygon, index) => (
+          {props.state.history[props.state.step].polygons.map((polygon, index) => (
             <Polygon
-              positions={polygon.positions}
-              color={polygon.color}
-              dashArray={polygon.dashArray}
-              fill={polygon.fillColor === null ? false : true}
-              fillColor={polygon.fillColor}
               key={`polygon-${index}`}
-              weight={4}
-            >
-              <Popup
-                autoPan={false}
-              >
-                <React.Fragment>
-                  {polygon.title}
-                  <br />
-                </React.Fragment>
-                <Button color='primary' onClick={() => handleEditShape(polygon)}>Edit</Button>
-                <Button color='secondary' onClick={() => props.handleDeleteMarker(polygon)}>Delete</Button>
-              </Popup>
-            </Polygon>
-          ))}
-          {!props.interactive && props.state.history[props.state.step].polygons.map((polygon, index) => (
-            <Polygon
-              positions={polygon.positions}
-              color={polygon.color}
-              dashArray={polygon.dashArray}
-              fill={polygon.fillColor === null ? false : true}
-              fillColor={polygon.fillColor}
-              key={`polygon-${index}`}
-              weight={4}
+              polygon={polygon}
+              setState={props.setState}
+              state={props.state}
             />
           ))}
         </LayerGroup>
       </Overlay>
       <Overlay checked name='Rectangles'>
         <LayerGroup>
-          {props.interactive && props.state.history[props.state.step].rectangles.map(rectangle => (
+          {props.state.history[props.state.step].rectangles.map(rectangle => (
             <Rectangle
-              bounds={rectangle.bounds}
-              color={rectangle.color}
-              dashArray={rectangle.dashArray}
-              fill={rectangle.fillColor === null ? false : true}
-              fillColor={rectangle.fillColor === null ? undefined : rectangle.fillColor}
               key={`rectangle-${rectangle.id}-${rectangle.title}`}
-              weight={4}
-            >
-              <Popup
-                autoPan={false}
-              >
-                <React.Fragment>
-                  {rectangle.title}
-                  <br />
-                </React.Fragment>
-                <Button color='primary' onClick={() => handleEditShape(rectangle)}>Edit</Button>
-                <Button color='secondary' onClick={() => props.handleDeleteMarker(rectangle)}>Delete</Button>
-              </Popup>
-            </Rectangle>
-          ))}
-          {!props.interactive && props.state.history[props.state.step].rectangles.map(rectangle => (
-            <Rectangle
-              bounds={rectangle.bounds}
-              color={rectangle.color}
-              dashArray={rectangle.dashArray}
-              fill={rectangle.fillColor === null ? false : true}
-              fillColor={rectangle.fillColor === null ? undefined : rectangle.fillColor}
-              key={`rectangle-${rectangle.id}-${rectangle.title}`}
-              weight={4}
+              rectangle={rectangle}
+              setState={props.setState}
+              state={props.state}
             />
           ))}
         </LayerGroup>
       </Overlay>
       <Overlay checked name='Circles'>
         <LayerGroup>
-          {props.interactive && props.state.history[props.state.step].circles.map(circle => (
+          {props.state.history[props.state.step].circles.map(circle => (
             <Circle
-              center={circle.latlng}
-              color={circle.color}
-              dashArray={circle.dashArray}
-              fill={circle.fillColor === null ? false : true}
-              fillColor={circle.fillColor === null ? undefined : circle.fillColor}
+              circle={circle}
               key={`circle-${circle.id}-${circle.title}`}
-              radius={circle.unit === 'm' ? circle.radius : circle.unit === 'km' ? circle.radius * 1000 : circle.radius * 1852}
-              weight={4}
-            >
-              <Popup
-                autoPan={false}
-              >
-                {generateShapePopupText(circle)}
-                <br />
-                <Button color='primary' onClick={() => handleEditShape(circle)}>Edit</Button>
-                <Button color='secondary' onClick={() => props.handleDeleteMarker(circle)}>Delete</Button>
-              </Popup>
-              {(props.state.tooltips) ?
-                <Tooltip
-                  direction='top'
-                  offset={L.point(0, -1 * props.state.markerSize * props.state.map.zoom)}
-                  opacity='1'
-                  permanent
-                >
-                  {circle.title}
-                </Tooltip>
-                : undefined
-              }
-            </Circle>
-          ))}
-          {!props.interactive && props.state.history[props.state.step].circles.map(circle => (
-            <Circle
-              center={circle.latlng}
-              color={circle.color}
-              dashArray={circle.dashArray}
-              fill={circle.fillColor === null ? false : true}
-              fillColor={circle.fillColor === null ? undefined : circle.fillColor}
-              key={`circle-${circle.id}-${circle.title}`}
-              radius={circle.unit === 'm' ? circle.radius : circle.unit === 'km' ? circle.radius * 1000 : circle.radius * 1852}
-              weight={4}
-            >
-              {(props.state.tooltips) ?
-                <Tooltip
-                  direction='top'
-                  offset={L.point(0, -1 * props.state.markerSize * props.state.map.zoom)}
-                  opacity='1'
-                  permanent
-                >
-                  {circle.title}
-                </Tooltip>
-                : undefined
-              }
-            </Circle>
+              setState={props.setState}
+              state={props.state}
+            />
           ))}
         </LayerGroup>
       </Overlay>
     </LayersControl>
-  ), [props.state.history, props.state.history[props.state.step].anchor, props.interactive, props.state.markerSize, props.state.map, props.state.tooltips/*, /*props.state /*props.state.map.zoom, props.state.markerSize, props.state.tooltips, props.state.map.brightness, props.state.map.center*/])
+  ), [props.state.history, props.state.step, props.state.history[props.state.step].anchor, props.state.markerSize, props.state.map, props.state.tooltips])
 
- return layers
+  return layers
 }
 
 export default LayerControl

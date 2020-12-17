@@ -59,8 +59,7 @@ import threat from '../../markers/persistent/threat-ring.svg'
 //----------------------------------------------------------------//
 // Persistent Markers Component
 //----------------------------------------------------------------//
-// TODO Props here?
-const PersistentMarkers = props => { //{ handleAddMarker, handleMarkerDrawerToggle}) => {
+const PersistentMarkers = props => {
   const classes = useStyles()
 
   const handleMarkerClick = (iconUrl, iconType, title, layer) => {
@@ -90,7 +89,7 @@ const PersistentMarkers = props => { //{ handleAddMarker, handleMarkerDrawerTogg
     } else {
       payload = {
         ...payload,
-        anchor: props.anchor.id === null ? true : false,
+        anchor: props.state.history[props.state.step].anchor.id === null ? true : false,
         rings: 5,
         distance: 20,
         angle: 45,
@@ -129,6 +128,7 @@ const PersistentMarkers = props => { //{ handleAddMarker, handleMarkerDrawerTogg
         data: null
       }
     }
+    
     props.handleAddMarker(payload)
   }
 

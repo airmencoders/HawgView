@@ -58,11 +58,6 @@ import {
 } from 'geodesy/mgrs'
 
 //----------------------------------------------------------------//
-// Hawg View Functions
-//----------------------------------------------------------------//
-import { submitCoordInput } from '../../functions/submitCoordInput'
-
-//----------------------------------------------------------------//
 // Hawg View Constants
 //----------------------------------------------------------------//
 import { 
@@ -74,12 +69,30 @@ import {
 import useStyles from '../../constants/useStyles'
 
 //----------------------------------------------------------------//
+// Hawg View Functions
+//----------------------------------------------------------------//
+import { submitCoordInput } from '../../functions/submitCoordInput'
+
+//----------------------------------------------------------------//
+// Hawg View Handlers
+//----------------------------------------------------------------//
+import handleMarkerEdit from '../../handlers/handleMarkerEdit'
+
+//----------------------------------------------------------------//
 // Edit Marker Drawer Component
 //----------------------------------------------------------------//
-const EditMarkerDrawer = (props) => {
+const EditMarkerDrawer = props => {
+
+  //----------------------------------------------------------------//
+  // Component Setup
+  //----------------------------------------------------------------//
   const classes = useStyles()
 
   const container = props.window !== undefined ? () => window().document.body : undefined
+
+  //----------------------------------------------------------------//
+  // Component State (TODO)
+  //----------------------------------------------------------------//
 
   // Every Marker has these
   const [title, setTitle] = React.useState('')
@@ -412,7 +425,8 @@ const EditMarkerDrawer = (props) => {
       }
     }
 
-    props.submit('edit', payload)
+    // Forward to the function
+    handleMarkerEdit('edit', payload, props.state, props.setState)
   }
 
   return (

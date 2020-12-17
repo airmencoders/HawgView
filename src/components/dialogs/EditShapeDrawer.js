@@ -74,6 +74,11 @@ import { LatLon } from 'geodesy/mgrs'
 import { submitCoordInput } from '../../functions/submitCoordInput'
 
 //----------------------------------------------------------------//
+// Hawg View Handlers
+//----------------------------------------------------------------//
+import handleMarkerEdit from '../../handlers/handleMarkerEdit'
+
+//----------------------------------------------------------------//
 // Shape Drawer Component
 //----------------------------------------------------------------//
 const ShapeDrawer = (props) => {
@@ -263,7 +268,7 @@ const ShapeDrawer = (props) => {
       }
     }
 
-    props.submit('edit', payload)
+    handleMarkerEdit('edit', payload, props.state, props.setState)
     //props.onClose()
     setRadius(0)
     setUnit('m')
