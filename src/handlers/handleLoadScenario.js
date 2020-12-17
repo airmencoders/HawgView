@@ -99,6 +99,9 @@ const handleLoadScenario = (data, state, setState, toast) => {
       document.title = `Hawg View | ${json.name}`
     }
 
+    console.log('newStep', newStep)
+
+    // Need to manually toast, otherwise it loses the change in history
     setState({
       ...state,
       dialog: {
@@ -106,9 +109,16 @@ const handleLoadScenario = (data, state, setState, toast) => {
         name: null,
       },
       history: [...targetHistory, newStep],
+      snackbar: {
+        ...state.snackbar,
+        pack: [...state.snackbar.pack, {
+          key: new Date().getTime(),
+          message: 'Scenario loaded to map',
+          severity: 'success',
+        }]
+      },
       step: state.step + 1,
     })
-    toast('Scenario loaded to map', 'success')
   } else {
     toast('There was an error loading the scenario', 'error')
   }

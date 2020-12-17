@@ -83,6 +83,8 @@ const Circle = props => {
         {props.circle.title}
         <br/>
         {position}
+        <br/>
+        {`Radius: ${props.circle.radius.toFixed(2)} ${props.circle.unit}`}
       </React.Fragment>
     )
   }

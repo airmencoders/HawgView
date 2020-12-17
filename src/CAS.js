@@ -289,10 +289,6 @@ const Cas = () => {
     })
   }
 
-  /*const editMarker = React.useCallback((action, payload) => {
-    handleMarkerEdit(action, payload, state, setState, toast)
-  }, [state])*/
-
   return (
     <Box
       display='flex'

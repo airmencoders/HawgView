@@ -1,3 +1,11 @@
+## 2.15.22-beta
+### Changes
+* Moved all of `editMarkerDrawer` states to one state
+* Made `handleLoadScenario` manually toast to avoid asynchronous issues with multiple `setState` calls sequentially
+
+### Fixes
+* Fixed issue where loading a scenario would not actually load it due to `toast` issues
+
 ## 2.15.21-beta
 ### Changes
 * Added tooltips to all the shapes
