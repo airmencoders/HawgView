@@ -66,7 +66,7 @@ import useStyles from '../../constants/useStyles'
 //----------------------------------------------------------------//
 // Geodesy Functions
 //----------------------------------------------------------------//
-import { LatLon } from 'geodesy/mgrs'
+import { LatLon as LL } from 'geodesy/mgrs'
 
 //----------------------------------------------------------------//
 // Hawg View Functions
@@ -81,157 +81,223 @@ import handleMarkerEdit from '../../handlers/handleMarkerEdit'
 //----------------------------------------------------------------//
 // Shape Drawer Component
 //----------------------------------------------------------------//
-const ShapeDrawer = (props) => {
+const EditShapeDrawer = (props) => {
   const classes = useStyles()
 
-  const [dashed, setDashed] = React.useState(false)
-  const [dashArray, setDashArray] = React.useState('12, 12')
-  const [fill, setFill] = React.useState(false)
-  const [fillColor, setFillColor] = React.useState('#4A90E2')
-  const [title, setTitle] = React.useState('')
-  const [color, setColor] = React.useState('#4A90E2')
-  const [length, setLength] = React.useState(10)
-  const [width, setWidth] = React.useState(2)
-  const [tilt, setTilt] = React.useState(0)
-  const [radius, setRadius] = React.useState(0)
-  const [unit, setUnit] = React.useState('m')
-  const [distance, setDistance] = React.useState(20)
-  const [rings, setRings] = React.useState(5)
-  const [angle, setAngle] = React.useState(45)
-  const [lat, setLat] = React.useState('')
-  const [lng, setLng] = React.useState('')
-  const [mgrs, setMgrs] = React.useState('')
-  const [latlng, setLatlng] = React.useState(false)
-  const [showData, setShowData] = React.useState(true)
-  const [mgrsDisabled, setMgrsDisabled] = React.useState(false)
-  const [isAnchor, setIsAnchor] = React.useState(false)
+
+  //----------------------------------------------------------------//
+  // Component State
+  //----------------------------------------------------------------//
+  const initialState = {
+    bullseye: {
+      angle: '',
+      distance: '',
+      rings: '',
+    },
+    circle: {
+      radius: '',
+      unit: '',
+    },
+    color: {
+      color: '',
+      fillColor: '',
+    },
+    dashArray: '',
+    ellipse: {
+      length: '',
+      tilt: '',
+      width: '',
+    },
+    location: {
+      lat: '',
+      lng: '',
+      mgrs: '',
+    },
+    switches: {
+      dashed: false,
+      fill: false,
+      isAnchor: false,
+      latlng: false,
+      mgrsDisabled: false,
+      showData: true,
+    },
+    title: '',
+  }
+
+
+  const [_state, _setState] = React.useState(initialState)
 
   const container = props.window !== undefined ? () => window().document.body : undefined
 
-  const getMgrs = () => {
-    let position
+  const getPosition = () => {
+    // Get the position of the shape
+    // Attempt to get MGRS first
+    // If that fails, then disable MGRS, force the switch to lat/lng
+    // And set the lat/lng
+    let position = null
+    let mgrsDisabled = false
+
     let center
+    if (props.state.focusedShape.layer === 'ellipse') {
+      center = props.state.focusedShape.center
+    } else {
+      center = props.state.focusedShape.latlng
+    }
 
-    if (props.state.focusedShape !== null) {
-      if(props.state.focusedShape.layer === 'ellipse') {
-        center = props.state.focusedShape.center
-      } else {
-        center = props.state.focusedShape.latlng
-      }
-      try {
-        position = LatLon.parse(center.lat, center.lng).toUtm().toMgrs().toString()
-      } catch (error) {
-        console.error(`Unable to parse MGRS coordinates from coordinates (${center.lat}, ${center.lng})`)
-      }
-
-      if (position !== undefined) {
-        setMgrs(position)
-        setMgrsDisabled(false)
-      } else {
-        setLatlng(true)
-        setMgrsDisabled(true)
-      }
+    try {
+      position = LL.parse(center.lat, center.lng).toUtm().toMgrs().toString()
+    } catch (e) {
+      position = `${center.lat.toFixed(4)}, ${center.lng.toFixed(4)}`
+      mgrsDisabled = true
+    }
+    return {
+      position,
+      mgrsDisabled
     }
   }
 
+
   React.useEffect(() => {
     if (props.state.focusedShape !== null) {
-      setDashed(props.state.focusedShape.dashArray === null ? false : true)
-      setDashArray(props.state.focusedShape.dashArray === null ? '10,10' : props.state.focusedShape.dashArray)
-      setFill(props.state.focusedShape.fillColor === null ? false : true)
-      setFillColor(props.state.focusedShape.fillColor === null ? '#4A90E2' : props.state.focusedShape.fillColor)
-      setTitle(props.state.focusedShape.title)
-      setColor(props.state.focusedShape.color)
+      let position, mgrsDisabled
 
-      if (props.state.focusedShape.layer === 'ellipse') {
-        setLength(props.state.focusedShape.length / 926)
-        setWidth(props.state.focusedShape.width / 926)
-        setTilt(props.state.focusedShape.tilt - 90)
+      if (props.state.focusedShape.layer === 'bullseye' ||
+        props.state.focusedShape.layer === 'circle' ||
+        props.state.focusedShape.layer === 'ellipse') {
+
+        let data = getPosition()
+        position = data.position
+        mgrsDisabled = data.mgrsDisabled
       }
 
-      if (props.state.focusedShape.layer === 'circle') {
-        setRadius(Number.parseFloat(props.state.focusedShape.radius).toFixed(2))
-        setUnit(props.state.focusedShape.unit)
+      // Start building the new state
+      let newState = {
+        ...initialState,
+        bullseye: {
+          angle: props.state.focusedShape.layer === 'bullseye' ? props.state.focusedShape.angle : 45,
+          distance: props.state.focusedShape.layer === 'bullseye' ? props.state.focusedShape.distance : 20,
+          rings: props.state.focusedShape.layer === 'bullseye' ? props.state.focusedShape.rings : 5,
+        },
+        circle: {
+          radius: props.state.focusedShape.layer === 'circle' ? props.state.focusedShape.radius.toFixed(2) : 0,
+          unit: props.state.focusedShape.layer === 'circle' ? props.state.focusedShape.unit : 'm',
+        },
+        color: {
+          color: props.state.focusedShape.color !== null ? props.state.focusedShape.color : '#4A90E2',
+          fillColor: props.state.focusedShape.fillColor !== null ? props.state.focusedShape.fillColor : '#4A90E2',
+        },
+        dashArray: props.state.focusedShape.dashArray !== null ? props.state.focusedShape.dashArray : '10,10',
+        ellipse: {
+          length: props.state.focusedShape.layer === 'ellipse' ? props.state.focusedShape.length / 926 : 10,
+          width: props.state.focusedShape.layer === 'ellipse' ? props.state.focusedShape.width / 926 : 2,
+          tilt: props.state.focusedShape.layer === 'ellipse' ? props.state.focusedShape.tilt - 90 : 0,
+        },
+        location: {
+          lat:
+            props.state.focusedShape.layer === 'circle' ||
+              props.state.focusedShape.layer === 'bullseye' ?
+              props.state.focusedShape.latlng.lat.toFixed(4) :
+              props.state.focusedShape.layer === 'ellipse' ?
+                props.state.focusedShape.center.lat.toFixed(4) :
+                '',
+          lng:
+            props.state.focusedShape.layer === 'circle' ||
+              props.state.focusedShape.layer === 'bullseye' ?
+              props.state.focusedShape.latlng.lng.toFixed(4) :
+              props.state.focusedShape.layer === 'ellipse' ?
+                props.state.focusedShape.center.lng.toFixed(4) :
+                '',
+          mgrs: mgrsDisabled ? '' : position,
+        },
+        switches: {
+          dashed: props.state.focusedShape.dashArray === null ? false : true,
+          fill: props.state.focusedShape.fillColor === null ? false : true,
+          isAnchor:
+            props.state.focusedShape.layer === 'bullseye' &&
+            props.state.focusedShape.anchor,
+          mgrsDisabled,
+          showData:
+            props.state.focusedShape.layer === 'bullseye' &&
+            props.state.focusedShape.showData,
+        },
+        title: props.state.focusedShape.title,
       }
 
-      if (props.state.focusedShape.layer === 'bullseye') {
-        setDistance(props.state.focusedShape.distance)
-        setRings(props.state.focusedShape.rings)
-        setAngle(props.state.focusedShape.angle)
-        setShowData(props.state.focusedShape.showData)
-        setIsAnchor(props.state.focusedShape.anchor)
-      }
-
-      if (props.state.focusedShape.layer === 'ellipse') {
-        getMgrs()
-        setLat(props.state.focusedShape.center.lat.toFixed(4))
-        setLng(props.state.focusedShape.center.lng.toFixed(4))
-      }
-
-      if (props.state.focusedShape.layer === 'circle' || props.state.focusedShape.layer === 'bullseye') {
-        getMgrs()
-        setLat(props.state.focusedShape.latlng.lat.toFixed(4))
-        setLng(props.state.focusedShape.latlng.lng.toFixed(4))
-      }
+      _setState(newState)
     }
   }, [props.state.focusedShape])
 
   const handleUnitChange = newUnit => {
-    switch (unit) {
+    let radius = _state.circle.radius
+
+    switch (_state.circle.unit) {
       case 'm':
         if (newUnit === 'km') {
-          setRadius((radius / 1000).toFixed(2))
+          radius = (radius / 1000).toFixed(2)
         } else if (newUnit === 'NM') {
-          setRadius((radius / 1852).toFixed(2))
+          radius = (radius / 1852).toFixed(2)
         }
         break
       case 'km':
         if (newUnit === 'm') {
-          setRadius((radius * 1000).toFixed(2))
+          radius = (radius * 1000).toFixed(2)
         } else if (newUnit === 'NM') {
-          setRadius((radius / 1.852).toFixed(2))
+          radius = (radius / 1.852).toFixed(2)
         }
         break
       case 'NM':
         if (newUnit === 'm') {
-          setRadius((radius * 1852).toFixed(2))
+          radius = (radius * 1852).toFixed(2)
         } else if (newUnit === 'km') {
-          setRadius((radius * 1.852).toFixed(2))
+          radius = (radius * 1.852).toFixed(2)
         }
         break
       default:
         break
     }
-    setUnit(newUnit)
+    _setState({
+      ..._state,
+      circle: {
+        radius,
+        unit: newUnit,
+      }
+    })
   }
 
   const handleSubmit = () => {
     let payload = {
       marker: props.state.focusedShape,
-      color: color,
-      title: title,
+      color: _state.color.color,
+      title: _state.title,
     }
 
     if (props.state.focusedShape.layer !== 'bullseye') {
       payload = {
         ...payload,
-        dashArray: dashed ? dashArray : null,
+        dashArray: _state.switches.dashed ? _state.dashArray : null,
       }
     }
 
     if (props.state.focusedShape.layer !== 'line' && props.state.focusedShape.layer !== 'bullseye') {
       payload = {
         ...payload,
-        fillColor: fill ? fillColor : null,
+        fillColor: _state.switches.fill ? _state.color.fillColor : null,
       }
     }
 
     if (props.state.focusedShape.layer === 'circle' || props.state.focusedShape.layer === 'ellipse' || props.state.focusedShape.layer === 'bullseye') {
       let target = false
-      if (latlng) {
-        target = submitCoordInput(lat + ', ' + lng)
+      if (_state.switches.latlng) {
+        target = submitCoordInput(_state.location.lat + ', ' + _state.location.lng)
       } else {
-        target = submitCoordInput(mgrs.toUpperCase())
+        target = submitCoordInput(_state.location.mgrs.toUpperCase())
+      }
+
+      if (target === false) {
+        target = {
+          lat: props.state.focusedShape.latlng.lat,
+          lon: props.state.focusedShape.latlng.lng,
+        }
       }
 
       payload = {
@@ -243,52 +309,32 @@ const ShapeDrawer = (props) => {
     if (props.state.focusedShape.layer === 'ellipse') {
       payload = {
         ...payload,
-        length: length * 926,
-        width: width * 926,
-        tilt: Number.parseInt(tilt) + 90
+        length: _state.ellipse.length * 926,
+        width: _state.ellipse.width * 926,
+        tilt: Number.parseInt(_state.ellipse.tilt) + 90
       }
     }
 
     if (props.state.focusedShape.layer === 'circle') {
       payload = {
         ...payload,
-        radius: Number.parseFloat(radius),
-        unit: unit,
+        radius: Number.parseFloat(_state.circle.radius),
+        unit: _state.circle.unit,
       }
     }
 
     if (props.state.focusedShape.layer === 'bullseye') {
       payload = {
         ...payload,
-        anchor: isAnchor,
-        distance: isNaN(distance) ? props.state.focusedShape.distance : Number.parseFloat(distance),
-        rings: isNaN(rings) ? props.state.focusedShape.rings : Number.parseInt(rings),
-        angle: isNaN(angle) ? props.state.focusedShape.angle : Math.round(Number.parseFloat(angle)),
-        showData: showData,
+        anchor: _state.switches.isAnchor,
+        distance: isNaN(_state.bullseye.distance) ? props.state.focusedShape.distance : Number.parseFloat(_state.bullseye.distance),
+        rings: isNaN(_state.bullseye.rings) ? props.state.focusedShape.rings : Number.parseInt(_state.bullseye.rings),
+        angle: isNaN(_state.bullseye.angle) ? props.state.focusedShape.angle : Math.round(Number.parseFloat(_state.bullseye.angle)),
+        showData: _state.switches.showData,
       }
     }
 
     handleMarkerEdit('edit', payload, props.state, props.setState)
-    //props.onClose()
-    setRadius(0)
-    setUnit('m')
-    setDashed(false)
-    setDashArray('12, 12')
-    setFill(false)
-    setFillColor('#4A90E2')
-    setTitle('')
-    setColor('#4A90E2')
-    setLength(10)
-    setWidth(2)
-    setTilt(90)
-    setDistance(20)
-    setRings(5)
-    setAngle(45)
-    setMgrs('')
-    setLat('')
-    setLng('')
-    setLatlng(false)
-    setIsAnchor(false)
   }
 
   const handleClose = () => {
@@ -322,11 +368,17 @@ const ShapeDrawer = (props) => {
           <TextField
             className={classes.firstTextField}
             label='Shape label'
-            onChange={event => setTitle(event.target.value)}
+            onChange={event => _setState({
+              ..._state,
+              title: event.target.value,
+            })}
             variant='outlined'
-            value={title}
+            value={_state.title}
           />
-          {(props.state.focusedShape !== null && (props.state.focusedShape.layer === 'circle' || props.state.focusedShape.layer === 'ellipse' || props.state.focusedShape.layer === 'bullseye')) ?
+          {(props.state.focusedShape !== null &&
+            (props.state.focusedShape.layer === 'circle' ||
+              props.state.focusedShape.layer === 'ellipse' ||
+              props.state.focusedShape.layer === 'bullseye')) ?
             (
               <React.Fragment>
                 <Grid
@@ -338,41 +390,65 @@ const ShapeDrawer = (props) => {
                     <FormControlLabel
                       control={
                         <Switch
-                          checked={latlng}
+                          checked={_state.switches.latlng}
                           color='primary'
-                          disabled={mgrsDisabled}
+                          disabled={_state.switches.mgrsDisabled}
                           name='Lat Long'
-                          onChange={() => setLatlng(!latlng)}
+                          onChange={() => _setState({
+                            ..._state,
+                            switches: {
+                              ..._state.switches,
+                              latlng: !_state.switches.latlng,
+                            },
+                          })}
                         />
                       }
                       label='Lat Long'
                     />
                   </FormGroup>
                 </Grid>
-                {latlng ?
+                {_state.switches.latlng ?
                   <React.Fragment>
                     <TextField
                       className={classes.textField}
                       label='Latitude'
-                      onChange={event => setLat(event.target.value)}
+                      onChange={event => _setState({
+                        ..._state,
+                        location: {
+                          ..._state.location,
+                          lat: event.target.value,
+                        },
+                      })}
                       variant='outlined'
-                      value={lat}
+                      value={_state.location.lat}
                     />
                     <TextField
                       className={classes.textField}
                       label='Longitude'
-                      onChange={event => setLng(event.target.value)}
+                      onChange={event => _setState({
+                        ..._state,
+                        location: {
+                          ..._state.location,
+                          lng: event.target.value,
+                        },
+                      })}
                       variant='outlined'
-                      value={lng}
+                      value={_state.location.lng}
                     />
                   </React.Fragment>
                   :
                   <TextField
                     className={classes.textField}
                     label='MGRS'
-                    onChange={event => setMgrs(event.target.value)}
+                    onChange={event => _setState({
+                      ..._state,
+                      location: {
+                        ..._state.location,
+                        mgrs: event.target.value,
+                      },
+                    })}
                     variant='outlined'
-                    value={mgrs}
+                    value={_state.location.mgrs}
                   />
                 }
               </React.Fragment>
@@ -383,23 +459,41 @@ const ShapeDrawer = (props) => {
               <TextField
                 className={classes.textField}
                 label='Number of rings'
-                onChange={event => setRings(event.target.value)}
+                onChange={event => _setState({
+                  ..._state,
+                  bullseye: {
+                    ..._state.bullseye,
+                    rings: event.target.value,
+                  },
+                })}
                 variant='outlined'
-                value={rings}
+                value={_state.bullseye.rings}
               />
               <TextField
                 className={classes.textField}
                 label='NM between rings'
-                onChange={event => setDistance(event.target.value)}
+                onChange={event => _setState({
+                  ..._state,
+                  bullseye: {
+                    ..._state.bullseye,
+                    distance: event.target.value,
+                  },
+                })}
                 variant='outlined'
-                value={distance}
+                value={_state.bullseye.distance}
               />
               <TextField
                 className={classes.textField}
                 label='Angle between radials'
-                onChange={event => setAngle(event.target.value)}
+                onChange={event => _setState({
+                  ..._state,
+                  bullseye: {
+                    ..._state.bullseye,
+                    angle: event.target.value,
+                  },
+                })}
                 variant='outlined'
-                value={angle}
+                value={_state.bullseye.angle}
               />
               <Grid
                 container
@@ -410,10 +504,16 @@ const ShapeDrawer = (props) => {
                   <FormControlLabel
                     control={
                       <Switch
-                        checked={showData}
+                        checked={_state.switches.showData}
                         color='primary'
                         name='showData'
-                        onChange={() => setShowData(!showData)}
+                        onChange={() => _setState({
+                          ..._state,
+                          switches: {
+                            ..._state.switches,
+                            showData: !_state.switches.showData,
+                          },
+                        })}
                       />
                     }
                     label='Show Data'
@@ -429,10 +529,16 @@ const ShapeDrawer = (props) => {
                   <FormControlLabel
                     control={
                       <Switch
-                        checked={isAnchor}
+                        checked={_state.switches.isAnchor}
                         color='primary'
                         name='isAnchor'
-                        onChange={() => setIsAnchor(!isAnchor)}
+                        onChange={() => _setState({
+                          ..._state,
+                          switches: {
+                            ..._state.switches,
+                            isAnchor: !_state.switches.isAnchor,
+                          },
+                        })}
                       />
                     }
                     label='Use as Anchor'
@@ -447,9 +553,15 @@ const ShapeDrawer = (props) => {
               <TextField
                 className={classes.textField}
                 label='Radius'
-                onChange={event => setRadius(event.target.value)}
+                onChange={event => _setState({
+                  ..._state,
+                  circle: {
+                    ..._state.circle,
+                    radius: event.target.value,
+                  },
+                })}
                 variant='outlined'
-                value={radius}
+                value={_state.circle.radius}
               />
               <FormControl
                 className={classes.marginsMd}
@@ -460,7 +572,7 @@ const ShapeDrawer = (props) => {
                 <Select
                   label='Radius Unit'
                   onChange={event => handleUnitChange(event.target.value)}
-                  value={unit}
+                  value={_state.circle.unit}
                 >
                   {units.map(unit => (
                     <MenuItem
@@ -480,24 +592,42 @@ const ShapeDrawer = (props) => {
               <TextField
                 className={classes.textField}
                 label='Ellipse length'
-                onChange={event => setLength(event.target.value)}
+                onChange={event => _setState({
+                  ..._state,
+                  ellipse: {
+                    ..._state.ellipse,
+                    length: event.target.value,
+                  },
+                })}
                 variant='outlined'
-                value={length}
+                value={_state.ellipse.length}
               />
               <TextField
                 className={classes.textField}
                 label='Ellipse width'
-                onChange={event => setWidth(event.target.value)}
+                onChange={event => _setState({
+                  ..._state,
+                  ellipse: {
+                    ..._state.ellipse,
+                    width: event.target.value,
+                  },
+                })}
                 variant='outlined'
-                value={width}
+                value={_state.ellipse.width}
               />
               <TextField
                 className={classes.textField}
                 helperText=' -90 (W) to 90 (E)'
                 label='Ellipse tilt'
-                onChange={event => setTilt(event.target.value)}
+                onChange={event => _setState({
+                  ..._state,
+                  ellipse: {
+                    ..._state.ellipse,
+                    tilt: event.target.value,
+                  },
+                })}
                 variant='outlined'
-                value={tilt}
+                value={_state.ellipse.tilt}
               />
             </React.Fragment>
             : null
@@ -515,9 +645,15 @@ const ShapeDrawer = (props) => {
           </Typography>
           <ColorPicker
             className={classes.marginsMd}
-            color={color}
+            color={_state.color.color}
             disableAlpha={true}
-            onChange={color => setColor(color.hex)}
+            onChange={color => _setState({
+              ..._state,
+              color: {
+                ..._state.color,
+                color: color.hex,
+              },
+            })}
           />
         </Grid>
         {(props.state.focusedShape !== null && props.state.focusedShape.layer !== 'line' && props.state.focusedShape.layer !== 'bullseye') ?
@@ -530,16 +666,22 @@ const ShapeDrawer = (props) => {
               <FormControlLabel
                 control={
                   <Switch
-                    checked={fill}
+                    checked={_state.switches.fill}
                     color='primary'
                     name='fill'
-                    onChange={() => setFill(!fill)}
+                    onChange={() => _setState({
+                      ..._state,
+                      switches: {
+                        ..._state.switches,
+                        fill: !_state.switches.fill,
+                      },
+                    })}
                   />
                 }
                 label='Fill'
               />
             </FormGroup>
-            {(fill) ?
+            {_state.switches.fill ?
               <Grid
                 container
                 direction='row'
@@ -550,9 +692,15 @@ const ShapeDrawer = (props) => {
                 </Typography>
                 <ColorPicker
                   className={classes.marginsMd}
-                  color={fillColor}
+                  color={_state.color.fillColor}
                   disableAlpha={true}
-                  onChange={color => setFillColor(color.hex)}
+                  onChange={color => _setState({
+                    ..._state,
+                    color: {
+                      ..._state.color,
+                      fillColor: color.hex,
+                    },
+                  })}
                 />
               </Grid>
               : null
@@ -570,16 +718,22 @@ const ShapeDrawer = (props) => {
               <FormControlLabel
                 control={
                   <Switch
-                    checked={dashed}
+                    checked={_state.switches.dashed}
                     color='primary'
                     name='dashed'
-                    onChange={() => setDashed(!dashed)}
+                    onChange={() => _setState({
+                      ..._state,
+                      switches: {
+                        ..._state.switches,
+                        dashed: !_state.switches.dashed,
+                      },
+                    })}
                   />
                 }
                 label='Dashed'
               />
             </FormGroup>
-            {(dashed) ?
+            {_state.switches.dashed ?
               <Grid
                 container
                 direction='row'
@@ -593,9 +747,11 @@ const ShapeDrawer = (props) => {
                   <InputLabel>Dash Array</InputLabel>
                   <Select
                     label='Dash Array'
-                    //margin='dense'
-                    onChange={event => setDashArray(event.target.value)}
-                    value={dashArray}
+                    onChange={event => _setState({
+                      ..._state,
+                      dashArray: event.target.value
+                    })}
+                    value={_state.dashArray}
                   >
                     <MenuItem
                       value='1,10'
@@ -643,9 +799,12 @@ const ShapeDrawer = (props) => {
                   className={classes.textField}
                   helperText='Comma separated values, every other number is line to gap in pixels.'
                   label='Dash Array'
-                  onChange={event => setDashArray(event.target.value)}
+                  onChange={event => _setState({
+                    ..._state,
+                    dashArray: event.target.value,
+                  })}
                   variant='outlined'
-                  value={dashArray}
+                  value={_state.dashArray}
                 />
               </Grid>
               : null
@@ -671,4 +830,4 @@ const ShapeDrawer = (props) => {
   )
 }
 
-export default ShapeDrawer
+export default EditShapeDrawer

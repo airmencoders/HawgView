@@ -1,3 +1,7 @@
+## 2.15.23-beta
+### Changes
+* Moved all of `editShapeDrawer` states to one state
+
 ## 2.15.22-beta
 ### Changes
 * Moved all of `editMarkerDrawer` states to one state

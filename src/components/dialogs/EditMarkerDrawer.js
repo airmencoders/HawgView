@@ -366,7 +366,7 @@ const EditMarkerDrawer = props => {
     if (_state.switches.latlng) {
       target = submitCoordInput(_state.location.lat + ' ' + _state.location.lng)
     } else {
-      target = submitCoordInput(_state.location.mgrs)
+      target = submitCoordInput(_state.location.mgrs.toUpperCase())
     }
 
     if (target === false) {

@@ -27,17 +27,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-//export const editMarkers = (action, history, step, iconType, color, src, title, sovereignty, threatSovereignty, id, latlng, marker, data) => {
-
-/*async function getDeclination(latlng) {
-  let response = await fetch(`https://www.ngdc.noaa.gov/geomag-web/calculators/calculateDeclination?lat1=${latlng.lat}&lon1=${latlng.lng}&resultFormat=json`)
-
-  let json = await response.json()
-  let declination = await json.result[0].declination
-
-  return declination
-}*/
-
 const compare = (a, b) => {
   const idA = a.id
   const idB = b.id
@@ -61,6 +50,20 @@ const getDeclination = latlng => {
   let declination = json.result[0].declination
   return declination
 }
+
+/*const getElevation = latlng => {
+  let request = new XMLHttpRequest()
+  request.open ('GET', `https://nationalmap.gov/epqs/pqs.php?x=${latlng.lng}&y=${latlng.lat}&units=Feet&output=json`, false)
+  request.send(null)
+
+  let json = JSON.parse(request.responseText)
+  let elevation = Number.parseInt(json.USGS_Elevation_Point_Query_Service.Elevation_Query.Elevation)
+
+  if (elevation === -1000000) {
+    elevation = 'Elevation not found'
+  }
+  return elevation
+}*/
 
 export const editMarkers = (action, payload, state) => {
 
@@ -452,7 +455,7 @@ const deleteMarker = (history, step, payload) => {
 }
 
 /**
- * If the user drags the marker, once done reset the lat/lon and title for the popup
+ * If the user drags the marker, once done reset the lat/lng and title for the popup
  * 
  * @param {Object} marker Object representing the marker being drug around the map
  * @param {Object} newLatLng New Lat/Lng coordinates of the marker
@@ -470,7 +473,7 @@ const dragMarker = (history, step, payload) => {
 
   let newMarker = {
     ...marker,
-    latlng: payload.latlng
+    latlng: payload.latlng,
   }
 
   if (newMarker.layer === 'bullseye') {
@@ -599,6 +602,10 @@ const dragMarker = (history, step, payload) => {
       console.error(`Error: Could not drag marker (${marker}). Invalid sovereignty (${marker.sovereignty})`)
       return false
   }
+}
+
+const editElevation = (history, step, payload) => {
+
 }
 
 const editMarker = (history, step, payload) => {
