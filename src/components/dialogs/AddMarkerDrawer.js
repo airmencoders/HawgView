@@ -42,6 +42,10 @@ import {
   TextField,
 } from '@material-ui/core'
 
+import {
+  makeStyles,
+} from '@material-ui/core/styles'
+
 //----------------------------------------------------------------//
 // Hawg View Components
 //----------------------------------------------------------------//
@@ -52,14 +56,28 @@ import {
 } from '../dialogs'
 
 //----------------------------------------------------------------//
-// Hawg View Constants
-//----------------------------------------------------------------//
-import useStyles from '../../constants/useStyles'
-
-//----------------------------------------------------------------//
 // Hawg View Handlers
 //----------------------------------------------------------------//
 import handleMarkerEdit from '../../handlers/handleMarkerEdit'
+
+//----------------------------------------------------------------//
+// Styles
+//----------------------------------------------------------------//
+const drawerWidth = 240
+const useStyles = makeStyles(theme => ({
+  descriptionField: {
+    margin: theme.spacing(2),
+  },
+  drawer: {
+    [theme.breakpoints.up('sm')]: {
+      width: drawerWidth,
+      flexShrink: 0,
+    },
+  },
+  drawerPaper: {
+    width: drawerWidth,
+  },
+}))
 
 //----------------------------------------------------------------//
 // Add Marker Drawer Component

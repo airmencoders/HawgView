@@ -37,7 +37,6 @@ import Marker from './layers/Marker'
 import MGRSGrids from './layers/MGRSGrids'
 import Polygon from './layers/Polygon'
 import Rectangle from './layers/Rectangle'
-import Shape from './layers/Shape'
 import Threat from './layers/Threat'
 
 export {
@@ -50,6 +49,5 @@ export {
   MGRSGrids,
   Polygon,
   Rectangle,
-  Shape,
   Threat,
 }

@@ -40,10 +40,20 @@ import {
   Tooltip,
 } from 'react-leaflet'
 
+import {
+  makeStyles,
+} from '@material-ui/core/styles'
+
 //----------------------------------------------------------------//
-// Hawg View Constants
+// Styles
 //----------------------------------------------------------------//
-import useStyles from '../../constants/useStyles'
+const useStyles = makeStyles(theme => ({
+  resultTooltip: {
+    backgroundColor: 'white',
+    borderWidth: 'medium',
+    borderColor: '#de0000',
+  },
+}))
 
 //----------------------------------------------------------------//
 // Analysis Tool Past Lines Component

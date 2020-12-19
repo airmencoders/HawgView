@@ -42,6 +42,10 @@ import {
 } from '@material-ui/core'
 
 import {
+  makeStyles,
+} from '@material-ui/core/styles'
+
+import {
   Apartment as ApartmentIcon,
   FiberManualRecord as FiberManualRecordIcon,
   FontDownload as FontDownloadIcon,
@@ -58,11 +62,6 @@ import {
 } from '../tools'
 
 //----------------------------------------------------------------//
-// Hawg View Constants
-//----------------------------------------------------------------//
-import useStyles from '../../constants/useStyles'
-
-//----------------------------------------------------------------//
 // Iconify Icons
 //----------------------------------------------------------------//
 import { Icon } from '@iconify/react'
@@ -70,9 +69,18 @@ import pentagonIcon from '@iconify/icons-mdi/pentagon'
 import ellipseIcon from '@iconify/icons-mdi/ellipse'
 
 //----------------------------------------------------------------//
+// Styles
+//----------------------------------------------------------------//
+const useStyles = makeStyles(theme => ({
+  utilityToolIcon: {
+    fontSize: '25px',
+  },
+}))
+
+//----------------------------------------------------------------//
 // Tool Control Component
 //----------------------------------------------------------------//
-const ToolControls = (props) => {
+const ToolControls = props => {
   const classes = useStyles()
 
   /**

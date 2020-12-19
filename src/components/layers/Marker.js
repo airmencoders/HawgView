@@ -47,16 +47,15 @@ import {
   Button,
 } from '@material-ui/core'
 
+import {
+  makeStyles,
+} from '@material-ui/core/styles'
+
 //----------------------------------------------------------------//
 // Geodesy Functions
 //----------------------------------------------------------------//
 import { LatLon as LL } from 'geodesy/mgrs'
 import LatLon from 'geodesy/latlon-spherical'
-
-//----------------------------------------------------------------//
-// Hawg View Constants
-//----------------------------------------------------------------//
-import useStyles from '../../constants/useStyles'
 
 //----------------------------------------------------------------//
 // Hawg View Functions
@@ -79,10 +78,39 @@ const Marker = props => {
 
   const computedSize = props.state.markerSize * props.state.map.zoom
 
-  const classes = useStyles({
-    color: props.marker.layer === 'buildingLabel' ? props.state.history[props.state.step].styles.buildingLabel.color : props.marker.color,
-    computedSize,
-  })
+  //----------------------------------------------------------------//
+  // Styles
+  //----------------------------------------------------------------//
+  const useStyles = makeStyles(theme => ({
+    divIcon: {
+      alignItems: 'center',
+      color: props.state.history[props.state.step].styles.buildingLabel.color,
+      display: 'flex',
+      fontSize: computedSize,
+      fontWeight: 'bold',
+      justifyContent: 'center',
+      margin: '0',
+      textAlign: 'center',
+      lineHeight: `${computedSize}px`,
+      wordWrap: 'break-word',
+    },
+    kineticPoint: {
+      alignItems: 'center',
+      backgroundColor: '#ffff00',
+      border: 'solid #000000 2px',
+      color: 'black',
+      display: 'flex',
+      fontSize: computedSize / 2,
+      fontWeight: 'bold',
+      justifyContent: 'center',
+      margin: '0',
+      textAlign: 'center',
+      lineHeight: `${computedSize / 2}px`,
+      wordWrap: 'break-word',
+    },
+  }))
+
+  const classes = useStyles()
 
   const handleClickMarker = () => {
     if (props.state.tool === null) {

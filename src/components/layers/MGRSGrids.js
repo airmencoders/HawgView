@@ -39,10 +39,9 @@ import {
   Polyline,
 } from 'react-leaflet'
 
-//----------------------------------------------------------------//
-// Material-UI Constants
-//----------------------------------------------------------------//
-import useStyles from '../../constants/useStyles'
+import {
+  makeStyles,
+} from '@material-ui/core/styles'
 
 //----------------------------------------------------------------//
 // Hawg View Functions
@@ -52,9 +51,22 @@ import gridMath from '../../functions/gridMath'
 //----------------------------------------------------------------//
 // MGRS Grid Component
 //----------------------------------------------------------------//
-const MGRSGrids = (props) => {
+const MGRSGrids = props => {
 
-  const classes = useStyles(props.state.history[props.state.step].styles.mgrs)
+  //----------------------------------------------------------------//
+  // Styles
+  //----------------------------------------------------------------//
+  const useStyles = makeStyles(theme => ({
+    zoneLabel: {
+      backgroundColor: 'black',
+      color: props.state.history[props.state.step].styles.mgrs.gridzoneColor,
+      fontSize: '0.9rem',
+      lineHeight: '20px',
+      textAlign: 'center',
+    },
+  }))
+
+  const classes = useStyles()
 
   const zoneStyle = {
     color: props.state.history[props.state.step].styles.mgrs.gridzoneColor,

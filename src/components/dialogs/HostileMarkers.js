@@ -36,10 +36,9 @@ import {
   Tooltip,
 } from '@material-ui/core'
 
-//----------------------------------------------------------------//
-// Hawg View Constants
-//----------------------------------------------------------------//
-import useStyles from '../../constants/useStyles'
+import {
+  makeStyles,
+} from '@material-ui/core/styles'
 
 //----------------------------------------------------------------//
 // Hawg View Marker Icons
@@ -68,6 +67,16 @@ import specialForces from '../../markers/hostile/special-forces.svg'
 import supply from '../../markers/hostile/supply.svg'
 import unit from '../../markers/hostile/unit.svg'
 import wheeledArmor from '../../markers/hostile/wheeled-armor.svg'
+
+//----------------------------------------------------------------//
+// Styles
+//----------------------------------------------------------------//
+const useStyles = makeStyles(theme => ({
+  markerImage: {
+    margin: theme.spacing(1),
+    width: '30px',
+  },
+}))
 
 //----------------------------------------------------------------//
 // Hostile Markers Component

@@ -39,20 +39,28 @@ import {
 } from '@material-ui/core'
 
 import {
+  makeStyles,
+} from '@material-ui/core/styles'
+
+import {
   HelpOutline as HelpOutlineIcon,
   History as HistoryIcon,
   NotificationImportant as NotificationImportantIcon,
 } from '@material-ui/icons'
 
 //----------------------------------------------------------------//
-// Hawg View Constants
+// Styles
 //----------------------------------------------------------------//
-import useStyles from '../../constants/useStyles'
+const useStyles = makeStyles(theme => ({
+  mobileMenuIcon: {
+    marginRight: theme.spacing(1),
+  },
+}))
 
 //----------------------------------------------------------------//
 // Site Menu Component
 //----------------------------------------------------------------//
-const SiteMenu = (props) => {
+const SiteMenu = props => {
   const classes = useStyles()
 
   const [invisible, setInvisible] = React.useState(false)

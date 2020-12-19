@@ -37,15 +37,9 @@ import React from 'react'
 import handleMarkerEdit from '../../handlers/handleMarkerEdit'
 
 //----------------------------------------------------------------//
-// Analysis Tool Component
+// Building Label Tool Component
 //----------------------------------------------------------------//
-/**
- * 
- * @param {*} props 
- */
-const BuildingLabelTool = (props) => {
-
-  //const [index, setIndex] = React.useState(1)
+const BuildingLabelTool = props => {
 
   /**
    * 

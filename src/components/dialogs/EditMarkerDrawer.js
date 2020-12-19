@@ -50,6 +50,10 @@ import {
   Typography,
 } from '@material-ui/core'
 
+import {
+  makeStyles,
+} from '@material-ui/core/styles'
+
 //----------------------------------------------------------------//
 // Geodesy Functions
 //----------------------------------------------------------------//
@@ -66,8 +70,6 @@ import {
   units,
 } from '../../constants/threats'
 
-import useStyles from '../../constants/useStyles'
-
 //----------------------------------------------------------------//
 // Hawg View Functions
 //----------------------------------------------------------------//
@@ -78,6 +80,37 @@ import getElevation from '../../functions/getElevation'
 // Hawg View Handlers
 //----------------------------------------------------------------//
 import handleMarkerEdit from '../../handlers/handleMarkerEdit'
+
+//----------------------------------------------------------------//
+// Styles
+//----------------------------------------------------------------//
+const drawerWidth = 240
+const useStyles = makeStyles(theme => ({
+  drawer: {
+    [theme.breakpoints.up('sm')]: {
+      width: drawerWidth,
+      flexShrink: 0,
+    },
+  },
+  drawerPaper: {
+    width: drawerWidth,
+  },
+  firstTextField: {
+    marginLeft: theme.spacing(2),
+    marginRight: theme.spacing(2),
+    marginTop: theme.spacing(2),
+    marginBottom: theme.spacing(1)
+  },
+  marginsMd: {
+    margin: theme.spacing(2),
+  },
+  textField: {
+    marginLeft: theme.spacing(2),
+    marginRight: theme.spacing(2),
+    marginTop: theme.spacing(1),
+    marginBottom: theme.spacing(1)
+  },
+}))
 
 //----------------------------------------------------------------//
 // Edit Marker Drawer Component

@@ -38,6 +38,10 @@ import {
 } from '@material-ui/core'
 
 import {
+  makeStyles,
+} from '@material-ui/core/styles'
+
+import {
   AddPhotoAlternate as AddPhotoAlternateIcon,
   BrightnessHigh as BrightnessHighIcon,
   BrightnessLow as BrightnessLowIcon,
@@ -63,11 +67,6 @@ import {
 import generateKML from '../../functions/generateKML'
 
 //----------------------------------------------------------------//
-// Hawg View Constants
-//----------------------------------------------------------------//
-import useStyles from '../../constants/useStyles'
-
-//----------------------------------------------------------------//
 // Hawg View Handlers
 //----------------------------------------------------------------//
 import handleColorChange from '../../handlers/handleColorChange'
@@ -89,9 +88,18 @@ import {
 import handleMarkerEdit from '../../handlers/handleMarkerEdit'
 
 //----------------------------------------------------------------//
+// Styles
+//----------------------------------------------------------------//
+const useStyles = makeStyles(theme => ({
+  mobileMenuIcon: {
+    marginRight: theme.spacing(1),
+  },
+}))
+
+//----------------------------------------------------------------//
 // Mobile Menu Component
 //----------------------------------------------------------------//
-const MobileMenu = (props) => {
+const MobileMenu = props => {
   const classes = useStyles()
 
   //----------------------------------------------------------------//

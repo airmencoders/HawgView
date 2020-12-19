@@ -44,10 +44,9 @@ import {
   Typography,
 } from '@material-ui/core'
 
-//----------------------------------------------------------------//
-// Hawg View Constants
-//----------------------------------------------------------------//
-import useStyles from '../../constants/useStyles'
+import {
+  makeStyles,
+} from '@material-ui/core/styles'
 
 //----------------------------------------------------------------//
 // Hawg View Handlers
@@ -55,24 +54,47 @@ import useStyles from '../../constants/useStyles'
 import handleMarkerEdit from '../../handlers/handleMarkerEdit'
 
 //----------------------------------------------------------------//
+// Styles
+//----------------------------------------------------------------//
+const wideDrawerWidth = 750
+const useStyles = makeStyles(theme => ({
+  drawer: {
+    [theme.breakpoints.up('sm')]: {
+      width: wideDrawerWidth,
+      flexShrink: 0,
+    },
+  },
+  marginsMd: {
+    margin: theme.spacing(2),
+  },
+  wideDrawerPaper: {
+    width: wideDrawerWidth
+  },
+}))
+
+//----------------------------------------------------------------//
 // Style Drawer Component
 //----------------------------------------------------------------//
-/**
- * 
- * @param {*} props 
- */
-const StyleDrawer = (props) => {
+const StyleDrawer = props => {
   const classes = useStyles()
 
   //----------------------------------------------------------------//
   // State
   //----------------------------------------------------------------//
-  const [mgrsGZColor, setMgrsGZColor] = React.useState('#ffa500')
-  const [mgrsLineColor, setMgrsLineColor] = React.useState('#ffffff')
-  const [garsCellColor, setGarsCellColor] = React.useState('#ffa500')
-  const [garsQuadColor, setGarsQuadColor] = React.useState('#800080')
-  const [garsKPColor, setGarsKPColor] = React.useState('#ffffff')
-  const [buildingLabelColor, setBuildingLabelColor] = React.useState('#ffff00')
+  const [_state, _setState] = React.useState({
+    buildingLabel: {
+      color: '#ffff00',
+    },
+    gars: {
+      cellColor: '#ffa500',
+      keypadColor: '#ffffff',
+      quadrantColor: '#800080',
+    },
+    mgrs: {
+      gridzoneColor: '#ffa500',
+      lineColor: '#ffffff',
+    },
+  })
 
   const container = props.window !== undefined ? () => window().document.body : undefined
 
@@ -81,18 +103,7 @@ const StyleDrawer = (props) => {
       marker: {
         layer: 'styles',
       },
-      mgrs: {
-        gridzoneColor: mgrsGZColor,
-        lineColor: mgrsLineColor,
-      },
-      gars: {
-        cellColor: garsCellColor,
-        quadrantColor: garsQuadColor,
-        keypadColor: garsKPColor,
-      },
-      buildingLabel: {
-        color: buildingLabelColor,
-      },
+      ..._state,
     }
 
     handleMarkerEdit('edit', newStyles, props.state, props.setState)
@@ -148,9 +159,15 @@ const StyleDrawer = (props) => {
               </Typography>
               <ColorPicker
                 className={classes.marginsMd}
-                color={mgrsGZColor}
+                color={_state.mgrs.gridzoneColor}
                 disableAlpha={true}
-                onChange={color => setMgrsGZColor(color.hex)}
+                onChange={color => _setState({
+                  ..._state,
+                  mgrs: {
+                    ..._state.mgrs,
+                    gridzoneColor: color.hex,
+                  },
+                })}
               />
             </Grid>
             <Grid
@@ -165,9 +182,15 @@ const StyleDrawer = (props) => {
               </Typography>
               <ColorPicker
                 className={classes.marginsMd}
-                color={mgrsLineColor}
+                color={_state.mgrs.lineColor}
                 disableAlpha={true}
-                onChange={color => setMgrsLineColor(color.hex)}
+                onChange={color => _setState({
+                  ..._state,
+                  mgrs: {
+                    ..._state.mgrs,
+                    lineColor: color.hex,
+                  },
+                })}
               />
             </Grid>
             <Grid
@@ -198,9 +221,15 @@ const StyleDrawer = (props) => {
               </Typography>
               <ColorPicker
                 className={classes.marginsMd}
-                color={garsCellColor}
+                color={_state.gars.cellColor}
                 disableAlpha={true}
-                onChange={color => setGarsCellColor(color.hex)}
+                onChange={color => _setState({
+                  ..._state,
+                  gars: {
+                    ..._state.gars,
+                    cellColor: color.hex,
+                  },
+                })}
               />
             </Grid>
             <Grid
@@ -215,9 +244,15 @@ const StyleDrawer = (props) => {
               </Typography>
               <ColorPicker
                 className={classes.marginsMd}
-                color={garsQuadColor}
+                color={_state.gars.quadrantColor}
                 disableAlpha={true}
-                onChange={color => setGarsQuadColor(color.hex)}
+                onChange={color => _setState({
+                  ..._state,
+                  gars: {
+                    ..._state.gars,
+                    quadrantColor: color.hex,
+                  },
+                })}
               />
             </Grid>
             <Grid
@@ -232,9 +267,15 @@ const StyleDrawer = (props) => {
               </Typography>
               <ColorPicker
                 className={classes.marginsMd}
-                color={garsKPColor}
+                color={_state.gars.keypadColor}
                 disableAlpha={true}
-                onChange={color => setGarsKPColor(color.hex)}
+                onChange={color => _setState({
+                  ..._state,
+                  gars: {
+                    ..._state.gars,
+                    keypadColor: color.hex,
+                  },
+                })}
               />
             </Grid>
           </Grid>
@@ -260,9 +301,14 @@ const StyleDrawer = (props) => {
               </Typography>
               <ColorPicker
                 className={classes.marginsMd}
-                color={buildingLabelColor}
+                color={_state.buildingLabel.color}
                 disableAlpha={true}
-                onChange={color => setBuildingLabelColor(color.hex)}
+                onChange={color => _setState({
+                  ..._state,
+                  buildingLabel: {
+                    color: color.hex,
+                  }
+                })}
               />
             </Grid>
             <Grid

@@ -39,6 +39,10 @@ import {
 } from '@material-ui/core'
 
 import {
+  makeStyles,
+} from '@material-ui/core/styles'
+
+import {
   Menu as MenuIcon,
   MoreVert as MoreVertIcon,
 } from '@material-ui/icons'
@@ -76,11 +80,6 @@ import {
 } from './components/dialogs'
 
 //----------------------------------------------------------------//
-// Hawg View Constants
-//----------------------------------------------------------------//
-import useStyles from './constants/useStyles'
-
-//----------------------------------------------------------------//
 // Hawg View Functions
 //----------------------------------------------------------------//
 import getElevation from './functions/getElevation'
@@ -89,6 +88,24 @@ import getElevation from './functions/getElevation'
 // Styles
 //----------------------------------------------------------------//
 import 'leaflet/dist/leaflet.css'
+
+const useStyles = makeStyles(theme => ({
+  grow: {
+    flexGrow: 1,
+  },
+  sectionDesktop: {
+    display: 'none',
+    [theme.breakpoints.up('lg')]: {
+      display: 'flex',
+    },
+  },
+  sectionMobile: {
+    display: 'flex',
+    [theme.breakpoints.up('lg')]: {
+      display: 'none',
+    },
+  },
+}))
 
 //----------------------------------------------------------------//
 // CAS Component

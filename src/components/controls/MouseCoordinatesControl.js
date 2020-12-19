@@ -31,14 +31,29 @@ import React from 'react'
 import Control from 'react-leaflet-control'
 
 //----------------------------------------------------------------//
-// Hawg View Constants
+// Material-UI Components
 //----------------------------------------------------------------//
-import useStyles from '../../constants/useStyles'
+import {
+  makeStyles
+} from '@material-ui/core/styles'
 
 //----------------------------------------------------------------//
 // Hawg View Functions
 //----------------------------------------------------------------//
 import generateMapPopup from '../../functions/generateMapPopup'
+
+//----------------------------------------------------------------//
+// Styles
+//----------------------------------------------------------------//
+const useStyles = makeStyles(theme => ({
+  mouseCoordinateControlRoot: {
+    backgroundColor: '#000000',
+    color: '#ffffff',
+    fontSize: '15px',
+    opacity: 0.5,
+    textAlign: 'right',
+  },
+}))
 
 //----------------------------------------------------------------//
 // Mouse Coordinates Control Component

@@ -49,6 +49,10 @@ import {
   Typography,
 } from '@material-ui/core'
 
+import {
+  makeStyles,
+} from '@material-ui/core/styles'
+
 //----------------------------------------------------------------//
 // Dash Array Images
 //----------------------------------------------------------------//
@@ -61,7 +65,6 @@ import stroke10_10_5_10_5_10 from '../../images/stroke-10-10-5-10-5-10.png'
 // Hawg View Constants
 //----------------------------------------------------------------//
 import { units } from '../../constants/threats'
-import useStyles from '../../constants/useStyles'
 
 //----------------------------------------------------------------//
 // Geodesy Functions
@@ -79,11 +82,41 @@ import { submitCoordInput } from '../../functions/submitCoordInput'
 import handleMarkerEdit from '../../handlers/handleMarkerEdit'
 
 //----------------------------------------------------------------//
+// Styles
+//----------------------------------------------------------------//
+const drawerWidth = 240
+const useStyles = makeStyles(theme => ({
+  drawer: {
+    [theme.breakpoints.up('sm')]: {
+      width: drawerWidth,
+      flexShrink: 0,
+    },
+  },
+  drawerPaper: {
+    width: drawerWidth,
+  },
+  firstTextField: {
+    marginLeft: theme.spacing(2),
+    marginRight: theme.spacing(2),
+    marginTop: theme.spacing(2),
+    marginBottom: theme.spacing(1)
+  },
+  marginsMd: {
+    margin: theme.spacing(2),
+  },
+  textField: {
+    marginLeft: theme.spacing(2),
+    marginRight: theme.spacing(2),
+    marginTop: theme.spacing(1),
+    marginBottom: theme.spacing(1)
+  },
+}))
+
+//----------------------------------------------------------------//
 // Shape Drawer Component
 //----------------------------------------------------------------//
-const EditShapeDrawer = (props) => {
+const EditShapeDrawer = props => {
   const classes = useStyles()
-
 
   //----------------------------------------------------------------//
   // Component State

@@ -1,3 +1,11 @@
+## 2.15.24-beta
+### Changes
+* Moved styles back into individual components
+* Simplified state in styles drawer
+
+### Fixes
+* Fixed style issues with CSS inheritance. Particularly with coordinate input.
+
 ## 2.15.23-beta
 ### Changes
 * Moved all of `editShapeDrawer` states to one state

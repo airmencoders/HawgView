@@ -40,6 +40,10 @@ import {
 } from '@material-ui/core'
 
 import {
+  makeStyles,
+} from '@material-ui/core/styles'
+
+import {
   AttachFile as AttachFileIcon,
 } from '@material-ui/icons'
 
@@ -47,11 +51,6 @@ import {
 // Geodesy Functions
 //----------------------------------------------------------------//
 import { LatLon } from 'geodesy/mgrs'
-
-//----------------------------------------------------------------//
-// Hawg View Constants
-//----------------------------------------------------------------//
-import useStyles from '../../constants/useStyles'
 
 //----------------------------------------------------------------//
 // Hawg View Functions
@@ -62,9 +61,24 @@ import {
 } from '../../functions/renderData'
 
 //----------------------------------------------------------------//
+// Styles
+//----------------------------------------------------------------//
+const useStyles = makeStyles(theme => ({
+  heading: {
+    fontSize: theme.typography.pxToRem(15),
+    flexBasis: '33.33%',
+    flexShrink: 0,
+  },
+  secondaryHeading: {
+    fontSize: theme.typography.pxToRem(15),
+    color: theme.palette.text.secondary,
+  },
+}))
+
+//----------------------------------------------------------------//
 // Marker List Accordion Component
 //----------------------------------------------------------------//
-const MarkerListAccordion = (props) => {
+const MarkerListAccordion = props => {
 
   const classes = useStyles()
 

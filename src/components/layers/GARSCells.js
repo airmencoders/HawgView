@@ -41,10 +41,9 @@ import {
   Polyline,
 } from 'react-leaflet'
 
-//----------------------------------------------------------------//
-// Hawg View Constants
-//----------------------------------------------------------------//
-import useStyles from '../../constants/useStyles'
+import {
+  makeStyles,
+} from '@material-ui/core/styles'
 
 //----------------------------------------------------------------//
 // Hawg View Functions
@@ -54,9 +53,21 @@ import gridMath from '../../functions/gridMath'
 //----------------------------------------------------------------//
 // GARS Cells Component
 //----------------------------------------------------------------//
-const GARSCells = (props) => {
+const GARSCells = props => {
+  //----------------------------------------------------------------//
+  // Styles
+  //----------------------------------------------------------------//
+  const useStyles = makeStyles(theme => ({
+    cellLabel: {
+      backgroundColor: 'black',
+      color: props.state.history[props.state.step].styles.gars.cellColor,
+      fontSize: '0.9rem',
+      lineHeight: '20px',
+      textAlign: 'center',
+    },
+  }))
 
-  const classes = useStyles(props.state.history[props.state.step].styles.gars)
+  const classes = useStyles()
 
   const [cells, setCells] = React.useState([])
   const [quadrants, setQuandrants] = React.useState([])

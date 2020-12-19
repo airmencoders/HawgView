@@ -48,15 +48,14 @@ import {
   Button,
 } from '@material-ui/core'
 
+import {
+  makeStyles,
+} from '@material-ui/core/styles'
+
 //----------------------------------------------------------------//
 // Geodesy Functions
 //----------------------------------------------------------------//
 import LatLon from 'geodesy/latlon-spherical'
-
-//----------------------------------------------------------------//
-// Hawg View Constants
-//----------------------------------------------------------------//
-import useStyles from '../../constants/useStyles'
 
 //----------------------------------------------------------------//
 // Hawg View Functions
@@ -67,6 +66,20 @@ import generateShapePopup from '../../functions/generateShapePopup'
 // Hawg View Handlers
 //----------------------------------------------------------------//
 import handleMarkerEdit from '../../handlers/handleMarkerEdit'
+
+//----------------------------------------------------------------//
+// Styles
+//----------------------------------------------------------------//
+const useStyles = makeStyles(theme => ({
+  tooltip: {
+    backgroundColor: '#000000',
+    color: '#ffffff',
+    border: 'none',
+    '&:before': {
+      border: 'none',
+    }
+  },
+}))
 
 //----------------------------------------------------------------//
 // Bullseye Component

@@ -41,15 +41,23 @@ import {
   TextField,
 } from '@material-ui/core'
 
+import {
+  makeStyles,
+} from '@material-ui/core/styles'
+
 //----------------------------------------------------------------//
-// Hawg View Constants
+// Styles
 //----------------------------------------------------------------//
-import useStyles from '../../constants/useStyles'
+const useStyles = makeStyles(theme => ({
+  dialog: {
+    padding: theme.spacing(2),
+  },
+}))
 
 //----------------------------------------------------------------//
 // Update Scenario Dialog Component
 //----------------------------------------------------------------//
-const UpdateScenarioDialog = (props) => {
+const UpdateScenarioDialog = props => {
   const classes = useStyles()
 
   //----------------------------------------------------------------//

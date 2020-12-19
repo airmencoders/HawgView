@@ -37,14 +37,27 @@ import {
 } from 'react-leaflet'
 
 //----------------------------------------------------------------//
-// Hawg View Constants
+// Material-UI Components
 //----------------------------------------------------------------//
-import useStyles from '../../constants/useStyles'
+import {
+  makeStyles,
+} from '@material-ui/core/styles'
+
+//----------------------------------------------------------------//
+// Styles
+//----------------------------------------------------------------//
+const useStyles = makeStyles(theme => ({
+  leafletMap: {
+    backgroundColor: '#000000',
+    height: '100%',
+    width: '100%',
+  },
+}))
 
 //----------------------------------------------------------------//
 // Map Component
 //----------------------------------------------------------------//
-const Map = (props) => {
+const Map = props => {
   const classes = useStyles()
 
   let mapRef = React.useRef()

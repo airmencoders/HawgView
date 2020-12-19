@@ -37,10 +37,9 @@ import {
   Tooltip,
 } from '@material-ui/core'
 
-//----------------------------------------------------------------//
-// Hawg View Constants
-//----------------------------------------------------------------//
-import useStyles from '../../constants/useStyles'
+import {
+  makeStyles,
+} from '@material-ui/core/styles'
 
 //----------------------------------------------------------------//
 // Hawg View Marker Icons
@@ -55,6 +54,19 @@ import noStrike from '../../markers/persistent/no-strike.svg'
 import survivor from '../../markers/persistent/srv.svg'
 import target from '../../markers/persistent/tgt.svg'
 import threat from '../../markers/persistent/threat-ring.svg'
+
+//----------------------------------------------------------------//
+// Styles
+//----------------------------------------------------------------//
+const useStyles = makeStyles(theme => ({
+  button: {
+    margin: theme.spacing(1),
+  },
+  markerImage: {
+    margin: theme.spacing(1),
+    width: '30px',
+  },
+}))
 
 //----------------------------------------------------------------//
 // Persistent Markers Component

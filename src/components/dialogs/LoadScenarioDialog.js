@@ -40,10 +40,9 @@ import {
   DialogTitle,
 } from '@material-ui/core'
 
-//----------------------------------------------------------------//
-// Material-UI Components
-//----------------------------------------------------------------//
-import useStyles from '../../constants/useStyles'
+import {
+  makeStyles,
+} from '@material-ui/core/styles'
 
 //----------------------------------------------------------------//
 // Hawg View Handlers
@@ -51,9 +50,21 @@ import useStyles from '../../constants/useStyles'
 import handleLoadScenario from '../../handlers/handleLoadScenario'
 
 //----------------------------------------------------------------//
+// Styles
+//----------------------------------------------------------------//
+const useStyles = makeStyles(theme => ({
+  dialog: {
+    padding: theme.spacing(2),
+  },
+  input: {
+    display: 'none',
+  },
+}))
+
+//----------------------------------------------------------------//
 // Load Scenario Dialog Component
 //----------------------------------------------------------------//
-const LoadScenarioDialog = (props) => {
+const LoadScenarioDialog = props => {
   const classes = useStyles()
 
   const handleChange = files => {
