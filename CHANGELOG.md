@@ -1,3 +1,19 @@
+## 2.16.0-beta
+### Changes
+* Added a 'View Bounds' / 'View Points' button to the `editShapeDrawer`
+* Created `ShapePointsDialog` to display points of a `line`, `polygon`, or `rectangle`
+* When closing the `ShapePointsDialog`, the `editShapeDrawer` is then re-opened
+
+### Task 1
+* Create a new tool to manually create a shape, similar to JMPS
+* It should open a new dialog with the option of which shape / tool to use (Any tool except the Analysis tool)
+* Then, once the shape is completed, it would be added to the history data and open the `editShapeDrawer` like any other shape
+* This will allow for an easier drawing experience when the user has a list of lines/drawing items that they are trying to type into the scenario
+
+### Task 2
+* Add in `Power User` features (To also be added to the wiki)
+* These will include keyboard shortcuts to then fire functions
+
 ## 2.15.24-beta
 ### Changes
 * Moved styles back into individual components

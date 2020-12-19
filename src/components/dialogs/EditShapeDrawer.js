@@ -849,6 +849,25 @@ const EditShapeDrawer = props => {
           direction='row'
           justify='center'
         >
+          {props.state.focusedShape !== null &&
+            (props.state.focusedShape.layer === 'line' ||
+              props.state.focusedShape.layer === 'polygon' ||
+              props.state.focusedShape.layer === 'rectangle') ?
+            <Button
+              className={classes.marginsMd}
+              color='primary'
+              onClick={() => props.setState({
+                ...props.state,
+                dialog: {
+                  anchor: null,
+                  name: 'shapePoints',
+                },
+              })}
+              variant='contained'
+            >
+              {`View ${props.state.focusedShape.layer === 'rectangle' ? 'Bounds' : 'Points'}`}
+            </Button>
+            : null}
           <Button
             className={classes.marginsMd}
             color='primary'

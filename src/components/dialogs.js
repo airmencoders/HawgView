@@ -40,6 +40,7 @@ import MarkerListDialog from './dialogs/MarkerListDialog'
 import NotificationsDialog from './dialogs/NotificationsDialog'
 import PersistentMarkers from './dialogs/PersistentMarkers'
 import SaveScenarioDialog from './dialogs/SaveScenarioDialog'
+import ShapePointsDialog from './dialogs/ShapePointsDialog'
 import StyleDrawer from './dialogs/StyleDrawer'
 import UpdateScenarioDialog from './dialogs/UpdateScenarioDialog'
 
@@ -56,6 +57,7 @@ export {
   NotificationsDialog,
   PersistentMarkers,
   SaveScenarioDialog,
+  ShapePointsDialog,
   StyleDrawer,
   UpdateScenarioDialog,
 }

@@ -40,6 +40,7 @@ import {
   MarkerListDialog,
   NotificationsDialog,
   SaveScenarioDialog,
+  ShapePointsDialog,
   StyleDrawer,
 } from '../dialogs'
 
@@ -78,6 +79,10 @@ const Dialogs = props => {
         setState={props.setState}
         state={props.state}
         toast={(message, severity) => props.toast(message, severity)}
+      />
+      <ShapePointsDialog
+        setState={props.setState}
+        state={props.state}
       />
       <LoadScenarioDialog
         setState={props.setState}
