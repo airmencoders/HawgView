@@ -82,7 +82,12 @@ const ShapePointsDialog = props => {
     })
   }
 
-  if (props.state.focusedShape !== null) {
+  if (
+    props.state.focusedShape !== null &&
+    (props.state.focusedShape.layer === 'line' ||
+      props.state.focusedShape.layer === 'polygon' ||
+      props.state.focusedShape.layer === 'rectangle')
+    ) {
     let points
     if (props.state.focusedShape.layer === 'line' || props.state.focusedShape.layer === 'polygon') {
       points = props.state.focusedShape.positions

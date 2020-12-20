@@ -1,3 +1,10 @@
+## 2.16.1-beta
+### Changes
+* Constrained `pointsDialog` to only render if the shape is a line, rectangle, or polygon
+
+### Fixes
+* Fix crashes when a user creates a circle or ellipse due to not having points the `pointDrawer` can parse through
+
 ## 2.16.0-beta
 ### Changes
 * Added a 'View Bounds' / 'View Points' button to the `editShapeDrawer`

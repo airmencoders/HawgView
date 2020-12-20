@@ -65,6 +65,7 @@ import {
 // Iconify Icons
 //----------------------------------------------------------------//
 import { Icon } from '@iconify/react'
+import clipboardTextOutlineIcon from '@iconify/icons-mdi/clipboard-text-outline'
 import pentagonIcon from '@iconify/icons-mdi/pentagon'
 import ellipseIcon from '@iconify/icons-mdi/ellipse'
 
