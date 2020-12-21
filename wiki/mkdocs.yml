@@ -1,0 +1,65 @@
+site_name: Hawg View Wiki
+site_url: https://wiki.hawg-ops.com
+nav:
+  - Hawg View:
+    - index.md
+  - Scenario Planner:
+    - 'scenario-planner/screen-layout.md'
+    - 'scenario-planner/airspace.md'
+    - 'scenario-planner/toolbar.md'
+    - Drawers:
+      - 'scenario-planner/drawers/marker-drawer.md'
+      - 'scenario-planner/drawers/shape-drawer.md'
+      - 'scenario-planner/drawers/style-drawer.md'
+      - 'scenario-planner/drawers/threat-drawer.md'
+    - Dialogs:
+      - 'scenario-planner/dialogs/marker-list.md'
+      - 'scenario-planner/dialogs/save-dialog.md'
+      - 'scenario-planner/dialogs/load-dialog.md'
+    - 'scenario-planner/utility-tools.md'
+    - 'scenario-planner/mgrs.md'
+    - 'scenario-planner/gars.md'
+    - 'scenario-planner/tgp.md'
+  - Power Features:
+    - 'power-features/advanced-shapes.md'
+    - 'power-features/keyboard-shortcuts.md'
+  - Feedback:
+    - 'feedback/contributing.md'
+    - 'feedback/contact.md'
+  - Roadmap:
+    - 'roadmap/roadmap.md'
+theme:
+  name: 'material'
+  favicon: images/favicon.png
+  logo: 'images/favicon.png'
+  features:
+    - tabs
+    - instant
+markdown_extensions:
+  - admonition
+  - attr_list
+  - def_list
+  - footnotes
+  - pymdownx.tilde
+  - pymdownx.details
+  - pymdownx.keys
+  - pymdownx.superfences
+  - pymdownx.inlinehilite
+  - pymdownx.caret
+  - pymdownx.mark
+  - pymdownx.tilde
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.highlight:
+      use_pygments: true
+      linenums: true
+extra_css:
+  - stylesheets/styles.css
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/airmencoders/HawgView
+    - icon: fontawesome/brands/linkedin
+      link: https://www.linkedin.com/company/airmencoders
+    - icon: fontawesome/brands/chrome
+      link: https://airmencoders.us

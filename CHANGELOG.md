@@ -1,3 +1,7 @@
+## 2.16.2-beta
+### Changes
+* Added wiki source files to the repo
+
 ## 2.16.1-beta
 ### Changes
 * Constrained `pointsDialog` to only render if the shape is a line, rectangle, or polygon
