@@ -83,6 +83,21 @@ import {
 // Hawg View Functions
 //----------------------------------------------------------------//
 import getElevation from './functions/getElevation'
+import generateKML from './functions/generateKML'
+
+//----------------------------------------------------------------//
+// Hawg View Handlers
+//----------------------------------------------------------------//
+import handleColorChange from './handlers/handleColorChange'
+import handleMarkerEdit from './handlers/handleMarkerEdit'
+import {
+  handleMarkerSizeDecrease,
+  handleMarkerSizeIncrease,
+} from './handlers/handleMarkerSizeChange'
+import {
+  handleBrightnessDecrease,
+  handleBrightnessIncrease,
+} from './handlers/handleBrightnessChange'
 
 //----------------------------------------------------------------//
 // Styles
@@ -210,9 +225,11 @@ const Cas = () => {
    */
   React.useEffect(() => {
     window.addEventListener('resize', handleMobileMenuClose, false)
+    window.addEventListener('keydown', keyboardShortcutHandler, false)
 
     return () => {
       window.removeEventListener('resize', handleMobileMenuClose, false)
+      window.removeEventListener('keydown', keyboardShortcutHandler, false)
     }
   }, [state])
 
@@ -254,6 +271,198 @@ const Cas = () => {
   //----------------------------------------------------------------//
   // Private Handlers
   //----------------------------------------------------------------//
+  const keyboardShortcutHandler = e => {
+    // Analysis Tool
+    if (e.ctrlKey && e.key === '1') {
+      e.preventDefault()
+      setState({
+        ...state,
+        tool: 'analysis',
+      })
+    }
+
+    // Building Label Tool
+    if (e.ctrlKey && e.key === '2') {
+      e.preventDefault()
+      setState({
+        ...state,
+        tool: 'buildingLabel',
+      })
+    }
+
+    // Kinetic Point Tool
+    if (e.ctrlKey && e.key === '3') {
+      e.preventDefault()
+      setState({
+        ...state,
+        tool: 'kineticPoint',
+      })
+    }
+
+    // Line Tool
+    if (e.ctrlKey && e.key === '4') {
+      e.preventDefault()
+      setState({
+        ...state,
+        tool: 'line',
+      })
+    }
+
+    // Circle Tool
+    if (e.ctrlKey && e.key === '5') {
+      e.preventDefault()
+      setState({
+        ...state,
+        tool: 'circle',
+      })
+    }
+
+    // Rectangle Tool
+    if (e.ctrlKey && e.key === '6') {
+      e.preventDefault()
+      setState({
+        ...state,
+        tool: 'rectangle'
+      })
+    }
+    
+    // Polygon Tool
+    if (e.ctrlKey && e.key === '7') {
+      e.preventDefault()
+      setState({
+        ...state,
+        tool: 'polygon',
+      })
+    }
+
+    // Ellipse Tool
+    if (e.ctrlKey && e.key === '8') {
+      e.preventDefault()
+      setState({
+        ...state,
+        tool: 'ellipse',
+      })
+    }
+
+    // Reset Marker Size
+    if (e.ctrlKey && e.key === ',') {
+      e.preventDefault()
+      setState({
+        ...state,
+        markerSize: 3,
+      })
+    }
+
+    // Reset Map Brightness
+    if (e.ctrlKey && e.key === '.') {
+      e.preventDefault()
+      setState({
+        ...state,
+        map: {
+          ...state.map,
+          brightness: 1,
+        }
+      })
+    }
+
+    // Toggle Map Color
+    if (e.ctrlKey && e.key === 'c') {
+      e.preventDefault()
+      handleColorChange(state, setState)
+    }
+
+    // Download Scenario
+    if (e.ctrlKey && e.key === 'd') {
+      e.preventDefault()
+      generateKML(state.history[state.step])
+    }
+
+    // Load Scenario
+    if (e.ctrlKey && e.key === 'o') {
+      e.preventDefault()
+      setState({
+        ...state,
+        dialog: {
+          anchor: null,
+          name: 'load',
+        },
+      })
+    }
+
+    // Save Scenario
+    if (e.ctrlKey && e.key === 's') {
+      e.preventDefault()
+      setState({
+        ...state,
+        dialog: {
+          anchor: null,
+          name: 'save',
+        },
+      })
+    }
+
+    // Toggle Marker Labels
+    if (e.ctrlKey && e.key === 'l') {
+      e.preventDefault()
+      setState({
+        ...state,
+        tooltips: !state.tooltips,
+      })
+    }
+
+    // Redo
+    if (e.ctrlKey && e.key === 'y') {
+      if (state.step < state.history.length - 1) {
+        e.preventDefault()
+        setState({
+          ...state,
+          step: state.step + 1,
+        })
+      }
+    }
+
+    // Undo
+    if (e.ctrlKey && e.key === 'z') {
+      if (state.step > 0) {
+        e.preventDefault()
+        setState({
+          ...state,
+          step: state.step - 1,
+        })
+      }
+    }
+
+    // Decrease Marker Size
+    if (e.ctrlKey && e.key === '[') {
+      e.preventDefault()
+      handleMarkerSizeDecrease(state, setState)
+    }
+
+    // Increase Marker Size
+    if (e.ctrlKey && e.key === ']') {
+      e.preventDefault()
+      handleMarkerSizeIncrease(state, setState)
+    }
+
+    // Decrease Map Brightness
+    if (e.shiftKey && e.key === '{' && state.dialog.name === null) {
+      e.preventDefault()
+      handleBrightnessDecrease(state, setState)
+    }
+
+    // Increase Map Brightness
+    if (e.shiftKey && e.key === '}' && state.dialog.name === null) {
+      e.preventDefault()
+      handleBrightnessIncrease(state, setState)
+    }
+
+    // Clear all markers
+    if (e.shiftKey && e.key === 'Escape') {
+      e.preventDefault()
+      handleMarkerEdit('clear', {}, state, setState)
+    }
+  }
+
   const handleMobileMenuOpen = (event, dialog) => {
     setState({
       ...state,

@@ -1,3 +1,8 @@
+## 2.16.3-beta
+### Changes
+* Added keyboard shortcuts
+* Updated wiki to reflect keyboard shortcuts
+
 ## 2.16.2-beta
 ### Changes
 * Added wiki source files to the repo
