@@ -1,3 +1,7 @@
+## 2.17.0-beta
+### Changes
+* Added airspace in BMGR/Tombstone (ATCAAs, Airspace divisions)
+
 ## 2.16.3-beta
 ### Changes
 * Added keyboard shortcuts
