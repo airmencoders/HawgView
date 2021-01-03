@@ -16,6 +16,7 @@
     "geodesy": "^2.2.1",
     "leaflet": "^1.7.1",
     "leaflet-ellipse": "^0.9.1",
+    "milsymbol": "^2.0.0",
     "react": "^17.0.1",
     "react-app-polyfill": "^2.0.0",
     "react-color": "^2.19.3",

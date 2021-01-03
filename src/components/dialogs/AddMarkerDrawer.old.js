@@ -28,7 +28,6 @@
  * SOFTWARE.
  */
 import React from 'react'
-import ms from 'milsymbol'
 
 //----------------------------------------------------------------//
 // Material-UI Components
@@ -36,13 +35,9 @@ import ms from 'milsymbol'
 import {
   Divider,
   Drawer,
-  FormControl,
   FormControlLabel,
   FormGroup,
   Grid,
-  InputLabel,
-  MenuItem,
-  Select,
   Switch,
   TextField,
 } from '@material-ui/core'
@@ -59,13 +54,6 @@ import {
   HostileMarkers,
   PersistentMarkers,
 } from '../dialogs'
-
-//----------------------------------------------------------------//
-// Hawg View Constants
-//----------------------------------------------------------------//
-import {
-  sidcCodes
-} from '../../constants/sidcCodes'
 
 //----------------------------------------------------------------//
 // Hawg View Handlers
@@ -89,9 +77,6 @@ const useStyles = makeStyles(theme => ({
   drawerPaper: {
     width: drawerWidth,
   },
-  marginsMd: {
-    margin: theme.spacing(2),
-  },
 }))
 
 //----------------------------------------------------------------//
@@ -109,24 +94,7 @@ const AddMarkerDrawer = props => {
   const [_state, _setState] = React.useState({
     hostile: false,
     label: '',
-    milsymbol: {
-      scheme: 'S',
-      affiliation: 'F',
-      dimension: 'G',
-      status: 'P',
-      id: 'U-----',
-      modifier: '-',
-      size: '-',
-    },
-    svg: null,
   })
-
-  React.useEffect(() => {
-    _setState({
-      ..._state,
-      svg: new ms.Symbol(`${_state.milsymbol.scheme}${_state.milsymbol.affiliation}${_state.milsymbol.dimension}${_state.milsymbol.status}${_state.milsymbol.id}${_state.milsymbol.modifier}${_state.milsymbol.size}`, {size: 10}),
-    })
-  }, [_state.milsymbol])
 
   //----------------------------------------------------------------//
   // Component Handlers
@@ -168,7 +136,7 @@ const AddMarkerDrawer = props => {
 
     // Forward to the function
     handleMarkerEdit('create', updatedPayload, props.state, props.setState)
-
+    
     // Clear the marker description TextField
     _setState({
       ..._state,
@@ -189,45 +157,53 @@ const AddMarkerDrawer = props => {
         classes={{ paper: classes.drawerPaper, }}
         ModalProps={{ keepMounted: true, }}
       >
-        <img
-          className={classes.marginsMd}
-          src={_state.svg !== null ? _state.svg.toDataURL() : null}
-        />        
-        <FormControl
-          className={classes.marginsMd}
-          variant='outlined'
-        >
-          <InputLabel>Affiliation</InputLabel>
-          <Select
-            label='Affiliation'
-            onChange={event => _setState({..._state, milsymbol: {..._state.milsymbol, affiliation: event.target.value}})}
-            value={_state.milsymbol.affiliation}
+        <div>
+          <Grid
+            container
+            direction='row'
+            justify='center'
           >
-            <MenuItem value='F'>Friendly</MenuItem>
-            <MenuItem value='H'>Hostile</MenuItem>
-          </Select>
-        </FormControl>
-        <FormControl
-          className={classes.marginsMd}
-          variant='outlined'
-        >
-          <InputLabel>Function ID</InputLabel>
-          <Select
-            label='Function ID'
-            onChange={event => _setState({..._state, milsymbol: {..._state.milsymbol, id: event.target.value}})}
-            value={_state.milsymbol.id}
-          >
-            {sidcCodes.map(code => (
-              <MenuItem 
-                key={code.value}
-                value={code.value}
-              >
-                {code.name}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-
+            <FormGroup>
+              <FormControlLabel
+                control={
+                  <Switch
+                    checked={_state.hostile}
+                    name='hostile'
+                    onChange={() => _setState({ ..._state, hostile: !_state.hostile })}
+                  />
+                }
+                label='Hostile'
+              />
+            </FormGroup>
+          </Grid>
+          <Divider />
+          <TextField
+            className={classes.descriptionField}
+            label='Marker Label'
+            onChange={event => _setState({ ..._state, label: event.target.value, })}
+            variant='outlined'
+            value={_state.label}
+          />
+          <Divider />
+          <PersistentMarkers
+            handleAddMarker={payload => handleAddMarker(payload)}
+            handleMarkerDrawerToggle={props.onClose}
+            state={props.state}
+            toggleEditThreatDialog={props.toggleEditThreatDialog}
+          />
+          <Divider />
+          {_state.hostile ?
+            <HostileMarkers
+              handleAddMarker={payload => handleAddMarker(payload)}
+              handleMarkerDrawerToggle={props.onClose}
+            />
+            :
+            <FriendlyMarkers
+              handleAddMarker={payload => handleAddMarker(payload)}
+              handleMarkerDrawerToggle={props.onClose}
+            />
+          }
+        </div>
       </Drawer>
     </nav>
   )
