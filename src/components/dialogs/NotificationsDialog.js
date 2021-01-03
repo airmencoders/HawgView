@@ -61,23 +61,14 @@ const NotificationsDialog = props => {
       onClose={handleClose}
     >
       <DialogTitle>
-        Hawg View Version 2 Beta
+        What's New With Hawg View
       </DialogTitle>
       <DialogContent>
         <DialogContentText>
-          In order to continue expanding and improving Hawg Ops, I have been working to make Hawg View version 2. Please read the <a href='https://wiki.hawg-ops.com' target='_blank' rel='noopener noreferrer'>wiki</a> if you have questions.
+          Airspace for German training airspaces as well has been added to the site. Additionally, airspace lines for the Barry M. Goldwater Range and Tombstone/Sells MOAs have been updated to have the internal MOA divisions in addition to the standard FAA boundaries.
         </DialogContentText>
         <DialogContentText>
-          Hawg View v2 will eventually replace <a href='https://v1.hawg-ops.com' target='_blank' rel='noopener noreferrer'>Hawg Ops v1</a>. What this means for current users is that accounts and saved scenarios will be removed. I appreciate the feedback and use over the past couple years. Hopefully this move will provide a better user experience for my users. If you have any questions regarding the transition, please contact me. Additionally, there is now a version 2 translator that will download your version 1 scenario as a file recognized by version 2.
-        </DialogContentText>
-        <DialogContentText>
-          Transition Timeline:
-          <br />
-          01 December 2020 - Users will not be able to save version 1 scenarios
-          <br />
-          14 December 2020 - Users will only be able to download scenarios as version 2
-          <br />
-          01 January 2021 - Version 1 will be removed
+          Support for version 1, Hawg-Ops, has ended. Users are no longer able to access version 1 for their saved scenarios. If, for some reason, you did not previously save your scenarios, you can contact me individually for assistance in obtaining your scenarios.
         </DialogContentText>
         <DialogContentText>
           Please let me know at <a href='mailto:hawg.ops@gmail.com'>hawg.ops@gmail.com</a> any feedback or requests you may have for Hawg View.

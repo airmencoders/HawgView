@@ -1,3 +1,9 @@
+## 2.18.0-beta
+### Changes
+* Updated Notification Dialog
+* Removed `Version 1` Menu Item from the `SiteMenu`
+* Added `HTTP 301` permanent redirect to `https://v1.hawg-ops.com`
+
 ## 2.17.0-beta
 ### Changes
 * Added airspace in BMGR/Tombstone (ATCAAs, Airspace divisions)
