@@ -105,17 +105,6 @@ const SiteMenu = props => {
         </Badge>
       </MenuItem>
       <MenuItem>
-        <HistoryIcon className={classes.mobileMenuIcon} />
-        <a
-          href='https://v1.hawg-ops.com'
-          style={{ color: 'inherit', textDecoration: 'none' }}
-          target='_blank'
-          rel='noopener noreferrer'
-        >
-          Version 1
-        </a>
-      </MenuItem>
-      <MenuItem>
         <HelpOutlineIcon className={classes.mobileMenuIcon} />
         <a
           href='https://wiki.hawg-ops.com'
