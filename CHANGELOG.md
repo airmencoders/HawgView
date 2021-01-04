@@ -1,3 +1,7 @@
+## 2.19.2
+### Changes
+* Updated Wiki
+
 ## 2.19.1
 ### Changes
 * Bump from `beta` to full release
