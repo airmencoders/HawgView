@@ -44,7 +44,7 @@ import {
 
 import {
   HelpOutline as HelpOutlineIcon,
-  History as HistoryIcon,
+  Keyboard as KeyboardIcon,
   NotificationImportant as NotificationImportantIcon,
 } from '@material-ui/icons'
 
@@ -113,6 +113,17 @@ const SiteMenu = props => {
           rel='noopener noreferrer'
         >
           Wiki
+        </a>
+      </MenuItem>
+      <MenuItem>
+        <KeyboardIcon className={classes.mobileMenuIcon}  />
+        <a
+          href='https://wiki.hawg-ops.com/power-features/keyboard-shortcuts/'
+          style={{ color: 'inherit', textDecoration: 'none' }}
+          target='_blank'
+          rel='noopener noreferrer'
+        >
+          Keyboard Shortcuts
         </a>
       </MenuItem>
     </Menu>

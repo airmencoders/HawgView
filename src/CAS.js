@@ -33,6 +33,7 @@ import React from 'react'
 // Material-UI Components
 //----------------------------------------------------------------//
 import {
+  Badge,
   Box,
   IconButton,
   Tooltip,
@@ -43,8 +44,10 @@ import {
 } from '@material-ui/core/styles'
 
 import {
-  Menu as MenuIcon,
+  HelpOutline as HelpOutlineIcon,
   MoreVert as MoreVertIcon,
+  Notifications as NotificationsIcon,
+  NotificationImportant as NotificationImportantIcon,
 } from '@material-ui/icons'
 
 //----------------------------------------------------------------//
@@ -71,7 +74,6 @@ import {
   Map,
   MapPopup,
   MobileMenu,
-  SiteMenu,
   Snackbar,
 } from './components/core'
 
@@ -194,6 +196,7 @@ const Cas = () => {
       zoom: 5,
     },
     markerSize: 3,
+    notificationsRead: false,
     mouseCoords: null,
     snackbar: {
       open: false,
@@ -325,7 +328,7 @@ const Cas = () => {
         tool: 'rectangle'
       })
     }
-    
+
     // Polygon Tool
     if (e.ctrlKey && e.key === '7') {
       e.preventDefault()
@@ -545,19 +548,36 @@ const Cas = () => {
             </Tooltip>
           </div>
           <div className={classes.grow} />
-          <Tooltip title='Menu'>
+          <Tooltip title='Notifications'>
             <IconButton
               color='inherit'
-              onClick={event => handleMobileMenuOpen(event, 'siteMenu')}
+              onClick={() => setState({
+                ...state,
+                dialog: {
+                  anchor: null,
+                  name: 'notifications'
+                },
+                notificationsRead: true,
+              })}
             >
-              <MenuIcon />
+              {state.notificationsRead ? <NotificationsIcon /> : <NotificationImportantIcon />}
             </IconButton>
           </Tooltip>
+          <Tooltip title='Wiki'>
+            <a
+              href='https://wiki.hawg-ops.com'
+              style={{ color: 'inherit', textDecoration: 'none' }}
+              target='_blank'
+              rel='noopener noreferrer'
+            >
+              <IconButton
+                color='inherit'
+              >
+                <HelpOutlineIcon />
+              </IconButton>
+            </a>
+          </Tooltip>
           <MobileMenu
-            setState={setState}
-            state={state}
-          />
-          <SiteMenu
             setState={setState}
             state={state}
           />

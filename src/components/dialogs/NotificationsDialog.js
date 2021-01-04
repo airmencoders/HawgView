@@ -68,6 +68,12 @@ const NotificationsDialog = props => {
           Airspace for German training airspaces as well has been added to the site. Additionally, airspace lines for the Barry M. Goldwater Range and Tombstone/Sells MOAs have been updated to have the internal MOA divisions in addition to the standard FAA boundaries.
         </DialogContentText>
         <DialogContentText>
+          Be sure to check the wiki to keep up to date on new features and tips on Hawg View, to include keyboard shortcuts and alternate ways to create shapes.
+        </DialogContentText>
+        <DialogContentText>
+          Updates to the markers have been made to include more MIL-STD-2525C Markers. This should help units with creating scenarios as echelon sizes are also now included.
+        </DialogContentText>
+        <DialogContentText>
           Support for version 1, Hawg-Ops, has ended. Users are no longer able to access version 1 for their saved scenarios. If, for some reason, you did not previously save your scenarios, you can contact me individually for assistance in obtaining your scenarios.
         </DialogContentText>
         <DialogContentText>

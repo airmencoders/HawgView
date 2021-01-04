@@ -1,3 +1,13 @@
+## 2.19.1
+### Changes
+* Bump from `beta` to full release
+* Moved `Notifications` and `Wiki` icons out of the site menu back into the normal `Navigation`
+* Changed markers to utilize the `milsymbol` NPM Package
+
+### Tasks
+* Update the `handleLoadScenario` function to translate from the old SVG files to the new `milsymbol` files
+* Find a way to dynamically serve the `PNG` files of the markers for the KML
+
 ## 2.18.0-beta
 ### Changes
 * Updated Notification Dialog

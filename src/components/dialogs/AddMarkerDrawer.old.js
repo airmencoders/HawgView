@@ -187,20 +187,16 @@ const AddMarkerDrawer = props => {
           <Divider />
           <PersistentMarkers
             handleAddMarker={payload => handleAddMarker(payload)}
-            handleMarkerDrawerToggle={props.onClose}
             state={props.state}
-            toggleEditThreatDialog={props.toggleEditThreatDialog}
           />
           <Divider />
           {_state.hostile ?
             <HostileMarkers
               handleAddMarker={payload => handleAddMarker(payload)}
-              handleMarkerDrawerToggle={props.onClose}
             />
             :
             <FriendlyMarkers
               handleAddMarker={payload => handleAddMarker(payload)}
-              handleMarkerDrawerToggle={props.onClose}
             />
           }
         </div>

@@ -38,7 +38,8 @@ import {
 } from '../constants/airspace'
 
 const remapIconUrl = svg => {
-  let pngUrl = 'https://hawg-ops.com/pngMarkers/'
+  return `http://192.168.1.100:3100/png?sidc=${svg}`
+  /*let pngUrl = 'https://hawg-ops.com/pngMarkers/'
 
   switch (svg) {
     case 'https://hawg-ops.com/static/media/ada.af746e84.svg':
@@ -214,7 +215,8 @@ const remapIconUrl = svg => {
       pngUrl = ''
   }
 
-  return pngUrl
+  return pngUrl*/
+  return null
 }
 
 const tryMgrs = latlng => {
@@ -636,7 +638,7 @@ const generateMarkers = (markers, folderName, folderId, kmlData) => {
         <Style>
           <IconStyle>
             <Icon>
-              <href>${marker.layer === 'buildingLabel' ? 'http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png' : marker.layer === 'kineticPoint' ? 'http://maps.google.com/mapfiles/kml/pushpin/red-pushpin.png' : marker.layer === 'mapLabel' ? 'http://maps.google.com/mapfiles/kml/pushpin/wht-pushpin.png' : remapIconUrl(marker.iconUrl)}</href>
+              <href>${marker.layer === 'buildingLabel' ? 'http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png' : marker.layer === 'kineticPoint' ? 'http://maps.google.com/mapfiles/kml/pushpin/red-pushpin.png' : marker.layer === 'mapLabel' ? 'http://maps.google.com/mapfiles/kml/pushpin/wht-pushpin.png' : 'http://maps.google.com/mapfiles/kml/pushpin/blue-pushpin.png'}</href>
             </Icon>
           </IconStyle>
         </Style>

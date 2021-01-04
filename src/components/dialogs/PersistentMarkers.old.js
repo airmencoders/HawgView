@@ -44,10 +44,12 @@ import {
 //----------------------------------------------------------------//
 // Hawg View Marker Icons
 //----------------------------------------------------------------//
+import ada from '../../markers/persistent/ada.svg'
 import blank from '../../markers/persistent/blank.svg'
 import bullseye from '../../markers/persistent/bullseye.svg'
 import cp from '../../markers/persistent/cp.svg'
 import ip from '../../markers/persistent/ip.svg'
+import missile from '../../markers/persistent/missile.svg'
 import noStrike from '../../markers/persistent/no-strike.svg'
 import survivor from '../../markers/persistent/srv.svg'
 import target from '../../markers/persistent/tgt.svg'
@@ -145,6 +147,22 @@ const PersistentMarkers = props => {
   return (
     <React.Fragment>
       <div>
+        <Tooltip title='ADA'>
+          <img
+            alt='ADA'
+            className={classes.markerImage}
+            onClick={event => handleMarkerClick(event.target.src, 'img', 'ADA', 'hostile')}
+            src={ada}
+          />
+        </Tooltip>
+        <Tooltip title='Missile'>
+          <img
+            alt='Missile'
+            className={classes.markerImage}
+            onClick={event => handleMarkerClick(event.target.src, 'img', 'Missile', 'hostile')}
+            src={missile}
+          />
+        </Tooltip>
         <Tooltip title='Target'>
           <img
             alt='Target'
@@ -207,7 +225,6 @@ const PersistentMarkers = props => {
           className={classes.button}
           color='primary'
           onClick={() => handleMarkerClick(null, 'div', 'Label', 'mapLabel')}
-          variant='contained'
         >
           MAP LABEL
         </Button>
