@@ -1,3 +1,12 @@
+## 2.19.3
+### Changes
+* Started move to only using the `SIDC` code for rendering `milsymbol` markers
+* Added `neutral` and `unknown` marker layers to `LayerControl`, `handleEditMarker`, and `editMarkers`
+
+### Tasks
+* Finish adding the `neutral` and `unknown` layers to the marker edit functions
+* Add the ability to edit layer/echelon to the markers
+
 ## 2.19.2
 ### Changes
 * Updated Wiki

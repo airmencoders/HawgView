@@ -169,6 +169,7 @@ const Cas = () => {
       kineticPoints: [],
       lines: [],
       mapLabels: [],
+      neutralMarkers: [],
       polygons: [],
       rectangles: [],
       survivors: [],
@@ -187,6 +188,7 @@ const Cas = () => {
         },
       },
       threatMarkers: [],
+      unknownMarkers: [],
     }],
     map: {
       brightness: 1,

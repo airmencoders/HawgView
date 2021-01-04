@@ -74,6 +74,7 @@ const handleLoadScenario = (data, state, setState, toast) => {
       kineticPoints: json.data.kineticPoints !== undefined ? json.data.kineticPoints : [],
       lines: json.data.lines !== undefined ? json.data.lines : [],
       mapLabels: json.data.mapLabels !== undefined ? json.data.mapLabels : [],
+      neutralMarkers: json.data.neutralMarkers !== undefined ? json.data.neutralMarkers : [],
       polygons: json.data.polygons !== undefined ? json.data.polygons : [],
       survivors: json.data.survivors !== undefined ? json.data.survivors : [],
       styles: json.data.styles !== undefined ? json.data.styles : {
@@ -90,7 +91,8 @@ const handleLoadScenario = (data, state, setState, toast) => {
           color: '#ffff00',
         },
       },
-      threatMarkers: json.data.threatMarkers !== undefined ? json.data.threatMarkers : []
+      threatMarkers: json.data.threatMarkers !== undefined ? json.data.threatMarkers : [],
+      unknownMarkers: json.data.unknownMarkers !== undefined ? json.data.unknownMarkers : [],
     }
 
     if (json.name === undefined || json.name === '') {

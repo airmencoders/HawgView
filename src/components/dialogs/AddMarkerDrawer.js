@@ -37,13 +37,9 @@ import {
   Divider,
   Drawer,
   FormControl,
-  FormControlLabel,
-  FormGroup,
-  Grid,
   InputLabel,
   MenuItem,
   Select,
-  Switch,
   TextField,
   Tooltip,
 } from '@material-ui/core'
@@ -56,8 +52,6 @@ import {
 // Hawg View Components
 //----------------------------------------------------------------//
 import {
-  FriendlyMarkers,
-  HostileMarkers,
   PersistentMarkers,
 } from '../dialogs'
 
@@ -65,7 +59,7 @@ import {
 // Hawg View Constants
 //----------------------------------------------------------------//
 import {
-  echelonSizes,
+  echelons,
   sidcCodes
 } from '../../constants/sidcCodes'
 
@@ -114,14 +108,14 @@ const AddMarkerDrawer = props => {
   const [_state, _setState] = React.useState({
     hostile: false,
     label: '',
-    milsymbol: {
+    sidc: {
       scheme: 'S',
       affiliation: 'F',
       dimension: 'G',
       status: 'P',
       id: 'U-----',
       modifier: '-',
-      size: '-',
+      echelon: '-',
     },
     svg: null,
   })
@@ -129,9 +123,9 @@ const AddMarkerDrawer = props => {
   React.useEffect(() => {
     _setState({
       ..._state,
-      svg: new ms.Symbol(`${_state.milsymbol.scheme}${_state.milsymbol.affiliation}${_state.milsymbol.dimension}${_state.milsymbol.status}${_state.milsymbol.id}${_state.milsymbol.modifier}${_state.milsymbol.size}`, { size: 50 }),
+      svg: new ms.Symbol(`${_state.sidc.scheme}${_state.sidc.affiliation}${_state.sidc.dimension}${_state.sidc.status}${_state.sidc.id}${_state.sidc.modifier}${_state.sidc.size}`, { size: 50 }),
     })
-  }, [_state.milsymbol, _state.label])
+  }, [_state.sidc, _state.label])
 
   //----------------------------------------------------------------//
   // Component Handlers
@@ -156,16 +150,41 @@ const AddMarkerDrawer = props => {
    */
   const prepPayload = code => {
 
+    let layer
+    switch (_state.sidc.affiliation) {
+      case 'F':
+        layer = 'friendly'
+        break
+      case 'H':
+        layer = 'hostile'
+        break
+      case 'U':
+        layer = 'unknown'
+        break
+      case 'N':
+        layer = 'neutral'
+        break
+      default:
+        layer = 'unknown'
+    }
+
     let payload = {
       arty: {
         arty: false,
         display: false,
       },
       elevation: 0,
-      iconType: 'img',
-      iconUrl: new ms.Symbol(`${_state.milsymbol.scheme}${_state.milsymbol.affiliation}${_state.milsymbol.dimension}${_state.milsymbol.status}${code.value}${_state.milsymbol.modifier}${_state.milsymbol.size}`, { size: 20 }).toDataURL(),
-      layer: _state.milsymbol.affiliation === 'F' ? 'friendly' : 'hostile',
-      sidc: `${_state.milsymbol.scheme}${_state.milsymbol.affiliation}${_state.milsymbol.dimension}${_state.milsymbol.status}${code.value}${_state.milsymbol.modifier}${_state.milsymbol.size}`,
+      iconType: 'sidc',
+      layer,
+      sidc: {
+        scheme: _state.sidc.scheme,
+        affiliation: _state.sidc.affiliation,
+        dimension: _state.sidc.dimension,
+        status: _state.sidc.status,
+        id: code.value,
+        modifier: _state.sidc.modifier,
+        echelon: _state.sidc.echelon,
+      },
       title: _state.label === '' ? code.name : _state.label,
     }
 
@@ -236,15 +255,17 @@ const AddMarkerDrawer = props => {
       >
         <TextField
           className={classes.marginsMd}
-          label='Title'
+          label='Marker Title'
           onChange={event => _setState({ ..._state, label: event.target.value })}
           value={_state.label}
           variant='outlined'
         />
+        <Divider className={classes.marginsMd} />
         <PersistentMarkers
           handleAddMarker={payload => handleAddMarker(payload)}
           state={props.state}
         />
+        <Divider className={classes.marginsMd} />
         <FormControl
           className={classes.marginsMd}
           variant='outlined'
@@ -252,8 +273,8 @@ const AddMarkerDrawer = props => {
           <InputLabel>Affiliation</InputLabel>
           <Select
             label='Affiliation'
-            onChange={event => _setState({ ..._state, milsymbol: { ..._state.milsymbol, affiliation: event.target.value } })}
-            value={_state.milsymbol.affiliation}
+            onChange={event => _setState({ ..._state, sidc: { ..._state.sidc, affiliation: event.target.value } })}
+            value={_state.sidc.affiliation}
           >
             <MenuItem value='F'>Friendly</MenuItem>
             <MenuItem value='H'>Hostile</MenuItem>
@@ -265,13 +286,13 @@ const AddMarkerDrawer = props => {
           className={classes.marginsMd}
           variant='outlined'
         >
-          <InputLabel>Echelon Size</InputLabel>
+          <InputLabel>Echelon</InputLabel>
           <Select
-            label='Echelon Size'
-            onChange={event => _setState({ ..._state, milsymbol: { ..._state.milsymbol, size: event.target.value } })}
-            value={_state.milsymbol.size}
+            label='Echelon'
+            onChange={event => _setState({ ..._state, sidc: { ..._state.sidc, echelon: event.target.value } })}
+            value={_state.sidc.echelon}
           >
-            {echelonSizes.map(code => (
+            {echelons.map(code => (
               <MenuItem
                 key={code.value}
                 value={code.value}
@@ -283,13 +304,15 @@ const AddMarkerDrawer = props => {
         </FormControl>
         <div>
           {sidcCodes.map(code => (
-            <Tooltip title={code.name}>
+            <Tooltip
+              key={code.value}
+              title={code.name}
+            >
               <img
                 alt={code.name}
                 className={classes.marginsSm}
-                key={code.value}
                 onClick={() => prepPayload(code)}
-                src={new ms.Symbol(`${_state.milsymbol.scheme}${_state.milsymbol.affiliation}${_state.milsymbol.dimension}${_state.milsymbol.status}${code.value}-${_state.milsymbol.size}`, { size: 30 }).toDataURL()}
+                src={new ms.Symbol(`${_state.sidc.scheme}${_state.sidc.affiliation}${_state.sidc.dimension}${_state.sidc.status}${code.value}${_state.sidc.modifier}${_state.sidc.echelon}`, { size: 30 }).toDataURL()}
               />
             </Tooltip>
           ))}

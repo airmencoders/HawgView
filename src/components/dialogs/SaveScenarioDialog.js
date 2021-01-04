@@ -82,11 +82,13 @@ const SaveScenarioDialog = props => {
       kineticPoints: data.kineticPoints,
       lines: data.lines,
       mapLabels: data.mapLabels,
+      neutralMarkers: data.neutralMarkers,
       polygons: data.polygons,
       rectangles: data.rectangles,
       survivors: data.survivors,
       styles: data.styles,
-      threatMarkers: data.threatMarkers
+      threatMarkers: data.threatMarkers,
+      unknownMarkers: data.unknownMarkers,
     }
   }
 

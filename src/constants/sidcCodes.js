@@ -1,4 +1,4 @@
-const echelonSizes = [
+const echelons = [
   { name: 'Undefined', value: '-' },
   { name: 'Team/Crew', value: 'A' },
   { name: 'Squad', value: 'B' },
@@ -403,4 +403,4 @@ const sidcCodes = [
 
 ]
 
-export { echelonSizes, sidcCodes }
+export { echelons, sidcCodes }

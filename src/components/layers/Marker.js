@@ -29,6 +29,7 @@
  */
 import React from 'react'
 import L from 'leaflet'
+import ms from 'milsymbol'
 
 //----------------------------------------------------------------//
 // React Leaflet Components
@@ -265,17 +266,22 @@ const Marker = props => {
       {(props.marker.arty.arty && props.marker.arty.display) ? generatePAA(props.marker.latlng, props.marker.layer) : null}
       <RLMarker
         draggable={props.state.tool === null}
-        icon={props.marker.iconType === 'img' ?
-          L.icon({
-            iconUrl: props.marker.iconUrl,
-            iconSize: [computedSize, computedSize]
-          })
-          :
-          L.divIcon({
-            className: props.marker.layer === 'kineticPoint' ? classes.kineticPoint : classes.divIcon,
-            html: props.marker.title,
-            iconSize: props.marker.layer === 'kineticPoint' ? [computedSize, computedSize] : [20, 20],
-          })
+        icon={props.marker.iconType === 'sidc' ?
+            L.icon({
+              iconUrl: new ms.Symbol(`${props.marker.sidc.scheme}${props.marker.sidc.affiliation}${props.marker.sidc.dimension}${props.marker.sidc.status}${props.marker.sidc.id}${props.marker.sidc.modifier}${props.marker.sidc.echelon}`, { size: 50}).toDataURL(),
+              iconSize: [computedSize, computedSize]
+            })
+          : props.marker.iconType === 'img' ?
+            L.icon({
+              iconUrl: props.marker.iconUrl,
+              iconSize: [computedSize, computedSize]
+            })
+            :
+            L.divIcon({
+              className: props.marker.layer === 'kineticPoint' ? classes.kineticPoint : classes.divIcon,
+              html: props.marker.title,
+              iconSize: props.marker.layer === 'kineticPoint' ? [computedSize, computedSize] : [20, 20],
+            })
         }
         id={props.marker.id}
         onClick={handleClickMarker}

@@ -55,7 +55,7 @@ const handleMarkerEdit = (action, payload, state, setState) => {
         }
       }
 
-      if (payload.layer === 'friendly' || payload.layer === 'hostile' || payload.layer === 'threat' || payload.layer === 'survivor' || payload.layer === 'ip' || payload.layer === 'mapLabel' || payload.layer === 'bullseye')
+      if (payload.layer === 'friendly' || payload.layer === 'hostile' || payload.layer === 'neutral' || payload.layer === 'unknown' || payload.layer === 'threat' || payload.layer === 'survivor' || payload.layer === 'ip' || payload.layer === 'mapLabel' || payload.layer === 'bullseye')
         updatedPayload = {
           ...updatedPayload,
           latlng: state.focusedLatlng.latlng,

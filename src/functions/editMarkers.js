@@ -104,10 +104,12 @@ const clearMarkers = (history, step) => {
     history[step].kineticPoints.length > 0 ||
     history[step].lines.length > 0 ||
     history[step].mapLabels.length > 0 ||
+    history[step].neutralMarkers.length > 0 ||
     history[step].polygons.length > 0 ||
     history[step].rectangles.length > 0 ||
     history[step].survivors.length > 0 ||
-    history[step].threatMarkers.length > 0) {
+    history[step].threatMarkers.length > 0 ||
+    history[step].unknownMarkers.length > 0) {
 
     return {
       action: 'Clear markers',
@@ -133,11 +135,13 @@ const clearMarkers = (history, step) => {
       kineticPoints: [],
       lines: [],
       mapLabels: [],
+      neutralMarkers: [],
       polygons: [],
       rectangles: [],
       survivors: [],
       styles: history[step].styles,
       threatMarkers: [],
+      unknownMarkers: [],
     }
   } else {
     return false
@@ -187,6 +191,30 @@ const createMarker = (history, step, payload) => {
             secondLetter: targetHistory[step].data.secondLetter,
           },
           hostileMarkers: [...targetHistory[step].hostileMarkers, payload]
+        }
+      case 'unknown':
+        return {
+          ...targetHistory[step],
+          action: `create ${payload.title}`,
+          data: {
+            buildingLabel: targetHistory[step].data.buildingLabel,
+            firstLetter: targetHistory[step].data.firstLetter,
+            markerId: targetHistory[step].data.markerId + 1,
+            secondLetter: targetHistory[step].data.secondLetter,
+          },
+          unknownMarkers: [...targetHistory[step].unknownMarkers, payload]
+        }
+      case 'neutral':
+        return {
+          ...targetHistory[step],
+          action: `create ${payload.title}`,
+          data: {
+            buildingLabel: targetHistory[step].data.buildingLabel,
+            firstLetter: targetHistory[step].data.firstLetter,
+            markerId: targetHistory[step].data.markerId + 1,
+            secondLetter: targetHistory[step].data.secondLetter,
+          },
+          neutralMarkers: [...targetHistory[step].neutralMarkers, payload]
         }
       case 'ip':
         return {

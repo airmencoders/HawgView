@@ -230,6 +230,30 @@ const LayerControl = props => {
           ))}
         </LayerGroup>
       </Overlay>
+      <Overlay checked name='Unknown Markers'>
+        <LayerGroup>
+          {props.state.history[props.state.step].unknownMarkers.map(marker => (
+            <Marker
+              key={`${marker.layer}-${marker.title}-${marker.id}`}
+              marker={marker}
+              setState={props.setState}
+              state={props.state}
+            />
+          ))}
+        </LayerGroup>
+      </Overlay>
+      <Overlay checked name='Neutral Markers'>
+        <LayerGroup>
+          {props.state.history[props.state.step].neutralMarkers.map(marker => (
+            <Marker
+              key={`${marker.layer}-${marker.title}-${marker.id}`}
+              marker={marker}
+              setState={props.setState}
+              state={props.state}
+            />
+          ))}
+        </LayerGroup>
+      </Overlay>
       <Overlay checked name='Threat Markers'>
         <LayerGroup>
           {props.state.history[props.state.step].threatMarkers.map(marker => (
