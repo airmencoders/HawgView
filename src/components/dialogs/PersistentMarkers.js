@@ -50,7 +50,6 @@ import cp from '../../markers/persistent/cp.svg'
 import ip from '../../markers/persistent/ip.svg'
 import noStrike from '../../markers/persistent/no-strike.svg'
 import survivor from '../../markers/persistent/srv.svg'
-import target from '../../markers/persistent/tgt.svg'
 import threat from '../../markers/persistent/threat-ring.svg'
 
 //----------------------------------------------------------------//
@@ -79,6 +78,7 @@ const PersistentMarkers = props => {
         arty: false,
         display: false,
       },
+      data: null,
       iconType,
       layer,
       title,
@@ -131,13 +131,6 @@ const PersistentMarkers = props => {
         lineHeight: '30px',
       }
     }
-
-    if (layer === 'hostile' || layer === 'threat' || layer === 'survivor') {
-      payload = {
-        ...payload,
-        data: null
-      }
-    }
     
     props.handleAddMarker(payload)
   }
@@ -145,14 +138,6 @@ const PersistentMarkers = props => {
   return (
     <React.Fragment>
       <div>
-        <Tooltip title='Target'>
-          <img
-            alt='Target'
-            className={classes.markerImage}
-            onClick={event => handleMarkerClick(event.target.src, 'img', 'Target', 'hostile')}
-            src={target}
-          />
-        </Tooltip>
         <Tooltip title='IP'>
           <img
             alt='IP'

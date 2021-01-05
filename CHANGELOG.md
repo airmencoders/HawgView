@@ -1,11 +1,21 @@
+## 2.19.4
+### Changes
+* Finished adding `neutral` and `unknown` marker layers to `editMarkers` and `handleEditMarker`
+* Updated `EditMarkerDrawer` to allow users to alter the `affiliation` and `echelon` of markers
+* Updated the `edit` action to change the layer of markers when their `affiliation` changes
+* Added `data` field to all markers to avoid `undefined` errors when changing marker `affiliation`
+
+### Tasks
+* Change the `MarkerDrawer` to use Tab Navigation to allow more information at a given time. Users are recommended to PRINT out the information rather than screenshots
+
 ## 2.19.3
 ### Changes
 * Started move to only using the `SIDC` code for rendering `milsymbol` markers
 * Added `neutral` and `unknown` marker layers to `LayerControl`, `handleEditMarker`, and `editMarkers`
 
 ### Tasks
-* Finish adding the `neutral` and `unknown` layers to the marker edit functions
-* Add the ability to edit layer/echelon to the markers
+~~* Finish adding the `neutral` and `unknown` layers to the marker edit functions~~
+~~* Add the ability to edit layer/echelon to the markers~~
 
 ## 2.19.2
 ### Changes

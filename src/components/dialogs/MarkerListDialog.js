@@ -115,7 +115,7 @@ const MarkerListDialog = (props) => {
             spacing={2}
           >
             <Grid item xs>
-              <Typography variant='h6'>Friendlies</Typography>
+              <Typography variant='h6'>Units</Typography>
               {props.state.history[props.state.step].survivors.map(marker => (
                 <MarkerListAccordion
                   key={`survivor-marker-${marker.id}`}
@@ -125,6 +125,24 @@ const MarkerListDialog = (props) => {
               {props.state.history[props.state.step].friendlyMarkers.map(marker => (
                 <MarkerListAccordion
                   key={`friendly-marker-${marker.id}`}
+                  marker={marker}
+                />
+              ))}
+              {props.state.history[props.state.step].hostileMarkers.map(marker => (
+                <MarkerListAccordion
+                  key={`hostile-marker-${marker.id}`}
+                  marker={marker}
+                />
+              ))}
+              {props.state.history[props.state.step].unknownMarkers.map(marker => (
+                <MarkerListAccordion
+                  key={`unknown-marker-${marker.id}`}
+                  marker={marker}
+                />
+              ))}
+              {props.state.history[props.state.step].neutralMarkers.map(marker => (
+                <MarkerListAccordion
+                  key={`neutral-marker-${marker.id}`}
                   marker={marker}
                 />
               ))}
@@ -143,15 +161,6 @@ const MarkerListDialog = (props) => {
               {props.state.history[props.state.step].bullseyes.map(marker => (
                 <MarkerListAccordion
                   key={`bullseye-${marker.id}`}
-                  marker={marker}
-                />
-              ))}
-            </Grid>
-            <Grid item xs>
-              <Typography variant='h6'>Hostiles</Typography>
-              {props.state.history[props.state.step].hostileMarkers.map(marker => (
-                <MarkerListAccordion
-                  key={`hostile-marker-${marker.id}`}
                   marker={marker}
                 />
               ))}

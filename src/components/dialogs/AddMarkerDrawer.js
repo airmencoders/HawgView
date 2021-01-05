@@ -173,6 +173,7 @@ const AddMarkerDrawer = props => {
         arty: false,
         display: false,
       },
+      data: null,
       elevation: 0,
       iconType: 'sidc',
       layer,
@@ -195,13 +196,6 @@ const AddMarkerDrawer = props => {
           arty: true,
           display: true,
         },
-      }
-    }
-
-    if (payload.layer === 'hostile') {
-      payload = {
-        ...payload,
-        data: null,
       }
     }
 
