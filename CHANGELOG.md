@@ -1,3 +1,10 @@
+## 2.19.5
+### Changes
+* Changed `MarkerDialog` to have Tabbed navigation, this should allow me to have more room for information on markers (such as sovereignty, elevation, MGRS/LL, data, echelon, etc...)
+
+### Tasks
+* Update the `MarkerAccorion` Component to display more data depending on the type of marker
+
 ## 2.19.4
 ### Changes
 * Finished adding `neutral` and `unknown` marker layers to `editMarkers` and `handleEditMarker`
