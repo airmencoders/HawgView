@@ -1,6 +1,11 @@
+## 2.19.6
+### Changes
+* Updated the `MarkerListDialog` to include more information
+* Changed the `MarkerListDialog` tabs to vertical scrollable for better viewing
+
 ## 2.19.5
 ### Changes
-* Changed `MarkerDialog` to have Tabbed navigation, this should allow me to have more room for information on markers (such as sovereignty, elevation, MGRS/LL, data, echelon, etc...)
+* Changed `MarkerListDialog` to have Tabbed navigation, this should allow me to have more room for information on markers (such as sovereignty, elevation, MGRS/LL, data, echelon, etc...)
 
 ### Tasks
 * Update the `MarkerAccorion` Component to display more data depending on the type of marker

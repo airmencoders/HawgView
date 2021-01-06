@@ -28,13 +28,11 @@
  * SOFTWARE.
  */
 import React from 'react'
-import SwipeableViews from 'react-swipeable-views'
 
 //----------------------------------------------------------------//
 // Material-UI Components
 //----------------------------------------------------------------//
 import {
-  AppBar,
   Box,
   Dialog,
   DialogContent,
@@ -65,10 +63,18 @@ import {
 // Styles
 //----------------------------------------------------------------//
 const useStyles = makeStyles(theme => ({
+  grow: {
+    flexGrow: 1,
+  },
   root: {
     backgroundColor: theme.palette.background.paper,
-    width: 500,
-  }
+    display: 'flex',
+    flexGrow: 1,
+    height: 'auto',
+  },
+  tabs: {
+    borderRight: `1px solid ${theme.palette.divider}`,
+  },
 }))
 
 //----------------------------------------------------------------//
@@ -104,10 +110,6 @@ const MarkerListDialog = (props) => {
     setValue(newValue)
   }
 
-  const handleChangeIndex = index => {
-    setValue(index)
-  }
-
   const handleClose = () => {
     props.setState({
       ...props.state,
@@ -121,7 +123,7 @@ const MarkerListDialog = (props) => {
   return (
     <Dialog
       fullWidth={true}
-      maxWidth={false}
+      maxWidth='lg'
       open={props.state.dialog.name === 'markerList'}
       onClose={handleClose}
     >
@@ -147,146 +149,146 @@ const MarkerListDialog = (props) => {
         </Box>
       </DialogTitle>
       <DialogContent>
-        <Box displayPrint='none'>
-          <AppBar
-            color='default'
-            position='static'
+        <Box displayPrint='none' className={classes.root}>
+          <Tabs
+            className={classes.tabs}
+            onChange={handleChange}
+            orientation='vertical'
+            scrollButtons='auto'
+            value={value}
+            variant='scrollable'
           >
-            <Tabs
-              indicatorColor='primary'
-              onChange={handleChange}
-              textColor='primary'
-              value={value}
-              variant='fullWidth'
-            >
-              <Tab label={`Combat Units (${props.state.history[props.state.step].friendlyMarkers.length})`} />
-              <Tab label={`Hostile Units (${props.state.history[props.state.step].hostileMarkers.length})`} />
-              <Tab label={`Unknown Units (${props.state.history[props.state.step].unknownMarkers.length})`} />
-              <Tab label={`Neutral Units (${props.state.history[props.state.step].neutralMarkers.length})`} />
-              <Tab label={`Survivors (${props.state.history[props.state.step].survivors.length})`} />
-              <Tab label={`Threats (${props.state.history[props.state.step].threatMarkers.length})`} />
-              <Tab label={`IP/CP/No Strikes (${props.state.history[props.state.step].initialPoints.length})`} />
-              <Tab label={`Bullseyes (${props.state.history[props.state.step].bullseyes.length})`}/>
-              <Tab label={`Building Labels (${props.state.history[props.state.step].buildingLabels.length})`} />
-              <Tab label={`Kinetic Points (${props.state.history[props.state.step].kineticPoints.length})`} />
-            </Tabs>
-          </AppBar>
-          <SwipeableViews
-            axis='x'
-            index={value}
-            onChangeIndex={handleChangeIndex}
+            <Tab label={`Friendly Units (${props.state.history[props.state.step].friendlyMarkers.length})`} />
+            <Tab label={`Hostile Units (${props.state.history[props.state.step].hostileMarkers.length})`} />
+            <Tab label={`Unknown Units (${props.state.history[props.state.step].unknownMarkers.length})`} />
+            <Tab label={`Neutral Units (${props.state.history[props.state.step].neutralMarkers.length})`} />
+            <Tab label={`Survivors (${props.state.history[props.state.step].survivors.length})`} />
+            <Tab label={`Threats (${props.state.history[props.state.step].threatMarkers.length})`} />
+            <Tab label={`IP/CP/No Strikes (${props.state.history[props.state.step].initialPoints.length})`} />
+            <Tab label={`Bullseyes (${props.state.history[props.state.step].bullseyes.length})`} />
+            <Tab label={`Building Labels (${props.state.history[props.state.step].buildingLabels.length})`} />
+            <Tab label={`Kinetic Points (${props.state.history[props.state.step].kineticPoints.length})`} />
+          </Tabs>
+          <TabPanel
+            className={classes.grow}
+            value={value}
+            index={0}
           >
-            <TabPanel
-              value={value}
-              index={0}
-            >
-              {props.state.history[props.state.step].friendlyMarkers.map(marker => (
-                <MarkerListAccordion
-                  key={`friendly-marker-${marker.id}`}
-                  marker={marker}
-                />
-              ))}
-            </TabPanel>
-            <TabPanel
-              value={value}
-              index={1}
-            >
-              {props.state.history[props.state.step].hostileMarkers.map(marker => (
-                <MarkerListAccordion
-                  key={`hostile-marker-${marker.id}`}
-                  marker={marker}
-                />
-              ))}
-            </TabPanel>
-            <TabPanel
-              value={value}
-              index={2}
-            >
-              {props.state.history[props.state.step].unknownMarkers.map(marker => (
-                <MarkerListAccordion
-                  key={`unknown-marker-${marker.id}`}
-                  marker={marker}
-                />
-              ))}
-            </TabPanel>
-            <TabPanel
-              value={value}
-              index={3}
-            >
-              {props.state.history[props.state.step].neutralMarkers.map(marker => (
-                <MarkerListAccordion
-                  key={`neutral-marker-${marker.id}`}
-                  marker={marker}
-                />
-              ))}
-            </TabPanel>
-            <TabPanel
-              value={value}
-              index={4}
-            >
-              {props.state.history[props.state.step].survivors.map(marker => (
-                <MarkerListAccordion
-                  key={`survivor-${marker.id}`}
-                  marker={marker}
-                />
-              ))}
-            </TabPanel>
-            <TabPanel
-              value={value}
-              index={5}
-            >
-              {props.state.history[props.state.step].threatMarkers.map(marker => (
-                <MarkerListAccordion
-                  key={`threat-marker-${marker.id}`}
-                  marker={marker}
-                />
-              ))}
-            </TabPanel>
-            <TabPanel
-              value={value}
-              index={6}
-            >
-              {props.state.history[props.state.step].initialPoints.map(marker => (
-                <MarkerListAccordion
-                  key={`ip-marker-${marker.id}`}
-                  marker={marker}
-                />
-              ))}
-            </TabPanel>
-            <TabPanel
-              value={value}
-              index={7}
-            >
-              {props.state.history[props.state.step].bullseyes.map(marker => (
-                <MarkerListAccordion
-                  key={`bullseye-${marker.id}`}
-                  marker={marker}
-                />
-              ))}
-            </TabPanel>
-            <TabPanel
-              value={value}
-              index={8}
-            >
-              {props.state.history[props.state.step].buildingLabels.map(marker => (
-                <MarkerListAccordion
-                  key={`building-label-${marker.id}`}
-                  marker={marker}
-                />
-              ))}
-            </TabPanel>
-            <TabPanel
-              value={value}
-              index={9}
-            >
-              {props.state.history[props.state.step].kineticPoints.map(marker => (
-                <MarkerListAccordion
-                  key={`kinetic-point-${marker.id}`}
-                  marker={marker}
-                />
-              ))}
-            </TabPanel>
-          </SwipeableViews>
+            {props.state.history[props.state.step].friendlyMarkers.map(marker => (
+              <MarkerListAccordion
+                key={`friendly-marker-${marker.id}`}
+                marker={marker}
+              />
+            ))}
+          </TabPanel>
+          <TabPanel
+            className={classes.grow}
+            value={value}
+            index={1}
+          >
+            {props.state.history[props.state.step].hostileMarkers.map(marker => (
+              <MarkerListAccordion
+                key={`hostile-marker-${marker.id}`}
+                marker={marker}
+              />
+            ))}
+          </TabPanel>
+          <TabPanel
+            className={classes.grow}
+            value={value}
+            index={2}
+          >
+            {props.state.history[props.state.step].unknownMarkers.map(marker => (
+              <MarkerListAccordion
+                key={`unknown-marker-${marker.id}`}
+                marker={marker}
+              />
+            ))}
+          </TabPanel>
+          <TabPanel
+            className={classes.grow}
+            value={value}
+            index={3}
+          >
+            {props.state.history[props.state.step].neutralMarkers.map(marker => (
+              <MarkerListAccordion
+                key={`neutral-marker-${marker.id}`}
+                marker={marker}
+              />
+            ))}
+          </TabPanel>
+          <TabPanel
+            className={classes.grow}
+            value={value}
+            index={4}
+          >
+            {props.state.history[props.state.step].survivors.map(marker => (
+              <MarkerListAccordion
+                key={`survivor-${marker.id}`}
+                marker={marker}
+              />
+            ))}
+          </TabPanel>
+          <TabPanel
+            className={classes.grow}
+            value={value}
+            index={5}
+          >
+            {props.state.history[props.state.step].threatMarkers.map(marker => (
+              <MarkerListAccordion
+                key={`threat-marker-${marker.id}`}
+                marker={marker}
+              />
+            ))}
+          </TabPanel>
+          <TabPanel
+            className={classes.grow}
+            value={value}
+            index={6}
+          >
+            {props.state.history[props.state.step].initialPoints.map(marker => (
+              <MarkerListAccordion
+                key={`ip-marker-${marker.id}`}
+                marker={marker}
+              />
+            ))}
+          </TabPanel>
+          <TabPanel
+            className={classes.grow}
+            value={value}
+            index={7}
+          >
+            {props.state.history[props.state.step].bullseyes.map(marker => (
+              <MarkerListAccordion
+                key={`bullseye-${marker.id}`}
+                marker={marker}
+              />
+            ))}
+          </TabPanel>
+          <TabPanel
+            className={classes.grow}
+            value={value}
+            index={8}
+          >
+            {props.state.history[props.state.step].buildingLabels.map(marker => (
+              <MarkerListAccordion
+                key={`building-label-${marker.id}`}
+                marker={marker}
+              />
+            ))}
+          </TabPanel>
+          <TabPanel
+            className={classes.grow}
+            value={value}
+            index={9}
+          >
+            {props.state.history[props.state.step].kineticPoints.map(marker => (
+              <MarkerListAccordion
+                key={`kinetic-point-${marker.id}`}
+                marker={marker}
+              />
+            ))}
+          </TabPanel>
         </Box>
         <Box
           display='none'
@@ -297,43 +299,46 @@ const MarkerListDialog = (props) => {
             spacing={2}
           >
             <Grid item xs={12}>
-              <Typography variant='h6'>Friendlies</Typography>
-              {props.state.history[props.state.step].survivors.map(marker => (
-                <MarkerListAccordion
-                  key={`survivor-marker-${marker.id}`}
-                  marker={marker}
-                />
-              ))}
+              <Typography variant='h6'>Friendly Units</Typography>
               {props.state.history[props.state.step].friendlyMarkers.map(marker => (
                 <MarkerListAccordion
-                  key={`friendly-marker-${marker.id}`}
+                  key={`print-friendly-marker-${marker.id}`}
                   marker={marker}
                 />
               ))}
             </Grid>
             <Grid item xs={12}>
-              <Typography variant='h6'>IP/CPs</Typography>
-              {props.state.history[props.state.step].initialPoints.map(marker => (
-                <MarkerListAccordion
-                  key={`initial-contact-point-${marker.id}`}
-                  marker={marker}
-                />
-              ))}
-            </Grid>
-            <Grid item xs={12}>
-              <Typography variant='h6'>Bullseyes</Typography>
-              {props.state.history[props.state.step].bullseyes.map(marker => (
-                <MarkerListAccordion
-                  key={`bullseye-${marker.id}`}
-                  marker={marker}
-                />
-              ))}
-            </Grid>
-            <Grid item xs={12}>
-              <Typography variant='h6'>Hostiles</Typography>
+              <Typography variant='h6'>Hostile Units</Typography>
               {props.state.history[props.state.step].hostileMarkers.map(marker => (
                 <MarkerListAccordion
-                  key={`hostile-marker-${marker.id}`}
+                  key={`print-hostile-marker-${marker.id}`}
+                  marker={marker}
+                />
+              ))}
+            </Grid>
+            <Grid item xs={12}>
+              <Typography variant='h6'>Unknown Units</Typography>
+              {props.state.history[props.state.step].unknownMarkers.map(marker => (
+                <MarkerListAccordion
+                  key={`print-unknown-marker-${marker.id}`}
+                  marker={marker}
+                />
+              ))}
+            </Grid>
+            <Grid item xs={12}>
+              <Typography variant='h6'>Neutral Units</Typography>
+              {props.state.history[props.state.step].neutralMarkers.map(marker => (
+                <MarkerListAccordion
+                  key={`print-neutral-marker-${marker.id}`}
+                  marker={marker}
+                />
+              ))}
+            </Grid>
+            <Grid item xs={12}>
+              <Typography variant='h6'>Survivors</Typography>
+              {props.state.history[props.state.step].survivors.map(marker => (
+                <MarkerListAccordion
+                  key={`print-survivor-${marker.id}`}
                   marker={marker}
                 />
               ))}
@@ -342,16 +347,34 @@ const MarkerListDialog = (props) => {
               <Typography variant='h6'>Threats</Typography>
               {props.state.history[props.state.step].threatMarkers.map(marker => (
                 <MarkerListAccordion
-                  key={`threat-marker-${marker.id}`}
+                  key={`print-threat-marker-${marker.id}`}
                   marker={marker}
                 />
               ))}
             </Grid>
             <Grid item xs={12}>
-              <Typography variant='h6'>Buildings</Typography>
+              <Typography variant='h6'>IP/CP/No Strikes</Typography>
+              {props.state.history[props.state.step].initialPoints.map(marker => (
+                <MarkerListAccordion
+                  key={`print-initial-contact-point-${marker.id}`}
+                  marker={marker}
+                />
+              ))}
+            </Grid>
+            <Grid item xs={12}>
+              <Typography variant='h6'>Bullseyes</Typography>
+              {props.state.history[props.state.step].bullseyes.map(marker => (
+                <MarkerListAccordion
+                  key={`print-bullseye-${marker.id}`}
+                  marker={marker}
+                />
+              ))}
+            </Grid>
+            <Grid item xs={12}>
+              <Typography variant='h6'>Building Labels</Typography>
               {props.state.history[props.state.step].buildingLabels.map(marker => (
                 <MarkerListAccordion
-                  key={`building-label-${marker.id}`}
+                  key={`print-building-label-${marker.id}`}
                   marker={marker}
                 />
               ))}
@@ -360,7 +383,7 @@ const MarkerListDialog = (props) => {
               <Typography variant='h6'>Kinetic Points</Typography>
               {props.state.history[props.state.step].kineticPoints.map(marker => (
                 <MarkerListAccordion
-                  key={`kinetic-point-${marker.id}`}
+                  key={`print-kinetic-point-${marker.id}`}
                   marker={marker}
                 />
               ))}

@@ -53,11 +53,18 @@ import {
 import { LatLon } from 'geodesy/mgrs'
 
 //----------------------------------------------------------------//
+// Hawg View Constants
+//----------------------------------------------------------------//
+import {
+  echelons,
+} from '../../constants/sidcCodes'
+
+//----------------------------------------------------------------//
 // Hawg View Functions
 //----------------------------------------------------------------//
-import { 
+import {
   render9line,
-  render15line, 
+  render15line,
 } from '../../functions/renderData'
 
 //----------------------------------------------------------------//
@@ -66,7 +73,7 @@ import {
 const useStyles = makeStyles(theme => ({
   heading: {
     fontSize: theme.typography.pxToRem(15),
-    flexBasis: '33.33%',
+    flexBasis: '40%',
     flexShrink: 0,
   },
   secondaryHeading: {
@@ -82,6 +89,15 @@ const MarkerListAccordion = props => {
 
   const classes = useStyles()
 
+  const getFullEchelon = sidc => {
+    if (sidc.echelon === '-') {
+      return 'Unit'
+    } else {
+      let result = echelons.filter(echelon => echelon.value === sidc.echelon)
+      return `${result[0].name}`
+    }
+  }
+
   return (
     <Accordion
       expanded={(props.marker.data === null || props.marker.data === undefined) ? false : undefined}
@@ -90,14 +106,19 @@ const MarkerListAccordion = props => {
         expandIcon={(props.marker.data === null || props.marker.data === undefined) ? undefined : <AttachFileIcon />}
       >
         <Typography className={classes.heading}>
+          {props.marker.title}
+          <em>{props.marker.iconType === 'sidc' ? ` (${getFullEchelon(props.marker.sidc)})` : props.marker.layer === 'threat' ? ` (${props.marker.sovereignty} ${props.marker.label})` : ''}</em>
           {props.marker.layer === 'threat' ?
-            `(${props.marker.sovereignty} ${props.marker.label}) ${props.marker.title}`
-            :
-            props.marker.title
+            ` - Range: ${props.marker.range} ${props.marker.unit}`
+            : null
           }
         </Typography>
         <Typography className={classes.secondaryHeading}>
-          {LatLon.parse(props.marker.latlng.lat, props.marker.latlng.lng).toUtm().toMgrs().toString()}
+          {`
+            ${LatLon.parse(props.marker.latlng.lat, props.marker.latlng.lng).toUtm().toMgrs().toString()} // 
+            ${props.marker.latlng.lat.toFixed(4)}, ${props.marker.latlng.lng.toFixed(4)}
+            ${props.marker.elevation !== undefined ? ` // ${props.marker.elevation}` : ''}${props.marker.elevation === undefined || props.marker.elevation === 'Elevation not found' || props.marker.elevation === 'Pending' ? '' : ' feet'}
+          `}
         </Typography>
       </AccordionSummary>
       {(props.marker.data !== null && props.marker.data !== undefined) ?
