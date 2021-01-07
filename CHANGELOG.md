@@ -1,3 +1,10 @@
+## 2.19.11
+### Changes
+* Added R-6002 to the `restrictedAreas` layer
+
+### Tasks
+* Convert from JS Arrays and `LayerGroup` to `GeoJSON` and that layer group
+
 ## 2.19.10
 ### Changes
 * Updated `Classification Bar` to use proper markings IAW DoDM 5200.01
