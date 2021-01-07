@@ -1,3 +1,9 @@
+## 2.19.7
+### Changes
+* Updated `handleLoadScenario` to convert all version 1 SVGs (exception of Survivor, IP/CP graphics) to `milsymbol` MIL-STD-2525C Graphics
+* Removed old `svg` graphics that are no longer used
+* Removed old `PNG` graphics for `KML` support...Future release will dynamically create a PNG to be served to Google Earth
+
 ## 2.19.6
 ### Changes
 * Updated the `MarkerListDialog` to include more information

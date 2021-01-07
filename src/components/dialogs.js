@@ -32,8 +32,8 @@ import AddMarkerDrawer from './dialogs/AddMarkerDrawer'
 import Dialogs from './dialogs/Dialogs'
 import EditMarkerDrawer from './dialogs/EditMarkerDrawer'
 import EditShapeDrawer from './dialogs/EditShapeDrawer'
-import FriendlyMarkers from './dialogs/FriendlyMarkers'
-import HostileMarkers from './dialogs/HostileMarkers'
+//import FriendlyMarkers from './dialogs/FriendlyMarkers'
+//import HostileMarkers from './dialogs/HostileMarkers'
 import LoadScenarioDialog from './dialogs/LoadScenarioDialog'
 import MarkerListAccordion from './dialogs/MarkerListAccordion'
 import MarkerListDialog from './dialogs/MarkerListDialog'
@@ -49,8 +49,8 @@ export {
   Dialogs,
   EditMarkerDrawer,
   EditShapeDrawer,
-  FriendlyMarkers,
-  HostileMarkers,
+  //FriendlyMarkers,
+  //HostileMarkers,
   LoadScenarioDialog,
   MarkerListAccordion,
   MarkerListDialog,

@@ -27,6 +27,93 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+/**
+ * Takes in an iconUrl for a symbol and then returns an SIDC for use with the new milsymbol package
+ * @param {*} iconUrl 
+ */
+const getSIDCID = iconUrl => {
+  const baseUrl = 'https://hawg-ops.com/static/media/'
+
+  switch (iconUrl) {
+    case `${baseUrl}ada.af746e84.svg`:
+      return 'EWA---'
+    case `${baseUrl}missile.b14edbce.svg`:
+      return 'EWM---'
+    case `${baseUrl}airborne.38a043b7.svg`:
+    case `${baseUrl}airborne-infantry.7495274f.svg`:
+    case `${baseUrl}airborne.df2cd266.svg`:
+    case `${baseUrl}airborne-infantry.a56050c6.svg`:
+      return 'UCIA--'
+    case `${baseUrl}air-defense.2f6bc0a9.svg`:
+    case `${baseUrl}air-defense.af8b45b2.svg`:
+      return 'UCD---'
+    case `${baseUrl}anti-armor.0b70d1e6.svg`:
+    case `${baseUrl}anti-armor.b34f832e.svg`:
+      return 'UCAA--'
+    case `${baseUrl}armor.5e34d211.svg`:
+    case `${baseUrl}armor.8f32083e.svg`:
+      return 'UCA---'
+    case `${baseUrl}artillery.5cfadcbb.svg`:
+    case `${baseUrl}artillery.7b3a9690.svg`:
+      return 'UCF---'
+    case `${baseUrl}aviation.05f7fc8d.svg`:
+    case `${baseUrl}aviation.ce5c976a.svg`:
+      return 'UCV---'
+    case `${baseUrl}cbrne.725c1dc5.svg`:
+    case `${baseUrl}cbrne.b3d110bc.svg`:
+      return 'UUA---'
+    case `${baseUrl}counterbattery-radar.7ec3e713.svg`:
+    case `${baseUrl}counterbattery-radar.412bafde.svg`:
+      return 'UCFTR-'
+    case `${baseUrl}engineer.9fe6dd66.svg`:
+    case `${baseUrl}engineer.d16ad5e6.svg`:
+      return 'UCE---'
+    case `${baseUrl}infantry.9c99e29e.svg`:
+    case `${baseUrl}infantry.6137cbdf.svg`:
+      return 'UCI---'
+    case `${baseUrl}light-armor.1c44d584.svg`:
+    case `${baseUrl}light-armor.e877e472.svg`:
+      return 'UCATL-'
+    case `${baseUrl}maintenance.29fbc2f8.svg`:
+    case `${baseUrl}maintenance.412b7c3a.svg`:
+      return 'USX---'
+    case `${baseUrl}mech-infantry.8bacdfd9.svg`:
+    case `${baseUrl}mech-infantry.306863c1.svg`:
+      return 'UCIZ--'
+    case `${baseUrl}medical.3ae34509.svg`:
+    case `${baseUrl}medical.a7456a27.svg`:
+      return 'USM---'
+    case `${baseUrl}missile.3ee84090.svg`:
+    case `${baseUrl}missile.4ce9a7b1.svg`:
+      return 'UCDM--'
+    case `${baseUrl}mlrs.3bc1af8e.svg`:
+    case `${baseUrl}mlrs.6517f49b.svg`:
+      return 'UCFRM-'
+    case `${baseUrl}recce.59176d11.svg`:
+    case `${baseUrl}recce.a6099e4c.svg`:
+      return 'UCR---'
+    case `${baseUrl}self-propelled-artillery.4a8d1d95.svg`:
+    case `${baseUrl}self-propelled-artillery.0790c09d.svg`:
+      return 'UCFHE-'
+    case `${baseUrl}signals.14ad4e9c.svg`:
+    case `${baseUrl}signals.c34f9425.svg`:
+      return 'UUS---'
+    case `${baseUrl}special-forces.28b08af1.svg`:
+    case `${baseUrl}special-forces.49fc1351.svg`:
+      return '------'
+    case `${baseUrl}supply.41ffb33b.svg`:
+    case `${baseUrl}supply.46765207.svg`:
+      return 'USS---'
+    case `${baseUrl}unit.d5cc8d94.svg`:
+    case `${baseUrl}unit.d8a35903.svg`:
+      return 'U-----'
+    case `${baseUrl}wheeled-armor.443d3fce.svg`:
+    case `${baseUrl}wheeled-armor.dea5279f.svg`:
+      return 'UCAW--'
+  }
+}
+
+
 const handleLoadScenario = (data, state, setState, toast) => {
   let json
   try {
@@ -49,7 +136,7 @@ const handleLoadScenario = (data, state, setState, toast) => {
       targetHistory = state.history.slice(0, state.step + 1)
     }
 
-    const newStep = {
+    let newStep = {
       action: 'load scenario',
       anchor: json.data.anchor !== undefined ? json.data.anchor : {
         declination: null,
@@ -101,7 +188,65 @@ const handleLoadScenario = (data, state, setState, toast) => {
       document.title = `Hawg View | ${json.name}`
     }
 
-    console.log('newStep', newStep)
+    // Go through all the friendly/hostile markers to update from the v1 graphics to v2 milsymbol graphics
+    let oldFriendlyMarkers = newStep.friendlyMarkers
+    let oldHostileMarkers = newStep.hostileMarkers
+    let newFriendlyMarkers = []
+    let newHostileMarkers = []
+
+    oldFriendlyMarkers.forEach(marker => {
+      let newMarker = {
+        arty: marker.arty,
+        data: null,
+        elevation: marker.elevation,
+        iconType: 'sidc',
+        layer: 'friendly',
+        sidc: {
+          scheme: 'S',
+          affiliation: 'F',
+          dimension: getSIDCID(marker.iconUrl) === '------' ? 'F' : 'G',
+          status: 'P',
+          id: getSIDCID(marker.iconUrl),
+          modifier: '-',
+          echelon: '-',
+        },
+        title: marker.title,
+        id: marker.id,
+        latlng: marker.latlng,
+      }
+
+      newFriendlyMarkers = [...newFriendlyMarkers, newMarker]
+    })
+
+    oldHostileMarkers.forEach(marker => {
+      let newMarker = {
+        arty: marker.arty,
+        data: marker.data,
+        elevation: marker.elevation,
+        iconType: 'sidc',
+        layer: 'hostile',
+        sidc: {
+          scheme: 'S',
+          affiliation: 'H',
+          dimension: 'G',
+          status: 'P',
+          id: getSIDCID(marker.iconUrl),
+          modifier: '-',
+          echelon: '-',
+        },
+        title: marker.title,
+        id: marker.id,
+        latlng: marker.latlng,
+      }
+
+      newHostileMarkers = [...newHostileMarkers, newMarker]
+    })
+
+    newStep = {
+      ...newStep,
+      friendlyMarkers: newFriendlyMarkers,
+      hostileMarkers: newHostileMarkers,
+    }
 
     // Need to manually toast, otherwise it loses the change in history
     setState({
