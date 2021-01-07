@@ -1,3 +1,8 @@
+## 2.19.8
+### Changes
+* Fixed `MarkerListDialog` print display issue
+* Updated Marker `Popups` to display the `Affiliation` and the `Echelon` for `SIDC` MIL-STD-2525C Markers
+
 ## 2.19.7
 ### Changes
 * Updated `handleLoadScenario` to convert all version 1 SVGs (exception of Survivor, IP/CP graphics) to `milsymbol` MIL-STD-2525C Graphics

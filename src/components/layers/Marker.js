@@ -59,6 +59,13 @@ import { LatLon as LL } from 'geodesy/mgrs'
 import LatLon from 'geodesy/latlon-spherical'
 
 //----------------------------------------------------------------//
+// Hawg View Constants
+//----------------------------------------------------------------//
+import {
+  echelons,
+} from '../../constants/sidcCodes'
+
+//----------------------------------------------------------------//
 // Hawg View Functions
 //----------------------------------------------------------------//
 import {
@@ -112,6 +119,31 @@ const Marker = props => {
   }))
 
   const classes = useStyles()
+
+  const getAffiliation = affiliation => {
+    switch(affiliation) {
+      case 'F':
+        return 'Friendly'
+      case 'H':
+        return 'Hostile'
+      case 'U':
+        return 'Unknown'
+      case 'N':
+        return 'Neutral'
+      default:
+        console.error(`Error: Unknown Affiliation (${affiliation})`)
+        return ''
+    }
+  }
+
+  const getEchelon = echelon => {
+    if (echelon === '-') {
+      return 'Unit'
+    } else {
+      let result = echelons.filter(ech => ech.value === echelon)
+      return `${result[0].name}`
+    }
+  }
 
   const handleClickMarker = () => {
     if (props.state.tool === null) {
@@ -174,9 +206,19 @@ const Marker = props => {
     return (
       <table>
         <tbody>
+          {marker.iconType === 'sidc' ? 
+          <tr>
+            <td>{getAffiliation(marker.sidc.affiliation)}</td>
+          </tr>
+          : null}
           <tr>
             <td>{marker.title}</td>
           </tr>
+          {marker.iconType === 'sidc' ? 
+          <tr>
+            <td>{getEchelon(marker.sidc.echelon)}</td>  
+          </tr>
+          : null}
           <tr>
             <td>{position}</td>
           </tr>
