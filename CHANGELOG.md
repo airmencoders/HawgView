@@ -1,3 +1,8 @@
+## 2.19.10
+### Changes
+* Updated `Classification Bar` to use proper markings IAW DoDM 5200.01
+* Updated `Unclassified` background and text color
+
 ## 2.19.9
 ### Changes
 * Added ternary to load markers `SIDC` to distinguish between old `iconURLs` and new `SIDC` 

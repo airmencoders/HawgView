@@ -58,14 +58,14 @@ const ClassificationBanner = ({ classification = 'unclassified' }) => {
   return (
     <AppBar
       position='static'
-      style={{ backgroundColor: 'green' }}
+      style={{ backgroundColor: '#007A33' }}
     >
       <Typography
         align='center'
-        style={{ color: 'black' }}
+        style={{ color: '#FFFFFF' }}
         variant='subtitle2'
       >
-        {`// ${classification.toUpperCase()} //`}
+        {`${classification.toUpperCase()}`}
       </Typography>
     </AppBar>
   )
