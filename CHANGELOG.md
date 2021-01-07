@@ -1,3 +1,12 @@
+## 2.19.9
+### Changes
+* Added ternary to load markers `SIDC` to distinguish between old `iconURLs` and new `SIDC` 
+* Added default to `switch` when translating old `iconURLs` to new `SIDC`s
+
+### Fixes
+* Fixed issue where loading `SIDC` coded markers would have issues by trying to remap and failing
+* Fixed issue where `SOF` units loaded from version 1 graphics would not properly translate to hostile version 2
+
 ## 2.19.8
 ### Changes
 * Fixed `MarkerListDialog` print display issue

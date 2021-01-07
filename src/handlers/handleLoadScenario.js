@@ -110,6 +110,9 @@ const getSIDCID = iconUrl => {
     case `${baseUrl}wheeled-armor.443d3fce.svg`:
     case `${baseUrl}wheeled-armor.dea5279f.svg`:
       return 'UCAW--'
+    default:
+      console.error(`Error: Unknown v1 graphic (${iconUrl}) - Setting to Unit`)
+      return 'U-----'
   }
 }
 
@@ -201,7 +204,7 @@ const handleLoadScenario = (data, state, setState, toast) => {
         elevation: marker.elevation,
         iconType: 'sidc',
         layer: 'friendly',
-        sidc: {
+        sidc: marker.iconType === 'sidc' ? marker.sidc : {  
           scheme: 'S',
           affiliation: 'F',
           dimension: getSIDCID(marker.iconUrl) === '------' ? 'F' : 'G',
@@ -225,10 +228,10 @@ const handleLoadScenario = (data, state, setState, toast) => {
         elevation: marker.elevation,
         iconType: 'sidc',
         layer: 'hostile',
-        sidc: {
+        sidc: marker.iconType === 'sidc' ? marker.sidc : {
           scheme: 'S',
           affiliation: 'H',
-          dimension: 'G',
+          dimension: getSIDCID(marker.iconUrl) === '------' ? 'F' : 'G',
           status: 'P',
           id: getSIDCID(marker.iconUrl),
           modifier: '-',
