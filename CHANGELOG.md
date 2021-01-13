@@ -1,3 +1,7 @@
+## 2.20.1
+### Changes
+* Updated German `LANTA` airspaces to `GeoJSON`
+
 ## 2.20.0
 ### Changes
 * Converted airspace over to GeoJSON

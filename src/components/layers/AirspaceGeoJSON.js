@@ -36,9 +36,18 @@ import {
   GeoJSON,
 } from 'react-leaflet'
 
+import faaSUA from '../../constants/faaSUA.json'
+import customAirspace from '../../constants/customAirspace.json'
+
 const AirspaceGeoJSON = props => {
 
-  let data = props.data.features.filter(feature => feature.properties.TYPE_CODE === props.type)
+  let data = faaSUA.features.filter(feature => feature.properties.TYPE_CODE === props.type)
+  if (data.length === 0) {
+    data = customAirspace.features.filter(feature => feature.properties.TYPE_CODE === props.type)
+  }
+
+  console.log(`Rendered ${data.length} airspace boundaries of type (${props.type})`)
+
 
   let lowMoas, moas
   if (props.type === 'MOA') {
@@ -54,7 +63,7 @@ const AirspaceGeoJSON = props => {
           style={{
             color: '#00ff00',
             fill: false,
-            weight: 2
+            weight: 2,
           }}
         />
         <GeoJSON
@@ -73,6 +82,12 @@ const AirspaceGeoJSON = props => {
         data={data}
         style={feature => {
           switch (feature.properties.TYPE_CODE) {
+            case 'LANTA':
+              return {
+                color: '#00ff00',
+                fill: false,
+                weight:2,
+              }
             case 'ADA':
             case 'A':
             case 'W':

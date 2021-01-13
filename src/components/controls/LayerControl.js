@@ -35,7 +35,6 @@ import React from 'react'
 import {
   LayersControl,
   LayerGroup,
-  Polygon as RLPolygon,
   TileLayer,
 } from 'react-leaflet'
 
@@ -59,9 +58,9 @@ import {
 //----------------------------------------------------------------//
 // Hawg View Constants
 //----------------------------------------------------------------//
-import { airspace } from '../../constants/airspace'
+//import { airspace } from '../../constants/airspace'
 
-import faaSUA from '../../constants/faaSUA.json'
+//import faaSUA from '../../constants/faaSUA.json'
 
 //----------------------------------------------------------------//
 // Map Control Component
@@ -71,13 +70,17 @@ const LayerControl = props => {
   const { BaseLayer, Overlay } = LayersControl
 
   const airspaceTypes = [
+    // LLZ
+    //'LLZ',        // SOUTH KOREA
+    // LOW MOA/MOA/LANTA
     'MOA',
-    // Warning/Alert
-    'ADA',
+    'LANTA',      // GERMANY
+    // Advisory/Warning/Alert
+    'ADA',        // CANADA
     'A',
     'W',
-    // Restricted/Prohibited
-    'D',
+    // Danger/Restricted/Prohibited
+    'D',          // CANADA
     'R',
     'P',
   ]
@@ -135,14 +138,13 @@ const LayerControl = props => {
         <LayerGroup>
           {airspaceTypes.map(type => (
             <AirspaceGeoJSON
-              data={faaSUA}
               key={type}
               type={type}
             />
           ))}
         </LayerGroup>
       </Overlay>
-      <Overlay checked name='AARs'>
+      {/*<Overlay checked name='AARs'>
         <RLPolygon
           clickable={false}
           color='#070080'
@@ -159,7 +161,7 @@ const LayerControl = props => {
           positions={airspace.atcaas}
           weight={2}
         />
-      </Overlay>
+          </Overlay>*/}
       <Overlay checked name='Bullseyes'>
         <LayerGroup>
           {props.state.history[props.state.step].bullseyes.map(bullseye => (
