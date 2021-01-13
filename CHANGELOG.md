@@ -1,3 +1,11 @@
+## 2.20.0
+### Changes
+* Converted airspace over to GeoJSON
+
+### Todo
+* Need to convert the `generateKML` function to go from the GeoJSON instead of the Airspace JS file
+* Need to convert the custom airspace to a GeoJSON
+
 ## 2.19.11
 ### Changes
 * Added R-6002 to the `restrictedAreas` layer

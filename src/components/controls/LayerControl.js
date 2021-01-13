@@ -36,7 +36,6 @@ import {
   LayersControl,
   LayerGroup,
   Polygon as RLPolygon,
-  Polyline,
   TileLayer,
 } from 'react-leaflet'
 
@@ -44,6 +43,7 @@ import {
 // Hawg View Components
 //----------------------------------------------------------------//
 import {
+  AirspaceGeoJSON,
   Bullseye,
   Circle,
   Ellipse,
@@ -61,12 +61,26 @@ import {
 //----------------------------------------------------------------//
 import { airspace } from '../../constants/airspace'
 
+import faaSUA from '../../constants/faaSUA.json'
+
 //----------------------------------------------------------------//
 // Map Control Component
 //----------------------------------------------------------------//
 const LayerControl = props => {
 
   const { BaseLayer, Overlay } = LayersControl
+
+  const airspaceTypes = [
+    'MOA',
+    // Warning/Alert
+    'ADA',
+    'A',
+    'W',
+    // Restricted/Prohibited
+    'D',
+    'R',
+    'P',
+  ]
 
   const layers = React.useMemo(() => (
     <LayersControl position='topright'>
@@ -119,61 +133,13 @@ const LayerControl = props => {
       </Overlay>
       <Overlay checked name='Airspace'>
         <LayerGroup>
-          <RLPolygon
-            clickable={false}
-            color='#ff00ff'
-            fill={false}
-            positions={airspace.llzs}
-            weight={2}
-          />
-          <RLPolygon
-            clickable={false}
-            color='#00ff00'
-            fill={false}
-            positions={airspace.lowMoas}
-            weight={2}
-          />
-          <RLPolygon
-            clickable={false}
-            color='#00ffff'
-            fill={false}
-            positions={airspace.moas}
-            weight={2}
-          />
-          <RLPolygon
-            clickable={false}
-            color='#ff9000'
-            fill={false}
-            positions={airspace.warningAreas}
-            weight={2}
-          />
-          <RLPolygon
-            clickable={false}
-            color='#ff0000'
-            fill={false}
-            positions={airspace.restrictedAreas}
-            weight={2}
-          />
-          <Polyline
-            clickable={false}
-            color='#ff0000'
-            positions={airspace.p518}
-            weight={2}
-          />
-          <Polyline
-            clickable={false}
-            color='#000000'
-            dashArray='20, 10, 10, 10'
-            positions={airspace.koreaNfl}
-            weight={2}
-          />
-          <Polyline
-            clickable={false}
-            color='#ff0000'
-            dashArray='20, 10, 10, 10'
-            positions={airspace.koreaNflBuffer}
-            weight={2}
-          />
+          {airspaceTypes.map(type => (
+            <AirspaceGeoJSON
+              data={faaSUA}
+              key={type}
+              type={type}
+            />
+          ))}
         </LayerGroup>
       </Overlay>
       <Overlay checked name='AARs'>

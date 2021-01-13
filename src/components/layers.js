@@ -28,6 +28,7 @@
  * SOFTWARE.
  */
 
+import AirspaceGeoJSON from './layers/AirspaceGeoJSON'
 import Bullseye from './layers/Bullseye'
 import Circle from './layers/Circle'
 import Ellipse from './layers/Ellipse'
@@ -40,6 +41,7 @@ import Rectangle from './layers/Rectangle'
 import Threat from './layers/Threat'
 
 export {
+  AirspaceGeoJSON,
   Bullseye,
   Circle,
   Ellipse,
