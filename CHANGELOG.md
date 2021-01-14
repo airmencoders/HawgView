@@ -1,3 +1,14 @@
+## 2.20.2
+### Changes
+* Updated all of German, Thailand, and most of South Korean airspace to `GeoJSON`
+* Changed how `AirspaceGeoJSON` functions by combining both `.json` files into a single JSON object
+
+### Tasks
+* Need to finish Nevada Restricted airspace conversion
+* Need to finish Warning airspace conversion
+* Need to finish ROK Low Level Zone and P-518 border conversions
+* Separate out the custom airspace into countries at a minimum, if not country and airspace type, to make easier work for editing
+
 ## 2.20.1
 ### Changes
 * Updated German `LANTA` airspaces to `GeoJSON`

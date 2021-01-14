@@ -41,10 +41,19 @@ import customAirspace from '../../constants/customAirspace.json'
 
 const AirspaceGeoJSON = props => {
 
-  let data = faaSUA.features.filter(feature => feature.properties.TYPE_CODE === props.type)
-  if (data.length === 0) {
-    data = customAirspace.features.filter(feature => feature.properties.TYPE_CODE === props.type)
+  let airspaceData = {
+    type: 'FeatureCollection',
+    name: 'Hawg View Airspace',
+    features: [
+      ...faaSUA.features,
+      ...customAirspace.features,
+    ]
   }
+
+  let data = airspaceData.features.filter(feature => feature.properties.TYPE_CODE === props.type)
+  /*if (data.length === 0) {
+    data = customAirspace.features.filter(feature => feature.properties.TYPE_CODE === props.type)
+  }*/
 
   console.log(`Rendered ${data.length} airspace boundaries of type (${props.type})`)
 
@@ -83,6 +92,7 @@ const AirspaceGeoJSON = props => {
         style={feature => {
           switch (feature.properties.TYPE_CODE) {
             case 'LANTA':
+            case 'LOW':
               return {
                 color: '#00ff00',
                 fill: false,
@@ -101,6 +111,14 @@ const AirspaceGeoJSON = props => {
             case 'P':
               return {
                 color: '#ff0000',
+                fill: false,
+                weight: 2,
+              }
+            case 'MOA-DIVISION':
+            case 'TRA':
+            case 'ROK-MOA':
+              return {
+                color: '#00ffff',
                 fill: false,
                 weight: 2,
               }

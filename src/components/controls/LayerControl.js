@@ -71,10 +71,11 @@ const LayerControl = props => {
 
   const airspaceTypes = [
     // LLZ
-    //'LLZ',        // SOUTH KOREA
+    'LLZ',        // SOUTH KOREA
     // LOW MOA/MOA/LANTA
+    'LOW',
     'MOA',
-    'LANTA',      // GERMANY
+    'MOA-DIVISION',
     // Advisory/Warning/Alert
     'ADA',        // CANADA
     'A',
