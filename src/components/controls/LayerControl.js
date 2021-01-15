@@ -56,13 +56,6 @@ import {
 } from '../layers'
 
 //----------------------------------------------------------------//
-// Hawg View Constants
-//----------------------------------------------------------------//
-//import { airspace } from '../../constants/airspace'
-
-//import faaSUA from '../../constants/faaSUA.json'
-
-//----------------------------------------------------------------//
 // Map Control Component
 //----------------------------------------------------------------//
 const LayerControl = props => {
@@ -70,20 +63,12 @@ const LayerControl = props => {
   const { BaseLayer, Overlay } = LayersControl
 
   const airspaceTypes = [
-    // LLZ
-    'LLZ',        // SOUTH KOREA
-    // LOW MOA/MOA/LANTA
-    'LOW',
-    'MOA',
-    'MOA-DIVISION',
-    // Advisory/Warning/Alert
-    'ADA',        // CANADA
-    'A',
-    'W',
-    // Danger/Restricted/Prohibited
-    'D',          // CANADA
-    'R',
-    'P',
+    { short: 'LLZ', long: 'LLZ' },
+    { short: 'MOA', long: 'MOA' },
+    { short: 'W', long: 'Alert / Warning' }, // Combined ADA/A/W
+    { short: 'R', long: 'Restricted / Prohibited' }, //Combined D/R/P/NFL
+    { short: 'AAR', long: 'AAR' },
+    { short: 'ATCAA', long: 'ATCAA' }
   ]
 
   const layers = React.useMemo(() => (
@@ -135,34 +120,36 @@ const LayerControl = props => {
           maxNativeZoom={17}
         />
       </Overlay>
-      <Overlay checked name='Airspace'>
-        <LayerGroup>
-          {airspaceTypes.map(type => (
-            <AirspaceGeoJSON
-              key={type}
-              type={type}
-            />
-          ))}
-        </LayerGroup>
-      </Overlay>
-      {/*<Overlay checked name='AARs'>
-        <RLPolygon
-          clickable={false}
-          color='#070080'
-          fill={false}
-          positions={airspace.aars}
-          weight={2}
-        />
-      </Overlay>
-      <Overlay checked name='ATCAAs'>
-        <RLPolygon
-          clickable={false}
-          color='#ffff00'
-          fill={false}
-          positions={airspace.atcaas}
-          weight={2}
-        />
-          </Overlay>*/}
+      {airspaceTypes.map(type => (
+        <Overlay checked key={type.short} name={`Airspace (${type.long})`}>
+          <LayerGroup>
+            {type.short === 'MOA' ?
+              <React.Fragment>
+                <AirspaceGeoJSON type='LOW' />
+                <AirspaceGeoJSON type='MOA' />
+              </React.Fragment>
+              :
+              type.short === 'W' ?
+                <React.Fragment>
+                  <AirspaceGeoJSON type='ADA' />
+                  <AirspaceGeoJSON type='A' />
+                  <AirspaceGeoJSON type='W' />
+                </React.Fragment>
+                :
+                type.short === 'R' ?
+                  <React.Fragment>
+                    <AirspaceGeoJSON type='D' />
+                    <AirspaceGeoJSON type='R' />
+                    <AirspaceGeoJSON type='P' />
+                    <AirspaceGeoJSON type='NFL' />
+                    <AirspaceGeoJSON type='NFL-BUFFER' />
+                  </React.Fragment>
+                  :
+                  <AirspaceGeoJSON type={type.short} />
+            }
+          </LayerGroup>
+        </Overlay>
+      ))}
       <Overlay checked name='Bullseyes'>
         <LayerGroup>
           {props.state.history[props.state.step].bullseyes.map(bullseye => (

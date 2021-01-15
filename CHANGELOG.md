@@ -1,3 +1,14 @@
+## 2.20.4
+### Changes
+* Added `TGT` marker back to persistent markers
+* Added additional logic to handle `TGT` marker in `HOSTILE` array without converting to `SIDC`
+* Changed persistent markers to use `Array.map` to make it easier to handle the persistent markers
+* Added additiona logic to handle short URLs based on the new `persistentMarker` `Array.map`
+
+## 2.20.3
+### Changes
+* Finished updating all airspace to `GeoJSON`
+
 ## 2.20.2
 ### Changes
 * Updated all of German, Thailand, and most of South Korean airspace to `GeoJSON`

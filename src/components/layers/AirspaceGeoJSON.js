@@ -37,7 +37,10 @@ import {
 } from 'react-leaflet'
 
 import faaSUA from '../../constants/faaSUA.json'
-import customAirspace from '../../constants/customAirspace.json'
+import customGermanAirspace from '../../constants/customAirspace/customGermanAirspace.json'
+import customSouthKoreanAirspace from '../../constants/customAirspace/customSouthKoreanAirspace.json'
+import customThailandAirspace from '../../constants/customAirspace/customThailandAirspace.json'
+import customUnitedStatesAirspace from '../../constants/customAirspace/customUnitedStatesAirspace.json'
 
 const AirspaceGeoJSON = props => {
 
@@ -46,17 +49,14 @@ const AirspaceGeoJSON = props => {
     name: 'Hawg View Airspace',
     features: [
       ...faaSUA.features,
-      ...customAirspace.features,
+      ...customGermanAirspace.features,
+      ...customSouthKoreanAirspace.features,
+      ...customThailandAirspace.features,
+      ...customUnitedStatesAirspace.features,
     ]
   }
 
   let data = airspaceData.features.filter(feature => feature.properties.TYPE_CODE === props.type)
-  /*if (data.length === 0) {
-    data = customAirspace.features.filter(feature => feature.properties.TYPE_CODE === props.type)
-  }*/
-
-  console.log(`Rendered ${data.length} airspace boundaries of type (${props.type})`)
-
 
   let lowMoas, moas
   if (props.type === 'MOA') {
@@ -91,7 +91,12 @@ const AirspaceGeoJSON = props => {
         data={data}
         style={feature => {
           switch (feature.properties.TYPE_CODE) {
-            case 'LANTA':
+            case 'LLZ':
+              return {
+                color: '#ff00ff',
+                fill: false,
+                weight: 2,
+              }
             case 'LOW':
               return {
                 color: '#00ff00',
@@ -114,12 +119,28 @@ const AirspaceGeoJSON = props => {
                 fill: false,
                 weight: 2,
               }
-            case 'MOA-DIVISION':
-            case 'TRA':
-            case 'ROK-MOA':
+            case 'AAR':
               return {
-                color: '#00ffff',
+                color: '#070080',
                 fill: false,
+                weight: 2,
+              }
+            case 'ATCAA':
+              return {
+                color: '#ffff00',
+                fill: false,
+                weight: 2,
+              }
+            case 'NFL':
+              return {
+                color: '#000000',
+                dashArray: '20,10,10,10',
+                weight: 2,
+              }
+            case 'NFL-BUFFER':
+              return {
+                color: '#ff0000',
+                dashArray: '20,10,10,10',
                 weight: 2,
               }
           }
@@ -130,65 +151,3 @@ const AirspaceGeoJSON = props => {
 }
 
 export default AirspaceGeoJSON
-
-/*
-      <Overlay name='JS Airspace'>
-        <LayerGroup>
-          <RLPolygon
-            clickable={false}
-            color='#ff00ff'
-            fill={false}
-            positions={airspace.llzs}
-            weight={2}
-          />
-          <RLPolygon
-            clickable={false}
-            color='#00ff00'
-            fill={false}
-            positions={airspace.lowMoas}
-            weight={2}
-          />
-          <RLPolygon
-            clickable={false}
-            color='#00ffff'
-            fill={false}
-            positions={airspace.moas}
-            weight={2}
-          />
-          <RLPolygon
-            clickable={false}
-            color='#ff9000'
-            fill={false}
-            positions={airspace.warningAreas}
-            weight={2}
-          />
-          <RLPolygon
-            clickable={false}
-            color='#ff0000'
-            fill={false}
-            positions={airspace.restrictedAreas}
-            weight={2}
-          />
-          <Polyline
-            clickable={false}
-            color='#ff0000'
-            positions={airspace.p518}
-            weight={2}
-          />
-          <Polyline
-            clickable={false}
-            color='#000000'
-            dashArray='20, 10, 10, 10'
-            positions={airspace.koreaNfl}
-            weight={2}
-          />
-          <Polyline
-            clickable={false}
-            color='#ff0000'
-            dashArray='20, 10, 10, 10'
-            positions={airspace.koreaNflBuffer}
-            weight={2}
-          />
-        </LayerGroup>
-      </Overlay>
-      */

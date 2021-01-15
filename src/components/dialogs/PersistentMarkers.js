@@ -51,6 +51,7 @@ import ip from '../../markers/persistent/ip.svg'
 import noStrike from '../../markers/persistent/no-strike.svg'
 import survivor from '../../markers/persistent/srv.svg'
 import threat from '../../markers/persistent/threat-ring.svg'
+import tgt from '../../markers/persistent/tgt.svg'
 
 //----------------------------------------------------------------//
 // Styles
@@ -135,57 +136,75 @@ const PersistentMarkers = props => {
     props.handleAddMarker(payload)
   }
 
+  const markers = [
+    {
+      iconType: 'img',
+      layer: 'hostile',
+      src: tgt,
+      title: 'TGT',
+    },
+    {
+      iconType: 'img',
+      layer: 'ip',
+      src: ip,
+      title: 'IP',
+    },
+    {
+      iconType: 'img',
+      layer: 'ip',
+      src: cp,
+      title: 'CP',
+    },
+    {
+      iconType: 'div',
+      layer: 'threat',
+      src: threat,
+      title: '',
+    },
+    {
+      iconType: 'img',
+      layer: 'ip',
+      src: noStrike,
+      title: 'No Strike',
+    },
+    {
+      iconType: 'img',
+      layer: 'survivor',
+      src: survivor,
+      title: 'Survivor',
+    },
+    {
+      iconType: 'img',
+      layer: 'bullseye',
+      src: bullseye,
+      title: 'Bullseye'
+    }
+  ]
+
+  // layer === 'threat' ? null : layer === 'bullseye' ? blank : event.target.src
+
   return (
     <React.Fragment>
       <div>
-        <Tooltip title='IP'>
-          <img
-            alt='IP'
-            className={classes.markerImage}
-            onClick={event => handleMarkerClick(event.target.src, 'img', 'IP', 'ip')}
-            src={ip}
-          />
-        </Tooltip>
-        <Tooltip title='CP'>
-          <img
-            alt='CP'
-            className={classes.markerImage}
-            onClick={event => handleMarkerClick(event.target.src, 'img', 'CP', 'ip')}
-            src={cp}
-          />
-        </Tooltip>
-        <Tooltip title='Threat Ring'>
-          <img
-            alt='Threat Ring'
-            className={classes.markerImage}
-            onClick={() => handleMarkerClick(null, 'div', '', 'threat')}
-            src={threat}
-          />
-        </Tooltip>
-        <Tooltip title='No Strike'>
-          <img
-            alt='No Strike'
-            className={classes.markerImage}
-            onClick={event => handleMarkerClick(event.target.src, 'img', 'No Strike', 'ip')}
-            src={noStrike}
-          />
-        </Tooltip>
-        <Tooltip title='Survivor'>
-          <img
-            alt='Survivor'
-            className={classes.markerImage}
-            onClick={event => handleMarkerClick(event.target.src, 'img', 'Survivor', 'survivor')}
-            src={survivor}
-          />
-        </Tooltip>
-        <Tooltip title='Bullseye'>
-          <img
-            alt='Bullseye'
-            className={classes.markerImage}
-            onClick={() => handleMarkerClick(blank, 'img', 'Bullseye', 'bullseye')}
-            src={bullseye}
-          />
-        </Tooltip>
+        {markers.map(marker => (
+          <Tooltip key={marker.title} title={marker.title}>
+            <img
+              alt={marker.title}
+              className={classes.markerImage}
+              onClick={() => handleMarkerClick(
+                marker.layer === 'threat' ?
+                  null
+                  : marker.layer === 'bullseye' ?
+                  blank
+                  : marker.src,
+                  marker.iconType,
+                  marker.title,
+                  marker.layer
+              )}
+              src={marker.src}
+            />
+          </Tooltip>
+        ))}
       </div>
       <Tooltip title='Map Label'>
         <Button
