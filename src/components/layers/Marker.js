@@ -92,7 +92,7 @@ const Marker = props => {
   const useStyles = makeStyles(theme => ({
     divIcon: {
       alignItems: 'center',
-      color: props.state.history[props.state.step].styles.buildingLabel.color,
+      color: props.marker.color ? props.marker.color : props.state.history[props.state.step].styles.buildingLabel.color,
       display: 'flex',
       fontSize: computedSize,
       fontWeight: 'bold',

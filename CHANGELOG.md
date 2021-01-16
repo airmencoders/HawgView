@@ -1,3 +1,10 @@
+## 2.20.6
+### Changes
+* Updated `Marker.js` to use marker color when it is present
+
+### Fixes
+* Fixed bug where `Map Labels` would not use their own color but would instead use the global `Building Label` color
+
 ## 2.20.5
 ### Changes
 * Updated `generateKML` function to use GeoJSON formatting and set names to the airspace
