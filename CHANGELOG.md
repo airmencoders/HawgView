@@ -1,3 +1,7 @@
+## 2.20.5
+### Changes
+* Updated `generateKML` function to use GeoJSON formatting and set names to the airspace
+
 ## 2.20.4
 ### Changes
 * Added `TGT` marker back to persistent markers

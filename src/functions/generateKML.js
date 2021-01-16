@@ -33,191 +33,52 @@ import LatLon from 'geodesy/latlon-spherical'
 //----------------------------------------------------------------//
 // Hawg View Constants
 //----------------------------------------------------------------//
-import {
-  airspace
-} from '../constants/airspace'
+import faaSUA from '../constants/faaSUA.json'
+import customGermanAirspace from '../constants/customAirspace/customGermanAirspace.json'
+import customSouthKoreanAirspace from '../constants/customAirspace/customSouthKoreanAirspace.json'
+import customThailandAirspace from '../constants/customAirspace/customThailandAirspace.json'
+import customUnitedStatesAirspace from '../constants/customAirspace/customUnitedStatesAirspace.json'
 
-const remapIconUrl = svg => {
-  return `http://192.168.1.100:3100/png?sidc=${svg}`
-  /*let pngUrl = 'https://hawg-ops.com/pngMarkers/'
+const airspaceData = [
+  ...faaSUA.features,
+  ...customGermanAirspace.features,
+  ...customSouthKoreanAirspace.features,
+  ...customThailandAirspace.features,
+  ...customUnitedStatesAirspace.features,
+]
 
-  switch (svg) {
-    case 'https://hawg-ops.com/static/media/ada.af746e84.svg':
-      pngUrl += 'persistent/ada.png'
-      break
-    case 'https://hawg-ops.com/static/media/airborne.38a043b7.svg':
-      pngUrl += 'hostile/airborne.png'
-      break
-    case 'https://hawg-ops.com/static/media/airborne.df2cd266.svg':
-      pngUrl += 'friendly/airborne.png'
-      break
-    case 'https://hawg-ops.com/static/media/airborne-infantry.7495274f.svg':
-      pngUrl += 'hostile/airborne-infantry.png'
-      break
-    case 'https://hawg-ops.com/static/media/airborne-infantry.a56050c6.svg':
-      pngUrl += 'friendly/airborne-infantry.png'
-      break
-    case 'https://hawg-ops.com/static/media/air-defense.2f6bc0a9.svg':
-      pngUrl += 'hostile/air-defense.png'
-      break
-    case 'https://hawg-ops.com/static/media/air-defense.af8b45b2.svg':
-      pngUrl += 'friendly/air-defense.png'
-      break
-    case 'https://hawg-ops.com/static/media/anti-armor.0b70d1e6.svg':
-      pngUrl += 'hostile/anti-armor.png'
-      break
-    case 'https://hawg-ops.com/static/media/anti-armor.b34f832e.svg':
-      pngUrl += 'friendly/anti-armor.png'
-      break
-    case 'https://hawg-ops.com/static/media/armor.5e34d211.svg':
-      pngUrl += 'friendly/armor.png'
-      break
-    case 'https://hawg-ops.com/static/media/armor.8f32083e.svg':
-      pngUrl += 'hostile/armor.png'
-      break
-    case 'https://hawg-ops.com/static/media/artillery.5cfadcbb.svg':
-      pngUrl += 'friendly/artillery.png'
-      break
-    case 'https://hawg-ops.com/static/media/artillery.7b3a9690.svg':
-      pngUrl += 'hostile/artillery.png'
-      break
-    case 'https://hawg-ops.com/static/media/aviation.05f7fc8d.svg':
-      pngUrl += 'hostile/aviation.png'
-      break
-    case 'https://hawg-ops.com/static/media/aviation.ce5c976a.svg':
-      pngUrl += 'friendly/aviation.png'
-      break
-    case '/static/media/blank.b6c2bdb7.svg':
-      pngUrl += 'persistent/bullseye.png'
-      break
-    case 'https://hawg-ops.com/static/media/cbrne.725c1dc5.svg':
-      pngUrl += 'hostile/cbrne.png'
-      break
-    case 'https://hawg-ops.com/static/media/cbrne.b3d110bc.svg':
-      pngUrl += 'friendly/cbrne.png'
-      break
-    case 'https://hawg-ops.com/static/media/counterbattery-radar.7ec3e713.svg':
-      pngUrl += 'hostile/counterbattery-radar.png'
-      break
-    case 'https://hawg-ops.com/static/media/counterbattery-radar.412bafde.svg':
-      pngUrl += 'friendly/counterbattery-radar.png'
-      break
-    case 'https://hawg-ops.com/static/media/cp.07c4b44b.svg':
-      pngUrl += 'persistent/cp.png'
-      break
-    case 'https://hawg-ops.com/static/media/engineer.9fe6dd66.svg':
-      pngUrl += 'hostile/engineer.png'
-      break
-    case 'https://hawg-ops.com/static/media/engineer.d16ad5e6.svg':
-      pngUrl += 'friendly/engineer.png'
-      break
-    case 'https://hawg-ops.com/static/media/infantry.9c99e29e.svg':
-      pngUrl += 'friendly/infantry.png'
-      break
-    case 'https://hawg-ops.com/static/media/infantry.6137cbdf.svg':
-      pngUrl += 'hostile/infantry.png'
-      break
-    case 'https://hawg-ops.com/static/media/ip.9c70c67c.svg':
-      pngUrl += 'persistent/ip.png'
-      break
-    case 'https://hawg-ops.com/static/media/light-armor.1c44d584.svg':
-      pngUrl += 'hostile/light-armor.png'
-      break
-    case 'https://hawg-ops.com/static/media/light-armor.e877e472.svg':
-      pngUrl += 'friendly/light-armor.png'
-      break
-    case 'https://hawg-ops.com/static/media/maintenance.29fbc2f8.svg':
-      pngUrl += 'hostile/maintenance.png'
-      break
-    case 'https://hawg-ops.com/static/media/maintenance.412b7c3a.svg':
-      pngUrl += 'friendly/maintenance.png'
-      break
-    case 'https://hawg-ops.com/static/media/mech-infantry.8bacdfd9.svg':
-      pngUrl += 'friendly/mech-infantry.png'
-      break
-    case 'https://hawg-ops.com/static/media/mech-infantry.306863c1.svg':
-      pngUrl += 'hostile/mech-infantry.png'
-      break
-    case 'https://hawg-ops.com/static/media/medical.3ae34509.svg':
-      pngUrl += 'hostile/medical.png'
-      break
-    case 'https://hawg-ops.com/static/media/medical.a7456a27.svg':
-      pngUrl += 'friendly/medical.png'
-      break
-    case 'https://hawg-ops.com/static/media/missile.3ee84090.svg':
-      pngUrl += 'hostile/missile.png'
-      break
-    case 'https://hawg-ops.com/static/media/missile.4ce9a7b1.svg':
-      pngUrl += 'friendly/missile.png'
-      break
-    case 'https://hawg-ops.com/static/media/missile.b14edbce.svg':
-      pngUrl += 'persistent/missile.png'
-      break
-    case 'https://hawg-ops.com/static/media/mlrs.3bc1af8e.svg':
-      pngUrl += 'friendly/mlrs.png'
-      break
-    case 'https://hawg-ops.com/static/media/mlrs.6517f49b.svg':
-      pngUrl += 'hostile/mlrs.png'
-      break
-    case 'https://hawg-ops.com/static/media/no-strike.f79b5590.svg':
-      pngUrl += 'persistent/no-strike.png'
-      break
-    case 'https://hawg-ops.com/static/media/recce.59176d11.svg':
-      pngUrl += 'friendly/recce.png'
-      break
-    case 'https://hawg-ops.com/static/media/recce.a6099e4c.svg':
-      pngUrl += 'hostile/recce.png'
-      break
-    case 'https://hawg-ops.com/static/media/self-propelled-artillery.4a8d1d95.svg':
-      pngUrl += 'friendly/self-propelled-artillery.png'
-      break
-    case 'https://hawg-ops.com/static/media/self-propelled-artillery.0790c09d.svg':
-      pngUrl += 'hostile/self-propelled-artillery.png'
-      break
-    case 'https://hawg-ops.com/static/media/signals.14ad4e9c.svg':
-      pngUrl += 'hostile/signals.png'
-      break
-    case 'https://hawg-ops.com/static/media/signals.c34f9425.svg':
-      pngUrl += 'friendly/signals.png'
-      break
-    case 'https://hawg-ops.com/static/media/special-forces.28b08af1.svg':
-      pngUrl += 'friendly/special-forces.png'
-      break
-    case 'https://hawg-ops.com/static/media/special-forces.49fc1351.svg':
-      pngUrl += 'hostile/special-forces.png'
-      break
-    case 'https://hawg-ops.com/static/media/srv.23ace4d0.svg':
-      pngUrl += 'persistent/srv.png'
-      break
-    case 'https://hawg-ops.com/static/media/supply.41ffb33b.svg':
-      pngUrl += 'hostile/supply.png'
-      break
-    case 'https://hawg-ops.com/static/media/supply.46765207.svg':
-      pngUrl += 'friendly/supply.png'
-      break
-    case 'https://hawg-ops.com/static/media/tgt.2daac1ea.svg':
-      pngUrl += 'persistent/tgt.png'
-      break
-    case 'https://hawg-ops.com/static/media/unit.d5cc8d94.svg':
-      pngUrl += 'hostile/unit.png'
-      break
-    case 'https://hawg-ops.com/static/media/unit.d8a35903.svg':
-      pngUrl += 'friendly/unit.png'
-      break
-    case 'https://hawg-ops.com/static/media/wheeled-armor.443d3fce.svg':
-      pngUrl += 'friendly/wheeled-armor.png'
-      break
-    case 'https://hawg-ops.com/static/media/wheeled-armor.dea5279f.svg':
-      pngUrl += 'hostile/wheeled-armor.png'
-      break
-    default:
-      console.error('Unidentified iconUrl:', svg)
-      pngUrl = ''
-  }
+let llzs = airspaceData.filter(feature => feature.properties.TYPE_CODE === 'LLZ')
+let lowMoas = airspaceData.filter(feature =>
+  feature.properties.TYPE_CODE === 'LOW' ||
+  (
+    feature.properties.TYPE_CODE === 'MOA' &&
+    (
+      feature.properties.NAME.includes('LOW') ||
+      feature.properties.NAME.includes('MOODY 2')
+    )
+  )
+)
 
-  return pngUrl*/
-  return null
-}
+let moas = airspaceData.filter(feature =>
+  feature.properties.TYPE_CODE === 'MOA' &&
+  !(
+    feature.properties.NAME.includes('LOW') ||
+    feature.properties.NAME.includes('MOODY 2')
+  )
+)
+
+let advisoryCA = airspaceData.filter(feature => feature.properties.TYPE_CODE === 'ADA')
+let alert = airspaceData.filter(feature => feature.properties.TYPE_CODE === 'A')
+let warning = airspaceData.filter(feature => feature.properties.TYPE_CODE === 'W')
+let dangerCA = airspaceData.filter(feature => feature.properties.TYPE_CODE === 'D')
+let restricted = airspaceData.filter(feature => feature.properties.TYPE_CODE === 'R')
+let prohibited = airspaceData.filter(feature => feature.properties.TYPE_CODE === 'P')
+let nfl = airspaceData.filter(feature => feature.properties.TYPE_CODE === 'NFL')
+let nflBuffer = airspaceData.filter(feature => feature.properties.TYPE_CODE === 'NFL-BUFFER')
+let aars = airspaceData.filter(feature => feature.properties.TYPE_CODE === 'AAR')
+let atcaas = airspaceData.filter(feature => feature.properties.TYPE_CODE === 'ATCAA')
+
+
 
 const tryMgrs = latlng => {
   let position
@@ -247,8 +108,8 @@ const generateBullseyes = (bullseyes, kmlData) => {
       <open>0</open>`
 
   bullseyes.forEach((bullseye, index) => {
-    kmlData += 
-    `<Folder id='bullseye-${index}'>
+    kmlData +=
+      `<Folder id='bullseye-${index}'>
       <name>${bullseye.title}</name>
       <open>0</open>
       <Placemark>
@@ -261,24 +122,24 @@ const generateBullseyes = (bullseyes, kmlData) => {
         </Point>
       </Placemark>
       `
-      
-      for(let i = 1; i <= bullseye.rings; i++) {
-        let circle = {
-          layer: 'circle',
-          unit: 'm',
-          radius: bullseye.distance * 1852 * i,
-          color: bullseye.color,
-          latlng: bullseye.latlng,
-        }
 
-        kmlData += generateCircle(circle)
+    for (let i = 1; i <= bullseye.rings; i++) {
+      let circle = {
+        layer: 'circle',
+        unit: 'm',
+        radius: bullseye.distance * 1852 * i,
+        color: bullseye.color,
+        latlng: bullseye.latlng,
       }
 
-      for(let i = 1; i <= 360; i += bullseye.angle) {
-        let point = LatLon.parse(bullseye.latlng.lat, bullseye.latlng.lng)
-        let endPoint = point.destinationPoint(bullseye.rings * bullseye.distance * 1852, i + bullseye.declination)
-        kmlData += 
-          `<Placemark>
+      kmlData += generateCircle(circle)
+    }
+
+    for (let i = 1; i <= 360; i += bullseye.angle) {
+      let point = LatLon.parse(bullseye.latlng.lat, bullseye.latlng.lng)
+      let endPoint = point.destinationPoint(bullseye.rings * bullseye.distance * 1852, i + bullseye.declination)
+      kmlData +=
+        `<Placemark>
             <Style>
               <IconStyle><Icon/></IconStyle>
               <LineStyle>
@@ -294,7 +155,7 @@ const generateBullseyes = (bullseyes, kmlData) => {
               </coordinates>
             </LineString>
           </Placemark>`
-      }
+    }
 
     kmlData += `</Folder>`
   })
@@ -396,7 +257,7 @@ const generatePolygons = (polygons, kmlData) => {
     `<Folder id='polygons'>
       <name>Polygons</name>
       <open>0</open>`
-  
+
   polygons.forEach(polygon => {
     kmlData +=
       `<Placemark>
@@ -433,14 +294,14 @@ const generatePolygons = (polygons, kmlData) => {
 
 const generateCircle = marker => {
   let radius = marker.layer === 'circle' ? marker.radius : marker.range
-  if(marker.unit === 'km') {
+  if (marker.unit === 'km') {
     radius = radius * 1000
   } else if (marker.unit === 'NM') {
     radius = radius * 1852
   }
 
-  let circleData = 
-  `<Placemark>
+  let circleData =
+    `<Placemark>
     <name>${marker.layer === 'threat' ? `${marker.title === '' ? 'Custom Threat' : marker.title} (${marker.sovereignty} ${marker.label})` : `${marker.title}`}</name>
     <Style>
       <IconStyle><Icon/></IconStyle>
@@ -459,7 +320,7 @@ const generateCircle = marker => {
     circleData += `${newPoint.lon},${newPoint.lat}\n`
   }
 
-  circleData += 
+  circleData +=
     `</coordinates>
       </LineString>
         </Placemark>`
@@ -666,7 +527,7 @@ const generateThreats = (threats, kmlData) => {
         <Placemark>
         <description>
           ${threat.data !== null ? (
-            `<table>
+        `<table>
             <tbody>
               <tr>
                 <td>Label</td>
@@ -722,9 +583,9 @@ const generateThreats = (threats, kmlData) => {
               </tr>
             </tbody>
           </table>`
-          )
-          :
-          `<table>
+      )
+        :
+        `<table>
             <tbody>
               <tr>
                 <td>${tryMgrs(threat.latlng)}</td>
@@ -734,7 +595,7 @@ const generateThreats = (threats, kmlData) => {
               </tr>
             </tbody>
             </table>`
-        }
+      }
         </description>
         <name>${threat.title === '' ? 'Custom Threat' : threat.title} (${threat.sovereignty} ${threat.label})</name>
         <Style>
@@ -750,8 +611,8 @@ const generateThreats = (threats, kmlData) => {
       </Placemark>
       `
 
-      kmlData += generateCircle(threat)
-      kmlData += `</Folder>`
+    kmlData += generateCircle(threat)
+    kmlData += `</Folder>`
   })
 
   kmlData += `</Folder>`
@@ -858,12 +719,31 @@ const generateKML = step => {
           <Style id='thick_line_black'>
             <LineStyle>
               <color>ff000000</color>
-              <width>4</width>
+              <width>5</width>
             </LineStyle>
             <PolyStyle>
               <color>00000000</color>
             </PolyStyle>
-          </Style>`
+          </Style>
+          <Style id='thick_line_orange'>
+            <LineStyle>
+              <color>ff0090ff</color>
+              <width>5</width>
+            </LineStyle>
+            <PolyStyle>
+              <color>000090ff</color>
+            </PolyStyle>
+          </Style>
+          <Style id='thick_line_teal'>
+            <LineStyle>
+              <color>ffffff00</color>
+              <width>5</width>
+            </LineStyle>
+            <PolyStyle>
+              <color>00ffff00</color>
+            </PolyStyle>
+          </Style>
+          `
   const fileClose = `</Document></kml>`
   const airspaceClose = `</coordinates></LinearRing></outerBoundaryIs></Polygon></Placemark>`
 
@@ -877,20 +757,29 @@ const generateKML = step => {
       <name>Korea LLZs</name>
       <open>0</open>`
 
-  airspace.llzs.forEach(airspace => {
-    kmlData +=
-      `<Placemark>
-        <styleUrl>#poly_purple</styleUrl>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>`
+  llzs.forEach(llz => {
+    if (llz.geometry.type === 'Polygon') {
+      kmlData +=
+        `<Placemark>
+          <name>${llz.properties.NAME}</name>
+          <styleUrl>#poly_purple</styleUrl>
+          <Polygon>
+            <outerBoundaryIs>
+              <LinearRing>
+                <coordinates>`
 
-    airspace.forEach(coordinate => kmlData += `${coordinate[1]},${coordinate[0]}\n`)
-    kmlData += `${airspace[0][1]},${airspace[0][0]}\n`
+      llz.geometry.coordinates[0].forEach(coordinate => {
+        kmlData += `${coordinate[0]},${coordinate[1]}\n`
+      })
 
-    kmlData += airspaceClose
+      kmlData += `${llz.geometry.coordinates[0][0][0]},${llz.geometry.coordinates[0][0][1]}`
+      kmlData += airspaceClose
+    } else {
+      console.error(`LLZ Error: Unknown geometry type (${llz.geometry.type})`)
+    }
   })
+
+
 
   //----------------------------------------------------------------//
   // Low MOAs
@@ -901,19 +790,29 @@ const generateKML = step => {
         <name>Low MOAs</name>
         <open>0</open>`
 
-  airspace.lowMoas.forEach(airspace => {
+  lowMoas.forEach(lowMoa => {
     kmlData +=
       `<Placemark>
-        <styleUrl>#poly_green</styleUrl>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>`
+      <name>${lowMoa.properties.NAME}</name>
+    `
 
-    airspace.forEach(coordinate => kmlData += `${coordinate[1]},${coordinate[0]}\n`)
-    kmlData += `${airspace[0][1]},${airspace[0][0]}\n`
+    if (lowMoa.geometry.type === 'Polygon') {
+      kmlData +=
+        `<styleUrl>#poly_green</styleUrl>
+            <Polygon>
+              <outerBoundaryIs>
+                <LinearRing>
+                  <coordinates>`
+      lowMoa.geometry.coordinates[0].forEach(coordinate => {
+        kmlData += `${coordinate[0]},${coordinate[1]}\n`
+      })
 
-    kmlData += airspaceClose
+      kmlData += `${lowMoa.geometry.coordinates[0][0][0]},${lowMoa.geometry.coordinates[0][0][1]}`
+      kmlData += airspaceClose
+
+    } else {
+      console.error(`Low MOA Error: Unknown geometry type (${lowMoa.geometry.type})`)
+    }
   })
 
   //----------------------------------------------------------------//
@@ -925,19 +824,117 @@ const generateKML = step => {
         <name>MOAs</name>
         <open>0</open>`
 
-  airspace.moas.forEach(airspace => {
+  moas.forEach(moa => {
     kmlData +=
       `<Placemark>
-        <styleUrl>#poly_teal</styleUrl>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>`
+        <name>${moa.properties.NAME}</name>`
 
-    airspace.forEach(coordinate => kmlData += `${coordinate[1]},${coordinate[0]}\n`)
-    kmlData += `${airspace[0][1]},${airspace[0][0]}\n`
+    if (moa.geometry.type === 'Polygon') {
+      kmlData +=
+        `<styleUrl>#poly_teal</styleUrl>
+          <Polygon>
+            <outerBoundaryIs>
+              <LinearRing>
+                <coordinates>`
 
-    kmlData += airspaceClose
+      moa.geometry.coordinates[0].forEach(coordinate => {
+        kmlData += `${coordinate[0]},${coordinate[1]}\n`
+      })
+
+      kmlData += `${moa.geometry.coordinates[0][0][0]},${moa.geometry.coordinates[0][0][1]}`
+      kmlData += airspaceClose
+    } else if (moa.geometry.type === 'MultiLineString') {
+      kmlData +=
+      `<styleUrl>#thick_line_teal</styleUrl>
+        <MultiGeometry>
+      `
+
+      moa.geometry.coordinates.forEach(line => {
+        kmlData +=
+        `<LineString>
+          <tessellate>1</tessellate>
+            <coordinates>`
+
+        line.forEach(coordinate => {
+          kmlData += `${coordinate[0]},${coordinate[1]}\n`
+        })
+
+        kmlData +=
+        `</coordinates>
+          </LineString>`
+      })
+
+      kmlData +=
+        `</MultiGeometry>
+          </Placemark>`
+    } else {
+      console.error(`MOA Error: Unknown geometry type (${moa.geometry.type})`)
+    }
+  })
+
+  //----------------------------------------------------------------//
+  // Advisory Areas
+  //----------------------------------------------------------------//
+  kmlData +=
+    `</Folder>
+      <Folder id='advisory_areas'>
+        <name>Advisory Areas</name>
+        <open>0</open>`
+
+  advisoryCA.forEach(advisory => {
+    kmlData +=
+      `<Placemark>
+      <name>${advisory.properties.NAME}</name>`
+
+    if (advisory.geometry.type === 'Polygon') {
+      kmlData +=
+        `<styleUrl>#poly_orange</styleUrl>
+          <Polygon>
+            <outerBoundaryIs>
+              <LinearRing>
+                <coordinates>`
+
+      advisory.geometry.coordinates[0].forEach(coordinate => {
+        kmlData += `${coordinate[0]},${coordinate[1]}\n`
+      })
+
+      kmlData += `${advisory.geometry.coordinates[0][0][0]},${advisory.geometry.coordinates[0][0][1]}`
+      kmlData += airspaceClose
+    } else {
+      console.error(`Advisory Area Error: Unknown Geometry Type (${advisory.geometry.type})`)
+    }
+  })
+
+  //----------------------------------------------------------------//
+  // Alert Areas
+  //----------------------------------------------------------------//
+  kmlData +=
+    `</Folder>
+      <Folder id='alert_areas'>
+        <name>Alert Areas</name>
+        <open>0</open>`
+
+  alert.forEach(al => {
+    kmlData +=
+      `<Placemark>
+        <name>${al.properties.NAME}</name>`
+    if (al.geometry.type === 'Polygon') {
+      kmlData +=
+        `<styleUrl>#poly_orange</styleUrl>
+          <Polygon>
+            <outerBoundaryIs>
+              <LinearRing>
+                <coordinates>`
+
+      al.geometry.coordinates[0].forEach(coordinate => {
+        kmlData += `${coordinate[0]},${coordinate[1]}\n`
+      })
+
+      kmlData += `${al.geometry.coordinates[0][0][0]},${al.geometry.coordinates[0][0][1]}`
+      kmlData += airspaceClose
+    } else {
+      console.error(`Alert Area Error: Unknown geometry type (${al.geometry.type})`)
+    }
   })
 
   //----------------------------------------------------------------//
@@ -949,19 +946,103 @@ const generateKML = step => {
         <name>Warning Areas</name>
         <open>0</open>`
 
-  airspace.warningAreas.forEach(airspace => {
+  warning.forEach(warn => {
     kmlData +=
       `<Placemark>
-        <styleUrl>#poly_orange</styleUrl>
+        <name>${warn.properties.NAME}</name>
+      `
+
+    if (warn.geometry.type === 'Polygon') {
+      kmlData +=
+        `<styleUrl>#poly_orange</styleUrl>
         <Polygon>
           <outerBoundaryIs>
             <LinearRing>
-              <coordinates>`
+              <coordinates>
+      `
+      warn.geometry.coordinates[0].forEach(coordinate => {
+        kmlData += `${coordinate[0]},${coordinate[1]}\n`
+      })
 
-    airspace.forEach(coordinate => kmlData += `${coordinate[1]},${coordinate[0]}\n`)
-    kmlData += `${airspace[0][1]},${airspace[0][0]}\n`
+      kmlData += `${warn.geometry.coordinates[0][0][0]},${warn.geometry.coordinates[0][0][1]}`
+      kmlData += airspaceClose
+    } else if (warn.geometry.type === 'LineString') {
+      kmlData +=
+        `<styleUrl>#thick_line_orange</styleUrl>
+        <LineString>
+          <tessellate>1</tessellate>
+            <coordinates>
+      `
+      warn.geometry.coordinates.forEach(coordinate => {
+        kmlData += `${coordinate[0]},${coordinate[1]}\n`
+      })
 
-    kmlData += airspaceClose
+      kmlData +=
+        `</coordinates>
+          </LineString>
+            </Placemark>            
+        `
+    } else if (warn.geometry.type === 'MultiLineString') {
+      kmlData +=
+        `<styleUrl>#thick_line_orange</styleUrl>
+        <MultiGeometry>
+      `
+
+      warn.geometry.coordinates.forEach(line => {
+        kmlData +=
+          `<LineString>
+          <tessellate>1</tessellate>
+            <coordinates>
+        `
+
+        line.forEach(coordinate => {
+          kmlData += `${coordinate[0]},${coordinate[1]}\n`
+        })
+
+        kmlData +=
+          `</coordinates>
+          </LineString>
+        `
+      })
+
+      kmlData +=
+        `</MultiGeometry>
+        </Placemark>
+      `
+    } else {
+      console.error(`Warning Area Error: Unknown geometry type (${warn.geometry.type})`)
+    }
+  })
+
+  //----------------------------------------------------------------//
+  // Danger Areas
+  //----------------------------------------------------------------//
+  kmlData +=
+    `</Folder>
+      <Folder id='danger_areas'>
+        <name>Danger Areas</name>
+        <open>0</open>`
+
+  dangerCA.forEach(danger => {
+    kmlData +=
+      `<Placemark>
+        <name>${danger.properties.NAME}</name>`
+
+    if (danger.geometry.type === 'Polygon') {
+      kmlData +=
+        `<styleUrl>#poly_red</styleUrl>
+          <Polygon>
+            <outerBoundaryIs>
+              <LinearRing>
+                <coordinates>`
+
+      danger.geometry.coordinates[0].forEach(coordinate => {
+        kmlData += `${coordinate[0]},${coordinate[1]}\n`
+      })
+
+      kmlData += `${danger.geometry.coordinates[0][0][0]},${danger.geometry.coordinates[0][0][1]}`
+      kmlData += airspaceClose
+    }
   })
 
   //----------------------------------------------------------------//
@@ -973,19 +1054,78 @@ const generateKML = step => {
         <name>Restricted Areas</name>
         <open>0</open>`
 
-  airspace.restrictedAreas.forEach(airspace => {
+  restricted.forEach(rest => {
     kmlData +=
       `<Placemark>
-        <styleUrl>#poly_red</styleUrl>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>`
+        <name>${rest.properties.NAME}</name>
+      `
 
-    airspace.forEach(coordinate => kmlData += `${coordinate[1]},${coordinate[0]}\n`)
-    kmlData += `${airspace[0][1]},${airspace[0][0]}\n`
+    if (rest.geometry.type === 'Polygon') {
+      kmlData +=
+        `<styleUrl>#poly_red</styleUrl>
+          <Polygon>
+            <outerBoundaryIs>
+              <LinearRing>
+                <coordinates>
+      `
+      rest.geometry.coordinates[0].forEach(coordinate => {
+        kmlData += `${coordinate[0]},${coordinate[1]}\n`
+      })
 
-    kmlData += airspaceClose
+      kmlData += `${rest.geometry.coordinates[0][0][0]},${rest.geometry.coordinates[0][0][1]}`
+      kmlData += airspaceClose
+    } else if (rest.geometry.type === 'LineString') {
+      kmlData +=
+        `<styleUrl>#thick_line_red</styleUrl>
+        <LineString>
+          <tessellate>1</tessellate>
+            <coordinates>
+      `
+      rest.geometry.coordinates.forEach(coordinate => {
+        kmlData += `${coordinate[0]},${coordinate[1]}\n`
+      })
+
+      kmlData +=
+        `</coordinates>
+        </LineString>
+          </Placemark>
+      `
+    } else {
+      console.error(`Restricted Area Error: Unknown geometry type (${rest.geometry.type})`)
+    }
+  })
+
+  //----------------------------------------------------------------//
+  // Prohibited Areas
+  //----------------------------------------------------------------//
+  kmlData +=
+    `</Folder>
+      <Folder id='prohibited_areas'>
+        <name>Prohibited Areas</name>
+        <open>0</open>`
+
+  prohibited.forEach(p => {
+    kmlData +=
+      `<Placemark>
+        <name>${p.properties.NAME}</name>`
+
+    if (p.geometry.type === 'Polygon') {
+      kmlData +=
+        `<styleUrl>#poly_red</styleUrl>
+          <Polygon>
+            <outerBoundaryIs>
+              <LinearRing>
+                <coordinates>`
+
+      p.geometry.coordinates[0].forEach(coordinate => {
+        kmlData += `${coordinate[0]},${coordinate[1]}\n`
+      })
+
+      kmlData += `${p.geometry.coordinates[0][0][0]},${p.geometry.coordinates[0][0][1]}`
+      kmlData += airspaceClose
+    } else {
+      console.error(`Prohibited Area Error: Unknown geometry type (${p.geometry.type})`)
+    }
   })
 
   //----------------------------------------------------------------//
@@ -997,12 +1137,15 @@ const generateKML = step => {
         <name>Korea NFL</name>
         <open>0</open>
         <Placemark>
+          <name>NO FLY LINE</name>
           <styleUrl>#thick_line_black</styleUrl>
           <LineString>
             <tessellate>1</tessellate>
             <coordinates>`
 
-  airspace.koreaNfl.forEach(coordinate => kmlData += `${coordinate[1]},${coordinate[0]}\n`)
+  nfl[0].geometry.coordinates.forEach(coordinate => {
+    kmlData += `${coordinate[0]},${coordinate[1]}\n`
+  })
 
   kmlData +=
     `</coordinates>
@@ -1013,38 +1156,16 @@ const generateKML = step => {
   // Korea No Fly Line Buffer
   //----------------------------------------------------------------//
   kmlData +=
-    `</Folder>
-      <Folder id='2nm_buffer'>
-        <name>Korea NFL 2NM Buffer</name>
-        <open>0</open>
-        <Placemark>
-          <styleUrl>#thin_line_red</styleUrl>
-          <LineString>
-            <tessellate>1</tessellate>
-            <coordinates>`
+    `<Placemark>
+      <name>NO FLY LINE BUFFER</name>
+      <styleUrl>#thin_line_red</styleUrl>
+        <LineString>
+          <tessellate>1</tessellate>
+          <coordinates>`
 
-  airspace.koreaNflBuffer.forEach(coordinate => kmlData += `${coordinate[1]},${coordinate[0]}\n`)
-
-  kmlData +=
-    `</coordinates>
-        </LineString>
-          </Placemark>`
-
-  //----------------------------------------------------------------//
-  // Korea P-518 Border
-  //----------------------------------------------------------------//
-  kmlData +=
-    `</Folder>
-      <Folder id='p518_border'>
-        <name>Korea P-518 Border</name>
-        <open>0</open>
-        <Placemark>
-          <styleUrl>#thick_line_red</styleUrl>
-          <LineString>
-            <tessellate>1</tessellate>
-            <coordinates>`
-
-  airspace.p518.forEach(coordinate => kmlData += `${coordinate[1]},${coordinate[0]}\n`)
+  nflBuffer[0].geometry.coordinates.forEach(coordinate => {
+    kmlData += `${coordinate[0]},${coordinate[1]}\n`
+  })
 
   kmlData +=
     `</coordinates>
@@ -1060,19 +1181,26 @@ const generateKML = step => {
         <name>AARs</name>
         <open>0</open>`
 
-  airspace.aars.forEach(airspace => {
+  aars.forEach(aar => {
     kmlData +=
       `<Placemark>
-        <styleUrl>#poly_blue</styleUrl>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>`
+        <name>${aar.properties.NAME}</name>`
 
-    airspace.forEach(coordinate => kmlData += `${coordinate[1]},${coordinate[0]}\n`)
-    kmlData += `${airspace[0][1]},${airspace[0][0]}\n`
+    if (aar.geometry.type === 'Polygon') {
+      kmlData +=
+        `<styleUrl>#poly_blue</styleUrl>
+          <Polygon>
+            <outerBoundaryIs>
+              <LinearRing>
+                <coordinates>`
 
-    kmlData += airspaceClose
+      aar.geometry.coordinates[0].forEach(coordinate => {
+        kmlData += `${coordinate[0]},${coordinate[1]}\n`
+      })
+
+      kmlData += `${aar.geometry.coordinates[0][0][0]},${aar.geometry.coordinates[0][0][1]}`
+      kmlData += airspaceClose
+    }
   })
 
   //----------------------------------------------------------------//
@@ -1084,19 +1212,26 @@ const generateKML = step => {
         <name>ATCAAs</name>
         <open>0</open>`
 
-  airspace.atcaas.forEach(airspace => {
+  atcaas.forEach(atcaa => {
     kmlData +=
       `<Placemark>
-        <styleUrl>#poly_yellow</styleUrl>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <coordinates>`
+        <name>${atcaa.properties.NAME}</name>`
 
-    airspace.forEach(coordinate => kmlData += `${coordinate[1]},${coordinate[0]}\n`)
-    kmlData += `${airspace[0][1]},${airspace[0][0]}\n`
+    if (atcaa.geometry.type === 'Polygon') {
+      kmlData +=
+        `<styleUrl>#poly_yellow</styleUrl>
+          <Polygon>
+            <outerBoundaryIs>
+              <LinearRing>
+                <coordinates>`
 
-    kmlData += airspaceClose
+      atcaa.geometry.coordinates[0].forEach(coordinate => {
+        kmlData += `${coordinate[0]},${coordinate[1]}\n`
+      })
+
+      kmlData += `${atcaa.geometry.coordinates[0][0][0]},${atcaa.geometry.coordinates[0][0][1]}`
+      kmlData += airspaceClose
+    }
   })
 
   kmlData += `</Folder>`
