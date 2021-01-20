@@ -194,7 +194,7 @@ const Cas = () => {
       brightness: 1,
       center: [35.77, -93.34],
       color: true,
-      reference: null,
+      //reference: null,              // Currently unused
       zoom: 5,
     },
     markerSize: 3,
@@ -272,6 +272,32 @@ const Cas = () => {
       document.getElementsByClassName('leaflet-container')[0].style.backgroundColor = 'black'
     }
   }, [state.map.brightness])
+
+  /**
+   * Listen to the fullscreen state to request or exit fullscreen
+   */
+  /*React.useEffect(() => {
+    if (state.fullscreen && !document.fullscreenElement) {
+      document.documentElement.requestFullscreen()
+    } else if (!state.fullscreen && document.fullscreenElement) {
+      if (document.exitFullscreen) {
+        document.exitFullscreen()
+      }
+    }
+  }, [state.fullscreen])*/
+
+  /**
+   * Catch any ESCAPE key presses that can exit fullscreen without updating state
+   * NOTE: when the user presses the `exit fullscreen` button, this can cause a double state update which is known
+   */
+  /*React.useEffect(() => {
+    if (!document.fullscreenElement) {
+      setState({
+        ...state,
+        fullscreen: false,
+      })
+    }
+  }, [document.fullscreenElement])*/
 
   //----------------------------------------------------------------//
   // Private Handlers

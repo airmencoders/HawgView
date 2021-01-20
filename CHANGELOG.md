@@ -1,3 +1,11 @@
+## 2.21.0
+### Changes
+* Implemented `Fullscreen API` into a fullscreen control
+* Note that the expected behavior is that if the user fullscreens with the control, it will also remove the `CASNavigation` component, however if they fullscreen via `F11`, then the `CASNavigation` component will remain present
+
+### Tasks
+* Update wiki with fullscreen
+
 ## 2.20.6
 ### Changes
 * Updated `Marker.js` to use marker color when it is present

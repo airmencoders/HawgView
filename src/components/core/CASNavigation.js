@@ -51,7 +51,7 @@ import {
 //----------------------------------------------------------------//
 import {
   ClassificationBanner
- } from '../core'
+} from '../core'
 
 //----------------------------------------------------------------//
 // Styles
@@ -88,23 +88,25 @@ const CASNavigation = props => {
         <ClassificationBanner
           classification='unclassified'
         />
-        <Toolbar>
-          <NavLink
-            className={classes.title}
-            style={{ textDecoration: 'none' }}
-            to='/'
-          >
-            <Tooltip title={packageJson.version}>
-              <Typography
-                style={{ color: 'white' }}
-                variant='h6'
-              >
-                Hawg View
-              </Typography>
-            </Tooltip>
-          </NavLink>
-          {props.children}
-        </Toolbar>
+        {!document.fullscreenElement && (
+          <Toolbar>
+            <NavLink
+              className={classes.title}
+              style={{ textDecoration: 'none' }}
+              to='/'
+            >
+              <Tooltip title={packageJson.version}>
+                <Typography
+                  style={{ color: 'white' }}
+                  variant='h6'
+                >
+                  Hawg View
+            </Typography>
+              </Tooltip>
+            </NavLink>
+            {props.children}
+          </Toolbar>
+        )}
       </AppBar>
     </div>
   )

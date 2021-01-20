@@ -49,6 +49,8 @@ import {
   Apartment as ApartmentIcon,
   FiberManualRecord as FiberManualRecordIcon,
   FontDownload as FontDownloadIcon,
+  Fullscreen as FullscreenIcon,
+  FullscreenExit as FullscreenExitIcon,
   Stop as StopIcon,
   SquareFoot as SquareFootIcon,
   Timeline as TimelineIcon,
@@ -78,6 +80,14 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
+const handleFullscreenClick = () => {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen()
+  } else {
+    document.exitFullscreen()
+  }
+}
+
 //----------------------------------------------------------------//
 // Tool Control Component
 //----------------------------------------------------------------//
@@ -101,82 +111,100 @@ const ToolControls = props => {
   }
 
   return (
-    <Control position='topright'>
-      <ButtonGroup
-        orientation='vertical'
-        size='small'
-        variant='contained'
-      >
-        <Tooltip placement='left' title='Analysis tool: Press ESC to finish, twice to exit'>
-          <Button
-            color={props.state.tool === 'analysis' ? 'primary' : undefined}
-            onClick={() => changeTools('analysis')}
-          >
-            <SquareFootIcon className={classes.utilityToolIcon} />
-          </Button>
-        </Tooltip>
-        <Tooltip placement='left' title='Building label: Increments with each click'>
-          <Button
-            color={props.state.tool === 'buildingLabel' ? 'primary' : undefined}
-            onClick={() => changeTools('buildingLabel')}
-          >
-            <ApartmentIcon className={classes.utilityToolIcon} />
-          </Button>
-        </Tooltip>
-        <Tooltip placement='left' title='Kinetic points: Increments with each click'>
-          <Button
-            color={props.state.tool === 'kineticPoint' ? 'primary' : undefined}
-            onClick={() => changeTools('kineticPoint')}
-          >
-            <FontDownloadIcon className={classes.utilityToolIcon} />
-          </Button>
-        </Tooltip>
-        <Tooltip placement='left' title='Draw line: Press ESC to exit'>
-          <Button
-            color={props.state.tool === 'line' ? 'primary' : undefined}
-            onClick={() => changeTools('line')}
-          >
-            <TimelineIcon className={classes.utilityToolIcon} />
-          </Button>
-        </Tooltip>
-        <Tooltip placement='left' title='Draw circle: Click to set circle, again to set radius'>
-          <Button
-            color={props.state.tool === 'circle' ? 'primary' : undefined}
-            onClick={() => changeTools('circle')}
-          >
-            <FiberManualRecordIcon className={classes.utilityToolIcon} />
-          </Button>
-        </Tooltip>
-        <Tooltip placement='left' title='Draw rectangle: Click to set each corner'>
-          <Button
-            color={props.state.tool === 'rectangle' ? 'primary' : undefined}
-            onClick={() => changeTools('rectangle')}
-          >
-            <StopIcon className={classes.utilityToolIcon} />
-          </Button>
-        </Tooltip>
-        <Tooltip placement='left' title='Draw polygon: Press ESC to exit'>
-          <Button
-            color={props.state.tool === 'polygon' ? 'primary' : undefined}
-            onClick={() => changeTools('polygon')}
-          >
-            <Icon className={classes.utilityToolIcon} icon={pentagonIcon} />
-          </Button>
-        </Tooltip>
-        <Tooltip placement='left' title='Draw ellipse: Click map to select center'>
-          <Button
-            color={props.state.tool === 'ellipse' ? 'primary' : undefined}
-            onClick={() => changeTools('ellipse')}
-          >
-            <Icon className={classes.utilityToolIcon} icon={ellipseIcon} />
-          </Button>
-        </Tooltip>
-      </ButtonGroup>
-      <Tools
-        setState={props.setState}
-        state={props.state}
-      />
-    </Control>
+    <React.Fragment>
+      <Control position='topright'>
+        <ButtonGroup
+          orientation='vertical'
+          size='small'
+          variant='contained'
+        >
+          <Tooltip placement='left' title='Analysis tool: Press ESC to finish, twice to exit'>
+            <Button
+              color={props.state.tool === 'analysis' ? 'primary' : undefined}
+              onClick={() => changeTools('analysis')}
+            >
+              <SquareFootIcon className={classes.utilityToolIcon} />
+            </Button>
+          </Tooltip>
+          <Tooltip placement='left' title='Building label: Increments with each click'>
+            <Button
+              color={props.state.tool === 'buildingLabel' ? 'primary' : undefined}
+              onClick={() => changeTools('buildingLabel')}
+            >
+              <ApartmentIcon className={classes.utilityToolIcon} />
+            </Button>
+          </Tooltip>
+          <Tooltip placement='left' title='Kinetic points: Increments with each click'>
+            <Button
+              color={props.state.tool === 'kineticPoint' ? 'primary' : undefined}
+              onClick={() => changeTools('kineticPoint')}
+            >
+              <FontDownloadIcon className={classes.utilityToolIcon} />
+            </Button>
+          </Tooltip>
+          <Tooltip placement='left' title='Draw line: Press ESC to exit'>
+            <Button
+              color={props.state.tool === 'line' ? 'primary' : undefined}
+              onClick={() => changeTools('line')}
+            >
+              <TimelineIcon className={classes.utilityToolIcon} />
+            </Button>
+          </Tooltip>
+          <Tooltip placement='left' title='Draw circle: Click to set circle, again to set radius'>
+            <Button
+              color={props.state.tool === 'circle' ? 'primary' : undefined}
+              onClick={() => changeTools('circle')}
+            >
+              <FiberManualRecordIcon className={classes.utilityToolIcon} />
+            </Button>
+          </Tooltip>
+          <Tooltip placement='left' title='Draw rectangle: Click to set each corner'>
+            <Button
+              color={props.state.tool === 'rectangle' ? 'primary' : undefined}
+              onClick={() => changeTools('rectangle')}
+            >
+              <StopIcon className={classes.utilityToolIcon} />
+            </Button>
+          </Tooltip>
+          <Tooltip placement='left' title='Draw polygon: Press ESC to exit'>
+            <Button
+              color={props.state.tool === 'polygon' ? 'primary' : undefined}
+              onClick={() => changeTools('polygon')}
+            >
+              <Icon className={classes.utilityToolIcon} icon={pentagonIcon} />
+            </Button>
+          </Tooltip>
+          <Tooltip placement='left' title='Draw ellipse: Click map to select center'>
+            <Button
+              color={props.state.tool === 'ellipse' ? 'primary' : undefined}
+              onClick={() => changeTools('ellipse')}
+            >
+              <Icon className={classes.utilityToolIcon} icon={ellipseIcon} />
+            </Button>
+          </Tooltip>
+        </ButtonGroup>
+      </Control>
+      <Control position='topright'>
+        <ButtonGroup
+          orientation='vertical'
+          size='small'
+          variant='contained'
+        >
+          <Tooltip placement='left' title={props.state.fullscreen ? 'Exit fullscreen' : 'Fullscreen'}>
+            <Button
+              color={document.fullscreenElement ? 'primary' : undefined}
+              onClick={handleFullscreenClick}
+            >
+              {props.state.fullscreen ? <FullscreenExitIcon /> : <FullscreenIcon />}
+            </Button>
+          </Tooltip>
+        </ButtonGroup>
+        <Tools
+          setState={props.setState}
+          state={props.state}
+        />
+      </Control>
+    </React.Fragment>
   )
 }
 
