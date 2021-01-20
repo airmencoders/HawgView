@@ -1,3 +1,7 @@
+## 2.22.3
+### Fixes
+* Fixed wiki image issue
+
 ## 2.22.2
 ### Changes
 * Updated Wiki
