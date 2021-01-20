@@ -188,6 +188,7 @@ const EditMarkerDrawer = props => {
     switches: {
       cas: false,
       csar: false,
+      dashed: true,
       displayArty: true,
       fill: false,
       latlng: false,
@@ -289,6 +290,8 @@ const EditMarkerDrawer = props => {
             props.state.focusedMarker.data !== null &&
             props.state.focusedMarker.data !== undefined &&
             props.state.focusedMarker.data.type === '15line',
+          dashed: props.state.focusedMarker.layer === 'threat' &&
+            props.state.focusedMarker.dashed,
           displayArty:
             props.state.focusedMarker.arty.arty &&
             props.state.focusedMarker.arty.display,
@@ -473,7 +476,8 @@ const EditMarkerDrawer = props => {
         sovereignty: _state.threat.sovereignty,
         fill: _state.switches.fill,
         fillColor: _state.color.fillColor,
-        label: _state.threat.type === 0 ? 'Threat' : threats[_state.threat.type].title
+        label: _state.threat.type === 0 ? 'Threat' : threats[_state.threat.type].title,
+        dashed: _state.switches.dashed,
       }
     }
 
@@ -511,133 +515,324 @@ const EditMarkerDrawer = props => {
           variant='outlined'
           value={_state.title}
         />
-        {props.state.focusedMarker !== null && props.state.focusedMarker.iconType === 'sidc' ? (
-          <React.Fragment>
-            <FormControl
-              className={classes.marginsMd}
-              variant='outlined'
-            >
-              <InputLabel>Affiliation</InputLabel>
-              <Select
-                label='Affiliation'
-                onChange={event => _setState({ ..._state, affiliation: event.target.value })}
-                value={_state.affiliation}
+        {props.state.focusedMarker !== null && props.state.focusedMarker.iconType === 'sidc' &&
+          (
+            <React.Fragment>
+              <FormControl
+                className={classes.marginsMd}
+                variant='outlined'
               >
-                <MenuItem value='F'>Friendly</MenuItem>
-                <MenuItem value='H'>Hostile</MenuItem>
-                <MenuItem value='U'>Unknown</MenuItem>
-                <MenuItem value='N'>Neutral</MenuItem>
-              </Select>
-            </FormControl>
-            <FormControl
-              className={classes.marginsMd}
-              variant='outlined'
-            >
-              <InputLabel>Echelon</InputLabel>
-              <Select
-                label='Echelon'
-                onChange={event => _setState({ ..._state, echelon: event.target.value})}
-                value={_state.echelon}
-              >
-                {echelons.map(code => (
-                  <MenuItem
-                    key={code.value}
-                    value={code.value}
-                  >
-                    {code.name}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </React.Fragment>
-        )
-          : null}
-            {props.state.focusedMarker !== null && props.state.focusedMarker.layer === 'threat' ? (
-              <React.Fragment>
-                <FormControl
-                  className={classes.marginsMd}
-                  variant='outlined'
+                <InputLabel>Affiliation</InputLabel>
+                <Select
+                  label='Affiliation'
+                  onChange={event => _setState({ ..._state, affiliation: event.target.value })}
+                  value={_state.affiliation}
                 >
-                  <InputLabel>Threat Type</InputLabel>
-                  <Select
-                    label='Threat Type'
-                    onChange={handleThreatChange}
-                    value={_state.threat.type}
-                  >
-                    {threats.map((threat, index) => (
-                      <MenuItem
-                        key={threat.title}
-                        value={index}
-                      >
-                        {threat.title}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-                <TextField
-                  className={classes.textField}
+                  <MenuItem value='F'>Friendly</MenuItem>
+                  <MenuItem value='H'>Hostile</MenuItem>
+                  <MenuItem value='U'>Unknown</MenuItem>
+                  <MenuItem value='N'>Neutral</MenuItem>
+                </Select>
+              </FormControl>
+              <FormControl
+                className={classes.marginsMd}
+                variant='outlined'
+              >
+                <InputLabel>Echelon</InputLabel>
+                <Select
+                  label='Echelon'
+                  onChange={event => _setState({ ..._state, echelon: event.target.value })}
+                  value={_state.echelon}
+                >
+                  {echelons.map(code => (
+                    <MenuItem
+                      key={code.value}
+                      value={code.value}
+                    >
+                      {code.name}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </React.Fragment>
+          )}
+        {props.state.focusedMarker !== null && props.state.focusedMarker.layer === 'threat' &&
+          (
+            <React.Fragment>
+              <FormControl
+                className={classes.marginsMd}
+                variant='outlined'
+              >
+                <InputLabel>Threat Type</InputLabel>
+                <Select
+                  label='Threat Type'
+                  onChange={handleThreatChange}
+                  value={_state.threat.type}
+                >
+                  {threats.map((threat, index) => (
+                    <MenuItem
+                      key={threat.title}
+                      value={index}
+                    >
+                      {threat.title}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+              <TextField
+                className={classes.textField}
+                disabled={_state.threat.type !== 0}
+                label='Range'
+                onChange={event => _setState({
+                  ..._state,
+                  threat: {
+                    ..._state.threat,
+                    range: event.target.value
+                  }
+                })}
+                value={_state.threat.range}
+                variant='outlined'
+              />
+              <FormControl
+                className={classes.marginsMd}
+                variant='outlined'
+              >
+                <InputLabel>Unit</InputLabel>
+                <Select
                   disabled={_state.threat.type !== 0}
-                  label='Range'
+                  label='Unit'
                   onChange={event => _setState({
                     ..._state,
                     threat: {
                       ..._state.threat,
-                      range: event.target.value
+                      unit: event.target.value
                     }
                   })}
-                  value={_state.threat.range}
-                  variant='outlined'
-                />
-                <FormControl
-                  className={classes.marginsMd}
-                  variant='outlined'
+                  value={_state.threat.unit}
                 >
-                  <InputLabel>Unit</InputLabel>
-                  <Select
-                    disabled={_state.threat.type !== 0}
-                    label='Unit'
-                    onChange={event => _setState({
+                  {units.map(unit => (
+                    <MenuItem
+                      key={unit}
+                      value={unit}
+                    >
+                      {unit}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+              <FormControl
+                className={classes.marginsMd}
+                variant='outlined'
+              >
+                <InputLabel>Sovereignty</InputLabel>
+                <Select
+                  label='Sovereignty'
+                  onChange={handleSovereigntyChange}
+                  value={_state.threat.sovereignty}
+                >
+                  {sovereignties.map(sovereignty => (
+                    <MenuItem
+                      key={sovereignty}
+                      value={sovereignty}
+                    >
+                      {sovereignty}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </React.Fragment>
+          )}
+        <Grid
+          container
+          direction='row'
+          justify='center'
+        >
+          <FormGroup>
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={_state.switches.latlng}
+                  color='primary'
+                  disabled={_state.switches.mgrsDisabled}
+                  name='Lat Long'
+                  onChange={() => _setState({
+                    ..._state,
+                    switches: {
+                      ..._state.switches,
+                      latlng: !_state.switches.latlng,
+                    },
+                  })}
+                />
+              }
+              label='Lat Long'
+            />
+          </FormGroup>
+        </Grid>
+        {_state.switches.latlng ?
+          (
+            <React.Fragment>
+              <TextField
+                className={classes.textField}
+                label='Latitude'
+                onBlur={pullElevation}
+                onChange={event => _setState({
+                  ..._state,
+                  location: {
+                    ..._state.location,
+                    lat: event.target.value,
+                  }
+                })}
+                variant='outlined'
+                value={_state.location.lat}
+              />
+              <TextField
+                className={classes.textField}
+                label='Longitude'
+                onBlur={pullElevation}
+                onChange={event => _setState({
+                  ..._state,
+                  location: {
+                    ..._state.location,
+                    lng: event.target.value,
+                  }
+                })}
+                variant='outlined'
+                value={_state.location.lng}
+              />
+            </React.Fragment>
+          ) :
+          (
+            <TextField
+              className={classes.textField}
+              label='MGRS'
+              onBlur={pullElevation}
+              onChange={event => _setState({
+                ..._state,
+                location: {
+                  ..._state.location,
+                  mgrs: event.target.value,
+                }
+              })}
+              variant='outlined'
+              value={_state.location.mgrs}
+            />
+          )
+        }
+        <TextField
+          className={classes.textField}
+          label='Elevation'
+          onChange={event => _setState({
+            ..._state,
+            location: {
+              ..._state.location,
+              elevation: event.target.value,
+            }
+          })}
+          variant='outlined'
+          value={_state.location.elevation}
+        />
+        {(props.state.focusedMarker !== null && (props.state.focusedMarker.layer === 'mapLabel' || props.state.focusedMarker.layer === 'threat')) &&
+          (
+            <Grid
+              container
+              direction='row'
+              justify='center'
+            >
+              <Typography
+                variant='body1'
+              >
+                Color
+            </Typography>
+              <ColorPicker
+                className={classes.marginsMd}
+                color={_state.color.color}
+                disableAlpha={true}
+                onChange={color => _setState({
+                  ..._state,
+                  color: {
+                    ..._state.color,
+                    color: color.hex,
+                  }
+                })}
+              />
+            </Grid>
+          )}
+        {props.state.focusedMarker !== null && props.state.focusedMarker.layer === 'threat' &&
+          (
+            <React.Fragment>
+              <Grid
+                container
+                direction='row'
+                justify='center'
+              >
+                <FormControlLabel
+                  control={
+                    <Switch
+                      checked={_state.switches.fill}
+                      onChange={() => _setState({
+                        ..._state,
+                        switches: {
+                          ..._state.switches,
+                          fill: !_state.switches.fill,
+                        }
+                      })}
+                      color='primary'
+                    />
+                  }
+                  label='Fill'
+                />
+              </Grid>
+              {_state.switches.fill && (
+                <Grid
+                  container
+                  direction='row'
+                  justify='center'
+                >
+                  <Typography
+                    variant='body1'
+                  >
+                    Fill Color
+                </Typography>
+                  <ColorPicker
+                    className={classes.marginsMd}
+                    color={_state.color.fillColor}
+                    disableAlpha={true}
+                    onChange={color => _setState({
                       ..._state,
-                      threat: {
-                        ..._state.threat,
-                        unit: event.target.value
+                      color: {
+                        ..._state.color,
+                        fillColor: color.hex,
                       }
                     })}
-                    value={_state.threat.unit}
-                  >
-                    {units.map(unit => (
-                      <MenuItem
-                        key={unit}
-                        value={unit}
-                      >
-                        {unit}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-                <FormControl
-                  className={classes.marginsMd}
-                  variant='outlined'
-                >
-                  <InputLabel>Sovereignty</InputLabel>
-                  <Select
-                    label='Sovereignty'
-                    onChange={handleSovereigntyChange}
-                    value={_state.threat.sovereignty}
-                  >
-                    {sovereignties.map(sovereignty => (
-                      <MenuItem
-                        key={sovereignty}
-                        value={sovereignty}
-                      >
-                        {sovereignty}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              </React.Fragment>
-            )
-              : null}
+                  />
+                </Grid>
+              )}
+              <Grid
+                container
+                direction='row'
+                justify='center'
+              >
+                <FormControlLabel
+                  control={
+                    <Switch
+                      checked={_state.switches.dashed}
+                      onChange={() => _setState({
+                        ..._state,
+                        switches: {
+                          ..._state.switches,
+                          dashed: !_state.switches.dashed,
+                        }
+                      })}
+                      color='primary'
+                    />
+                  }
+                  label='Dashed'
+                />
+              </Grid>
+            </React.Fragment>
+          )}
+        {(props.state.focusedMarker !== null && props.state.focusedMarker.arty.arty === true) &&
+          (
             <Grid
               container
               direction='row'
@@ -647,829 +842,647 @@ const EditMarkerDrawer = props => {
                 <FormControlLabel
                   control={
                     <Switch
-                      checked={_state.switches.latlng}
+                      checked={_state.switches.displayArty}
                       color='primary'
-                      disabled={_state.switches.mgrsDisabled}
-                      name='Lat Long'
+                      name='Display PAA'
                       onChange={() => _setState({
                         ..._state,
                         switches: {
                           ..._state.switches,
-                          latlng: !_state.switches.latlng,
-                        },
+                          displayArty: !_state.switches.displayArty,
+                        }
                       })}
                     />
                   }
-                  label='Lat Long'
+                  label='Display PAA'
                 />
               </FormGroup>
             </Grid>
-            {_state.switches.latlng ?
-              (
-                <React.Fragment>
-                  <TextField
-                    className={classes.textField}
-                    label='Latitude'
-                    onBlur={pullElevation}
-                    onChange={event => _setState({
-                      ..._state,
-                      location: {
-                        ..._state.location,
-                        lat: event.target.value,
-                      }
-                    })}
-                    variant='outlined'
-                    value={_state.location.lat}
-                  />
-                  <TextField
-                    className={classes.textField}
-                    label='Longitude'
-                    onBlur={pullElevation}
-                    onChange={event => _setState({
-                      ..._state,
-                      location: {
-                        ..._state.location,
-                        lng: event.target.value,
-                      }
-                    })}
-                    variant='outlined'
-                    value={_state.location.lng}
-                  />
-                </React.Fragment>
-              ) :
-              (
-                <TextField
-                  className={classes.textField}
-                  label='MGRS'
-                  onBlur={pullElevation}
-                  onChange={event => _setState({
-                    ..._state,
-                    location: {
-                      ..._state.location,
-                      mgrs: event.target.value,
-                    }
-                  })}
-                  variant='outlined'
-                  value={_state.location.mgrs}
-                />
-              )
-            }
-            <TextField
-              className={classes.textField}
-              label='Elevation'
-              onChange={event => _setState({
-                ..._state,
-                location: {
-                  ..._state.location,
-                  elevation: event.target.value,
-                }
-              })}
-              variant='outlined'
-              value={_state.location.elevation}
-            />
-            {(props.state.focusedMarker !== null && (props.state.focusedMarker.layer === 'mapLabel' || props.state.focusedMarker.layer === 'threat')) ?
-              <Grid
-                container
-                direction='row'
-                justify='center'
-              >
-                <Typography
-                  variant='body1'
-                >
-                  Color
-            </Typography>
-                <ColorPicker
-                  className={classes.marginsMd}
-                  color={_state.color.color}
-                  disableAlpha={true}
-                  onChange={color => _setState({
-                    ..._state,
-                    color: {
-                      ..._state.color,
-                      color: color.hex,
-                    }
-                  })}
-                />
-              </Grid>
-              : null
-            }
-            {props.state.focusedMarker !== null && props.state.focusedMarker.layer === 'threat' ? (
-              <React.Fragment>
-                <Grid
-                  container
-                  direction='row'
-                  justify='center'
-                >
-                  <FormControlLabel
-                    control={
-                      <Switch
-                        checked={_state.switches.fill}
-                        onChange={event => _setState({
-                          ..._state,
-                          switches: {
-                            ..._state.switches,
-                            fill: !_state.switches.fill,
-                          }
-                        })}
-                        color='primary'
-                      />
-                    }
-                    label='Fill'
-                  />
-                </Grid>
-                {_state.switches.fill ?
-                  <Grid
-                    container
-                    direction='row'
-                    justify='center'
-                  >
-                    <Typography
-                      variant='body1'
-                    >
-                      Fill Color
-                </Typography>
-                    <ColorPicker
-                      className={classes.marginsMd}
-                      color={_state.color.fillColor}
-                      disableAlpha={true}
-                      onChange={color => _setState({
-                        ..._state,
-                        color: {
-                          ..._state.color,
-                          fillColor: color.hex,
-                        }
-                      })}
-                    />
-                  </Grid>
-                  : null
-                }
-              </React.Fragment>
-
-            )
-              : null}
-            {(props.state.focusedMarker !== null && props.state.focusedMarker.arty.arty === true) ?
-              (
-                <Grid
-                  container
-                  direction='row'
-                  justify='center'
-                >
-                  <FormGroup>
-                    <FormControlLabel
-                      control={
-                        <Switch
-                          checked={_state.switches.displayArty}
-                          color='primary'
-                          name='Display PAA'
-                          onChange={() => _setState({
-                            ..._state,
-                            switches: {
-                              ..._state.switches,
-                              displayArty: !_state.switches.displayArty,
-                            }
-                          })}
-                        />
-                      }
-                      label='Display PAA'
-                    />
-                  </FormGroup>
-                </Grid>
-              )
-              : null
-
-            }
-            {(props.state.focusedMarker !== null && (props.state.focusedMarker.layer === 'hostile' || props.state.focusedMarker.layer === 'threat')) ?
-              (
-                <Grid
-                  container
-                  direction='row'
-                  justify='center'
-                >
-                  <FormGroup>
-                    <FormControlLabel
-                      control={
-                        <Switch
-                          checked={_state.switches.cas}
-                          color='primary'
-                          name='9 Line'
-                          onChange={() => _setState({
-                            ..._state,
-                            switches: {
-                              ..._state.switches,
-                              cas: !_state.switches.cas,
-                            }
-                          })}
-                        />
-                      }
-                      label='9 Line'
-                    />
-                  </FormGroup>
-                </Grid>
-              )
-              : null
-            }
-            {(props.state.focusedMarker !== null && props.state.focusedMarker.layer === 'survivor') ?
-              (
-                <Grid
-                  container
-                  direction='row'
-                  justify='center'
-                >
-                  <FormGroup>
-                    <FormControlLabel
-                      control={
-                        <Switch
-                          checked={_state.switches.csar}
-                          color='primary'
-                          name='15 Line'
-                          onChange={() => _setState({
-                            ..._state,
-                            switches: {
-                              ..._state.switches,
-                              csar: !_state.switches.csar,
-                            }
-                          })}
-                        />
-                      }
-                      label='15 Line'
-                    />
-                  </FormGroup>
-                </Grid>
-              )
-              : null
-            }
-            {(props.state.focusedMarker !== null && _state.switches.cas) ?
-              (
-                <React.Fragment>
-                  <TextField
-                    className={classes.firstTextField}
-                    label='Label'
-                    onChange={event => _setState({
-                      ..._state,
-                      data: {
-                        ..._state.data,
-                        cas: {
-                          ..._state.data.cas,
-                          label: event.target.value,
-                        }
-                      }
-                    })}
-                    variant='outlined'
-                    value={_state.data.cas.label}
-                  />
-                  <TextField
-                    className={classes.textField}
-                    label='GFC Intent'
-                    onChange={event => _setState({
-                      ..._state,
-                      data: {
-                        ..._state.data,
-                        cas: {
-                          ..._state.data.cas,
-                          intent: event.target.value,
-                        }
-                      }
-                    })}
-                    variant='outlined'
-                    value={_state.data.cas.intent}
-                  />
-                  <TextField
-                    className={classes.textField}
-                    label='Type / Method'
-                    onChange={event => _setState({
-                      ..._state,
-                      data: {
-                        ..._state.data,
-                        cas: {
-                          ..._state.data.cas,
-                          typeMethod: event.target.value,
-                        }
-                      }
-                    })}
-                    variant='outlined'
-                    value={_state.data.cas.typeMethod}
-                  />
-                  <TextField
-                    className={classes.textField}
-                    label='IP'
-                    onChange={event => _setState({
-                      ..._state,
-                      data: {
-                        ..._state.data,
-                        cas: {
-                          ..._state.data.cas,
-                          ip: event.target.value,
-                        }
-                      }
-                    })}
-                    variant='outlined'
-                    value={_state.data.cas.ip}
-                  />
-                  <TextField
-                    className={classes.textField}
-                    label='HDG'
-                    onChange={event => _setState({
-                      ..._state,
-                      data: {
-                        ..._state.data,
-                        cas: {
-                          ..._state.data.cas,
-                          hdg: event.target.value,
-                        }
-                      }
-                    })}
-                    variant='outlined'
-                    value={_state.data.cas.hdg}
-                  />
-                  <TextField
-                    className={classes.textField}
-                    label='Distance'
-                    onChange={event => _setState({
-                      ..._state,
-                      data: {
-                        ..._state.data,
-                        cas: {
-                          ..._state.data.cas,
-                          distance: event.target.value,
-                        }
-                      }
-                    })}
-                    variant='outlined'
-                    value={_state.data.cas.distance}
-                  />
-                  <TextField
-                    className={classes.textField}
-                    label='Elevation'
-                    onChange={event => _setState({
-                      ..._state,
-                      data: {
-                        ..._state.data,
-                        cas: {
-                          ..._state.data.cas,
-                          elevation: event.target.value,
-                        }
-                      }
-                    })}
-                    variant='outlined'
-                    value={_state.data.cas.elevation}
-                  />
-                  <TextField
-                    className={classes.textField}
-                    label='Description'
-                    onChange={event => _setState({
-                      ..._state,
-                      data: {
-                        ..._state.data,
-                        cas: {
-                          ..._state.data.cas,
-                          description: event.target.value,
-                        }
-                      }
-                    })}
-                    variant='outlined'
-                    value={_state.data.cas.description}
-                  />
-                  <TextField
-                    className={classes.textField}
-                    label='Location'
-                    onChange={event => _setState({
-                      ..._state,
-                      data: {
-                        ..._state.data,
-                        cas: {
-                          ..._state.data.cas,
-                          location: event.target.value,
-                        }
-                      }
-                    })}
-                    variant='outlined'
-                    value={_state.data.cas.location}
-                  />
-                  <TextField
-                    className={classes.textField}
-                    label='Mark'
-                    onChange={event => _setState({
-                      ..._state,
-                      data: {
-                        ..._state.data,
-                        cas: {
-                          ..._state.data.cas,
-                          mark: event.target.value,
-                        }
-                      }
-                    })}
-                    variant='outlined'
-                    value={_state.data.cas.mark}
-                  />
-                  <TextField
-                    className={classes.textField}
-                    label='Friendlies'
-                    onChange={event => _setState({
-                      ..._state,
-                      data: {
-                        ..._state.data,
-                        cas: {
-                          ..._state.data.cas,
-                          friendlies: event.target.value,
-                        }
-                      }
-                    })}
-                    variant='outlined'
-                    value={_state.data.cas.friendlies}
-                  />
-                  <TextField
-                    className={classes.textField}
-                    label='Egress'
-                    onChange={event => _setState({
-                      ..._state,
-                      data: {
-                        ..._state.data,
-                        cas: {
-                          ..._state.data.cas,
-                          egress: event.target.value,
-                        }
-                      }
-                    })}
-                    variant='outlined'
-                    value={_state.data.cas.egress}
-                  />
-                  <TextField
-                    className={classes.textField}
-                    label='Remarks &amp; Restrictions'
-                    onChange={event => _setState({
-                      ..._state,
-                      data: {
-                        ..._state.data,
-                        cas: {
-                          ..._state.data.cas,
-                          remarks: event.target.value,
-                        }
-                      }
-                    })}
-                    variant='outlined'
-                    value={_state.data.cas.remarks}
-                  />
-                  <TextField
-                    className={classes.textField}
-                    label='TOT'
-                    onChange={event => _setState({
-                      ..._state,
-                      data: {
-                        ..._state.data,
-                        cas: {
-                          ..._state.data.cas,
-                          tot: event.target.value,
-                        }
-                      }
-                    })}
-                    variant='outlined'
-                    value={_state.data.cas.tot}
-                  />
-                  <TextField
-                    className={classes.textField}
-                    label='Fighter-to-Fighter'
-                    onChange={event => _setState({
-                      ..._state,
-                      data: {
-                        ..._state.data,
-                        cas: {
-                          ..._state.data.cas,
-                          f2f: event.target.value,
-                        }
-                      }
-                    })}
-                    variant='outlined'
-                    value={_state.data.cas.f2f}
-                  />
-                </React.Fragment>
-              )
-              : null
-            }
-            {(props.state.focusedMarker !== null && _state.switches.csar) ?
-              (
-                <React.Fragment>
-                  <TextField
-                    className={classes.textField}
-                    label='Callsign'
-                    onChange={event => _setState({
-                      ..._state,
-                      data: {
-                        ..._state.data,
-                        csar: {
-                          ..._state.data.csar,
-                          callsign: event.target.value,
-                        }
-                      }
-                    })}
-                    variant='outlined'
-                    value={_state.data.csar.callsign}
-                  />
-                  <TextField
-                    className={classes.textField}
-                    label='Frequency'
-                    onChange={event => _setState({
-                      ..._state,
-                      data: {
-                        ..._state.data,
-                        csar: {
-                          ..._state.data.csar,
-                          frequency: event.target.value,
-                        }
-                      }
-                    })}
-                    variant='outlined'
-                    value={_state.data.csar.frequency}
-                  />
-                  <TextField
-                    className={classes.textField}
-                    label='PLS/HHRID'
-                    onChange={event => _setState({
-                      ..._state,
-                      data: {
-                        ..._state.data,
-                        csar: {
-                          ..._state.data.csar,
-                          plsHhrid: event.target.value,
-                        }
-                      }
-                    })}
-                    variant='outlined'
-                    value={_state.data.csar.plsHhrid}
-                  />
-                  <TextField
-                    className={classes.textField}
-                    label='# of Objectives'
-                    onChange={event => _setState({
-                      ..._state,
-                      data: {
-                        ..._state.data,
-                        csar: {
-                          ..._state.data.csar,
-                          numObjectives: event.target.value,
-                        }
-                      }
-                    })}
-                    variant='outlined'
-                    value={_state.data.csar.numObjectives}
-                  />
-                  <TextField
-                    className={classes.textField}
-                    label='Location'
-                    onChange={event => _setState({
-                      ..._state,
-                      data: {
-                        ..._state.data,
-                        csar: {
-                          ..._state.data.csar,
-                          location: event.target.value,
-                        }
-                      }
-                    })}
-                    variant='outlined'
-                    value={_state.data.csar.location}
-                  />
-                  <TextField
-                    className={classes.textField}
-                    label='Elevation'
-                    onChange={event => _setState({
-                      ..._state,
-                      data: {
-                        ..._state.data,
-                        csar: {
-                          ..._state.data.csar,
-                          elevation: event.target.value,
-                        }
-                      }
-                    })}
-                    variant='outlined'
-                    value={_state.data.csar.elevation}
-                  />
-                  <TextField
-                    className={classes.textField}
-                    label='Date/Time(Z)'
-                    onChange={event => _setState({
-                      ..._state,
-                      data: {
-                        ..._state.data,
-                        csar: {
-                          ..._state.data.csar,
-                          dateTime: event.target.value,
-                        }
-                      }
-                    })}
-                    variant='outlined'
-                    value={_state.data.csar.dateTime}
-                  />
-                  <TextField
-                    className={classes.textField}
-                    label='Source'
-                    onChange={event => _setState({
-                      ..._state,
-                      data: {
-                        ..._state.data,
-                        csar: {
-                          ..._state.data.csar,
-                          source: event.target.value,
-                        }
-                      }
-                    })}
-                    variant='outlined'
-                    value={_state.data.csar.source}
-                  />
-                  <TextField
-                    className={classes.textField}
-                    label='Condition'
-                    onChange={event => _setState({
-                      ..._state,
-                      data: {
-                        ..._state.data,
-                        csar: {
-                          ..._state.data.csar,
-                          condition: event.target.value,
-                        }
-                      }
-                    })}
-                    variant='outlined'
-                    value={_state.data.csar.condition}
-                  />
-                  <TextField
-                    className={classes.textField}
-                    label='Equipment'
-                    onChange={event => _setState({
-                      ..._state,
-                      data: {
-                        ..._state.data,
-                        csar: {
-                          ..._state.data.csar,
-                          equipment: event.target.value,
-                        }
-                      }
-                    })}
-                    variant='outlined'
-                    value={_state.data.csar.equipment}
-                  />
-                  <TextField
-                    className={classes.textField}
-                    label='Authentication'
-                    onChange={event => _setState({
-                      ..._state,
-                      data: {
-                        ..._state.data,
-                        csar: {
-                          ..._state.data.csar,
-                          authentication: event.target.value,
-                        }
-                      }
-                    })}
-                    variant='outlined'
-                    value={_state.data.csar.authentication}
-                  />
-                  <TextField
-                    className={classes.textField}
-                    label='Threats'
-                    onChange={event => _setState({
-                      ..._state,
-                      data: {
-                        ..._state.data,
-                        csar: {
-                          ..._state.data.csar,
-                          threats: event.target.value,
-                        }
-                      }
-                    })}
-                    variant='outlined'
-                    value={_state.data.csar.threats}
-                  />
-                  <TextField
-                    className={classes.textField}
-                    label='PZ Description'
-                    onChange={event => _setState({
-                      ..._state,
-                      data: {
-                        ..._state.data,
-                        csar: {
-                          ..._state.data.csar,
-                          pzDescription: event.target.value,
-                        }
-                      }
-                    })}
-                    variant='outlined'
-                    value={_state.data.csar.pzDescription}
-                  />
-                  <TextField
-                    className={classes.textField}
-                    label='OSC/Freq'
-                    onChange={event => _setState({
-                      ..._state,
-                      data: {
-                        ..._state.data,
-                        csar: {
-                          ..._state.data.csar,
-                          oscFreq: event.target.value,
-                        }
-                      }
-                    })}
-                    variant='outlined'
-                    value={_state.data.csar.oscFreq}
-                  />
-                  <TextField
-                    className={classes.textField}
-                    label='IP/Heading'
-                    onChange={event => _setState({
-                      ..._state,
-                      data: {
-                        ..._state.data,
-                        csar: {
-                          ..._state.data.csar,
-                          ipHdg: event.target.value,
-                        }
-                      }
-                    })}
-                    variant='outlined'
-                    value={_state.data.csar.ipHdg}
-                  />
-                  <TextField
-                    className={classes.textField}
-                    label='Rescort'
-                    onChange={event => _setState({
-                      ..._state,
-                      data: {
-                        ..._state.data,
-                        csar: {
-                          ..._state.data.csar,
-                          rescort: event.target.value,
-                        }
-                      }
-                    })}
-                    variant='outlined'
-                    value={_state.data.csar.rescort}
-                  />
-                  <TextField
-                    className={classes.textField}
-                    label='Term Area Gameplan'
-                    onChange={event => _setState({
-                      ..._state,
-                      data: {
-                        ..._state.data,
-                        csar: {
-                          ..._state.data.csar,
-                          gameplan: event.target.value,
-                        }
-                      }
-                    })}
-                    variant='outlined'
-                    value={_state.data.csar.gameplan}
-                  />
-                  <TextField
-                    className={classes.textField}
-                    label='Signal'
-                    onChange={event => _setState({
-                      ..._state,
-                      data: {
-                        ..._state.data,
-                        csar: {
-                          ..._state.data.csar,
-                          signal: event.target.value,
-                        }
-                      }
-                    })}
-                    variant='outlined'
-                    value={_state.data.csar.signal}
-                  />
-                  <TextField
-                    className={classes.textField}
-                    label='Egress'
-                    onChange={event => _setState({
-                      ..._state,
-                      data: {
-                        ..._state.data,
-                        csar: {
-                          ..._state.data.csar,
-                          egress: event.target.value,
-                        }
-                      }
-                    })}
-                    variant='outlined'
-                    value={_state.data.csar.egress}
-                  />
-                </React.Fragment>
-              )
-              : null
-            }
+          )}
+        {(props.state.focusedMarker !== null && (props.state.focusedMarker.layer === 'hostile' || props.state.focusedMarker.layer === 'threat')) &&
+          (
             <Grid
               container
               direction='row'
               justify='center'
             >
-              <Button
-                className={classes.marginsMd}
-                color='primary'
-                onClick={handleSubmit}
-                variant='contained'
-              >
-                Save Changes
-        </Button>
+              <FormGroup>
+                <FormControlLabel
+                  control={
+                    <Switch
+                      checked={_state.switches.cas}
+                      color='primary'
+                      name='9 Line'
+                      onChange={() => _setState({
+                        ..._state,
+                        switches: {
+                          ..._state.switches,
+                          cas: !_state.switches.cas,
+                        }
+                      })}
+                    />
+                  }
+                  label='9 Line'
+                />
+              </FormGroup>
             </Grid>
+          )}
+        {(props.state.focusedMarker !== null && props.state.focusedMarker.layer === 'survivor') &&
+          (
+            <Grid
+              container
+              direction='row'
+              justify='center'
+            >
+              <FormGroup>
+                <FormControlLabel
+                  control={
+                    <Switch
+                      checked={_state.switches.csar}
+                      color='primary'
+                      name='15 Line'
+                      onChange={() => _setState({
+                        ..._state,
+                        switches: {
+                          ..._state.switches,
+                          csar: !_state.switches.csar,
+                        }
+                      })}
+                    />
+                  }
+                  label='15 Line'
+                />
+              </FormGroup>
+            </Grid>
+          )}
+        {(props.state.focusedMarker !== null && _state.switches.cas) &&
+          (
+            <React.Fragment>
+              <TextField
+                className={classes.firstTextField}
+                label='Label'
+                onChange={event => _setState({
+                  ..._state,
+                  data: {
+                    ..._state.data,
+                    cas: {
+                      ..._state.data.cas,
+                      label: event.target.value,
+                    }
+                  }
+                })}
+                variant='outlined'
+                value={_state.data.cas.label}
+              />
+              <TextField
+                className={classes.textField}
+                label='GFC Intent'
+                onChange={event => _setState({
+                  ..._state,
+                  data: {
+                    ..._state.data,
+                    cas: {
+                      ..._state.data.cas,
+                      intent: event.target.value,
+                    }
+                  }
+                })}
+                variant='outlined'
+                value={_state.data.cas.intent}
+              />
+              <TextField
+                className={classes.textField}
+                label='Type / Method'
+                onChange={event => _setState({
+                  ..._state,
+                  data: {
+                    ..._state.data,
+                    cas: {
+                      ..._state.data.cas,
+                      typeMethod: event.target.value,
+                    }
+                  }
+                })}
+                variant='outlined'
+                value={_state.data.cas.typeMethod}
+              />
+              <TextField
+                className={classes.textField}
+                label='IP'
+                onChange={event => _setState({
+                  ..._state,
+                  data: {
+                    ..._state.data,
+                    cas: {
+                      ..._state.data.cas,
+                      ip: event.target.value,
+                    }
+                  }
+                })}
+                variant='outlined'
+                value={_state.data.cas.ip}
+              />
+              <TextField
+                className={classes.textField}
+                label='HDG'
+                onChange={event => _setState({
+                  ..._state,
+                  data: {
+                    ..._state.data,
+                    cas: {
+                      ..._state.data.cas,
+                      hdg: event.target.value,
+                    }
+                  }
+                })}
+                variant='outlined'
+                value={_state.data.cas.hdg}
+              />
+              <TextField
+                className={classes.textField}
+                label='Distance'
+                onChange={event => _setState({
+                  ..._state,
+                  data: {
+                    ..._state.data,
+                    cas: {
+                      ..._state.data.cas,
+                      distance: event.target.value,
+                    }
+                  }
+                })}
+                variant='outlined'
+                value={_state.data.cas.distance}
+              />
+              <TextField
+                className={classes.textField}
+                label='Elevation'
+                onChange={event => _setState({
+                  ..._state,
+                  data: {
+                    ..._state.data,
+                    cas: {
+                      ..._state.data.cas,
+                      elevation: event.target.value,
+                    }
+                  }
+                })}
+                variant='outlined'
+                value={_state.data.cas.elevation}
+              />
+              <TextField
+                className={classes.textField}
+                label='Description'
+                onChange={event => _setState({
+                  ..._state,
+                  data: {
+                    ..._state.data,
+                    cas: {
+                      ..._state.data.cas,
+                      description: event.target.value,
+                    }
+                  }
+                })}
+                variant='outlined'
+                value={_state.data.cas.description}
+              />
+              <TextField
+                className={classes.textField}
+                label='Location'
+                onChange={event => _setState({
+                  ..._state,
+                  data: {
+                    ..._state.data,
+                    cas: {
+                      ..._state.data.cas,
+                      location: event.target.value,
+                    }
+                  }
+                })}
+                variant='outlined'
+                value={_state.data.cas.location}
+              />
+              <TextField
+                className={classes.textField}
+                label='Mark'
+                onChange={event => _setState({
+                  ..._state,
+                  data: {
+                    ..._state.data,
+                    cas: {
+                      ..._state.data.cas,
+                      mark: event.target.value,
+                    }
+                  }
+                })}
+                variant='outlined'
+                value={_state.data.cas.mark}
+              />
+              <TextField
+                className={classes.textField}
+                label='Friendlies'
+                onChange={event => _setState({
+                  ..._state,
+                  data: {
+                    ..._state.data,
+                    cas: {
+                      ..._state.data.cas,
+                      friendlies: event.target.value,
+                    }
+                  }
+                })}
+                variant='outlined'
+                value={_state.data.cas.friendlies}
+              />
+              <TextField
+                className={classes.textField}
+                label='Egress'
+                onChange={event => _setState({
+                  ..._state,
+                  data: {
+                    ..._state.data,
+                    cas: {
+                      ..._state.data.cas,
+                      egress: event.target.value,
+                    }
+                  }
+                })}
+                variant='outlined'
+                value={_state.data.cas.egress}
+              />
+              <TextField
+                className={classes.textField}
+                label='Remarks &amp; Restrictions'
+                onChange={event => _setState({
+                  ..._state,
+                  data: {
+                    ..._state.data,
+                    cas: {
+                      ..._state.data.cas,
+                      remarks: event.target.value,
+                    }
+                  }
+                })}
+                variant='outlined'
+                value={_state.data.cas.remarks}
+              />
+              <TextField
+                className={classes.textField}
+                label='TOT'
+                onChange={event => _setState({
+                  ..._state,
+                  data: {
+                    ..._state.data,
+                    cas: {
+                      ..._state.data.cas,
+                      tot: event.target.value,
+                    }
+                  }
+                })}
+                variant='outlined'
+                value={_state.data.cas.tot}
+              />
+              <TextField
+                className={classes.textField}
+                label='Fighter-to-Fighter'
+                onChange={event => _setState({
+                  ..._state,
+                  data: {
+                    ..._state.data,
+                    cas: {
+                      ..._state.data.cas,
+                      f2f: event.target.value,
+                    }
+                  }
+                })}
+                variant='outlined'
+                value={_state.data.cas.f2f}
+              />
+            </React.Fragment>
+          )}
+        {(props.state.focusedMarker !== null && _state.switches.csar) &&
+          (
+            <React.Fragment>
+              <TextField
+                className={classes.textField}
+                label='Callsign'
+                onChange={event => _setState({
+                  ..._state,
+                  data: {
+                    ..._state.data,
+                    csar: {
+                      ..._state.data.csar,
+                      callsign: event.target.value,
+                    }
+                  }
+                })}
+                variant='outlined'
+                value={_state.data.csar.callsign}
+              />
+              <TextField
+                className={classes.textField}
+                label='Frequency'
+                onChange={event => _setState({
+                  ..._state,
+                  data: {
+                    ..._state.data,
+                    csar: {
+                      ..._state.data.csar,
+                      frequency: event.target.value,
+                    }
+                  }
+                })}
+                variant='outlined'
+                value={_state.data.csar.frequency}
+              />
+              <TextField
+                className={classes.textField}
+                label='PLS/HHRID'
+                onChange={event => _setState({
+                  ..._state,
+                  data: {
+                    ..._state.data,
+                    csar: {
+                      ..._state.data.csar,
+                      plsHhrid: event.target.value,
+                    }
+                  }
+                })}
+                variant='outlined'
+                value={_state.data.csar.plsHhrid}
+              />
+              <TextField
+                className={classes.textField}
+                label='# of Objectives'
+                onChange={event => _setState({
+                  ..._state,
+                  data: {
+                    ..._state.data,
+                    csar: {
+                      ..._state.data.csar,
+                      numObjectives: event.target.value,
+                    }
+                  }
+                })}
+                variant='outlined'
+                value={_state.data.csar.numObjectives}
+              />
+              <TextField
+                className={classes.textField}
+                label='Location'
+                onChange={event => _setState({
+                  ..._state,
+                  data: {
+                    ..._state.data,
+                    csar: {
+                      ..._state.data.csar,
+                      location: event.target.value,
+                    }
+                  }
+                })}
+                variant='outlined'
+                value={_state.data.csar.location}
+              />
+              <TextField
+                className={classes.textField}
+                label='Elevation'
+                onChange={event => _setState({
+                  ..._state,
+                  data: {
+                    ..._state.data,
+                    csar: {
+                      ..._state.data.csar,
+                      elevation: event.target.value,
+                    }
+                  }
+                })}
+                variant='outlined'
+                value={_state.data.csar.elevation}
+              />
+              <TextField
+                className={classes.textField}
+                label='Date/Time(Z)'
+                onChange={event => _setState({
+                  ..._state,
+                  data: {
+                    ..._state.data,
+                    csar: {
+                      ..._state.data.csar,
+                      dateTime: event.target.value,
+                    }
+                  }
+                })}
+                variant='outlined'
+                value={_state.data.csar.dateTime}
+              />
+              <TextField
+                className={classes.textField}
+                label='Source'
+                onChange={event => _setState({
+                  ..._state,
+                  data: {
+                    ..._state.data,
+                    csar: {
+                      ..._state.data.csar,
+                      source: event.target.value,
+                    }
+                  }
+                })}
+                variant='outlined'
+                value={_state.data.csar.source}
+              />
+              <TextField
+                className={classes.textField}
+                label='Condition'
+                onChange={event => _setState({
+                  ..._state,
+                  data: {
+                    ..._state.data,
+                    csar: {
+                      ..._state.data.csar,
+                      condition: event.target.value,
+                    }
+                  }
+                })}
+                variant='outlined'
+                value={_state.data.csar.condition}
+              />
+              <TextField
+                className={classes.textField}
+                label='Equipment'
+                onChange={event => _setState({
+                  ..._state,
+                  data: {
+                    ..._state.data,
+                    csar: {
+                      ..._state.data.csar,
+                      equipment: event.target.value,
+                    }
+                  }
+                })}
+                variant='outlined'
+                value={_state.data.csar.equipment}
+              />
+              <TextField
+                className={classes.textField}
+                label='Authentication'
+                onChange={event => _setState({
+                  ..._state,
+                  data: {
+                    ..._state.data,
+                    csar: {
+                      ..._state.data.csar,
+                      authentication: event.target.value,
+                    }
+                  }
+                })}
+                variant='outlined'
+                value={_state.data.csar.authentication}
+              />
+              <TextField
+                className={classes.textField}
+                label='Threats'
+                onChange={event => _setState({
+                  ..._state,
+                  data: {
+                    ..._state.data,
+                    csar: {
+                      ..._state.data.csar,
+                      threats: event.target.value,
+                    }
+                  }
+                })}
+                variant='outlined'
+                value={_state.data.csar.threats}
+              />
+              <TextField
+                className={classes.textField}
+                label='PZ Description'
+                onChange={event => _setState({
+                  ..._state,
+                  data: {
+                    ..._state.data,
+                    csar: {
+                      ..._state.data.csar,
+                      pzDescription: event.target.value,
+                    }
+                  }
+                })}
+                variant='outlined'
+                value={_state.data.csar.pzDescription}
+              />
+              <TextField
+                className={classes.textField}
+                label='OSC/Freq'
+                onChange={event => _setState({
+                  ..._state,
+                  data: {
+                    ..._state.data,
+                    csar: {
+                      ..._state.data.csar,
+                      oscFreq: event.target.value,
+                    }
+                  }
+                })}
+                variant='outlined'
+                value={_state.data.csar.oscFreq}
+              />
+              <TextField
+                className={classes.textField}
+                label='IP/Heading'
+                onChange={event => _setState({
+                  ..._state,
+                  data: {
+                    ..._state.data,
+                    csar: {
+                      ..._state.data.csar,
+                      ipHdg: event.target.value,
+                    }
+                  }
+                })}
+                variant='outlined'
+                value={_state.data.csar.ipHdg}
+              />
+              <TextField
+                className={classes.textField}
+                label='Rescort'
+                onChange={event => _setState({
+                  ..._state,
+                  data: {
+                    ..._state.data,
+                    csar: {
+                      ..._state.data.csar,
+                      rescort: event.target.value,
+                    }
+                  }
+                })}
+                variant='outlined'
+                value={_state.data.csar.rescort}
+              />
+              <TextField
+                className={classes.textField}
+                label='Term Area Gameplan'
+                onChange={event => _setState({
+                  ..._state,
+                  data: {
+                    ..._state.data,
+                    csar: {
+                      ..._state.data.csar,
+                      gameplan: event.target.value,
+                    }
+                  }
+                })}
+                variant='outlined'
+                value={_state.data.csar.gameplan}
+              />
+              <TextField
+                className={classes.textField}
+                label='Signal'
+                onChange={event => _setState({
+                  ..._state,
+                  data: {
+                    ..._state.data,
+                    csar: {
+                      ..._state.data.csar,
+                      signal: event.target.value,
+                    }
+                  }
+                })}
+                variant='outlined'
+                value={_state.data.csar.signal}
+              />
+              <TextField
+                className={classes.textField}
+                label='Egress'
+                onChange={event => _setState({
+                  ..._state,
+                  data: {
+                    ..._state.data,
+                    csar: {
+                      ..._state.data.csar,
+                      egress: event.target.value,
+                    }
+                  }
+                })}
+                variant='outlined'
+                value={_state.data.csar.egress}
+              />
+            </React.Fragment>
+          )}
+        <Grid
+          container
+          direction='row'
+          justify='center'
+        >
+          <Button
+            className={classes.marginsMd}
+            color='primary'
+            onClick={handleSubmit}
+            variant='contained'
+          >
+            Save Changes
+        </Button>
+        </Grid>
       </Drawer>
     </nav>
   )

@@ -1,3 +1,7 @@
+## 2.22.0
+### Changes
+* Users can now set threats to `dashed` or not to affect the threat ring
+
 ## 2.21.0
 ### Changes
 * Implemented `Fullscreen API` into a fullscreen control

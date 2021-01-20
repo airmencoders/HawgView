@@ -1026,6 +1026,7 @@ const editMarker = (history, step, payload) => {
       newMarker = {
         ...marker,
         color: payload.color,
+        dashed: payload.dashed,
         data: payload.data,
         elevation: payload.elevation,
         fill: payload.fill,

@@ -113,6 +113,7 @@ const PersistentMarkers = props => {
     if (layer === 'threat') {
       payload = {
         ...payload,
+        dashed: true,
         threatType: 0,
         range: '3',
         unit: 'NM',

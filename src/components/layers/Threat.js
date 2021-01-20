@@ -243,7 +243,7 @@ const Threat = props => {
       <Circle
         center={props.marker.latlng}
         color={props.marker.color}
-        dashArray='12,12'
+        dashArray={props.marker.dashed ? '12,12' : null}
         fill={props.marker.fill}
         fillColor={props.marker.fillColor}
         radius={props.marker.unit === 'm' ? Number.parseInt(props.marker.range) : props.marker.unit === 'km' ? props.marker.range * 1000 : props.marker.range * 1852}

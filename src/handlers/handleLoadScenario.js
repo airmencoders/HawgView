@@ -310,10 +310,28 @@ const handleLoadScenario = (data, state, setState, toast) => {
       }
     })
 
+
+    // Go through all the threats to add dashed if it doesn't exist (update the save file)
+    let oldThreatMarkers = newStep.threatMarkers
+    let newThreatMarkers = []
+
+    oldThreatMarkers.forEach(marker => {
+      let newMarker = marker
+      if (marker.dashed === undefined) {
+        newMarker = {
+          ...newMarker,
+          dashed: true,
+        }
+      }
+
+      newThreatMarkers = [...newThreatMarkers, newMarker]
+    })
+
     newStep = {
       ...newStep,
       friendlyMarkers: newFriendlyMarkers,
       hostileMarkers: newHostileMarkers,
+      threatMarkers: newThreatMarkers,
     }
 
     // Need to manually toast, otherwise it loses the change in history

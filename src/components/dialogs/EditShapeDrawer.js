@@ -411,7 +411,7 @@ const EditShapeDrawer = props => {
           {(props.state.focusedShape !== null &&
             (props.state.focusedShape.layer === 'circle' ||
               props.state.focusedShape.layer === 'ellipse' ||
-              props.state.focusedShape.layer === 'bullseye')) ?
+              props.state.focusedShape.layer === 'bullseye')) &&
             (
               <React.Fragment>
                 <Grid
@@ -485,186 +485,185 @@ const EditShapeDrawer = props => {
                   />
                 }
               </React.Fragment>
-            ) : null
-          }
-          {(props.state.focusedShape !== null && props.state.focusedShape.layer === 'bullseye') ?
-            <React.Fragment>
-              <TextField
-                className={classes.textField}
-                label='Number of rings'
-                onChange={event => _setState({
-                  ..._state,
-                  bullseye: {
-                    ..._state.bullseye,
-                    rings: event.target.value,
-                  },
-                })}
-                variant='outlined'
-                value={_state.bullseye.rings}
-              />
-              <TextField
-                className={classes.textField}
-                label='NM between rings'
-                onChange={event => _setState({
-                  ..._state,
-                  bullseye: {
-                    ..._state.bullseye,
-                    distance: event.target.value,
-                  },
-                })}
-                variant='outlined'
-                value={_state.bullseye.distance}
-              />
-              <TextField
-                className={classes.textField}
-                label='Angle between radials'
-                onChange={event => _setState({
-                  ..._state,
-                  bullseye: {
-                    ..._state.bullseye,
-                    angle: event.target.value,
-                  },
-                })}
-                variant='outlined'
-                value={_state.bullseye.angle}
-              />
-              <Grid
-                container
-                direction='row'
-                justify='center'
-              >
-                <FormGroup>
-                  <FormControlLabel
-                    control={
-                      <Switch
-                        checked={_state.switches.showData}
-                        color='primary'
-                        name='showData'
-                        onChange={() => _setState({
-                          ..._state,
-                          switches: {
-                            ..._state.switches,
-                            showData: !_state.switches.showData,
-                          },
-                        })}
-                      />
-                    }
-                    label='Show Data'
-                  />
-                </FormGroup>
-              </Grid>
-              <Grid
-                container
-                direction='row'
-                justify='center'
-              >
-                <FormGroup>
-                  <FormControlLabel
-                    control={
-                      <Switch
-                        checked={_state.switches.isAnchor}
-                        color='primary'
-                        name='isAnchor'
-                        onChange={() => _setState({
-                          ..._state,
-                          switches: {
-                            ..._state.switches,
-                            isAnchor: !_state.switches.isAnchor,
-                          },
-                        })}
-                      />
-                    }
-                    label='Use as Anchor'
-                  />
-                </FormGroup>
-              </Grid>
-            </React.Fragment>
-            : null
-          }
-          {(props.state.focusedShape !== null && props.state.focusedShape.layer === 'circle') ?
-            <React.Fragment>
-              <TextField
-                className={classes.textField}
-                label='Radius'
-                onChange={event => _setState({
-                  ..._state,
-                  circle: {
-                    ..._state.circle,
-                    radius: event.target.value,
-                  },
-                })}
-                variant='outlined'
-                value={_state.circle.radius}
-              />
-              <FormControl
-                className={classes.marginsMd}
-                fullWidth={true}
-                variant='outlined'
-              >
-                <InputLabel>Radius Unit</InputLabel>
-                <Select
-                  label='Radius Unit'
-                  onChange={event => handleUnitChange(event.target.value)}
-                  value={_state.circle.unit}
+            )}
+          {(props.state.focusedShape !== null && props.state.focusedShape.layer === 'bullseye') &&
+            (
+              <React.Fragment>
+                <TextField
+                  className={classes.textField}
+                  label='Number of rings'
+                  onChange={event => _setState({
+                    ..._state,
+                    bullseye: {
+                      ..._state.bullseye,
+                      rings: event.target.value,
+                    },
+                  })}
+                  variant='outlined'
+                  value={_state.bullseye.rings}
+                />
+                <TextField
+                  className={classes.textField}
+                  label='NM between rings'
+                  onChange={event => _setState({
+                    ..._state,
+                    bullseye: {
+                      ..._state.bullseye,
+                      distance: event.target.value,
+                    },
+                  })}
+                  variant='outlined'
+                  value={_state.bullseye.distance}
+                />
+                <TextField
+                  className={classes.textField}
+                  label='Angle between radials'
+                  onChange={event => _setState({
+                    ..._state,
+                    bullseye: {
+                      ..._state.bullseye,
+                      angle: event.target.value,
+                    },
+                  })}
+                  variant='outlined'
+                  value={_state.bullseye.angle}
+                />
+                <Grid
+                  container
+                  direction='row'
+                  justify='center'
                 >
-                  {units.map(unit => (
-                    <MenuItem
-                      key={unit}
-                      value={unit}
-                    >
-                      {unit}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </React.Fragment>
-            : null
-          }
-          {(props.state.focusedShape !== null && props.state.focusedShape.layer === 'ellipse') ?
-            <React.Fragment>
-              <TextField
-                className={classes.textField}
-                label='Ellipse length'
-                onChange={event => _setState({
-                  ..._state,
-                  ellipse: {
-                    ..._state.ellipse,
-                    length: event.target.value,
-                  },
-                })}
-                variant='outlined'
-                value={_state.ellipse.length}
-              />
-              <TextField
-                className={classes.textField}
-                label='Ellipse width'
-                onChange={event => _setState({
-                  ..._state,
-                  ellipse: {
-                    ..._state.ellipse,
-                    width: event.target.value,
-                  },
-                })}
-                variant='outlined'
-                value={_state.ellipse.width}
-              />
-              <TextField
-                className={classes.textField}
-                helperText=' -90 (W) to 90 (E)'
-                label='Ellipse tilt'
-                onChange={event => _setState({
-                  ..._state,
-                  ellipse: {
-                    ..._state.ellipse,
-                    tilt: event.target.value,
-                  },
-                })}
-                variant='outlined'
-                value={_state.ellipse.tilt}
-              />
-            </React.Fragment>
-            : null
-          }
+                  <FormGroup>
+                    <FormControlLabel
+                      control={
+                        <Switch
+                          checked={_state.switches.showData}
+                          color='primary'
+                          name='showData'
+                          onChange={() => _setState({
+                            ..._state,
+                            switches: {
+                              ..._state.switches,
+                              showData: !_state.switches.showData,
+                            },
+                          })}
+                        />
+                      }
+                      label='Show Data'
+                    />
+                  </FormGroup>
+                </Grid>
+                <Grid
+                  container
+                  direction='row'
+                  justify='center'
+                >
+                  <FormGroup>
+                    <FormControlLabel
+                      control={
+                        <Switch
+                          checked={_state.switches.isAnchor}
+                          color='primary'
+                          name='isAnchor'
+                          onChange={() => _setState({
+                            ..._state,
+                            switches: {
+                              ..._state.switches,
+                              isAnchor: !_state.switches.isAnchor,
+                            },
+                          })}
+                        />
+                      }
+                      label='Use as Anchor'
+                    />
+                  </FormGroup>
+                </Grid>
+              </React.Fragment>
+            )}
+          {(props.state.focusedShape !== null && props.state.focusedShape.layer === 'circle') &&
+            (
+              <React.Fragment>
+                <TextField
+                  className={classes.textField}
+                  label='Radius'
+                  onChange={event => _setState({
+                    ..._state,
+                    circle: {
+                      ..._state.circle,
+                      radius: event.target.value,
+                    },
+                  })}
+                  variant='outlined'
+                  value={_state.circle.radius}
+                />
+                <FormControl
+                  className={classes.marginsMd}
+                  fullWidth={true}
+                  variant='outlined'
+                >
+                  <InputLabel>Radius Unit</InputLabel>
+                  <Select
+                    label='Radius Unit'
+                    onChange={event => handleUnitChange(event.target.value)}
+                    value={_state.circle.unit}
+                  >
+                    {units.map(unit => (
+                      <MenuItem
+                        key={unit}
+                        value={unit}
+                      >
+                        {unit}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </React.Fragment>
+            )}
+          {(props.state.focusedShape !== null && props.state.focusedShape.layer === 'ellipse') &&
+            (
+              <React.Fragment>
+                <TextField
+                  className={classes.textField}
+                  label='Ellipse length'
+                  onChange={event => _setState({
+                    ..._state,
+                    ellipse: {
+                      ..._state.ellipse,
+                      length: event.target.value,
+                    },
+                  })}
+                  variant='outlined'
+                  value={_state.ellipse.length}
+                />
+                <TextField
+                  className={classes.textField}
+                  label='Ellipse width'
+                  onChange={event => _setState({
+                    ..._state,
+                    ellipse: {
+                      ..._state.ellipse,
+                      width: event.target.value,
+                    },
+                  })}
+                  variant='outlined'
+                  value={_state.ellipse.width}
+                />
+                <TextField
+                  className={classes.textField}
+                  helperText=' -90 (W) to 90 (E)'
+                  label='Ellipse tilt'
+                  onChange={event => _setState({
+                    ..._state,
+                    ellipse: {
+                      ..._state.ellipse,
+                      tilt: event.target.value,
+                    },
+                  })}
+                  variant='outlined'
+                  value={_state.ellipse.tilt}
+                />
+              </React.Fragment>
+            )}
         </Grid>
         <Grid
           container
@@ -689,161 +688,162 @@ const EditShapeDrawer = props => {
             })}
           />
         </Grid>
-        {(props.state.focusedShape !== null && props.state.focusedShape.layer !== 'line' && props.state.focusedShape.layer !== 'bullseye') ?
-          <Grid
-            container
-            direction='row'
-            justify='center'
-          >
-            <FormGroup>
-              <FormControlLabel
-                control={
-                  <Switch
-                    checked={_state.switches.fill}
-                    color='primary'
-                    name='fill'
-                    onChange={() => _setState({
-                      ..._state,
-                      switches: {
-                        ..._state.switches,
-                        fill: !_state.switches.fill,
-                      },
-                    })}
-                  />
-                }
-                label='Fill'
-              />
-            </FormGroup>
-            {_state.switches.fill ?
-              <Grid
-                container
-                direction='row'
-                justify='center'
-              >
-                <Typography variant='body1'>
-                  Fill Color
-                </Typography>
-                <ColorPicker
-                  className={classes.marginsMd}
-                  color={_state.color.fillColor}
-                  disableAlpha={true}
-                  onChange={color => _setState({
-                    ..._state,
-                    color: {
-                      ..._state.color,
-                      fillColor: color.hex,
-                    },
-                  })}
+        {(props.state.focusedShape !== null && props.state.focusedShape.layer !== 'line' && props.state.focusedShape.layer !== 'bullseye') &&
+          (
+            <Grid
+              container
+              direction='row'
+              justify='center'
+            >
+              <FormGroup>
+                <FormControlLabel
+                  control={
+                    <Switch
+                      checked={_state.switches.fill}
+                      color='primary'
+                      name='fill'
+                      onChange={() => _setState({
+                        ..._state,
+                        switches: {
+                          ..._state.switches,
+                          fill: !_state.switches.fill,
+                        },
+                      })}
+                    />
+                  }
+                  label='Fill'
                 />
-              </Grid>
-              : null
-            }
-          </Grid>
-          : null
-        }
-        {(props.state.focusedShape !== null && props.state.focusedShape.layer !== 'bullseye') ?
-          <Grid
-            container
-            direction='row'
-            justify='center'
-          >
-            <FormGroup>
-              <FormControlLabel
-                control={
-                  <Switch
-                    checked={_state.switches.dashed}
-                    color='primary'
-                    name='dashed'
-                    onChange={() => _setState({
-                      ..._state,
-                      switches: {
-                        ..._state.switches,
-                        dashed: !_state.switches.dashed,
-                      },
-                    })}
-                  />
-                }
-                label='Dashed'
-              />
-            </FormGroup>
-            {_state.switches.dashed ?
-              <Grid
-                container
-                direction='row'
-                justify='center'
-              >
-                <FormControl
-                  className={classes.marginsMd}
-                  fullWidth
-                  variant='outlined'
+              </FormGroup>
+              {_state.switches.fill ?
+                <Grid
+                  container
+                  direction='row'
+                  justify='center'
                 >
-                  <InputLabel>Dash Array</InputLabel>
-                  <Select
-                    label='Dash Array'
-                    onChange={event => _setState({
+                  <Typography variant='body1'>
+                    Fill Color
+                </Typography>
+                  <ColorPicker
+                    className={classes.marginsMd}
+                    color={_state.color.fillColor}
+                    disableAlpha={true}
+                    onChange={color => _setState({
                       ..._state,
-                      dashArray: event.target.value
+                      color: {
+                        ..._state.color,
+                        fillColor: color.hex,
+                      },
                     })}
-                    value={_state.dashArray}
-                  >
-                    <MenuItem
-                      value='1,10'
-                    >
-                      <CardMedia
-                        alt={'Stroke 1,10'}
-                        component='img'
-                        src={stroke1_10}
-                        title='Stroke 1,10'
-                      />
-                    </MenuItem>
-                    <MenuItem
-                      value='10,10'
-                    >
-                      <CardMedia
-                        alt={'Stroke 10,10'}
-                        component='img'
-                        src={stroke10_10}
-                        title='Stroke 10,10'
-                      />
-                    </MenuItem>
-                    <MenuItem
-                      value='1,10,5,10'
-                    >
-                      <CardMedia
-                        alt={'Stroke 1,10,5,10'}
-                        component='img'
-                        src={stroke1_10_5_10}
-                        title='Stroke 1,10,5,10'
-                      />
-                    </MenuItem>
-                    <MenuItem
-                      value='10,10,5,10,5,10'
-                    >
-                      <CardMedia
-                        alt={'Stroke 10,10,5,10,5,10'}
-                        component='img'
-                        src={stroke10_10_5_10_5_10}
-                        title='Stroke 10,10,5,10,5,10'
-                      />
-                    </MenuItem>
-                  </Select>
-                </FormControl>
-                <TextField
-                  className={classes.textField}
-                  helperText='Comma separated values, every other number is line to gap in pixels.'
-                  label='Dash Array'
-                  onChange={event => _setState({
-                    ..._state,
-                    dashArray: event.target.value,
-                  })}
-                  variant='outlined'
-                  value={_state.dashArray}
+                  />
+                </Grid>
+                : null
+              }
+            </Grid>
+          )}
+        {(props.state.focusedShape !== null && props.state.focusedShape.layer !== 'bullseye') &&
+          (
+            <Grid
+              container
+              direction='row'
+              justify='center'
+            >
+              <FormGroup>
+                <FormControlLabel
+                  control={
+                    <Switch
+                      checked={_state.switches.dashed}
+                      color='primary'
+                      name='dashed'
+                      onChange={() => _setState({
+                        ..._state,
+                        switches: {
+                          ..._state.switches,
+                          dashed: !_state.switches.dashed,
+                        },
+                      })}
+                    />
+                  }
+                  label='Dashed'
                 />
-              </Grid>
-              : null
-            }
-          </Grid>
-          : null}
+              </FormGroup>
+              {_state.switches.dashed &&
+                (
+                  <Grid
+                    container
+                    direction='row'
+                    justify='center'
+                  >
+                    <FormControl
+                      className={classes.marginsMd}
+                      fullWidth
+                      variant='outlined'
+                    >
+                      <InputLabel>Dash Array</InputLabel>
+                      <Select
+                        label='Dash Array'
+                        onChange={event => _setState({
+                          ..._state,
+                          dashArray: event.target.value
+                        })}
+                        value={_state.dashArray}
+                      >
+                        <MenuItem
+                          value='1,10'
+                        >
+                          <CardMedia
+                            alt={'Stroke 1,10'}
+                            component='img'
+                            src={stroke1_10}
+                            title='Stroke 1,10'
+                          />
+                        </MenuItem>
+                        <MenuItem
+                          value='10,10'
+                        >
+                          <CardMedia
+                            alt={'Stroke 10,10'}
+                            component='img'
+                            src={stroke10_10}
+                            title='Stroke 10,10'
+                          />
+                        </MenuItem>
+                        <MenuItem
+                          value='1,10,5,10'
+                        >
+                          <CardMedia
+                            alt={'Stroke 1,10,5,10'}
+                            component='img'
+                            src={stroke1_10_5_10}
+                            title='Stroke 1,10,5,10'
+                          />
+                        </MenuItem>
+                        <MenuItem
+                          value='10,10,5,10,5,10'
+                        >
+                          <CardMedia
+                            alt={'Stroke 10,10,5,10,5,10'}
+                            component='img'
+                            src={stroke10_10_5_10_5_10}
+                            title='Stroke 10,10,5,10,5,10'
+                          />
+                        </MenuItem>
+                      </Select>
+                    </FormControl>
+                    <TextField
+                      className={classes.textField}
+                      helperText='Comma separated values, every other number is line to gap in pixels.'
+                      label='Dash Array'
+                      onChange={event => _setState({
+                        ..._state,
+                        dashArray: event.target.value,
+                      })}
+                      variant='outlined'
+                      value={_state.dashArray}
+                    />
+                  </Grid>
+                )}
+            </Grid>
+          )}
         <Grid
           container
           direction='row'
@@ -852,22 +852,23 @@ const EditShapeDrawer = props => {
           {props.state.focusedShape !== null &&
             (props.state.focusedShape.layer === 'line' ||
               props.state.focusedShape.layer === 'polygon' ||
-              props.state.focusedShape.layer === 'rectangle') ?
-            <Button
-              className={classes.marginsMd}
-              color='primary'
-              onClick={() => props.setState({
-                ...props.state,
-                dialog: {
-                  anchor: null,
-                  name: 'shapePoints',
-                },
-              })}
-              variant='contained'
-            >
-              {`View ${props.state.focusedShape.layer === 'rectangle' ? 'Bounds' : 'Points'}`}
-            </Button>
-            : null}
+              props.state.focusedShape.layer === 'rectangle') &&
+            (
+              <Button
+                className={classes.marginsMd}
+                color='primary'
+                onClick={() => props.setState({
+                  ...props.state,
+                  dialog: {
+                    anchor: null,
+                    name: 'shapePoints',
+                  },
+                })}
+                variant='contained'
+              >
+                {`View ${props.state.focusedShape.layer === 'rectangle' ? 'Bounds' : 'Points'}`}
+              </Button>
+            )}
           <Button
             className={classes.marginsMd}
             color='primary'
