@@ -94,7 +94,7 @@ export const threats = [
     label: '22',
     range: '10.8',
   },
-  /*{
+  {
     title: 'CROTALE/FM-80',
     label: 'CROTALE',
     range: '15',
@@ -118,7 +118,7 @@ export const threats = [
     title: 'ROLAND-II',
     label: 'ROLAND',
     range: '4.3',
-  },*/
+  },
 ]
 
 export const units = ['NM', 'm', 'km']

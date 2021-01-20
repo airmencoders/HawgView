@@ -1,3 +1,7 @@
+## 2.22.1
+### Changes
+* Uncommented out friendly SAM systems (still considered a threat)
+
 ## 2.22.0
 ### Changes
 * Users can now set threats to `dashed` or not to affect the threat ring
