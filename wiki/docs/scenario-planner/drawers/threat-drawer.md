@@ -33,5 +33,8 @@ Users can override the default color for a threat. This will be reflected by bot
 ## Fill
 Users can select to fill the range ring with a color and select the fill color.
 
+## Dashed
+Threats default to a dashed ring, however, users can select to display a solid ring instead.
+
 ## 9 Line
 Users can add 9-line data to the threat

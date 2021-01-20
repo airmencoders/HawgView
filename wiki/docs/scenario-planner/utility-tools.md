@@ -121,3 +121,14 @@ Click on the `Ellipse Tool` to enable. Click on the map to select the center of 
 
 ### Cancelling Ellipse
 Pressing the ++esc++ key will cancel the ellipse and disable the tool.
+
+## Fullscreen Tool
+![Fullscreen](/images/scenario-planner/utility-tools/fullscreen_contro.png){: .shadowImage }
+
+Click on the `Fullscreen Tool` to enter fullscreen. While fullscreen, the Navigation is removed from the screen as well as the browser navigation.
+
+### Exiting Fullscreen
+Press ++Escape++ or click the tool again to exit fullscreen
+
+!!! tip "Fullscreen Behavior"
+    If a user press ++F11++ to enter fullscreen, then the behavior is dependent on the Operating System and the navigation will not be removed from the screen and ther user cannot exit via the ++Escape++ key

@@ -1,3 +1,7 @@
+## 2.22.2
+### Changes
+* Updated Wiki
+
 ## 2.22.1
 ### Changes
 * Uncommented out friendly SAM systems (still considered a threat)
