@@ -1,3 +1,8 @@
+## 2.23.0
+### Changes
+* Added a marker search function to the `AddMarkerDrawer` component
+* Thanks to DePo (74FS/IN) for the idea
+
 ## 2.22.3
 ### Fixes
 * Fixed wiki image issue

@@ -37,6 +37,7 @@ import {
   Divider,
   Drawer,
   FormControl,
+  InputAdornment,
   InputLabel,
   MenuItem,
   Select,
@@ -47,6 +48,10 @@ import {
 import {
   makeStyles,
 } from '@material-ui/core/styles'
+
+import {
+  Search as SearchIcon,
+} from '@material-ui/icons'
 
 //----------------------------------------------------------------//
 // Hawg View Components
@@ -106,8 +111,10 @@ const AddMarkerDrawer = props => {
   const container = props.window !== undefined ? () => window().document.body : undefined
 
   const [_state, _setState] = React.useState({
+    codeArray: [...sidcCodes],
     hostile: false,
     label: '',
+    searchValue: '',
     sidc: {
       scheme: 'S',
       affiliation: 'F',
@@ -126,6 +133,13 @@ const AddMarkerDrawer = props => {
       svg: new ms.Symbol(`${_state.sidc.scheme}${_state.sidc.affiliation}${_state.sidc.dimension}${_state.sidc.status}${_state.sidc.id}${_state.sidc.modifier}${_state.sidc.size}`, { size: 50 }),
     })
   }, [_state.sidc, _state.label])
+
+  React.useEffect(() => {
+      _setState({
+        ..._state,
+        codeArray: sidcCodes.filter(code => code.name.toLowerCase().includes(_state.searchValue.toLowerCase())),
+      })
+  }, [_state.searchValue])
 
   //----------------------------------------------------------------//
   // Component Handlers
@@ -296,8 +310,25 @@ const AddMarkerDrawer = props => {
             ))}
           </Select>
         </FormControl>
+        <TextField
+          className={classes.marginsMd}
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position='start'>
+                <SearchIcon />
+              </InputAdornment>
+            )
+          }}
+          label='Search for Marker'
+          onChange={event => _setState({
+            ..._state,
+            searchValue: event.target.value,
+          })}
+          value={_state.searchValue}
+          variant='outlined'
+        />
         <div>
-          {sidcCodes.map(code => (
+          {_state.codeArray.map(code => (
             <Tooltip
               key={code.value}
               title={code.name}
@@ -312,7 +343,7 @@ const AddMarkerDrawer = props => {
           ))}
         </div>
       </Drawer>
-    </nav>
+    </nav >
   )
 }
 

@@ -1,6 +1,6 @@
 {
   "name": "hawgview",
-  "version": "2.22.3",
+  "version": "2.23.0",
   "private": true,
   "dependencies": {
     "@iconify/icons-mdi": "^1.0.150",
