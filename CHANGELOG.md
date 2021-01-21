@@ -1,3 +1,9 @@
+## 2.24.0-by
+### Changes
+* Created `baby-yoda` branch from `master`
+* Purpose is to create a `RESTful` API using `SpringBoot` and `MySQL`
+* Authentication will be via `Platform One SSO`
+
 ## 2.23.0
 ### Changes
 * Added a marker search function to the `AddMarkerDrawer` component
