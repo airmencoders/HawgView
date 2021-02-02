@@ -86,6 +86,13 @@ const useStyles = makeStyles(theme => ({
     fontSize: theme.typography.pxToRem(15),
     color: theme.palette.text.secondary,
   },
+  markerImage: {
+    margin: theme.spacing(1),
+    width: '30px',
+  },
+  marginsSm: {
+    margin: theme.spacing(1),
+  },
 }))
 
 //----------------------------------------------------------------//
@@ -139,6 +146,7 @@ const MarkerListAccordion = props => {
             {(props.marker.iconType === 'img' || props.marker.iconType === 'sidc') && (
               <img
                 alt={props.marker.title}
+                className={props.marker.iconType === 'img' ? classes.markerImage : classes.marginsSm}
                 src={props.marker.iconType === 'img' ? props.marker.iconUrl :
                   new ms.Symbol(`${props.marker.sidc.scheme}${props.marker.sidc.affiliation}${props.marker.sidc.dimension}${props.marker.sidc.status}${props.marker.sidc.id}${props.marker.sidc.modifier}${props.marker.sidc.echelon}`, { size: 30 }).toDataURL()
                 }

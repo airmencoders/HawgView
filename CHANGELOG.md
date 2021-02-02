@@ -1,3 +1,8 @@
+## 2.24.1
+### Changes
+* Added margins to the Marker Image in the Marker List
+* Reduced size of Image Icons in the Marker List
+
 ## 2.24.0
 ### Changes
 * Added `Center Map` icon to Marker List
