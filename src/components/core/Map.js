@@ -28,6 +28,7 @@
  * SOFTWARE.
  */
 import React from 'react'
+import '@fontsource/roboto'
 
 //----------------------------------------------------------------//
 // React Leaflet Components
@@ -96,6 +97,7 @@ const Map = props => {
   //----------------------------------------------------------------//
   return (
     <LMap
+      animate={false}
       center={props.state.map.center}
       className={classes.leafletMap}
       doubleClickZoom={props.state.tool !== null ? false : true}

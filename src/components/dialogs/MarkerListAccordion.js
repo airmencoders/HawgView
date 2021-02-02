@@ -28,6 +28,8 @@
  * SOFTWARE.
  */
 import React from 'react'
+import '@fontsource/roboto'
+import ms from 'milsymbol'
 
 //----------------------------------------------------------------//
 // Material-UI Components
@@ -36,6 +38,9 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
+  Grid,
+  IconButton,
+  Tooltip,
   Typography,
 } from '@material-ui/core'
 
@@ -45,6 +50,7 @@ import {
 
 import {
   AttachFile as AttachFileIcon,
+  MyLocation as MyLocationIcon,
 } from '@material-ui/icons'
 
 //----------------------------------------------------------------//
@@ -98,35 +104,82 @@ const MarkerListAccordion = props => {
     }
   }
 
+  const centerMap = () => {
+    props.setState({
+      ...props.state,
+      dialog: {
+        anchor: null,
+        name: null,
+      },
+      focusedLatlng: {
+        latlng: props.marker.latlng,
+        source: 'marker',
+      },
+      map: {
+        ...props.state.map,
+        center: props.marker.latlng,
+      },
+    })
+  }
+
   return (
     <Accordion
-      expanded={(props.marker.data === null || props.marker.data === undefined) ? false : undefined}
+      expanded={(props.marker.data === null || props.marker.data === undefined) ? false : props.variant !== undefined && props.variant === 'print' ? true : undefined}
     >
       <AccordionSummary
-        expandIcon={(props.marker.data === null || props.marker.data === undefined) ? undefined : <AttachFileIcon />}
+        expandIcon={(props.marker.data === null || props.marker.data === undefined || props.variant === 'print') ? undefined : <AttachFileIcon />}
       >
-        <Typography className={classes.heading}>
-          {props.marker.title}
-          <em>{props.marker.iconType === 'sidc' ? ` (${getFullEchelon(props.marker.sidc)})` : props.marker.layer === 'threat' ? ` (${props.marker.sovereignty} ${props.marker.label})` : ''}</em>
-          {props.marker.layer === 'threat' ?
-            ` - Range: ${props.marker.range} ${props.marker.unit}`
-            : null
-          }
-        </Typography>
-        <Typography className={classes.secondaryHeading}>
-          {`
-            ${LatLon.parse(props.marker.latlng.lat, props.marker.latlng.lng).toUtm().toMgrs().toString()} // 
-            ${props.marker.latlng.lat.toFixed(4)}, ${props.marker.latlng.lng.toFixed(4)}
-            ${props.marker.elevation !== undefined ? ` // ${props.marker.elevation}` : ''}${props.marker.elevation === undefined || props.marker.elevation === 'Elevation not found' || props.marker.elevation === 'Pending' ? '' : ' feet'}
-          `}
-        </Typography>
+        <Grid
+          container
+          direction='row'
+          justify='space-between'
+          alignItems='center'
+        >
+          <Grid item>
+            {(props.marker.iconType === 'img' || props.marker.iconType === 'sidc') && (
+              <img
+                alt={props.marker.title}
+                src={props.marker.iconType === 'img' ? props.marker.iconUrl :
+                  new ms.Symbol(`${props.marker.sidc.scheme}${props.marker.sidc.affiliation}${props.marker.sidc.dimension}${props.marker.sidc.status}${props.marker.sidc.id}${props.marker.sidc.modifier}${props.marker.sidc.echelon}`, { size: 30 }).toDataURL()
+                }
+              />
+            )}
+            <Typography className={classes.heading}>
+              {props.marker.title}
+              <em>{props.marker.iconType === 'sidc' ? ` (${getFullEchelon(props.marker.sidc)})` : props.marker.layer === 'threat' ? ` (${props.marker.sovereignty} ${props.marker.label})` : ''}</em>
+              {props.marker.layer === 'threat' ?
+                ` - Range: ${props.marker.range} ${props.marker.unit}`
+                : null
+              }
+            </Typography>
+          </Grid>
+          <Grid item>
+            <Typography className={classes.secondaryHeading}>
+              {`
+                ${LatLon.parse(props.marker.latlng.lat, props.marker.latlng.lng).toUtm().toMgrs().toString()} // 
+                ${props.marker.latlng.lat.toFixed(4)}, ${props.marker.latlng.lng.toFixed(4)}
+                ${props.marker.elevation !== undefined ? ` // ${props.marker.elevation}` : ''}${props.marker.elevation === undefined || props.marker.elevation === 'Elevation not found' || props.marker.elevation === 'Pending' ? '' : ' feet'}
+              `}
+            </Typography>
+          </Grid>
+          {(props.variant === undefined && (
+            <Grid item>
+              <Tooltip title='Center Map'>
+                <IconButton
+                  onClick={centerMap}
+                >
+                  <MyLocationIcon />
+                </IconButton>
+              </Tooltip>
+            </Grid>
+          ))}
+        </Grid>
       </AccordionSummary>
-      {(props.marker.data !== null && props.marker.data !== undefined) ?
+      {(props.marker.data !== null && props.marker.data !== undefined) && (
         <AccordionDetails>
           {props.marker.data.type === '9line' ? render9line(props.marker.data) : render15line(props.marker.data)}
         </AccordionDetails>
-        : null
-      }
+      )}
     </Accordion>
   )
 }

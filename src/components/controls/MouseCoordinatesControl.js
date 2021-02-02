@@ -29,6 +29,7 @@
  */
 import React from 'react'
 import Control from 'react-leaflet-control'
+import '@fontsource/roboto'
 
 //----------------------------------------------------------------//
 // Material-UI Components

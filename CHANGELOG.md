@@ -1,3 +1,15 @@
+## 2.24.0
+### Changes
+* Added `Center Map` icon to Marker List
+* Removed icons from printing when printing Marker List
+* Added logic for editing a Hostile Marker that does not have an SIDC
+* Removed map `flyTo` and `animation` to increase performance
+* Migrated package `fontsource-roboto` to `@fontsource/roboto`
+* Updated Wiki `/scenario-planner/dialogs/marker-list` page
+
+### Fixes
+* Fixed issue when editing a `TGT` marker would not save due to not being MIL-STD-2525C
+
 ## 2.23.0
 ### Changes
 * Added a marker search function to the `AddMarkerDrawer` component

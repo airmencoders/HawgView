@@ -763,76 +763,94 @@ const editMarker = (history, step, payload) => {
         arty: payload.arty,
         data: payload.data,
         elevation: payload.elevation,
-        sidc: {
-          ...marker.sidc,
-          affiliation: payload.sidc.affiliation,
-          echelon: payload.sidc.echelon,
-        },
         title: payload.title,
         latlng: payload.latlng,
       }
 
-      // F === Friendly
-      // H === Hostile
-      // U === Unknown
-      // N === Neutral
-      if (payload.sidc.affiliation === 'F') {
+      if (marker.iconType === 'sidc') {
         newMarker = {
           ...newMarker,
-          layer: 'friendly',
-          data: null,
+          sidc: {
+            ...marker.sidc,
+            affiliation: payload.sidc.affiliation,
+            echelon: payload.sidc.echelon,
+          },
         }
 
-        newMarkers = [...targetHistory[step].friendlyMarkers, newMarker]
-        newMarkers.sort(compare)
-        return {
-          ...targetHistory[step],
-          action: `edit ${marker.title}`,
-          friendlyMarkers: newMarkers,
-          hostileMarkers: filteredHostileMarkers,
-        }
-      } else if (payload.sidc.affiliation === 'H') {
-        newMarkers = [...filteredHostileMarkers, newMarker]
-        newMarkers.sort(compare)
-        return {
-          ...targetHistory[step],
-          action: `edit ${marker.title}`,
-          hostileMarkers: newMarkers
-        }
-      } else if (payload.sidc.affiliation === 'U') {
-        newMarker = {
-          ...newMarker,
-          layer: 'unknown',
-          data: null,
-        }
+        // F === Friendly
+        // H === Hostile
+        // U === Unknown
+        // N === Neutral
+        if (payload.sidc.affiliation === 'F') {
+          newMarker = {
+            ...newMarker,
+            layer: 'friendly',
+            data: null,
+          }
 
-        newMarkers = [...targetHistory[step].unknownMarkers, newMarker]
-        newMarkers.sort(compare)
-        return {
-          ...targetHistory[step],
-          action: `edit ${marker.title}`,
-          hostileMarkers: filteredHostileMarkers,
-          unknownMarkers: newMarkers,
-        }
-      } else if (payload.sidc.affiliation === 'N') {
-        newMarker = {
-          ...newMarker,
-          layer: 'neutral',
-          data: null,
-        }
+          newMarkers = [...targetHistory[step].friendlyMarkers, newMarker]
+          newMarkers.sort(compare)
+          return {
+            ...targetHistory[step],
+            action: `edit ${marker.title}`,
+            friendlyMarkers: newMarkers,
+            hostileMarkers: filteredHostileMarkers,
+          }
+        } else if (payload.sidc.affiliation === 'H') {
+          newMarkers = [...filteredHostileMarkers, newMarker]
+          newMarkers.sort(compare)
+          return {
+            ...targetHistory[step],
+            action: `edit ${marker.title}`,
+            hostileMarkers: newMarkers
+          }
+        } else if (payload.sidc.affiliation === 'U') {
+          newMarker = {
+            ...newMarker,
+            layer: 'unknown',
+            data: null,
+          }
 
-        newMarkers = [...targetHistory[step].neutralMarkers, newMarker]
-        newMarkers.sort(compare)
-        return {
-          ...targetHistory[step],
-          action: `edit ${marker.title}`,
-          hostileMarkers: filteredHostileMarkers,
-          neutralMarkers: newMarkers,
+          newMarkers = [...targetHistory[step].unknownMarkers, newMarker]
+          newMarkers.sort(compare)
+          return {
+            ...targetHistory[step],
+            action: `edit ${marker.title}`,
+            hostileMarkers: filteredHostileMarkers,
+            unknownMarkers: newMarkers,
+          }
+        } else if (payload.sidc.affiliation === 'N') {
+          newMarker = {
+            ...newMarker,
+            layer: 'neutral',
+            data: null,
+          }
+
+          newMarkers = [...targetHistory[step].neutralMarkers, newMarker]
+          newMarkers.sort(compare)
+          return {
+            ...targetHistory[step],
+            action: `edit ${marker.title}`,
+            hostileMarkers: filteredHostileMarkers,
+            neutralMarkers: newMarkers,
+          }
+        } else {
+          console.error(`Error: Invalid Affiliation (${payload.sidc.affiliation})`)
+          return false
         }
       } else {
-        console.error(`Error: Invalid Affiliation (${payload.sidc.affiliation})`)
-        return false
+
+        newMarkers = [...filteredHostileMarkers, newMarker]
+        newMarkers.sort(compare)
+
+        return {
+          ...targetHistory[step],
+          action: `edit ${marker.title}`,
+          hostileMarkers: newMarkers,
+        }
       }
+
+
     case 'unknown':
       filteredUnknownMarkers = targetHistory[step].unknownMarkers.filter(currentMarker => currentMarker.id !== marker.id)
       newMarker = {

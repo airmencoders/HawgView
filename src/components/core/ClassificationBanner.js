@@ -28,7 +28,7 @@
  * SOFTWARE.
  */
 import React from 'react'
-import 'fontsource-roboto'
+import '@fontsource/roboto'
 
 //----------------------------------------------------------------//
 // Material-UI Components

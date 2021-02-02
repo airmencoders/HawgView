@@ -30,6 +30,7 @@
  * SOFTWARE.
  */
 import React from 'react'
+import '@fontsource/roboto'
 import L from 'leaflet'
 
 //----------------------------------------------------------------//

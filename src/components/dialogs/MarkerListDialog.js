@@ -28,6 +28,7 @@
  * SOFTWARE.
  */
 import React from 'react'
+import '@fontsource/roboto'
 
 //----------------------------------------------------------------//
 // Material-UI Components
@@ -179,6 +180,8 @@ const MarkerListDialog = (props) => {
                 <MarkerListAccordion
                   key={`friendly-marker-${marker.id}`}
                   marker={marker}
+                  state={props.state}
+                  setState={props.setState}
                 />
               ))}
             </TabPanel>
@@ -191,6 +194,8 @@ const MarkerListDialog = (props) => {
                 <MarkerListAccordion
                   key={`hostile-marker-${marker.id}`}
                   marker={marker}
+                  state={props.state}
+                  setState={props.setState}
                 />
               ))}
             </TabPanel>
@@ -203,6 +208,8 @@ const MarkerListDialog = (props) => {
                 <MarkerListAccordion
                   key={`unknown-marker-${marker.id}`}
                   marker={marker}
+                  state={props.state}
+                  setState={props.setState}
                 />
               ))}
             </TabPanel>
@@ -215,6 +222,8 @@ const MarkerListDialog = (props) => {
                 <MarkerListAccordion
                   key={`neutral-marker-${marker.id}`}
                   marker={marker}
+                  state={props.state}
+                  setState={props.setState}
                 />
               ))}
             </TabPanel>
@@ -227,6 +236,8 @@ const MarkerListDialog = (props) => {
                 <MarkerListAccordion
                   key={`survivor-${marker.id}`}
                   marker={marker}
+                  state={props.state}
+                  setState={props.setState}
                 />
               ))}
             </TabPanel>
@@ -239,6 +250,8 @@ const MarkerListDialog = (props) => {
                 <MarkerListAccordion
                   key={`threat-marker-${marker.id}`}
                   marker={marker}
+                  state={props.state}
+                  setState={props.setState}
                 />
               ))}
             </TabPanel>
@@ -251,6 +264,8 @@ const MarkerListDialog = (props) => {
                 <MarkerListAccordion
                   key={`ip-marker-${marker.id}`}
                   marker={marker}
+                  state={props.state}
+                  setState={props.setState}
                 />
               ))}
             </TabPanel>
@@ -263,6 +278,8 @@ const MarkerListDialog = (props) => {
                 <MarkerListAccordion
                   key={`bullseye-${marker.id}`}
                   marker={marker}
+                  state={props.state}
+                  setState={props.setState}
                 />
               ))}
             </TabPanel>
@@ -275,6 +292,8 @@ const MarkerListDialog = (props) => {
                 <MarkerListAccordion
                   key={`building-label-${marker.id}`}
                   marker={marker}
+                  state={props.state}
+                  setState={props.setState}
                 />
               ))}
             </TabPanel>
@@ -287,6 +306,8 @@ const MarkerListDialog = (props) => {
                 <MarkerListAccordion
                   key={`kinetic-point-${marker.id}`}
                   marker={marker}
+                  state={props.state}
+                  setState={props.setState}
                 />
               ))}
             </TabPanel>
@@ -306,6 +327,7 @@ const MarkerListDialog = (props) => {
                 <MarkerListAccordion
                   key={`print-friendly-marker-${marker.id}`}
                   marker={marker}
+                  variant='print'
                 />
               ))}
             </Grid>
@@ -315,6 +337,7 @@ const MarkerListDialog = (props) => {
                 <MarkerListAccordion
                   key={`print-hostile-marker-${marker.id}`}
                   marker={marker}
+                  variant='print'
                 />
               ))}
             </Grid>
@@ -324,6 +347,7 @@ const MarkerListDialog = (props) => {
                 <MarkerListAccordion
                   key={`print-unknown-marker-${marker.id}`}
                   marker={marker}
+                  variant='print'
                 />
               ))}
             </Grid>
@@ -333,6 +357,7 @@ const MarkerListDialog = (props) => {
                 <MarkerListAccordion
                   key={`print-neutral-marker-${marker.id}`}
                   marker={marker}
+                  variant='print'
                 />
               ))}
             </Grid>
@@ -342,6 +367,7 @@ const MarkerListDialog = (props) => {
                 <MarkerListAccordion
                   key={`print-survivor-${marker.id}`}
                   marker={marker}
+                  variant='print'
                 />
               ))}
             </Grid>
@@ -351,6 +377,7 @@ const MarkerListDialog = (props) => {
                 <MarkerListAccordion
                   key={`print-threat-marker-${marker.id}`}
                   marker={marker}
+                  variant='print'
                 />
               ))}
             </Grid>
@@ -360,6 +387,7 @@ const MarkerListDialog = (props) => {
                 <MarkerListAccordion
                   key={`print-initial-contact-point-${marker.id}`}
                   marker={marker}
+                  variant='print'
                 />
               ))}
             </Grid>
@@ -369,6 +397,7 @@ const MarkerListDialog = (props) => {
                 <MarkerListAccordion
                   key={`print-bullseye-${marker.id}`}
                   marker={marker}
+                  variant='print'
                 />
               ))}
             </Grid>
@@ -378,6 +407,7 @@ const MarkerListDialog = (props) => {
                 <MarkerListAccordion
                   key={`print-building-label-${marker.id}`}
                   marker={marker}
+                  variant='print'
                 />
               ))}
             </Grid>
@@ -387,6 +417,7 @@ const MarkerListDialog = (props) => {
                 <MarkerListAccordion
                   key={`print-kinetic-point-${marker.id}`}
                   marker={marker}
+                  variant='print'
                 />
               ))}
             </Grid>

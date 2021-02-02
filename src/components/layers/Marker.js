@@ -28,6 +28,7 @@
  * SOFTWARE.
  */
 import React from 'react'
+import '@fontsource/roboto'
 import L from 'leaflet'
 import ms from 'milsymbol'
 

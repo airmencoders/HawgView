@@ -31,6 +31,7 @@
  * https://www.manongdao.com/article-2180787.html - How to extend Leaflet-Ellipse in React
  */
 import L from 'leaflet'
+import '@fontsource/roboto'
 import 'leaflet-ellipse'
 
 //----------------------------------------------------------------//

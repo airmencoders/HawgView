@@ -28,6 +28,7 @@
  * SOFTWARE.
  */
 import React from 'react'
+import '@fontsource/roboto'
 
 //----------------------------------------------------------------//
 // Material-UI Components
@@ -111,7 +112,7 @@ const CoordInput = props => {
       console.error(`Error: Invalid coordinates {${inputValue}}`)
       props.submit(false)
     } else {
-      props.map.flyTo([latlng.lat, latlng.lon], 10)
+      props.map.panTo([latlng.lat, latlng.lon], 10)
       props.submit({ lat: latlng.lat, lng: latlng.lon })
       setInputValue('')
     }

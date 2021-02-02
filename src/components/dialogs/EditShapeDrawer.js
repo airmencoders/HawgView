@@ -28,7 +28,10 @@
  * SOFTWARE.
  */
 import React from 'react'
-import { SketchPicker as ColorPicker } from 'react-color'
+import '@fontsource/roboto'
+import { 
+  SketchPicker as ColorPicker 
+} from 'react-color'
 
 //----------------------------------------------------------------//
 // Material-UI Components
