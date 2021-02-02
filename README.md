@@ -1,36 +1,25 @@
 # Hawg View
-Hawg View as written by Porkins and Airmen Coders is a personal project since 2018 to recreate and improve on the previous Hawg View as written by Neo.
-Since the previous Hawg View was taken down from the web, I have since created Hawg Ops (Written in a `LAMP` stack).
-In order to take advantage of emerging technology as well as have greater tools for operators, it is being remade with a `MERN` stack for hosting by Platform One.
+Hawg View started out as a product by an A-10 pilot named Neo. It had become the de-facto mission planning product for A-10 drivers across the world.
+However, the project died when Google changed how it charged for the Google Maps API.
 
-Ultimately, Hawg View is an in depth CAS Scenario Mission Planner for use for the CAF. Pilots, Intel, and Tactical Air Control Parties can create scenarios, Grid Reference Graphics (GRGs), Concept of Operations (CONOPs), IP Run cards, and more. Additionally, users can easily share and collaborate on mission planning, greatly shortening the amount of time needed to plan out any sortie, from CT to a full increased threat upgrade.
+Since then, Hawg Ops was created by Porkins in 2018 as a way to recreate and improve on Neo's project.
+Merging with Airmen Coders in 2020, I changed from PHP to React as the primary language for the site.
 
-View the [https://wiki.hawg-ops.com](https://wiki.hawg-ops.com) for instructions and tips on how to navigate and use the application.
+Ultimately, Hawg View is an in depth CAS Scenario Mission Planner for use for the CAF. Pilots, Intel, and Tactical Air Control Parties can create scenarios, Grid Reference Graphics (GRGs), Concept of Operations (CONOPs), IP Run cards, and more. 
+Users can easily share and collaborate on mission planning, greatly shortening the amount of time needed to plan out any sortie, from CT to a full increased threat upgrade.
+
+## Wiki
+View the wiki at [https://wiki.hawg-ops.com](https://wiki.hawg-ops.com) for instructions and tips on how to navigate and use the application.
 
 ## Building and Running development environment
 ### Requirements
 Ensure the latest version of `npm` and `Node.js` is installed
+`package.json` specifies the `PORT` as `3100`
 
-### Steps
 Clone the Repository
 ```bash
 git clone https://github.com/airmencoders/hawgview.git
-```
-
-Run the install script
-```bash
 npm install
-```
-
-NOTE: Depending on the last time of compiling code and updating dependencies, NPM may warn you of required fixes
-```bash
-npm audit fix
-```
-
-#### Linux
-`package.json` specifies the `PORT` as `3100`
-```bash
-cd /projectLocation
 npm run start
 ```
 

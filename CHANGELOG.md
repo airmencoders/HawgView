@@ -6,6 +6,7 @@
 * Removed map `flyTo` and `animation` to increase performance
 * Migrated package `fontsource-roboto` to `@fontsource/roboto`
 * Updated Wiki `/scenario-planner/dialogs/marker-list` page
+* Updated `README.md`
 
 ### Fixes
 * Fixed issue when editing a `TGT` marker would not save due to not being MIL-STD-2525C
