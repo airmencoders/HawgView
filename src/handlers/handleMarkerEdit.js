@@ -91,6 +91,16 @@ const handleMarkerEdit = (action, payload, state, setState) => {
         step: state.step + 1,
       }
 
+      if (state.dialog.name === 'markerList') {
+        newState = {
+          ...newState,
+          dialog: {
+            anchor: null,
+            name: 'markerList',
+          },
+        }
+      }
+
       if (action === 'create') {
 
         if (payload.layer === 'circle' || payload.layer === 'rectangle' || payload.layer === 'line' || payload.layer === 'polygon' || payload.layer === 'ellipse') {

@@ -50,6 +50,8 @@ import {
 
 import {
   AttachFile as AttachFileIcon,
+  Delete as DeleteIcon,
+  Edit as EditIcon,
   MyLocation as MyLocationIcon,
 } from '@material-ui/icons'
 
@@ -72,6 +74,11 @@ import {
   render9line,
   render15line,
 } from '../../functions/renderData'
+
+//----------------------------------------------------------------//
+// Hawg View Handlers
+//----------------------------------------------------------------//
+import handleMarkerEdit from '../../handlers/handleMarkerEdit'
 
 //----------------------------------------------------------------//
 // Styles
@@ -129,6 +136,36 @@ const MarkerListAccordion = props => {
     })
   }
 
+  const editMarker = () => {
+    let newState
+
+    if (props.marker.layer === 'bullseye') {
+      newState = {
+        ...props.state,
+        dialog: {
+          anchor: null,
+          name: 'editShape',
+        },
+        focusedShape: props.marker,
+      }
+    } else {
+      newState = {
+        ...props.state,
+        dialog: {
+          anchor: null,
+          name: 'editMarker',
+        },
+        focusedMarker: props.marker,
+      }
+    }
+
+    props.setState(newState)
+  }
+
+  const deleteMarker = () => {
+    handleMarkerEdit('delete', { marker: props.marker }, props.state, props.setState)
+  }
+
   return (
     <Accordion
       expanded={(props.marker.data === null || props.marker.data === undefined) ? false : props.variant !== undefined && props.variant === 'print' ? true : undefined}
@@ -177,6 +214,22 @@ const MarkerListAccordion = props => {
                   onClick={centerMap}
                 >
                   <MyLocationIcon />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title='Edit Marker'>
+                <IconButton
+                  color='primary'
+                  onClick={editMarker}
+                >
+                  <EditIcon />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title='Delete Marker'>
+                <IconButton
+                  color='secondary'
+                  onClick={deleteMarker}
+                >
+                  <DeleteIcon />
                 </IconButton>
               </Tooltip>
             </Grid>

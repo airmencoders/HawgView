@@ -1,3 +1,8 @@
+## 2.26.0
+### Changes
+* Added `Edit` and `Delete` Icon Buttons to the `MarkerList`
+* Modified `HandleMarkerEdit` to keep the `MarkerList` open when deleting a marker
+
 ## 2.25.0
 ### Changes
 * Added Playas MOA to `CustomUnitedStatesAirspace.json`
