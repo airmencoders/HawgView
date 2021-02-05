@@ -1,3 +1,9 @@
+## 2.25.0
+### Changes
+* Added Playas MOA to `CustomUnitedStatesAirspace.json`
+* Playas is also an ATCAA but decided to leave it just as a MOA
+* Requested by Sonic (RF-Rescue)
+
 ## 2.24.1
 ### Changes
 * Added margins to the Marker Image in the Marker List

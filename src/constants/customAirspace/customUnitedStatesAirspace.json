@@ -53,6 +53,42 @@
     {
       "type": "Feature",
       "properties": {
+        "NAME": "PLAYAS MOA",
+        "TYPE_CODE": "MOA",
+        "STATE": "AZ",
+        "COUNTRY": "UNITED STATES"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -108.713333333333,
+              32.1786111111111,
+              0
+            ],
+            [
+              -108.324722222222,
+              32.1555555555556,
+              0
+            ],
+            [
+              -108.351666666667,
+              31.8255555555556,
+              0
+            ],
+            [
+              -108.740555555556,
+              31.8469444444444,
+              0
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
         "NAME": "RESERVE MOA DIVISIONS",
         "TYPE_CODE": "MOA",
         "STATE": "AZ",
