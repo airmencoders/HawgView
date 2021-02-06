@@ -1,3 +1,7 @@
+## 2.28.2
+### Fixes
+* Fixed broken image in `wiki`
+
 ## 2.28.1
 ### Changes
 * Changed switches to check boxes in dialogs and drawers as necessary to better adhere to UX guidelines

@@ -4,7 +4,7 @@
 The marker list provides an easy way to view information about all the markers that have been placed on the map.
 Users will be able to view the marker, its name, echelon size (as applicable), location (MGRS & Lat Long), elevation, and any 9-Line or 15-Line data (as applicable)
 
-![Bullseyes](/images/scenario-planner/dialogs/marker-list/marker_list_bullseye_sardot.png){: .shadowImage }
+![Marker List with anchor and sardot](/images/scenario-planner/dialogs/marker-list/marker_list_anchor_sardot.png){: .shadowImage }
 
 Bullseye markers that have been designated as the anchor point or the SARDOT will have a special icon next to the name designating them with their special role.
 
