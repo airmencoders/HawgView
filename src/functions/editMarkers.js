@@ -107,6 +107,7 @@ const clearMarkers = (history, step) => {
     history[step].neutralMarkers.length > 0 ||
     history[step].polygons.length > 0 ||
     history[step].rectangles.length > 0 ||
+    history[step].sardot.id !== null ||
     history[step].survivors.length > 0 ||
     history[step].threatMarkers.length > 0 ||
     history[step].unknownMarkers.length > 0) {
@@ -138,6 +139,12 @@ const clearMarkers = (history, step) => {
       neutralMarkers: [],
       polygons: [],
       rectangles: [],
+      sardot: {
+        declination: null,
+        id: null,
+        latlng: null,
+        name: null,
+      },
       survivors: [],
       styles: history[step].styles,
       threatMarkers: [],
@@ -849,8 +856,6 @@ const editMarker = (history, step, payload) => {
           hostileMarkers: newMarkers,
         }
       }
-
-
     case 'unknown':
       filteredUnknownMarkers = targetHistory[step].unknownMarkers.filter(currentMarker => currentMarker.id !== marker.id)
       newMarker = {
@@ -1208,6 +1213,7 @@ const editMarker = (history, step, payload) => {
       // Then we set it to null
 
       let newAnchor = null
+      let newSardot = null
 
       // This bullseye WAS the anchor
       if (marker.anchor) {
@@ -1220,9 +1226,21 @@ const editMarker = (history, step, payload) => {
         newAnchor = payload.anchor ? { declination, id: marker.id, latlng: payload.latlng, name: payload.title } : targetHistory[step].anchor
       }
 
+      // This bullseye WAS the sardot
+      if (marker.sardot) {
+        // If the marker is still the sardot, update it, otherwise, null it out
+        newSardot = payload.sardot ? { declination, id: marker.id, latlng: payload.latlng, name: payload.title } : { declination: null, id: null, latlng: null, name: null }
+      } 
+      // This bullseye was NOT the sardot
+      else {
+        // If the marker is now the sardot, set the sardot to the bullseye, otherwise keep it the same
+        newSardot = payload.sardot ? { declination, id: marker.id, latlng: payload.latlng, name: payload.title } : targetHistory[step].sardot
+      }
+
       newMarker = {
         ...marker,
         anchor: payload.anchor,
+        sardot: payload.sardot,
         color: payload.color,
         title: payload.title,
         rings: payload.rings,
@@ -1253,6 +1271,24 @@ const editMarker = (history, step, payload) => {
         newBullseyes = [newMarker]
       }
 
+      // If the user sets a non-sardot bullseye to the sardot bullseye, then we need to modify the old bullseye object
+      // If marker wasn't an anchor, but now is, and there already is a sardot...
+      if (!marker.sardot && payload.sardot && targetHistory[step].sardot.id !== null) {
+        // Get the old sardot
+        let oldSardot = targetHistory[step].bullseyes.filter(currentMarker => currentMarker.id === targetHistory[step].sardot.id)
+        // Remove the old anchor
+        filteredMarkers = filteredMarkers.filter(currentMarker => currentMarker.id !== targetHistory[step].sardot.id)
+
+        oldSardot = {
+          ...oldSardot[0],
+          sardot: false,
+        }
+
+        newBullseyes = [newMarker, oldSardot]
+      } else {
+        newBullseyes = [newMarker]
+      }
+
       newMarkers = [...filteredMarkers, ...newBullseyes]
       newMarkers.sort(compare)
 
@@ -1260,6 +1296,7 @@ const editMarker = (history, step, payload) => {
         ...targetHistory[step],
         action: `edit bullseye ${marker.title}`,
         anchor: newAnchor,
+        sardot: newSardot,
         bullseyes: newMarkers
       }
     case 'ellipse':

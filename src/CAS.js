@@ -173,6 +173,12 @@ const Cas = () => {
       neutralMarkers: [],
       polygons: [],
       rectangles: [],
+      sardot: {
+        declination: null,
+        id: null,
+        latlng: null,
+        name: null,
+      },
       survivors: [],
       styles: {
         mgrs: {

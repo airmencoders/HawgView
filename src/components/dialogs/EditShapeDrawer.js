@@ -153,6 +153,7 @@ const EditShapeDrawer = props => {
       dashed: false,
       fill: false,
       isAnchor: false,
+      isSardot: false,
       latlng: false,
       mgrsDisabled: false,
       showData: true,
@@ -251,6 +252,10 @@ const EditShapeDrawer = props => {
           isAnchor:
             props.state.focusedShape.layer === 'bullseye' &&
             props.state.focusedShape.anchor,
+          isSardot:
+            props.state.focusedShape.layer === 'bullseye' &&
+            props.state.focusedShape.sardot !== undefined &&
+            props.state.focusedShape.sardot,
           mgrsDisabled,
           showData:
             props.state.focusedShape.layer === 'bullseye' &&
@@ -363,6 +368,7 @@ const EditShapeDrawer = props => {
       payload = {
         ...payload,
         anchor: _state.switches.isAnchor,
+        sardot: _state.switches.isSardot,
         distance: isNaN(_state.bullseye.distance) ? props.state.focusedShape.distance : Number.parseFloat(_state.bullseye.distance),
         rings: isNaN(_state.bullseye.rings) ? props.state.focusedShape.rings : Number.parseInt(_state.bullseye.rings),
         angle: isNaN(_state.bullseye.angle) ? props.state.focusedShape.angle : Math.round(Number.parseFloat(_state.bullseye.angle)),
@@ -573,11 +579,38 @@ const EditShapeDrawer = props => {
                             switches: {
                               ..._state.switches,
                               isAnchor: !_state.switches.isAnchor,
+                              isSardot: false,
                             },
                           })}
                         />
                       }
                       label='Use as Anchor'
+                    />
+                  </FormGroup>
+                </Grid>
+                <Grid
+                  container
+                  direction='row'
+                  justify='center'
+                >
+                  <FormGroup>
+                    <FormControlLabel
+                      control={
+                        <Switch
+                          checked={_state.switches.isSardot}
+                          color='primary'
+                          name='isSardot'
+                          onChange={() => _setState({
+                            ..._state,
+                            switches: {
+                              ..._state.switches,
+                              isAnchor: false,
+                              isSardot: !_state.switches.isSardot,
+                            },
+                          })}
+                        />
+                      }
+                      label='Use as SARDOT'
                     />
                   </FormGroup>
                 </Grid>

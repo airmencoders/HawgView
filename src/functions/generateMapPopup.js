@@ -41,7 +41,7 @@ import { distanceAndHeading } from './mathFunctions'
 //----------------------------------------------------------------//
 // Generate Map Popup Component
 //----------------------------------------------------------------//
-const generateMapPopup = (latlng, anchor) => {
+const generateMapPopup = (latlng, anchor, sardot) => {
   const lat = Dms.parse(latlng.lat)
   const lng = Dms.parse(latlng.lng)
   //let elevation = null
@@ -70,14 +70,18 @@ const generateMapPopup = (latlng, anchor) => {
   if (anchor.id !== null) {
     fromBE = distanceAndHeading(anchor.latlng, latlng, anchor.declination)
   }
-  
 
+  let toSardot = null
+  if (sardot.id !== null) {
+    toSardot = distanceAndHeading(latlng, sardot.latlng, sardot.declination)
+  }
 
   return {
     latlng: latlngD.toString(),
     dm: `${latDM}, ${lngDM}`,
     dms: `${latDMS}, ${lngDMS}`,
     fromBE,
+    toSardot,
     mgrs,
     elevation: 'Pending',
   }

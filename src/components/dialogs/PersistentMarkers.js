@@ -102,6 +102,7 @@ const PersistentMarkers = props => {
       payload = {
         ...payload,
         anchor: props.state.history[props.state.step].anchor.id === null ? true : false,
+        sardot: false,
         rings: 5,
         distance: 20,
         angle: 45,

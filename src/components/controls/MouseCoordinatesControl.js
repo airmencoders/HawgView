@@ -70,7 +70,7 @@ const MouseCoordinatesControl = props => {
   //----------------------------------------------------------------//
   React.useEffect(() => {
     if (props.state.mouseCoords !== null) {
-      setData(generateMapPopup(props.state.mouseCoords, props.state.history[props.state.step].anchor))
+      setData(generateMapPopup(props.state.mouseCoords, props.state.history[props.state.step].anchor, props.state.history[props.state.step].sardot))
     }
   }, [props.state.mouseCoords])
 
@@ -86,17 +86,21 @@ const MouseCoordinatesControl = props => {
           <tr>
             <td>{data !== null ? data.mgrs : ''}</td>
           </tr>
-          <tr>
-            {data !== null && props.state.history[props.state.step].anchor.id !== null && data.fromBE !== null ? (
+          {data !== null && props.state.history[props.state.step].anchor.id !== null && data.fromBE !== null && (
+            <tr>
               <td>
-                {props.state.history[props.state.step].anchor.name} {Number.parseInt(data.fromBE.heading)}&deg; / {Number.parseInt(data.fromBE.nm)} NM
+                B/E {props.state.history[props.state.step].anchor.name} {Number.parseInt(data.fromBE.heading)}&deg; / {Number.parseInt(data.fromBE.nm)} NM
               </td>
-            )
-              : null
-            }
-          </tr>
+            </tr>
+          )}
+          {data !== null && props.state.history[props.state.step].sardot.id !== null && data.toSardot !== null && (
+            <tr>
+              <td>
+                SARDOT {props.state.history[props.state.step].sardot.name} {Number.parseInt(data.toSardot.heading)}&deg; / {Number.parseInt(data.toSardot.nm)} NM
+              </td>
+            </tr>
+          )}
         </tbody>
-
       </table>
     </Control>
   )

@@ -167,7 +167,7 @@ const MarkerListDialog = (props) => {
               <Tab label={`Survivors (${props.state.history[props.state.step].survivors.length})`} />
               <Tab label={`Threats (${props.state.history[props.state.step].threatMarkers.length})`} />
               <Tab label={`IP/CP/No Strikes (${props.state.history[props.state.step].initialPoints.length})`} />
-              <Tab label={`Bullseyes (${props.state.history[props.state.step].bullseyes.length})`} />
+              <Tab label={`Bullseyes/SARDOTs (${props.state.history[props.state.step].bullseyes.length})`} />
               <Tab label={`Building Labels (${props.state.history[props.state.step].buildingLabels.length})`} />
               <Tab label={`Kinetic Points (${props.state.history[props.state.step].kineticPoints.length})`} />
             </Tabs>

@@ -179,7 +179,11 @@ const Bullseye = props => {
                 opacity={0.7}
                 permanent
               >
-                {(i === 1) ? `R-${j.toString().padStart(3, '0')}/${(bullseye.distance * i).toFixed(1)}` : `${(bullseye.distance * i).toFixed(1)}`}
+                {(i === 1) ?
+                  bullseye.sardot ?
+                    `${((j + 180) % 360) === 0 ? '360' : ((j + 180) % 360).toString().padStart(3, '0')}/${(bullseye.distance * i).toFixed(1)}` :
+                    `${j.toString().padStart(3, '0')}/${(bullseye.distance * i).toFixed(1)}`
+                  : `${(bullseye.distance * i).toFixed(1)}`}
               </Tooltip>
             </Marker>
           )

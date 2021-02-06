@@ -66,16 +66,13 @@ const NotificationsDialog = props => {
       </DialogTitle>
       <DialogContent>
         <DialogContentText>
-          Airspace for German training airspaces as well has been added to the site. Additionally, airspace lines for the Barry M. Goldwater Range and Tombstone/Sells MOAs have been updated to have the internal MOA divisions in addition to the standard FAA boundaries.
+          Users can now designate a Bullseye as a SARDOT. This will also show the distance and direction "Walking to the DOT" in the Mouse Coordinates Container, Map Popups, and Marker Popups. The Marker list will also display whether or not the bullseye is designated as the Anchor or SARDOT.
+        </DialogContentText>
+        <DialogContentText>
+          Users can now edit, delete, and center the map on any marker using the Marker List.
         </DialogContentText>
         <DialogContentText>
           Be sure to check the wiki to keep up to date on new features and tips on Hawg View, to include keyboard shortcuts and alternate ways to create shapes.
-        </DialogContentText>
-        <DialogContentText>
-          Updates to the markers have been made to include more MIL-STD-2525C Markers. This should help units with creating scenarios as echelon sizes are also now included.
-        </DialogContentText>
-        <DialogContentText>
-          Support for version 1, Hawg-Ops, has ended. Users are no longer able to access version 1 for their saved scenarios. If, for some reason, you did not previously save your scenarios, you can contact me individually for assistance in obtaining your scenarios.
         </DialogContentText>
         <DialogContentText>
           Please let me know at <a href='mailto:hawg.ops@gmail.com'>hawg.ops@gmail.com</a> any feedback or requests you may have for Hawg View.

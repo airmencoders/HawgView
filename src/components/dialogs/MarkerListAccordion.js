@@ -81,6 +81,16 @@ import {
 import handleMarkerEdit from '../../handlers/handleMarkerEdit'
 
 //----------------------------------------------------------------//
+// Iconify Components
+//----------------------------------------------------------------//
+import {
+  Icon,
+} from '@iconify/react'
+
+import anchorIcon from '@iconify-icons/mdi/anchor'
+import bullseyeIcon from '@iconify-icons/mdi/bullseye'
+
+//----------------------------------------------------------------//
 // Styles
 //----------------------------------------------------------------//
 const useStyles = makeStyles(theme => ({
@@ -180,15 +190,44 @@ const MarkerListAccordion = props => {
           alignItems='center'
         >
           <Grid item>
-            {(props.marker.iconType === 'img' || props.marker.iconType === 'sidc') && (
-              <img
-                alt={props.marker.title}
-                className={props.marker.iconType === 'img' ? classes.markerImage : classes.marginsSm}
-                src={props.marker.iconType === 'img' ? props.marker.iconUrl :
-                  new ms.Symbol(`${props.marker.sidc.scheme}${props.marker.sidc.affiliation}${props.marker.sidc.dimension}${props.marker.sidc.status}${props.marker.sidc.id}${props.marker.sidc.modifier}${props.marker.sidc.echelon}`, { size: 30 }).toDataURL()
-                }
-              />
-            )}
+            <Grid
+              container
+              direction='row'
+              justify='flex-start'
+              alignItems='center'
+            >
+              <Grid item>
+                {(props.marker.iconType === 'img' || props.marker.iconType === 'sidc') && (
+                  <img
+                    alt={props.marker.title}
+                    className={props.marker.iconType === 'img' ? classes.markerImage : classes.marginsSm}
+                    src={props.marker.layer === 'bullseye' ? '/static/media/bullseye.fde988a3.svg' : props.marker.iconType === 'img' ? props.marker.iconUrl :
+                      new ms.Symbol(`${props.marker.sidc.scheme}${props.marker.sidc.affiliation}${props.marker.sidc.dimension}${props.marker.sidc.status}${props.marker.sidc.id}${props.marker.sidc.modifier}${props.marker.sidc.echelon}`, { size: 30 }).toDataURL()
+                    }
+                  />
+                )}
+              </Grid>
+              {(props.marker.layer === 'bullseye' && props.marker.anchor) && (
+                <Tooltip title='This is the current anchor point'>
+                  <Grid item>
+                    <Icon
+                      icon={anchorIcon}
+                      width='30px'
+                    />
+                  </Grid>
+                </Tooltip>
+              )}
+              {(props.marker.layer === 'bullseye' && props.marker.sardot) && (
+                <Tooltip title='This is the current SARDOT'>
+                  <Grid item>
+                    <Icon
+                      icon={bullseyeIcon}
+                      width='30px'
+                    />
+                  </Grid>
+                </Tooltip>
+              )}
+            </Grid>
             <Typography className={classes.heading}>
               {props.marker.title}
               <em>{props.marker.iconType === 'sidc' ? ` (${getFullEchelon(props.marker.sidc)})` : props.marker.layer === 'threat' ? ` (${props.marker.sovereignty} ${props.marker.label})` : ''}</em>

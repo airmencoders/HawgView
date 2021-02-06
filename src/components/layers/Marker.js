@@ -73,7 +73,8 @@ import {
   render9line,
   render15line,
 } from '../../functions/renderData'
-import { distanceAndHeading } from '../../functions/mathFunctions'
+
+import generateMapPopup from '../../functions/generateMapPopup'
 
 //----------------------------------------------------------------//
 // Hawg View Handlers
@@ -122,7 +123,7 @@ const Marker = props => {
   const classes = useStyles()
 
   const getAffiliation = affiliation => {
-    switch(affiliation) {
+    switch (affiliation) {
       case 'F':
         return 'Friendly'
       case 'H':
@@ -196,40 +197,37 @@ const Marker = props => {
       position = `${marker.latlng.lat.toFixed(4)}, ${marker.latlng.lng.toFixed(4)}`
     }
 
-    let fromBE = null
-    if (props.state.history[props.state.step].anchor.id !== null) {
-      fromBE = distanceAndHeading(
-        props.state.history[props.state.step].anchor.latlng,
-        marker.latlng,
-        props.state.history[props.state.step].anchor.declination
-      )
-    }
+    let data = generateMapPopup(marker.latlng, props.state.history[props.state.step].anchor, props.state.history[props.state.step].sardot)
+
     return (
       <table>
         <tbody>
-          {marker.iconType === 'sidc' ? 
-          <tr>
-            <td>{getAffiliation(marker.sidc.affiliation)}</td>
-          </tr>
-          : null}
+          {marker.iconType === 'sidc' ?
+            <tr>
+              <td>{getAffiliation(marker.sidc.affiliation)}</td>
+            </tr>
+            : null}
           <tr>
             <td>{marker.title}</td>
           </tr>
-          {marker.iconType === 'sidc' ? 
-          <tr>
-            <td>{getEchelon(marker.sidc.echelon)}</td>  
-          </tr>
-          : null}
+          {marker.iconType === 'sidc' ?
+            <tr>
+              <td>{getEchelon(marker.sidc.echelon)}</td>
+            </tr>
+            : null}
           <tr>
             <td>{position}</td>
           </tr>
-          {fromBE !== null ? (
+          {data.fromBE !== null && (
             <tr>
-              <td>{props.state.history[props.state.step].anchor.name} {Number.parseInt(fromBE.heading)}&deg; / {Number.parseInt(fromBE.nm)} NM</td>
+              <td>B/E {props.state.history[props.state.step].anchor.name} {Number.parseInt(data.fromBE.heading)}&deg; / {Number.parseInt(data.fromBE.nm)} NM</td>
             </tr>
-          )
-            :
-            null}
+          )}
+          {data.toSardot !== null && (
+            <tr>
+              <td>SARDOT {props.state.history[props.state.step].sardot.name} {Number.parseInt(data.toSardot.heading)}&deg; / {Number.parseInt(data.toSardot.nm)} NM</td>
+            </tr>
+          )}
           <tr>
             <td>{marker.elevation !== 'Pending' && marker.elevation !== 'Elevation not found' ? `${marker.elevation} feet` : 'No elevation'} </td>
           </tr>
@@ -310,10 +308,10 @@ const Marker = props => {
       <RLMarker
         draggable={props.state.tool === null}
         icon={props.marker.iconType === 'sidc' ?
-            L.icon({
-              iconUrl: new ms.Symbol(`${props.marker.sidc.scheme}${props.marker.sidc.affiliation}${props.marker.sidc.dimension}${props.marker.sidc.status}${props.marker.sidc.id}${props.marker.sidc.modifier}${props.marker.sidc.echelon}`, { size: 50}).toDataURL(),
-              iconSize: [computedSize, computedSize]
-            })
+          L.icon({
+            iconUrl: new ms.Symbol(`${props.marker.sidc.scheme}${props.marker.sidc.affiliation}${props.marker.sidc.dimension}${props.marker.sidc.status}${props.marker.sidc.id}${props.marker.sidc.modifier}${props.marker.sidc.echelon}`, { size: 50 }).toDataURL(),
+            iconSize: [computedSize, computedSize]
+          })
           : props.marker.iconType === 'img' ?
             L.icon({
               iconUrl: props.marker.iconUrl,

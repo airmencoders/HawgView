@@ -224,6 +224,12 @@ const handleLoadScenario = (data, state, setState, toast) => {
       mapLabels: json.data.mapLabels !== undefined ? json.data.mapLabels : [],
       neutralMarkers: json.data.neutralMarkers !== undefined ? json.data.neutralMarkers : [],
       polygons: json.data.polygons !== undefined ? json.data.polygons : [],
+      sardot: json.data.sardot !== undefined ? json.data.sardot : {
+        declination: null,
+        id: null,
+        latlng: null,
+        name: null,
+      },
       survivors: json.data.survivors !== undefined ? json.data.survivors : [],
       styles: json.data.styles !== undefined ? json.data.styles : {
         mgrs: {

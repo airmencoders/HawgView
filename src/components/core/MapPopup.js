@@ -108,11 +108,11 @@ const Popup = props => {
     ) {
 
       setPopup({
-        ...generateMapPopup(props.state.focusedLatlng.latlng, props.state.history[props.state.step].anchor),
+        ...generateMapPopup(props.state.focusedLatlng.latlng, props.state.history[props.state.step].anchor, props.state.history[props.state.step].sardot),
         elevation: props.state.elevation
       })
     }
-  }, [props.state.history[props.state.step].anchor, props.state.elevation, props.state.focusedLatlng])
+  }, [props.state.history[props.state.step].anchor, props.state.history[props.state.step].sardot, props.state.elevation, props.state.focusedLatlng])
 
   //----------------------------------------------------------------//
   // Logic
@@ -149,14 +149,18 @@ const Popup = props => {
               <td className={classes.popupCell}>D M S</td>
               <td className={classes.popupCell}>{popup.dms}</td>
             </tr>
-            {popup.fromBE !== null ? (
+            {popup.fromBE !== null && (
               <tr>
-                <td className={classes.popupCell}>{props.state.history[props.state.step].anchor.name}</td>
+                <td className={classes.popupCell}>B/E {props.state.history[props.state.step].anchor.name}</td>
                 <td className={classes.popupCell}>{Number.parseInt(popup.fromBE.heading)}&deg; / {Number.parseInt(popup.fromBE.nm)} NM</td>
               </tr>
-            )
-              :
-              null}
+            )}
+            {popup.toSardot !== null && (
+              <tr>
+                <td className={classes.popupCell}>SARDOT {props.state.history[props.state.step].sardot.name}</td>
+                <td className={classes.popupCell}>{Number.parseInt(popup.toSardot.heading)}&deg; / {Number.parseInt(popup.toSardot.nm)} NM</td>
+              </tr>
+            )}
             <tr>
               <td className={classes.popupCell}>Elevation</td>
               <td className={classes.popupCell}>{`${popup.elevation} ${(popup.elevation === 'Pending' || popup.elevation === 'Elevation not found') ? '' : 'feet'}`} </td>

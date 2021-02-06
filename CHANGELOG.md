@@ -1,3 +1,13 @@
+## 2.27.0
+### Changes
+* Added `SARDOT` to the history object
+* Modified `save` and `load` functions to handle SARDOTs
+* Added `SARDOT` support to `editShapeDrawer`
+* Added `Anchor` and `SARDOT` icons to the Marker list to identify the current anchor and SARDOT
+* Added `SARDOT` to the various popups and mouse coordinates controls
+* Updated from `@iconify/icons-mdi` to `@iconify-icons/mdi`
+* Updated notifications dialog with new information
+
 ## 2.26.0
 ### Changes
 * Added `Edit` and `Delete` Icon Buttons to the `MarkerList`
