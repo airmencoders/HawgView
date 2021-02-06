@@ -39,6 +39,7 @@ import {
 import {
   Button,
   CardMedia,
+  Checkbox,
   Drawer,
   FormControl,
   FormControlLabel,
@@ -149,7 +150,7 @@ const EditShapeDrawer = props => {
       lng: '',
       mgrs: '',
     },
-    switches: {
+    checkboxes: {
       dashed: false,
       fill: false,
       isAnchor: false,
@@ -246,7 +247,7 @@ const EditShapeDrawer = props => {
                 '',
           mgrs: mgrsDisabled ? '' : position,
         },
-        switches: {
+        checkboxes: {
           dashed: props.state.focusedShape.dashArray === null ? false : true,
           fill: props.state.focusedShape.fillColor === null ? false : true,
           isAnchor:
@@ -315,20 +316,20 @@ const EditShapeDrawer = props => {
     if (props.state.focusedShape.layer !== 'bullseye') {
       payload = {
         ...payload,
-        dashArray: _state.switches.dashed ? _state.dashArray : null,
+        dashArray: _state.checkboxes.dashed ? _state.dashArray : null,
       }
     }
 
     if (props.state.focusedShape.layer !== 'line' && props.state.focusedShape.layer !== 'bullseye') {
       payload = {
         ...payload,
-        fillColor: _state.switches.fill ? _state.color.fillColor : null,
+        fillColor: _state.checkboxes.fill ? _state.color.fillColor : null,
       }
     }
 
     if (props.state.focusedShape.layer === 'circle' || props.state.focusedShape.layer === 'ellipse' || props.state.focusedShape.layer === 'bullseye') {
       let target = false
-      if (_state.switches.latlng) {
+      if (_state.checkboxes.latlng) {
         target = submitCoordInput(_state.location.lat + ', ' + _state.location.lng)
       } else {
         target = submitCoordInput(_state.location.mgrs.toUpperCase())
@@ -367,12 +368,12 @@ const EditShapeDrawer = props => {
     if (props.state.focusedShape.layer === 'bullseye') {
       payload = {
         ...payload,
-        anchor: _state.switches.isAnchor,
-        sardot: _state.switches.isSardot,
+        anchor: _state.checkboxes.isAnchor,
+        sardot: _state.checkboxes.isSardot,
         distance: isNaN(_state.bullseye.distance) ? props.state.focusedShape.distance : Number.parseFloat(_state.bullseye.distance),
         rings: isNaN(_state.bullseye.rings) ? props.state.focusedShape.rings : Number.parseInt(_state.bullseye.rings),
         angle: isNaN(_state.bullseye.angle) ? props.state.focusedShape.angle : Math.round(Number.parseFloat(_state.bullseye.angle)),
-        showData: _state.switches.showData,
+        showData: _state.checkboxes.showData,
       }
     }
 
@@ -432,15 +433,15 @@ const EditShapeDrawer = props => {
                     <FormControlLabel
                       control={
                         <Switch
-                          checked={_state.switches.latlng}
+                          checked={_state.checkboxes.latlng}
                           color='primary'
-                          disabled={_state.switches.mgrsDisabled}
-                          name='Lat Long'
+                          disabled={_state.checkboxes.mgrsDisabled}
+                          name='latLng'
                           onChange={() => _setState({
                             ..._state,
-                            switches: {
-                              ..._state.switches,
-                              latlng: !_state.switches.latlng,
+                            checkboxes: {
+                              ..._state.checkboxes,
+                              latlng: !_state.checkboxes.latlng,
                             },
                           })}
                         />
@@ -449,7 +450,7 @@ const EditShapeDrawer = props => {
                     />
                   </FormGroup>
                 </Grid>
-                {_state.switches.latlng ?
+                {_state.checkboxes.latlng ?
                   <React.Fragment>
                     <TextField
                       className={classes.textField}
@@ -545,15 +546,15 @@ const EditShapeDrawer = props => {
                   <FormGroup>
                     <FormControlLabel
                       control={
-                        <Switch
-                          checked={_state.switches.showData}
+                        <Checkbox
+                          checked={_state.checkboxes.showData}
                           color='primary'
                           name='showData'
                           onChange={() => _setState({
                             ..._state,
-                            switches: {
-                              ..._state.switches,
-                              showData: !_state.switches.showData,
+                            checkboxes: {
+                              ..._state.checkboxes,
+                              showData: !_state.checkboxes.showData,
                             },
                           })}
                         />
@@ -570,15 +571,15 @@ const EditShapeDrawer = props => {
                   <FormGroup>
                     <FormControlLabel
                       control={
-                        <Switch
-                          checked={_state.switches.isAnchor}
+                        <Checkbox
+                          checked={_state.checkboxes.isAnchor}
                           color='primary'
                           name='isAnchor'
                           onChange={() => _setState({
                             ..._state,
-                            switches: {
-                              ..._state.switches,
-                              isAnchor: !_state.switches.isAnchor,
+                            checkboxes: {
+                              ..._state.checkboxes,
+                              isAnchor: !_state.checkboxes.isAnchor,
                               isSardot: false,
                             },
                           })}
@@ -596,16 +597,16 @@ const EditShapeDrawer = props => {
                   <FormGroup>
                     <FormControlLabel
                       control={
-                        <Switch
-                          checked={_state.switches.isSardot}
+                        <Checkbox
+                          checked={_state.checkboxes.isSardot}
                           color='primary'
                           name='isSardot'
                           onChange={() => _setState({
                             ..._state,
-                            switches: {
-                              ..._state.switches,
+                            checkboxes: {
+                              ..._state.checkboxes,
                               isAnchor: false,
-                              isSardot: !_state.switches.isSardot,
+                              isSardot: !_state.checkboxes.isSardot,
                             },
                           })}
                         />
@@ -735,14 +736,14 @@ const EditShapeDrawer = props => {
                 <FormControlLabel
                   control={
                     <Switch
-                      checked={_state.switches.fill}
+                      checked={_state.checkboxes.fill}
                       color='primary'
                       name='fill'
                       onChange={() => _setState({
                         ..._state,
-                        switches: {
-                          ..._state.switches,
-                          fill: !_state.switches.fill,
+                        checkboxes: {
+                          ..._state.checkboxes,
+                          fill: !_state.checkboxes.fill,
                         },
                       })}
                     />
@@ -750,7 +751,7 @@ const EditShapeDrawer = props => {
                   label='Fill'
                 />
               </FormGroup>
-              {_state.switches.fill ?
+              {_state.checkboxes.fill ?
                 <Grid
                   container
                   direction='row'
@@ -787,14 +788,14 @@ const EditShapeDrawer = props => {
                 <FormControlLabel
                   control={
                     <Switch
-                      checked={_state.switches.dashed}
+                      checked={_state.checkboxes.dashed}
                       color='primary'
                       name='dashed'
                       onChange={() => _setState({
                         ..._state,
-                        switches: {
-                          ..._state.switches,
-                          dashed: !_state.switches.dashed,
+                        checkboxes: {
+                          ..._state.checkboxes,
+                          dashed: !_state.checkboxes.dashed,
                         },
                       })}
                     />
@@ -802,7 +803,7 @@ const EditShapeDrawer = props => {
                   label='Dashed'
                 />
               </FormGroup>
-              {_state.switches.dashed &&
+              {_state.checkboxes.dashed &&
                 (
                   <Grid
                     container

@@ -38,6 +38,7 @@ import {
 //----------------------------------------------------------------//
 import {
   Button,
+  Checkbox,
   Drawer,
   FormControl,
   FormControlLabel,
@@ -842,7 +843,7 @@ const EditMarkerDrawer = props => {
               <FormGroup>
                 <FormControlLabel
                   control={
-                    <Switch
+                    <Checkbox
                       checked={_state.switches.displayArty}
                       color='primary'
                       name='Display PAA'

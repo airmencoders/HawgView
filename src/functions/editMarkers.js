@@ -1208,9 +1208,7 @@ const editMarker = (history, step, payload) => {
       filteredMarkers = targetHistory[step].bullseyes.filter(currentMarker => currentMarker.id !== marker.id)
       let declination = getDeclination(payload.latlng)
 
-      // This can be a weird one
-      // There is a chance that this is the anchor point and if the user then turns off the anchor point
-      // Then we set it to null
+      // There is a chance that this is the anchor point and if the user then turns off the anchor point, then we set it to null
 
       let newAnchor = null
       let newSardot = null
@@ -1230,7 +1228,7 @@ const editMarker = (history, step, payload) => {
       if (marker.sardot) {
         // If the marker is still the sardot, update it, otherwise, null it out
         newSardot = payload.sardot ? { declination, id: marker.id, latlng: payload.latlng, name: payload.title } : { declination: null, id: null, latlng: null, name: null }
-      } 
+      }
       // This bullseye was NOT the sardot
       else {
         // If the marker is now the sardot, set the sardot to the bullseye, otherwise keep it the same
@@ -1256,6 +1254,7 @@ const editMarker = (history, step, payload) => {
       let newBullseyes
       // If marker wasn't an anchor, but now is, and there already is an anchor...
       if (!marker.anchor && payload.anchor && targetHistory[step].anchor.id !== null) {
+
         // Get the old anchor
         let oldAnchor = targetHistory[step].bullseyes.filter(currentMarker => currentMarker.id === targetHistory[step].anchor.id)
         // Remove the old anchor
@@ -1265,15 +1264,11 @@ const editMarker = (history, step, payload) => {
           ...oldAnchor[0],
           anchor: false,
         }
-
         newBullseyes = [newMarker, oldAnchor]
-      } else {
-        newBullseyes = [newMarker]
-      }
-
+      } 
       // If the user sets a non-sardot bullseye to the sardot bullseye, then we need to modify the old bullseye object
       // If marker wasn't an anchor, but now is, and there already is a sardot...
-      if (!marker.sardot && payload.sardot && targetHistory[step].sardot.id !== null) {
+      else if (!marker.sardot && payload.sardot && targetHistory[step].sardot.id !== null) {
         // Get the old sardot
         let oldSardot = targetHistory[step].bullseyes.filter(currentMarker => currentMarker.id === targetHistory[step].sardot.id)
         // Remove the old anchor

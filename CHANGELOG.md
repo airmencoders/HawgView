@@ -1,3 +1,10 @@
+## 2.28.1
+### Changes
+* Changed switches to check boxes in dialogs and drawers as necessary to better adhere to UX guidelines
+
+### Fixes
+* Fixed error when designating a bullseye as an `anchor point` which would then remove the old anchor from the history
+
 ## 2.28.0
 ### Changes
 * Changed tooltip text in `MarkerAccordion` component
