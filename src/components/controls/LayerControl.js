@@ -166,7 +166,7 @@ const LayerControl = props => {
       <Overlay checked name='Friendly Markers'>
         <LayerGroup>
           {props.state.history[props.state.step].friendlyMarkers.map(marker => (
-            <Marker
+            <Marker              
               key={`${marker.layer}-${marker.title}-${marker.id}`}
               marker={marker}
               setState={props.setState}
@@ -178,7 +178,7 @@ const LayerControl = props => {
       <Overlay checked name='Hostile Markers'>
         <LayerGroup>
           {props.state.history[props.state.step].hostileMarkers.map(marker => (
-            <Marker
+            <Marker              
               key={`${marker.layer}-${marker.title}-${marker.id}`}
               marker={marker}
               setState={props.setState}
@@ -190,7 +190,7 @@ const LayerControl = props => {
       <Overlay checked name='Unknown Markers'>
         <LayerGroup>
           {props.state.history[props.state.step].unknownMarkers.map(marker => (
-            <Marker
+            <Marker              
               key={`${marker.layer}-${marker.title}-${marker.id}`}
               marker={marker}
               setState={props.setState}
@@ -202,7 +202,7 @@ const LayerControl = props => {
       <Overlay checked name='Neutral Markers'>
         <LayerGroup>
           {props.state.history[props.state.step].neutralMarkers.map(marker => (
-            <Marker
+            <Marker              
               key={`${marker.layer}-${marker.title}-${marker.id}`}
               marker={marker}
               setState={props.setState}
@@ -226,7 +226,7 @@ const LayerControl = props => {
       <Overlay checked name='Survivors'>
         <LayerGroup>
           {props.state.history[props.state.step].survivors.map(marker => (
-            <Marker
+            <Marker              
               key={`${marker.layer}-${marker.title}-${marker.id}`}
               marker={marker}
               setState={props.setState}
@@ -238,7 +238,7 @@ const LayerControl = props => {
       <Overlay checked name='IPs/CPs'>
         <LayerGroup>
           {props.state.history[props.state.step].initialPoints.map(marker => (
-            <Marker
+            <Marker              
               key={`${marker.layer}-${marker.title}-${marker.id}`}
               marker={marker}
               setState={props.setState}
@@ -250,7 +250,7 @@ const LayerControl = props => {
       <Overlay checked name='Building Labels'>
         <LayerGroup>
           {props.state.history[props.state.step].buildingLabels.map(marker => (
-            <Marker
+            <Marker              
               key={`${marker.layer}-${marker.title}-${marker.id}`}
               marker={marker}
               setState={props.setState}
@@ -262,7 +262,7 @@ const LayerControl = props => {
       <Overlay checked name='Kinetic Points'>
         <LayerGroup>
           {props.state.history[props.state.step].kineticPoints.map(marker => (
-            <Marker
+            <Marker              
               key={`${marker.layer}-${marker.title}-${marker.id}`}
               marker={marker}
               setState={props.setState}
@@ -274,7 +274,7 @@ const LayerControl = props => {
       <Overlay checked name='Map Labels'>
         <LayerGroup>
           {props.state.history[props.state.step].mapLabels.map(marker => (
-            <Marker
+            <Marker              
               key={`${marker.layer}-${marker.title}-${marker.id}`}
               marker={marker}
               setState={props.setState}
@@ -344,7 +344,7 @@ const LayerControl = props => {
         </LayerGroup>
       </Overlay>
     </LayersControl>
-  ), [props.state.history, props.state.step, props.state.history[props.state.step].anchor, props.state.markerSize, props.state.map, props.state.tooltips])
+  ), [props.state.history, props.state.step, props.state.history[props.state.step].anchor, props.state.history[props.state.step].sardot, props.state.tool, props.state.markerSize, props.state.map, props.state.tooltips])
 
   return layers
 }

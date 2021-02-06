@@ -1,3 +1,9 @@
+## 2.28.0
+### Changes
+* Changed tooltip text in `MarkerAccordion` component
+* Markers, Bullseyes, and Threats now properly behave with an `interactive` property based on whether or not a tool is active.
+* When not interactive, users can click where the marker was and it will behave as if it is not an object that is clickable
+
 ## 2.27.0
 ### Changes
 * Added `SARDOT` to the history object

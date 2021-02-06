@@ -255,7 +255,7 @@ const MarkerListAccordion = props => {
                   <MyLocationIcon />
                 </IconButton>
               </Tooltip>
-              <Tooltip title='Edit Marker'>
+              <Tooltip title='Edit'>
                 <IconButton
                   color='primary'
                   onClick={editMarker}
@@ -263,7 +263,7 @@ const MarkerListAccordion = props => {
                   <EditIcon />
                 </IconButton>
               </Tooltip>
-              <Tooltip title='Delete Marker'>
+              <Tooltip title='Delete'>
                 <IconButton
                   color='secondary'
                   onClick={deleteMarker}
