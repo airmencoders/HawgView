@@ -82,6 +82,8 @@ const Polygon = props => {
       dashArray={props.polygon.dashArray}
       fill={props.polygon.fillColor === null ? false : true}
       fillColor={props.polygon.fillColor}
+      interactive={props.state.tool === null}
+      key={`polygon-${props.polygon.id}-interactive-${props.state.tool === null}`}
       positions={props.polygon.positions}
       weight={4}
     >

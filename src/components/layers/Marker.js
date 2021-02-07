@@ -302,58 +302,50 @@ const Marker = props => {
     )
   }
 
-  const renderMarker = interactive => {
-    return (
-      <React.Fragment>
-        {(props.marker.arty.arty && props.marker.arty.display) ? generatePAA(props.marker.latlng, props.marker.layer) : null}
-        <RLMarker
-          draggable={interactive}
-          icon={props.marker.iconType === 'sidc' ?
+  return (
+    <React.Fragment>
+      {(props.marker.arty.arty && props.marker.arty.display) ? generatePAA(props.marker.latlng, props.marker.layer) : null}
+      <RLMarker
+        draggable={props.state.tool === null}
+        icon={props.marker.iconType === 'sidc' ?
+          L.icon({
+            iconUrl: new ms.Symbol(`${props.marker.sidc.scheme}${props.marker.sidc.affiliation}${props.marker.sidc.dimension}${props.marker.sidc.status}${props.marker.sidc.id}${props.marker.sidc.modifier}${props.marker.sidc.echelon}`, { size: 50 }).toDataURL(),
+            iconSize: [computedSize, computedSize]
+          })
+          : props.marker.iconType === 'img' ?
             L.icon({
-              iconUrl: new ms.Symbol(`${props.marker.sidc.scheme}${props.marker.sidc.affiliation}${props.marker.sidc.dimension}${props.marker.sidc.status}${props.marker.sidc.id}${props.marker.sidc.modifier}${props.marker.sidc.echelon}`, { size: 50 }).toDataURL(),
+              iconUrl: props.marker.iconUrl,
               iconSize: [computedSize, computedSize]
             })
-            : props.marker.iconType === 'img' ?
-              L.icon({
-                iconUrl: props.marker.iconUrl,
-                iconSize: [computedSize, computedSize]
-              })
-              :
-              L.divIcon({
-                className: props.marker.layer === 'kineticPoint' ? classes.kineticPoint : classes.divIcon,
-                html: props.marker.title,
-                iconSize: props.marker.layer === 'kineticPoint' ? [computedSize, computedSize] : [20, 20],
-              })
-          }
-          id={props.marker.id}
-          interactive={interactive}
-          key={`marker-${props.marker.id}-interactive-${interactive}`}
-          onClick={handleClickMarker}
-          onDragend={event => handleDragMarker(event.target.getLatLng())}
-          position={props.marker.latlng}
-          title={props.marker.title}
-        >
-          {generatePopup(props.marker)}
-          {(props.state.tooltips) && (
-            <Tooltip
-              direction='top'
-              offset={L.point(0, -1 * computedSize)}
-              opacity={1}
-              permanent
-            >
-              {props.marker.title}
-            </Tooltip>
-          )}
-        </RLMarker>
-      </React.Fragment>
-    )
-  }
-
-  if (props.state.tool === null) {
-    return <React.Fragment>{renderMarker(true)}</React.Fragment>
-  } else {
-    return <React.Fragment>{renderMarker(false)}</React.Fragment>
-  }
+            :
+            L.divIcon({
+              className: props.marker.layer === 'kineticPoint' ? classes.kineticPoint : classes.divIcon,
+              html: props.marker.title,
+              iconSize: props.marker.layer === 'kineticPoint' ? [computedSize, computedSize] : [20, 20],
+            })
+        }
+        id={props.marker.id}
+        interactive={props.state.tool === null}
+        key={`marker-${props.marker.id}-interactive-${props.state.tool === null}`}
+        onClick={handleClickMarker}
+        onDragend={event => handleDragMarker(event.target.getLatLng())}
+        position={props.marker.latlng}
+        title={props.marker.title}
+      >
+        {generatePopup(props.marker)}
+        {(props.state.tooltips) && (
+          <Tooltip
+            direction='top'
+            offset={L.point(0, -1 * computedSize)}
+            opacity={1}
+            permanent
+          >
+            {props.marker.title}
+          </Tooltip>
+        )}
+      </RLMarker>
+    </React.Fragment>
+  )
 }
 
 export default Marker

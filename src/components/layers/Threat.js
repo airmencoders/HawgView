@@ -210,57 +210,49 @@ const Threat = props => {
     )
   }
 
-  const renderThreat = interactive => {
-    return (
-      <React.Fragment>
-        <Marker
-          draggable={interactive}
-          icon={
-            L.divIcon({
-              className: classes.divIcon,
-              color: props.marker.color,
-              html: props.marker.title,
-              iconSize: [computedSize, computedSize],
-            })
-          }
-          id={props.marker.id}
-          interactive={interactive}
-          key={`threat-${props.marker.id}-interactive-${interactive}`}
-          onClick={handleClickThreat}
-          onDragend={event => handleDragThreat(event.target.getLatLng())}
-          position={props.marker.latlng}
-          riseOnHover
-          title={props.marker.title}
-        >
-          {generatePopup(props.marker)}
-          {(props.state.tooltips) ?
-            <Tooltip
-              direction='top'
-              offset={L.point(0, -1 * computedSize)}
-              opacity={1}
-              permanent
-            >
-              {props.marker.title}
-            </Tooltip>
-            : null}
-        </Marker>
-        <Circle
-          center={props.marker.latlng}
-          color={props.marker.color}
-          dashArray={props.marker.dashed ? '12,12' : null}
-          fill={props.marker.fill}
-          fillColor={props.marker.fillColor}
-          radius={props.marker.unit === 'm' ? Number.parseInt(props.marker.range) : props.marker.unit === 'km' ? props.marker.range * 1000 : props.marker.range * 1852}
-        />
-      </React.Fragment>
-    )
-  }
-
-  if (props.state.tool === null) {
-    return <React.Fragment>{renderThreat(true)}</React.Fragment>
-  } else {
-    return <React.Fragment>{renderThreat(false)}</React.Fragment>
-  }
+  return (
+    <React.Fragment>
+      <Marker
+        draggable={props.state.tool === null}
+        icon={
+          L.divIcon({
+            className: classes.divIcon,
+            color: props.marker.color,
+            html: props.marker.title,
+            iconSize: [computedSize, computedSize],
+          })
+        }
+        id={props.marker.id}
+        interactive={props.state.tool === null}
+        key={`threat-${props.marker.id}-interactive-${props.state.tool === null}`}
+        onClick={handleClickThreat}
+        onDragend={event => handleDragThreat(event.target.getLatLng())}
+        position={props.marker.latlng}
+        riseOnHover
+        title={props.marker.title}
+      >
+        {generatePopup(props.marker)}
+        {(props.state.tooltips) ?
+          <Tooltip
+            direction='top'
+            offset={L.point(0, -1 * computedSize)}
+            opacity={1}
+            permanent
+          >
+            {props.marker.title}
+          </Tooltip>
+          : null}
+      </Marker>
+      <Circle
+        center={props.marker.latlng}
+        color={props.marker.color}
+        dashArray={props.marker.dashed ? '12,12' : null}
+        fill={props.marker.fill}
+        fillColor={props.marker.fillColor}
+        radius={props.marker.unit === 'm' ? Number.parseInt(props.marker.range) : props.marker.unit === 'km' ? props.marker.range * 1000 : props.marker.range * 1852}
+      />
+    </React.Fragment>
+  )
 }
 
 export default Threat

@@ -83,6 +83,8 @@ const Rectangle = props => {
       dashArray={props.rectangle.dashArray}
       fill={props.rectangle.fillColor === null ? false : true}
       fillColor={props.rectangle.fillColor}
+      interactive={props.state.tool === null}
+      key={`rectangle-${props.rectangle.id}-interactive-${props.state.tool === null}`}
       weight={4}
     >
       <Popup

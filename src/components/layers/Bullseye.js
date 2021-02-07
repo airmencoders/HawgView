@@ -193,66 +193,57 @@ const Bullseye = props => {
     return array
   }
 
-  const renderBullseye = interactive => {
-    return (
-      <React.Fragment>
-        {generateBullCircles(props.bullseye)}
-        <Marker
+  return (
+    <React.Fragment>
+      {generateBullCircles(props.bullseye)}
+      <Marker
+        autoPan={false}
+        draggable={props.state.tool === null}
+        icon={L.icon({
+          iconUrl: props.bullseye.iconUrl,
+          iconSize: [computedSize, computedSize],
+        })}
+        id={props.bullseye.id}
+        interactive={props.state.tool === null}
+        key={`bullseye-${props.bullseye.id}-interactive-${props.state.tool === null}`}
+        onClick={handleClickShape}
+        onDragend={event => handleDragShape(event.target.getLatLng())}
+        position={props.bullseye.latlng}
+        riseOnHover
+        title={props.bullseye.title}
+      >
+        <Popup
           autoPan={false}
-          draggable={interactive}
-          icon={L.icon({
-            iconUrl: props.bullseye.iconUrl,
-            iconSize: [computedSize, computedSize],
-          })}
-          id={props.bullseye.id}
-          interactive={interactive}
-          key={`bullseye-${props.bullseye.id}-interactive-${interactive}`}
-          onClick={handleClickShape}
-          onDragend={event => handleDragShape(event.target.getLatLng())}
-          position={props.bullseye.latlng}
-          riseOnHover
-          title={props.bullseye.title}
         >
-          <Popup
-            autoPan={false}
+          {generateShapePopup(props.bullseye)}
+          <br />
+          <Button
+            color='primary'
+            onClick={handleEditShape}
           >
-            {generateShapePopup(props.bullseye)}
-            <br />
-            <Button
-              color='primary'
-              onClick={handleEditShape}
-            >
-              Edit
+            Edit
           </Button>
-            <Button
-              color='secondary'
-              onClick={handleDeleteShape}
-            >
-              Delete
+          <Button
+            color='secondary'
+            onClick={handleDeleteShape}
+          >
+            Delete
             </Button>
-          </Popup>
-          {(props.state.tooltips) ?
-            <Tooltip
-              direction='top'
-              offset={L.point(0, -1 * computedSize)}
-              opacity='1'
-              permanent
-            >
-              {props.bullseye.title}
-            </Tooltip>
-            : undefined
-          }
-        </Marker>
-      </React.Fragment>
-    )
-  }
-
-  if (props.state.tool === null) {
-    return <React.Fragment>{renderBullseye(true)}</React.Fragment>
-  } else {
-    return <React.Fragment>{renderBullseye(false)}</React.Fragment>
-  }
-
+        </Popup>
+        {(props.state.tooltips) ?
+          <Tooltip
+            direction='top'
+            offset={L.point(0, -1 * computedSize)}
+            opacity='1'
+            permanent
+          >
+            {props.bullseye.title}
+          </Tooltip>
+          : undefined
+        }
+      </Marker>
+    </React.Fragment>
+  )
 }
 
 export default Bullseye

@@ -49,6 +49,8 @@ class Ellipse extends Path {
 
   createLeafletElement(props) {
     let options = {
+      interactive: props.interactive,
+      key: props.key,
       color: props.ellipse.color,
       dashArray: props.ellipse.dashArray,
       fill: props.ellipse.fillColor === null ? false : true,

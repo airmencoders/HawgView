@@ -109,6 +109,8 @@ const Ellipse = props => {
   return (
     <LEllipse
       ellipse={props.ellipse}
+      interactive={props.state.tool === null}
+      key={`ellipse-${props.ellipse.id}-interactive-${props.state.tool === null}`}
     >
       <Popup
         autoPan={false}

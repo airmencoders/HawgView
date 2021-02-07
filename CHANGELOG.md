@@ -1,3 +1,13 @@
+## 2.28.3
+### Changes
+* Added `NM` to the ellipse length/width text field (Requested by 23OSS/IN)
+* Added `interactive` properties to all the shapes in addition to markers (Requested by 74FS/DOW)
+
+### Fixes
+* Fixed crash when creating a line/polygon/rectangle due to the `ShapePointDialog` not using `sardot` for the data generation
+* Removed unnecessary `if/else` in Marker/Threat/Bullseye layer components
+* Utilized `props.state.tool` and `key` to differentiate interactive vs. not for shapes and markers
+
 ## 2.28.2
 ### Fixes
 * Fixed broken image in `wiki`

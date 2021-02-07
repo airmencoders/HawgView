@@ -116,6 +116,8 @@ const Circle = props => {
       dashArray={props.circle.dashArray}
       fill={props.circle.fillColor === null ? false : true}
       fillColor={props.circle.fillColor}
+      interactive={props.state.tool === null}
+      key={`circle-${props.circle.id}-interactive-${props.state.tool === null}`}
       radius={radius}
       weight={4}
     >

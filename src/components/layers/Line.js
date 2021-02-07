@@ -80,6 +80,8 @@ const Line = props => {
     <Polyline
       color={props.line.color}
       dashArray={props.line.dashArray}
+      interactive={props.state.tool === null}
+      key={`line-${props.line.id}-interactive-${props.state.tool === null}`}
       positions={props.line.positions}
       weight={4}
     >

@@ -1,6 +1,6 @@
 {
   "name": "hawgview",
-  "version": "2.28.2",
+  "version": "2.28.3",
   "private": true,
   "dependencies": {
     "@fontsource/roboto": "^4.1.0",

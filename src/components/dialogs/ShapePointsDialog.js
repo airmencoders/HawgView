@@ -122,7 +122,7 @@ const ShapePointsDialog = props => {
               </TableHead>
               <TableBody>
                 {points.map((point, index) => {
-                  let data = generateMapPopup(point, props.state.history[props.state.step].anchor)
+                  let data = generateMapPopup(point, props.state.history[props.state.step].anchor, props.state.history[props.state.step].sardot)
 
                   return (
                     <TableRow key={index}>

@@ -661,7 +661,7 @@ const EditShapeDrawer = props => {
               <React.Fragment>
                 <TextField
                   className={classes.textField}
-                  label='Ellipse length'
+                  label='Ellipse length (NM)'
                   onChange={event => _setState({
                     ..._state,
                     ellipse: {
@@ -674,7 +674,7 @@ const EditShapeDrawer = props => {
                 />
                 <TextField
                   className={classes.textField}
-                  label='Ellipse width'
+                  label='Ellipse width (NM)'
                   onChange={event => _setState({
                     ..._state,
                     ellipse: {
