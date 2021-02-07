@@ -1,3 +1,7 @@
+## 2.28.4
+### Fixes
+* Fixed issue where deleting a bullseye designated as the `SARDOT` would not remove the point as the active `SARDOT`
+
 ## 2.28.3
 ### Changes
 * Added `NM` to the ellipse length/width text field (Requested by 23OSS/IN)

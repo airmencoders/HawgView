@@ -487,6 +487,7 @@ const deleteMarker = (history, step, payload) => {
         ...history[step],
         action: `delete bullseye ${marker.title}`,
         anchor: marker.anchor ? { declination: null, id: null, latlng: null, name: null } : history[step].anchor,
+        sardot: marker.sardot ? { declination: null, id: null, latlng: null, name: null } : history[step].sardot,
         bullseyes: history[step].bullseyes.filter(bMarker => bMarker.id !== marker.id)
       }
     case 'ellipse':
