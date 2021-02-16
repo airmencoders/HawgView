@@ -1,3 +1,15 @@
+## 2.29.0
+### Changes
+* Added `/src/constants/esriLayers.js` to hold all possible baselayers and overlays provided by ESRI
+* Added `Topographic` baselayer to the map
+* Added `World Imagery` baselayer to the map
+* Added logic to handle applicable overlays
+* Changed the order of the overlays (dynamic overlays are at the very bottom as they can change)
+* New maps requested by `23 OSS/IN`
+
+### Quirks
+* Adding the `sortLayers` property to the `LayersControl` breaks it by keeping the layers when changing the baselayer, even when it shouldn't
+
 ## 2.28.4
 ### Fixes
 * Fixed issue where deleting a bullseye designated as the `SARDOT` would not remove the point as the active `SARDOT`

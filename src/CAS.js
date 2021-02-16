@@ -198,9 +198,14 @@ const Cas = () => {
       unknownMarkers: [],
     }],
     map: {
+      baselayer: 'Imagery Firefly',
       brightness: 1,
       center: [35.77, -93.34],
       color: true,
+      overlays: {
+        imagery: true,
+        transportation: false,
+      },
       //reference: null,              // Currently unused
       zoom: 5,
     },

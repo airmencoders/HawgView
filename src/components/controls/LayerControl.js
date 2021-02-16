@@ -56,6 +56,8 @@ import {
   Threat,
 } from '../layers'
 
+import esriLayers from '../../constants/esriLayers'
+
 //----------------------------------------------------------------//
 // Map Control Component
 //----------------------------------------------------------------//
@@ -73,30 +75,28 @@ const LayerControl = props => {
   ]
 
   const layers = React.useMemo(() => (
-    <LayersControl position='topright'>
-      <BaseLayer
-        checked
-        name='ESRI Imagery Firefly'
-      >
-        <TileLayer
-          className='leaflet-layer-imagery'
-          url='https://fly.maptiles.arcgis.com/arcgis/rest/services/World_Imagery_Firefly/MapServer/tile/{z}/{y}/{x}'
-          attribution={`Esri, DigitalGlobe, GeoEye, Earthstar Geographics, CNES/Airbus DS, USDA, USGS, AeroGRID, IGN, and the GIS User Community`}
-          maxNativeZoom={17}
-          opacity={props.state.map.brightness > 1 ? 2 - props.state.map.brightness : props.state.map.brightness}
-          keepMounted
-        />
-      </BaseLayer>
-      <BaseLayer name='ESRI Imagery Clarity'>
-        <TileLayer
-          className='leaflet-layer-imagery'
-          url='https://clarity.maptiles.arcgis.com/arcgis/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'
-          attribution={`Esri, DigitalGlobe, GeoEye, Earthstar Geographics, CNES/Airbus DS, USDA, USGS, AeroGRID, IGN, and the GIS User Community`}
-          maxNativeZoom={17}
-          keepMounted
-          opacity={props.state.map.brightness > 1 ? 2 - props.state.map.brightness : props.state.map.brightness}
-        />
-      </BaseLayer>
+    <LayersControl position='topright' >
+      {esriLayers.baselayers.map(baselayer => {
+        if (baselayer.use) {
+          return (
+            <BaseLayer
+              checked={baselayer.name === props.state.map.baselayer}
+              key={baselayer.name}
+              name={baselayer.name}
+            >
+              <TileLayer
+                attribution={baselayer.attribution}
+                className='leaflet-layer-imagery'
+                keepMounted
+                maxNativeZoom={baselayer.maxZoom}
+                opacity={props.state.map.brightness > 1 ? 2 - props.state.map.brightness : props.state.map.brightness}
+                subdomains={baselayer.subdomains}
+                url={baselayer.url}
+              />
+            </BaseLayer>
+          )
+        }
+      })}
       <Overlay name='MGRS Lines'>
         <MGRSGrids
           map={props.map}
@@ -107,18 +107,6 @@ const LayerControl = props => {
         <GARSCells
           map={props.map}
           state={props.state}
-        />
-      </Overlay>
-      <Overlay checked name='Geo Labels'>
-        <TileLayer
-          url='https://services.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}'
-          maxNativeZoom={17}
-        />
-      </Overlay>
-      <Overlay name='Road Labels'>
-        <TileLayer
-          url='https://services.arcgisonline.com/ArcGIS/rest/services/Reference/World_Transportation/MapServer/tile/{z}/{y}/{x}'
-          maxNativeZoom={17}
         />
       </Overlay>
       {airspaceTypes.map(type => (
@@ -166,7 +154,7 @@ const LayerControl = props => {
       <Overlay checked name='Friendly Markers'>
         <LayerGroup>
           {props.state.history[props.state.step].friendlyMarkers.map(marker => (
-            <Marker              
+            <Marker
               key={`${marker.layer}-${marker.title}-${marker.id}`}
               marker={marker}
               setState={props.setState}
@@ -178,7 +166,7 @@ const LayerControl = props => {
       <Overlay checked name='Hostile Markers'>
         <LayerGroup>
           {props.state.history[props.state.step].hostileMarkers.map(marker => (
-            <Marker              
+            <Marker
               key={`${marker.layer}-${marker.title}-${marker.id}`}
               marker={marker}
               setState={props.setState}
@@ -190,7 +178,7 @@ const LayerControl = props => {
       <Overlay checked name='Unknown Markers'>
         <LayerGroup>
           {props.state.history[props.state.step].unknownMarkers.map(marker => (
-            <Marker              
+            <Marker
               key={`${marker.layer}-${marker.title}-${marker.id}`}
               marker={marker}
               setState={props.setState}
@@ -202,7 +190,7 @@ const LayerControl = props => {
       <Overlay checked name='Neutral Markers'>
         <LayerGroup>
           {props.state.history[props.state.step].neutralMarkers.map(marker => (
-            <Marker              
+            <Marker
               key={`${marker.layer}-${marker.title}-${marker.id}`}
               marker={marker}
               setState={props.setState}
@@ -226,7 +214,7 @@ const LayerControl = props => {
       <Overlay checked name='Survivors'>
         <LayerGroup>
           {props.state.history[props.state.step].survivors.map(marker => (
-            <Marker              
+            <Marker
               key={`${marker.layer}-${marker.title}-${marker.id}`}
               marker={marker}
               setState={props.setState}
@@ -238,7 +226,7 @@ const LayerControl = props => {
       <Overlay checked name='IPs/CPs'>
         <LayerGroup>
           {props.state.history[props.state.step].initialPoints.map(marker => (
-            <Marker              
+            <Marker
               key={`${marker.layer}-${marker.title}-${marker.id}`}
               marker={marker}
               setState={props.setState}
@@ -250,7 +238,7 @@ const LayerControl = props => {
       <Overlay checked name='Building Labels'>
         <LayerGroup>
           {props.state.history[props.state.step].buildingLabels.map(marker => (
-            <Marker              
+            <Marker
               key={`${marker.layer}-${marker.title}-${marker.id}`}
               marker={marker}
               setState={props.setState}
@@ -262,7 +250,7 @@ const LayerControl = props => {
       <Overlay checked name='Kinetic Points'>
         <LayerGroup>
           {props.state.history[props.state.step].kineticPoints.map(marker => (
-            <Marker              
+            <Marker
               key={`${marker.layer}-${marker.title}-${marker.id}`}
               marker={marker}
               setState={props.setState}
@@ -274,7 +262,7 @@ const LayerControl = props => {
       <Overlay checked name='Map Labels'>
         <LayerGroup>
           {props.state.history[props.state.step].mapLabels.map(marker => (
-            <Marker              
+            <Marker
               key={`${marker.layer}-${marker.title}-${marker.id}`}
               marker={marker}
               setState={props.setState}
@@ -343,6 +331,27 @@ const LayerControl = props => {
           ))}
         </LayerGroup>
       </Overlay>
+      {esriLayers.overlays.map(overlay => {
+        if (overlay.baselayers.includes(props.state.map.baselayer)) {
+          return (
+            <Overlay
+              checked={
+                props.state.map.baselayer !== 'Topographic' &&
+                ((overlay.name === 'Imagery Labels' && props.state.map.overlays.imagery) ||
+                  (overlay.name === 'Transportation Labels' && props.state.map.overlays.transportation))
+              }
+              key={overlay.name}
+              name={overlay.name}
+            >
+              <TileLayer
+                maxNativeZoom={overlay.maxZoom}
+                subdomains={overlay.subdomains}
+                url={overlay.url}
+              />
+            </Overlay>
+          )
+        }
+      })}
     </LayersControl>
   ), [props.state.history, props.state.step, props.state.history[props.state.step].anchor, props.state.history[props.state.step].sardot, props.state.tool, props.state.markerSize, props.state.map, props.state.tooltips])
 

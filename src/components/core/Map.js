@@ -83,6 +83,72 @@ const Map = props => {
     })
   }
 
+  const handleBaseLayerChange = event => {
+    props.setState({
+      ...props.state,
+      map: {
+        ...props.state.map,
+        baselayer: event.name,
+      },
+    })
+  }
+
+  const handleOverlayAdd = event => {
+    if (event.name === 'Imagery Labels') {
+      props.setState({
+        ...props.state,
+        map: {
+          ...props.state.map,
+          overlays: {
+            ...props.state.map.overlays,
+            imagery: true,
+          },
+        },
+      })
+    }
+
+    if (event.name === 'Transportation Labels') {
+      props.setState({
+        ...props.state,
+        map: {
+          ...props.state.map,
+          overlays: {
+            ...props.state.map.overlays,
+            transportation: true,
+          }
+        }
+      })
+    }
+  }
+
+  const handleOverlayRemove = event => {
+    if (event.name === 'Imagery Labels') {
+      props.setState({
+        ...props.state,
+        map: {
+          ...props.state.map,
+          overlays: {
+            ...props.state.map.overlays,
+            imagery: false,
+          },
+        },
+      })
+    }
+
+    if (event.name === 'Transportation Labels') {
+      props.setState({
+        ...props.state,
+        map: {
+          ...props.state.map,
+          overlays: {
+            ...props.state.map.overlays,
+            transportation: false,
+          },
+        },
+      })
+    }
+  }
+
   //----------------------------------------------------------------//
   // React Effects
   //----------------------------------------------------------------//
@@ -116,6 +182,9 @@ const Map = props => {
           zoom: event.target.getZoom(),
         },
       })}
+      onBaselayerChange={handleBaseLayerChange}
+      onOverlayAdd={handleOverlayAdd}
+      onOverlayRemove={handleOverlayRemove}
       onClick={event => handleMapClick(event.latlng)}
       onMouseMove={event => handleMouseMove(event.latlng)}
       ref={map => (map !== null) ? mapRef = map.leafletElement : undefined}
