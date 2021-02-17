@@ -8,6 +8,9 @@ Merging with Airmen Coders in 2020, I changed from PHP to React as the primary l
 Ultimately, Hawg View is an in depth CAS Scenario Mission Planner for use for the CAF. Pilots, Intel, and Tactical Air Control Parties can create scenarios, Grid Reference Graphics (GRGs), Concept of Operations (CONOPs), IP Run cards, and more. 
 Users can easily share and collaborate on mission planning, greatly shortening the amount of time needed to plan out any sortie, from CT to a full increased threat upgrade.
 
+## Moving Repositories
+As of 16 Feb 2021, this repository will not be kept up to date anymore and will instead be shifted to the Platform One GitLab.
+
 ## Wiki
 View the wiki at [https://wiki.hawg-ops.com](https://wiki.hawg-ops.com) for instructions and tips on how to navigate and use the application.
 
